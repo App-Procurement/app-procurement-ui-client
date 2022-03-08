@@ -1,0 +1,369 @@
+.approved-content {
+    width: 100%;
+    padding: 30px 20px;
+    border-radius: 15px;
+    background: $body-box-bg;
+    box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+    -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+    -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+    .heading {
+        border-bottom: 2px solid #e9e9e9;
+        padding-bottom: 15px;
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .item-detail {
+        text-align: center;
+
+    }
+
+    .requisiton-items {
+        padding-bottom: 50px;
+
+        .item-content {
+            border-bottom: 2px solid #efefef;
+        }
+    }
+
+    .requisitions-filter {
+        padding-top: 30px;
+    }
+
+    .recieved-content {
+        .recieved-heading {
+            border-bottom: 2px solid #e9e9e9;
+            margin-left: -20px;
+            margin-right: -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+
+            .heading-content {
+                margin-bottom: 15px;
+
+                span {
+                    font-weight: 500;
+                    display: block;
+                }
+
+                .pending-btn {
+                    border-radius: 30px;
+                    margin-top: 10px;
+                    text-transform: capitalize;
+                    padding: 4px 25px;
+                    color: #ffffff;
+                    background: #2ef871;
+                }
+
+                .recieved-btn {
+                    background: #2ebaf8;
+                    margin-left: 20px;
+                }
+
+                .creation-box {
+                    float: right;
+                    border-radius: 10px;
+                    padding: 10px;
+                    text-align: center;
+                    border: 1px solid #6418c3;
+
+                    span {
+                        font-size: 14px;
+                        line-height: 18px;
+                        font-weight: 500;
+                        color: #6418c3;
+                    }
+                }
+            }
+        }
+
+        .recieved-body-content {
+            border-bottom-style: solid;
+            margin-right: -20px;
+            margin-left: -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-width: 5px;
+            border-image: linear-gradient(to left, #47d7cb, #4c84eb, #a520c7, #7118c3, ) 1;
+
+            padding-top: 30px;
+
+            label {
+                display: block;
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 500;
+                color: #000;
+            }
+
+            span {
+                display: block;
+                line-height: 18px;
+                font-size: 14px;
+                color: #a5a5a5;
+            }
+        }
+
+        .recieved-bottom {
+            padding-top: 30px;
+
+            thead {
+                border-bottom: 2px solid #efefef;
+
+                tr {
+                    th {
+                        font-size: 14px;
+                        line-height: 26px;
+                        text-align: left;
+                        padding-bottom: 10px;
+                    }
+
+                }
+            }
+
+            tbody {
+
+                tr {
+                    td {
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 26px;
+                        text-align: left;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+
+                        .table-toggle-box {
+                            position: relative;
+                            float: right;
+
+                            .button {
+                                margin-left: 5px;
+                                padding: 0;
+                                min-width: auto;
+                                font-size: 11px;
+                                color: #393939;
+
+                                svg {
+                                    font-size: 16px;
+                                    color: #393939;
+                                }
+                            }
+
+                        }
+
+                    }
+
+                }
+            }
+
+
+        }
+
+        .recieved-button {
+            padding: 50px 0 20px;
+            text-align: center;
+
+            .primary-btn {
+                padding: 0;
+
+                a {
+                    padding: 6px 16px;
+                    color: #ffffff;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+
+        .buyers-content {
+            .member-boxs {
+                display: inline-block;
+
+                .members-box {
+                    width: 262px;
+                    padding: 20px 15px 15px 15px;
+                    position: relative;
+                    margin-top: 20px;
+
+                    .image {
+                        text-align: center;
+                    }
+
+                    .menu-icon {
+                        position: absolute;
+                        right: 5px;
+                        top: 5px;
+
+                        .MuiButtonBase-root {
+                            padding: 8px;
+                        }
+                    }
+
+                    .member-position {
+                        background-color: #5ed1a7;
+                        width: 30px;
+                        height: 30px;
+                        position: absolute;
+                        top: 60px;
+                        color: #ffff;
+                        right: 80px;
+                        text-align: center;
+                        line-height: 30px;
+                        border-radius: 8px;
+                    }
+
+                    .member-details {
+                        padding-top: 15px;
+                        text-align: center;
+
+                        ul {
+                            padding: 0;
+                            margin: 0;
+                            display: block;
+
+                            li {
+                                display: block;
+                                list-style: none;
+
+                                b {
+                                    font-size: 14px;
+                                    line-height: 20px;
+                                    color: #202020;
+                                }
+
+                                span {
+                                    font-size: 14px;
+                                    line-height: 20px;
+                                    color: #a5a5a5;
+                                }
+
+                                p {
+                                    font-size: 14px;
+                                    line-height: 20px;
+                                    font-weight: 500;
+                                    color: #6418c3;
+                                }
+                            }
+                        }
+                    }
+
+                    .member-contact {
+                        float: left;
+
+                        ul {
+                            margin: 0;
+                            padding: 0;
+                            display: block;
+
+                            li {
+                                display: block;
+                                list-style: none;
+                                padding-bottom: 10px;
+
+                                a {
+                                    font-size: 14px;
+                                    line-height: 20px;
+                                    font-weight: 500;
+                                    color: $text-color;
+                                    text-decoration: none;
+                                }
+
+                                .icon-btn {
+                                    min-width: 0;
+                                    padding: 5px;
+                                    margin-right: 10px;
+                                    border-radius: 8px;
+                                    color: $buttons-bg;
+                                    background: #f6edfe;
+
+                                    .phone-icon {
+                                        font-size: 16px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+                        -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+                        -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+
+                        .member-contact {
+                            ul {
+                                li {
+                                    .icon-btn {
+                                        background: $buttons-bg;
+                                        color: $button-text-color;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .requisition {
+                    margin-top: 20px;
+                    display: block;
+                    text-align: center;
+
+                    p {
+                        margin: 0;
+                        font-size: 14px;
+                        line-height: 22px;
+                        font-weight: 500;
+                        color: #8f8f8f;
+                        display: inline-block;
+                    }
+                }
+
+                .committee-btn {
+                    display: block;
+                    margin: 0 auto;
+                    padding-top: 20px;
+                    text-align: center;
+
+                    .new-item-btn {
+                        margin-bottom: 15px;
+                        padding: 6px 20px;
+
+                        .plus-icon {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .Sendrfq-content {
+        .requisitions-filter {
+            .requisitions-button {
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 540px) {
+    .approved-content {
+        .recieved-content {
+            .recieved-heading {
+                .heading-content {
+                    .creation-box {
+                        float: left;
+                        margin-top: 20px;
+                    }
+                }
+            }
+        }
+    }
+}

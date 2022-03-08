@@ -1,0 +1,418 @@
+.kanban-head {
+    margin: 0 0 30px 0;
+    padding: 30px 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+    -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+    -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+    .head-top {
+        .head-icon {
+            padding: 8px;
+            color: #ffffff;
+            margin-right: 15px;
+            vertical-align: top;
+            background-color: #8f8f8f;
+        }
+
+        .head-content {
+            display: inline-block;
+
+            h4 {
+                margin: 0;
+                font-weight: 500;
+            }
+
+            p {
+                font-size: 16px;
+                font-weight: 500;
+                color: #8f8f8f;
+                margin: 10px 0 0 0;
+            }
+        }
+
+        .head-menu-icon {
+            padding: 8px;
+            float: right;
+            color: #8f8f8f;
+        }
+    }
+
+    .head-bottom {
+        padding-top: 20px;
+
+        .head-left {
+            text-align: center;
+
+            .group-imags {
+                margin-right: 10px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .head-btn {
+                display: inline-block;
+                vertical-align: middle;
+
+                button {
+                    margin-right: 10px;
+                    border-radius: 10px;
+                }
+
+                .MuiButton-label {
+                    color: #000000;
+                }
+
+                .MuiButton-root {
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+
+                .invite-btn {
+                    background-color: #f6edfe;
+
+                    .btn-icon {
+                        color: #6318c3;
+                        margin-right: 10px;
+                    }
+                }
+
+                .comments-btn {
+                    margin-right: 0;
+
+                    .btn-icon {
+                        color: #6318c3;
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+
+        .head-right {
+            p {
+                font-size: 14px;
+                font-weight: 500;
+                color: #000000;
+                margin: 0 10px 0 0;
+                display: inline-block;
+            }
+
+            span {
+                display: inline-block;
+                width: 185px;
+                .MuiLinearProgress-root{
+                    height: 10px;
+                    border-radius: 5px;
+                }
+                .MuiLinearProgress-barColorPrimary {
+                    background-color: #6418c3;
+                }
+            }
+
+        }
+    }
+
+}
+
+.suppliers-section {
+    .heading {
+        font-size: 16px;
+        line-height: 40px;
+        font-weight: 500;
+        color: #000000;
+        padding-bottom: 15px;
+        vertical-align: middle;
+
+        .count-btn {
+            float: right;
+
+            .plus-btn {
+                min-width: 0;
+                padding: 6px 8px;
+                color: #6318c3;
+                border-radius: 8px;
+                background-color: #f6edfe;
+
+                &:hover {
+                    background-color: #6318c3;
+                    color: #ffffff;
+                }
+
+                &.active {
+                    background-color: #6318c3;
+                    color: #ffffff;
+                }
+            }
+        }
+    }
+
+    .suppliers-list {
+        .suppliers-content {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: #ffffff;
+            box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+            .dragdrop-file {
+                padding: 8px;
+                border-radius: 8px;
+                text-align: center;
+                border: 1px dotted #8f8f8f;
+                background-color: #f5f5f5;
+
+                span {
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+            }
+
+            .heading {
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 20px;
+                color: #000000;
+                padding-left: 0;
+                position: relative;
+
+                .icon {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                .right-icon {
+                    padding: 5px;
+                    color: #8f8f8f;
+                    margin-top: -5px;
+                    margin-right: -5px;
+                }
+            }
+
+            .department {
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 20px;
+                color: #000000;
+                padding-top: 0px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .get-proses {
+                padding: 30px 0 15px 0;
+                .MuiLinearProgress-barColorPrimary{
+                    background-color: #ffab2e;
+                }
+                .MuiLinearProgress-root{
+                    height: 7px;
+                    border-radius: 5px;
+                } 
+            }
+
+            .user-text {
+                .user-images {
+                    display: inline-block;
+                }
+
+                span {
+                    float: right;
+                    font-size: 12px;
+                    line-height: 36px;
+                    font-weight: 500;
+                    color: #8f8f8f;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
+
+
+.suppliers-section {
+    .suppliers-list {
+        .suppliers-content {
+            .user-text {
+                .user-images {
+                    .MuiAvatar-root{
+                        width: 30px;
+                        height: 30px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .kanban-head {
+        .head-bottom {
+            .head-left {
+                float: left;
+                padding-bottom: 15px;
+            }
+
+            .head-right {
+                p {
+                    font-size: 16px;
+                }
+
+                span {
+                    width: 50%;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .kanban-head {
+        .head-top {
+            .head-icon {
+                width: 25px;
+                height: 25px;
+                line-height: 16px;
+                margin-top: 3px;
+
+                .MuiSvgIcon-root {
+                    font-size: 1rem;
+
+                }
+            }
+
+            .head-content {
+                h4 {
+                    font-size: 20px;
+                }
+
+                p {
+                    font-size: 14px;
+                    margin: 5px 0 0 0;
+                }
+            }
+        }
+
+        .head-bottom {
+            .head-left {
+                .group-imags {
+                    display: inline-flex;
+                    padding-bottom: 15px;
+                    margin-right: 0;
+                }
+
+                .head-btn {
+                    button {
+                        padding: 5px 8px;
+                    }
+
+                    .invite-btn {
+                        .btn-icon {
+                            margin-right: 5px;
+                        }
+                    }
+
+                    .comments-btn {
+                        .btn-icon {
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            }
+
+            .head-right {
+                p {
+                    font-size: 16px;
+                }
+
+                span {
+                    width: 50%;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .kanban-head {
+        .head-top {
+            .head-icon {
+                width: 25px;
+                height: 25px;
+                line-height: 16px;
+                margin-top: 3px;
+
+                .MuiSvgIcon-root {
+                    font-size: 1rem;
+
+                }
+            }
+
+            .head-content {
+                h4 {
+                    font-size: 14px;
+                }
+
+                p {
+                    font-size: 12px;
+                    margin: 5px 0 0 0;
+                    width: 150px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+
+        .head-bottom {
+            .head-left {
+                .group-imags {
+                    display: inline-flex;
+                    padding-bottom: 15px;
+                    margin-right: 0;
+                }
+
+                .head-btn {
+                    button {
+                        padding: 5px 8px;
+                        margin-bottom: 10px;
+                    }
+
+                    .invite-btn {
+                        .btn-icon {
+                            margin-right: 5px;
+                        }
+                    }
+
+                    .comments-btn {
+                        .btn-icon {
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            }
+
+            .head-right {
+                text-align: center;
+                p {
+                    font-size: 16px;
+                    display: block;
+                }
+
+                span {
+                    width: 100%;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}

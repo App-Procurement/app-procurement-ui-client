@@ -1,0 +1,186 @@
+.pagination-container {
+    padding-top: 15px;
+
+    .pagination-text {
+        display: block;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: 500;
+        color: #8f8f8f;
+    }
+
+    .pagination-section {
+        .btn-left {
+            vertical-align: middle;
+            margin-right: 10px;
+
+            button {
+                min-width: 0;
+                text-align: center;
+                border-radius: 8px;
+                border: 1px solid #8f8f8f;
+
+                span {
+                    line-height: 20px;
+
+                    .MuiSvgIcon-root {
+                        font-size: 16px;
+                        color: #6317c1;
+                    }
+                }
+            }
+        }
+
+        .pagination-icon {
+            vertical-align: middle;
+
+            ul {
+                margin: 0;
+                height: 35px;
+                padding-left: 0;
+                border-radius: 8px;
+                border: 1px solid #8f8f8f;
+
+                li {
+                    display: inline-block;
+
+                    a {
+                        font-size: 16px;
+                        font-weight: 500;
+                        padding: 6px 15px;
+                        line-height: 34px;
+                        color: #000000;
+                        text-decoration: none;
+
+                        &:hover {
+                            color: #ffffff;
+                            border-radius: 8px;
+                            background-color: #6317c1;
+                        }
+
+                        &.active {
+                            color: #ffffff;
+                            border-radius: 8px;
+                            background-color: #6317c1;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        .btn-right {
+            vertical-align: middle;
+            margin-left: 10px;
+
+            button {
+                min-width: 0;
+                text-align: center;
+                border-radius: 8px;
+                border: 1px solid #8f8f8f;
+
+                span {
+                    line-height: 20px;
+
+                    .MuiSvgIcon-root {
+                        font-size: 16px;
+                        color: #6317c1;
+                    }
+                }
+            }
+        }
+    }
+
+    .footer-section-inner {
+        padding-top: 15px;
+
+        span {
+            vertical-align: middle;
+            color: #8f8f8f;
+
+        }
+
+        .opensens-dropdown {
+            margin-left: 30px;
+            display: inline-block;
+
+            .opensens-content {
+                border: 1px solid #8f8f8f;
+                border-radius: 10px;
+                width: 110px;
+
+                .MuiInputBase-root {
+                    &::before {
+                        display: none;
+                    }
+
+                    &::after {
+                        display: none;
+                    }
+                }
+
+                .MuiInputBase-input {
+                    padding: 6px 7px;
+                    border: none;
+                    border-radius: 10px;
+                }
+            }
+        }
+
+        .symbols-icon {
+            padding: 6px 10px;
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+        .symbols {
+            display: inline-block;
+
+            ul {
+                padding: 0;
+                margin: 0 0 0 30px;
+
+                li {
+                    display: inline-block;
+                    list-style: none;
+                    margin-right: 10px;
+                    color: #a5a5a5;
+                }
+
+                .symbols-icon {
+                    padding: 6px 10px;
+                    font-size: 20px;
+                    line-height: 20px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .footer-bottom {
+        .footer-section-inner {
+            .opensens-dropdown {
+                margin-left: 8px;
+            }
+
+            .symbols {
+                padding-top: 15px;
+                display: block;
+                text-align: center;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .footer-bottom {
+        .pagination-text {
+            padding-bottom: 15px;
+        }
+
+        .pagination-section {
+            float: left;
+        }
+    }
+}

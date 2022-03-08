@@ -1,0 +1,35 @@
+.login-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-height: 100%;
+    padding: 30px 15px;
+
+    .logo {
+        padding-bottom: 30px;
+    }
+
+    #formContent {
+        -webkit-border-radius: 10px 10px 10px 10px;
+        border-radius: 10px 10px 10px 10px;
+        background: #fff;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+        padding: 20px 15px 30px 15px;
+        -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.3);
+
+        .submit {
+            border-radius: 8px;
+            text-transform: capitalize;
+            background: #6418c3;
+            margin-top: 16px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            font-size: 18px;
+        }
+    }
+}

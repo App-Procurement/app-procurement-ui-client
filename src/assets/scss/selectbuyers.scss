@@ -1,0 +1,160 @@
+.select-buyers-content {
+    .buyers-head {
+        .heading {
+            h4 {
+                margin-bottom: 5px;
+            }
+
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        .head-right {
+            display: flex;
+
+            .search-bar {
+                display: inline-block;
+                margin-right: 20px;
+                vertical-align: middle;
+                position: relative;
+
+                .form-group {
+                    margin-bottom: 0;
+
+                    .form-control {
+                        width: auto;
+                        border: none;
+                        height: 50px;
+                        font-weight: 500;
+                        line-height: 50px;
+                        border-radius: 10px;
+                        color: #aaaaaa;
+                        padding-left: 50px;
+                        box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+                        -webkit-box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+                        -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.3);
+                    }
+
+                    button {
+                        position: absolute;
+                        top: 12px;
+                        left: 8px;
+                        background-color: transparent;
+                        border: none;
+                        color: #6418c3;
+                        font-size: 16px;
+                    }
+                }
+            }
+
+            .social-buttom {
+                display: inline-block;
+                vertical-align: middle;
+
+                ul {
+                    margin: 0;
+                    padding: 0;
+
+                    li {
+                        display: inline-block;
+                        list-style: none;
+                        margin-right: 20px;
+
+                        .plus-btn {
+                            min-width: 0;
+                            padding: 10px 15px;
+                            color: #6318c3;
+                            border-radius: 8px;
+                            background: $body-box-bg;
+
+                            // &:hover {
+                            //     background-color: #6318c3;
+                            //     color: #ffffff;
+                            // }
+
+                            // &.active {
+                            //     background-color: #6318c3;
+                            //     color: #ffffff;
+                            // }
+                        }
+
+                        .list-icon {
+                            color: $icon-color;
+                        }
+
+                        .add-buyres-btn {
+                            background: $buttons-bg;
+                            color: #ffffff;
+                            min-width: 0;
+                            text-transform: capitalize;
+                            padding: 10px 20px;
+                            border-radius: 8px;
+
+                            .user-icon {
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+
+                    .last {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@media only screen and (max-width: 1200px) {
+    .select-buyers-content {
+        .buyers-head {
+            .heading {
+                margin-bottom: 20px;
+            }
+
+            .head-right {
+                display: block;
+
+                .social-buttom {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .select-buyers-content {
+        .buyers-head {
+            .head-right {
+                .search-bar {
+                    margin-right: 0;
+                    width: 100%;
+
+                    .form-group {
+                        .form-control {
+                            width: 100%;
+                        }
+                    }
+                }
+
+                .social-buttom {
+                    margin-top: 20px;
+                    width: 100%;
+
+                    ul {
+                        li {
+                            margin-right: 15px;
+
+                            &.last {
+                                float: right;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
