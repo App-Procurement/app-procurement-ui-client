@@ -41,6 +41,7 @@ import RecentActivity from './RecentActivity'
 import Requisition from './Requisition'
 import StatictisRFP from "./StatictisRFP";
 import BudgetOverview from "./BudgetOverview";
+import { red } from "@material-ui/core/colors";
 
 class Dashbord extends Component {
   constructor(props) {
@@ -169,6 +170,7 @@ class Dashbord extends Component {
           data: this.props.dashboarddata.requisitionChart
         });
       }
+
     }
     if (prevProps.search_invoice_status !== this.props.search_invoice_status && this.props.search_invoice_status === status.SUCCESS) {
       if (this.props.search_invoice_data && this.props.search_invoice_data.length > 0) {
@@ -177,6 +179,7 @@ class Dashbord extends Component {
         })
       }
     }
+
   }
 
   displayInvoice = () => {
@@ -253,13 +256,28 @@ class Dashbord extends Component {
     }
     return retData;
   }
-
+  statisticsDataColors(value) {
+    let color = ""
+    if (value > 1 && value < 25) {
+      color = "#E74C3C"
+    }
+    if (value > 25 && value < 50) {
+      color = "rgb(100, 24, 195)"
+    }
+    if (value > 50 && value < 75) {
+      color = "#28B463"
+    }
+    if (value > 75 && value < 100) {
+      color = "#3498DB"
+    }
+    return color
+  }
   displayStatisticsData = () => {
-    const { statisticsData } = this.state;
+    const { dashboardData, statisticsData } = this.state;
     let retData = [];
-    if (statisticsData) {
-      for (let i = 0; i < statisticsData.length; i++) {
-        let data = statisticsData[i];
+    if (dashboardData && dashboardData.statisticsList && dashboardData.statisticsList.length > 0) {
+      for (let i = 0; i < dashboardData.statisticsList.length; i++) {
+        let data = dashboardData.statisticsList[i];
         retData.push(
           <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" key={data.name}>
             <div className="production-progress">
@@ -268,9 +286,9 @@ class Dashbord extends Component {
                 text={`${data.value}%`}
                 strokeWidth={20}
                 styles={buildStyles({
-                  strokeLinecap: "butt",
-                  trailColor: data.trailColor,
-                  pathColor: data.pathColor,
+                  strokeLinecap: {},
+                  trailColor: "#E5E7E9",
+                  pathColor: this.statisticsDataColors(data.value),
                   textColor: "black"
                 })}
               />
@@ -282,7 +300,6 @@ class Dashbord extends Component {
     }
     return retData;
   }
-
   handleUrls = (url, type) => {
     if (type) {
       this.props.history.push(`${url}/${type}`)
@@ -291,7 +308,6 @@ class Dashbord extends Component {
       this.props.history.push(`${url}`)
     }
   }
-
   displayPinedEmail = () => {
     const { pinnedEmailsData } = this.state;
     let pinData = [];
@@ -323,7 +339,9 @@ class Dashbord extends Component {
     return pinData;
   }
   render() {
+    console.log("Props", this.props)
     const { lineData, data, invoices, PieChartEmailData, contactsData, dashboardData } = this.state;
+    console.log("This is List", dashboardData.statisticsList)
     const BorderLinearProgress = withStyles((theme) =>
       createStyles({
         root: {
@@ -813,10 +831,8 @@ class Dashbord extends Component {
     );
   }
 }
-
 const mapStateToProps = (state) => {
   const { get_contact_status, getContact, get_dashboard_data_status, dashboarddata, search_invoice_status, search_invoice_data } = state.procurement;
-
   return {
     get_contact_status,
     getContact,
@@ -826,5 +842,4 @@ const mapStateToProps = (state) => {
     search_invoice_data
   }
 }
-
 export default connect(mapStateToProps)(Dashbord);

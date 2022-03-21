@@ -17,7 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle, DialogActions, Tooltip } from '@material-ui/core';
-
+import VisibilityIcon from '@material-ui/icons/Visibility';
 class ManageRequisition extends Component {
     constructor(props) {
         super(props)
@@ -99,6 +99,11 @@ class ManageRequisition extends Component {
                                                 <CreateIcon />
                                             </Button>
                                         </Tooltip>
+                                    }
+                                    {row.status !== requisitionStatus.APPROVED &&
+                                        <Button>
+                                            <Link to={`/postlogin/requisitiondetails/${value}`}> <VisibilityIcon /></Link>
+                                        </Button>
                                     }
                                     {row.status !== requisitionStatus.APPROVED &&
                                         <Button>

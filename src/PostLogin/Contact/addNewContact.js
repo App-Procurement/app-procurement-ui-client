@@ -3,8 +3,8 @@ import Button from "@material-ui/core/Button";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import SaveIcon from "@material-ui/icons/Save";
-import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
 import IconButton from "@material-ui/core/IconButton";
 import "simplebar/dist/simplebar.min.css";
 import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { contactAction } from "../../_actions";
 import { status } from "../../_constants";
 import { commonFunctions } from "../../_utilities/commonFunctions";
-import memberImg from '../../assets/images/Setup/ahmad.png';
+import memberImg from "../../assets/images/Setup/ahmad.png";
 import Card from "@material-ui/core/Card";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
@@ -45,31 +45,33 @@ class addNewContact extends Component {
   componentDidMount() {
     this.props.dispatch(contactAction.fetchContactList());
     if (this.props.match.params.id) {
-      this.props.dispatch(contactAction.getContactData({ 'id': this.props.match.params.id }));
+      this.props.dispatch(
+        contactAction.getContactData({ id: this.props.match.params.id })
+      );
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.get_contact_status !==
-      this.props.get_contact_status
-      && this.props.get_contact_status ===
-      status.SUCCESS) {
+    if (
+      prevProps.get_contact_status !== this.props.get_contact_status &&
+      this.props.get_contact_status === status.SUCCESS
+    ) {
       if (this.props.getContact && this.props.getContact.length > 0) {
         this.setState({
           contacts: this.props.getContact,
-          duplicateContacts: this.props.getContact
-        })
+          duplicateContacts: this.props.getContact,
+        });
       }
     }
     if (
       prevProps.get_edit_contact_status !==
-      this.props.get_edit_contact_status &&
+        this.props.get_edit_contact_status &&
       this.props.get_edit_contact_status === status.SUCCESS
     ) {
       if (this.props.contactData) {
         const { contactData } = this.props;
-        let fname = contactData.name.split(' ').slice(0, 1);
-        let lname = contactData.name.split(' ').slice(1, 2);
+        let fname = contactData.name.split(" ").slice(0, 1);
+        let lname = contactData.name.split(" ").slice(1, 2);
         this.setState({
           isEdit: true,
           firstName: fname,
@@ -80,10 +82,8 @@ class addNewContact extends Component {
           contactNo: contactData.contNo,
           profile: contactData.profile,
           profileUrl: contactData.profile,
-
         });
       }
-
     }
     if (
       prevProps.add_contact_status !== this.props.add_contact_status &&
@@ -116,14 +116,8 @@ class addNewContact extends Component {
     };
 
     if (isSubmitted) {
-      const {
-        email,
-        contactNo,
-        firstName,
-        lastName,
-        title,
-        company,
-      } = this.state;
+      const { email, contactNo, firstName, lastName, title, company } =
+        this.state;
       if (!firstName) {
         retData.firstName = {
           isValid: false,
@@ -226,8 +220,8 @@ class addNewContact extends Component {
   };
 
   handleBack = () => {
-    this.props.history.push('/postlogin/contact')
-  }
+    this.props.history.push("/postlogin/contact");
+  };
   handleChange = (e) => {
     e.preventDefault();
     const { name, value, files } = e.target;
@@ -248,16 +242,16 @@ class addNewContact extends Component {
 
   toggleDisplayOptions = () => {
     this.setState({ displayOption: !this.state.displayOption });
-  }
+  };
 
   editContact = (index, id) => {
     this.props.history.push(`/postlogin/newcontact/${id}`);
-  }
+  };
   deleteEmailContact = (index) => {
-    let { contacts } = this.state
+    let { contacts } = this.state;
     contacts.splice(index, 1);
     this.setState({ contacts });
-  }
+  };
   render() {
     const {
       contacts,
@@ -270,7 +264,7 @@ class addNewContact extends Component {
       profileUrl,
       isSubmitted,
       activeIndex,
-      displayOption
+      displayOption,
     } = this.state;
     let errrorMessage = this.validate(isSubmitted);
     return (
@@ -278,58 +272,64 @@ class addNewContact extends Component {
         <div className="contact-content">
           <div className="row">
             <div className="col-md-3">
-              <div className="heading"><h4>Contacts</h4><p>Lorem ipsum dolor sit amet</p></div>
-              <SimpleBar style={{ maxHeight: 'calc(450px)' }} >
-                {contacts && contacts.length > 0 && contacts.map((contact, index) =>
-                  <Card className="member-box" key={index}>
-                    <div className="d-block w-100 user-img">
-                      <div className="d-inline-block image">
-                        <img src={contact.profile} alt="" />
-                      </div>
-                      <div
-                        className="d-inline-block menu-icon"
-                        style={{ display: "flex" }}
-                      >
-                        <IconButton aria-label="settings">
-                          <MoreVertIcon
-                            onClick={
-                              this.toggleDisplayOptions
-                            }
-                          />
-                        </IconButton>
-                        <div className="settings-toggle">
-                          {displayOption &&
-                            <>
-                              <span onClick={() => this.editContact(index, contact.id)}>
-                                <EditTwoToneIcon /> Edit
-                              </span>
-                              <span onClick={() => this.deleteEmailContact(index)}>
-                                <HighlightOffIcon /> Delete
-                              </span>
-                            </>
-                          }
+              <div className="heading">
+                <h4>Contacts</h4>
+                <p>Lorem ipsum dolor sit amet</p>
+              </div>
+              <SimpleBar style={{ maxHeight: "calc(450px)" }}>
+                {contacts &&
+                  contacts.length > 0 &&
+                  contacts.map((contact, index) => (
+                    <Card className="member-box" key={index}>
+                      <div className="d-block w-100 user-img">
+                        <div className="d-inline-block image">
+                          <img src={contact.profile} alt="" />
+                        </div>
+                        <div
+                          className="d-inline-block menu-icon"
+                          style={{ display: "flex" }}
+                        >
+                          <IconButton aria-label="settings">
+                            <MoreVertIcon onClick={this.toggleDisplayOptions} />
+                          </IconButton>
+                          <div className="settings-toggle">
+                            {displayOption && (
+                              <>
+                                <span
+                                  onClick={() =>
+                                    this.editContact(index, contact.id)
+                                  }
+                                >
+                                  <EditTwoToneIcon /> Edit
+                                </span>
+                                <span
+                                  onClick={() => this.deleteEmailContact(index)}
+                                >
+                                  <HighlightOffIcon /> Delete
+                                </span>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      className="d-block w-100 member-name"
-                    >
-                      {contact.name}
-                    </div>
-                    <div className="d-block w-100 member-details">
-                      <div className="row">
-                        <div className="col-md-9">
-                          <p>
-                            {contact.company}
-                            <strong>{contact.position}</strong>
-                          </p>
-                        </div>
-                        <div className="col-md-3">
-                          <div class="member-position">JH</div>
+                      <div className="d-block w-100 member-name">
+                        {contact.name}
+                      </div>
+                      <div className="d-block w-100 member-details">
+                        <div className="row">
+                          <div className="col-md-9">
+                            <p>
+                              {contact.company}
+                              <strong>{contact.position}</strong>
+                            </p>
+                          </div>
+                          <div className="col-md-3">
+                            <div class="member-position">JH</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>)}
+                    </Card>
+                  ))}
               </SimpleBar>
             </div>
             <div className="col-md-9">
@@ -339,11 +339,11 @@ class addNewContact extends Component {
                     <KeyboardBackspaceIcon onClick={this.handleBack} />
                   </IconButton>
                   <h4 className="d-inline-block">
-                    {this.props.match.params.id ?
+                    {this.props.match.params.id ? (
                       <>Edit Contact</>
-                      :
+                    ) : (
                       <>Add New Contact</>
-                    }
+                    )}
                   </h4>
                 </div>
                 <div className="general-information">
@@ -411,7 +411,6 @@ class addNewContact extends Component {
                                 type="text"
                                 name="company"
                                 value={company}
-                                className="control-form"
                                 placeholder="HighSpeed Studios"
                                 onChange={this.handleChange}
                                 className="form-control"

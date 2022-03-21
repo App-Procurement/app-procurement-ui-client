@@ -1,4 +1,5 @@
 import React from 'react';
+import ManageRequisitionData from '../PostLogin/Requisition/ManageRequisition/ManageRequisitionData';
 import SendRfq from '../PostLogin/SendRfq';
 import VendorQuotation from '../PostLogin/VendorQuatation';
 const Dashbord = React.lazy(() => import('../PostLogin/Dashbord'));
@@ -33,6 +34,8 @@ const PurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/purchaseO
 const BudgetAllocate = React.lazy(() => import('../PostLogin/BudgetOverview/allocatedBudget'));
 const BudgetAllocation = React.lazy(() => import("../PostLogin/BudgetOverview/BudgetAllocation"));
 const Vendors = React.lazy(() => import("../PostLogin/Vendors/index"));
+
+
 
 const routes = [
     { path: '/postlogin/dashboard', exact: true, name: 'Dashbord', component: Dashbord },
@@ -73,7 +76,9 @@ const routes = [
     { path: "/postlogin/budgetallocation", exact: true, name: "BudgetAllocation", component: BudgetAllocation },
     { path: "/postlogin/vendorquotation", exact: true, name: "VendorQuotation", component: VendorQuotation },
     { path: '/postlogin/vendors', exact: true, name: "Vendors", component: Vendors },
-    { path: '/postlogin/sendrfq', exact: true, name: "sendrfq", component: SendRfq }
+    { path: '/postlogin/sendrfq', exact: true, name: "sendrfq", component: SendRfq },
+    { path: '/postlogin/requisitiondetails/:id', exact: true, name: 'ManageRequisitionData', component: ManageRequisitionData },
+
 
 ]
 

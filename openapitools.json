@@ -3766,6 +3766,14 @@
             "x-faker": "datatype.number({ \"min\": 1, \"max\": 100000 })",
             "description": "id of the Requisition"
           },
+          "item": {
+            "type":"string",
+            "x-faker":"lorem.word()"
+          },
+          "itemName": {
+            "type":"string",
+            "x-faker":"lorem.word()"
+          },
           "purpose":{
             "type":"string",
             "x-faker":"lorem.word()"
@@ -4566,6 +4574,30 @@
             "x-faker": "datatype.number({ \"min\": 1, \"max\": 100000 })",
             "description": "id of recieved RFP"
           },
+          "extrabudgetory":{
+            "type":"string",
+            "x-faker":"lorem.word()"
+          },
+          "priority":{
+            "type":"string",
+            "x-faker":"lorem.word()"
+          },
+          "item":{
+            "type":"string",
+            "x-faker":"lorem.word()"
+          },
+          "itemName":{
+            "type":"string",
+            "x-faker":"lorem.word()"
+          },
+          "purpose":{
+            "type":"string",
+            "x-faker":"lorem.word()"
+          },
+          "committeeReport":{
+            "type":"string",
+            "x-faker":"lorem.word()"
+          },
           "createdOn": {
             "type": "string",
             "format": "date",
@@ -5078,6 +5110,12 @@
             "x-faker": "datatype.number({ \"min\": 10, \"max\": 1000 })",
             "description": "total RFP fro dashboard"
           },
+          "pendingRFP":{
+            "type": "integer",
+            "format": "int64",
+            "x-faker": "datatype.number({ \"min\": 10, \"max\": 10000 })",
+            "description": "pending RFP for dashboard"
+          },
           "todayRFP": {
             "type": "integer",
             "format": "int64",
@@ -5155,6 +5193,27 @@
                   "format": "int64",
                   "x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })",
                   "description": "total unpaid amount or balance"
+                }
+              }
+            }
+          },
+          "statisticsList": {
+            "type": "array",
+            "x-count": 6,
+            "description": "list of requisition chart data",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "x-faker": "{{date.month}}",
+                  "description": "name of the month"
+                },
+                "value": {
+                  "type": "integer",
+            "format": "int64",
+            "x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })",
+            "description": "percet value"
                 }
               }
             }
