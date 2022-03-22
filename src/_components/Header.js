@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Redirect, Link } from 'react-router-dom';
 import ReactFlagsSelect from 'react-flags-select';
 import UserImg from '../assets/images/user-img.png';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -26,8 +27,13 @@ import 'simplebar/dist/simplebar.min.css';
 import { homeAction } from '../_actions'
 import { connect } from 'react-redux'
 import { status } from '../_constants';
+import Account from '../PostLogin/Account/Account';
+
+
+
 
 class Header extends Component {
+ 
   constructor(props) {
     super(props)
     this.state = {
@@ -39,6 +45,9 @@ class Header extends Component {
       notificationData: []
     }
   }
+
+  
+
   componentDidMount() {
     this.props.dispatch(homeAction.Notificationdata());
   }
@@ -55,6 +64,7 @@ class Header extends Component {
       selected: value
     })
   }
+ 
 
   handleOnClick = () => {
     const { profileOnClick } = this.state;
@@ -106,7 +116,8 @@ class Header extends Component {
       profileOnClick: false
     })
   }
-
+ 
+  
   notificationDisplay = () => {
     const { notificationData } = this.state;
     let retData = [];
@@ -131,6 +142,8 @@ class Header extends Component {
 
   render() {
     const { selected, notification, profile, searchToggle } = this.state;
+
+   
     return (
       <>
         <div className="navbar-custom">
@@ -215,13 +228,20 @@ class Header extends Component {
                         onClick={this.openModelClose}
                       ></div>
                       <div className="profile-menu">
+                        
                         <ul>
-                          <li><AccountCircleIcon className="menu-icon" />Account</li>
+                          <li>
+                            <Link
+                            to ="/postlogin/account"
+                            variant="contained">
+                            <AccountCircleIcon className="menu-icon"  />Account
+                            </Link></li>
                           <li><SettingsIcon className="menu-icon" />Settings</li>
                           <li><SportsSoccerIcon className="menu-icon" />Support</li>
                           <li><LockOutlinedIcon className="menu-icon" />Lock</li>
                           <li><ExitToAppOutlinedIcon className="menu-icon" />Logout</li>
                         </ul>
+                       
                       </div>
                     </>)}
                   </div>

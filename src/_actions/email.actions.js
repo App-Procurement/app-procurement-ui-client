@@ -51,7 +51,7 @@ function recentcommunication(data) {
       (error) => {
         dispatch(
           dispatchFunction({
-            type: status.status.FAILURE,
+            type: status.FAILURE,
             data: {
               search_email_status: status.FAILURE,
               search_email: error.message,

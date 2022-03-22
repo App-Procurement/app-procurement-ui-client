@@ -5,8 +5,20 @@ import rootReducer from '../_reducers';
 
 const loogerMiddleware = createLogger();
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const Data={
+    items:[
+        {
+            fname: "",
+          lname: "",
+          email: "",
+          phoneNumber: "",
+          address:""
+        }
+    ]
+}
+
 export const store = createStore(
-    rootReducer,
+    rootReducer, Data,
     composeEnhancer(applyMiddleware(
         thunkMiddleware,
         loogerMiddleware

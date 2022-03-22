@@ -15,3 +15,4 @@ export * from './kanban.actions';
 export * from './budgetOverview.actions';
 export * from './reports.actions';
 export * from './email.actions';
+export * from './account.actions';

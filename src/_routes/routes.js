@@ -34,6 +34,9 @@ const BudgetAllocate = React.lazy(() => import('../PostLogin/BudgetOverview/allo
 const BudgetAllocation = React.lazy(() => import("../PostLogin/BudgetOverview/BudgetAllocation"));
 const Vendors = React.lazy(() => import("../PostLogin/Vendors/index"));
 
+const Account = React.lazy(()=> import("../PostLogin/Account/Account") );
+
+
 const routes = [
     { path: '/postlogin/dashboard', exact: true, name: 'Dashbord', component: Dashbord },
     // { path: '/postlogin/email', exact: true, name: 'EmailPage', component: EmailPage },
@@ -73,7 +76,9 @@ const routes = [
     { path: "/postlogin/budgetallocation", exact: true, name: "BudgetAllocation", component: BudgetAllocation },
     { path: "/postlogin/vendorquotation", exact: true, name: "VendorQuotation", component: VendorQuotation },
     { path: '/postlogin/vendors', exact: true, name: "Vendors", component: Vendors },
-    { path: '/postlogin/sendrfq', exact: true, name: "sendrfq", component: SendRfq }
+    { path: '/postlogin/sendrfq', exact: true, name: "sendrfq", component: SendRfq },
+    { path: '/postlogin/account', exact: true, name: "Account", component: Account }
+   
 
 ]
 
