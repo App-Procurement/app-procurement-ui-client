@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { authConstants } from "../_constants";
 import { procurement } from './procurement.reducer';
-import {account} from "./account.reducer";
+
 
 const appReducers = combineReducers({
-    procurement, account
+    procurement
 });
 
 const rootReducer = (state, action) => {

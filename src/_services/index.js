@@ -15,3 +15,4 @@ export * from './email.services';
 export * from './kanban.services';
 export * from './budgetOverview.services';
 export * from './report.services';
+export * from './account.services';

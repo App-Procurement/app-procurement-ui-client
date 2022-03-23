@@ -27,9 +27,6 @@ import 'simplebar/dist/simplebar.min.css';
 import { homeAction } from '../_actions'
 import { connect } from 'react-redux'
 import { status } from '../_constants';
-import Account from '../PostLogin/Account/Account';
-
-
 
 
 class Header extends Component {

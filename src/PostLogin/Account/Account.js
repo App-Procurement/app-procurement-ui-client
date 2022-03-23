@@ -2,9 +2,7 @@ import React, {useState} from "react";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {useDispatch, connect} from "react-redux";
-import { account } from '../../_actions';
-import Grid from "@material-ui/core/Grid";
-import "./Account.css";
+import { accountAction } from '../../_actions';
 
 const Account = (props)=>{
 
@@ -34,10 +32,9 @@ const [isSubmited, setIsSubmited]=useState(false);
             address:""
         })
         setIsSubmited(false);
-        dispatch(account(enterInput));
+        dispatch(accountAction.addAccount(enterInput));
     }
     }
-
 
     const handleInputChange = (event) =>{
         setEnterInput({
@@ -129,8 +126,7 @@ const [isSubmited, setIsSubmited]=useState(false);
             <p> {errorNote.fname.message}</p>
             </div>
             <TextField  label="Last Name" name ="lname" variant="outlined" value={enterInput.lname} onChange={handleInputChange} 
-            />
-            <p> {errorNote.lname.message}</p>
+            /> <p> {errorNote.lname.message}</p>
             
             <TextField id="outlined-basic" label="Email" name ="email" variant="outlined" value={enterInput.email} onChange={handleInputChange} style={{ width: 460 }}
             />
