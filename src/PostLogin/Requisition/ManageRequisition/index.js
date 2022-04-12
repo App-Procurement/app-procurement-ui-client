@@ -346,7 +346,7 @@ class ManageRequisition extends Component {
                         <div className="form-group row col-form-group">
                             <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label"></label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-button">
-                                <Button variant="contained" className="primary-btn" disableElevation onClick={this.onClickSearch} disabled={requisition_status === status.IN_PROGRESS}>
+                                <Button variant="contained" className="primary-btn search_button_manage" disableElevation onClick={this.onClickSearch} disabled={requisition_status === status.IN_PROGRESS}>
                                     Search
                                 </Button>
                                 <Button variant="contained" onClick={this.clearSearch} className="default-btn ml-2">
