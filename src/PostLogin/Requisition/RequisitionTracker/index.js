@@ -13,11 +13,13 @@ import { requistionAction, departmentAction } from '../../../_actions';
 import { connect } from 'react-redux';
 import { status } from '../../../_constants';
 import { commonFunctions, requisitionStatus } from '../../../_utilities';
+import { Dialog, DialogContent, DialogTitle, DialogActions, Tooltip } from '@material-ui/core';
 
 class RequisitionTracker extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            openDialog: false,
             searchData: {
                 status: "",
                 requisitionNo: "",
@@ -114,7 +116,15 @@ class RequisitionTracker extends Component {
     }
 
     onClickApproveReq = (data) => {
-        this.props.dispatch(requistionAction.approveRequisition({ 'requisitionId': data.id, 'roleName': data.roleName }));
+        console.log("aaaaaa",data.id)
+        const { openDialog } = this.state;
+        let deleteItem = !openDialog;
+        
+        this.setState({
+            openDialog: deleteItem,
+           approveId:data.id
+        })
+        
     }
 
     validate = (isSubmitted) => {
@@ -223,9 +233,16 @@ class RequisitionTracker extends Component {
             searchData
         })
     }
+    approveRequisition = () => {
+        this.props.dispatch(requistionAction.approveRequisition({'requisitionId': this.state.approveId}));
+        this.setState({
+            openDialog: false,
+            isLoading: true
+        })
+    }
 
     render() {
-        const { searchData, isSubmitted } = this.state;
+        const { searchData, isSubmitted ,openDialog} = this.state;
         const { requisition_status } = this.props;
         // const errorData = this.validate(isSubmitted);
         return (
@@ -305,6 +322,24 @@ class RequisitionTracker extends Component {
                         showingLine="Showing %start% to %end% of %total% Tickets"
                     />
                 </div>
+
+                <Dialog open={openDialog} onClose={() => this.setState({ openDialog: false })} aria-labelledby="form-dialog-title" className="addNewItemDialog">
+                    <DialogTitle id="form-dialog-title" className="dialogSmWidth addNewItemDialogTitle">
+                        Appronve Confirmation
+                    </DialogTitle>
+                    <DialogContent className="dialogSmWidth addNewItemDialogContent">
+                        <p>Are you sure to change status from draft to approve?</p>
+                    </DialogContent>
+                    <DialogActions className="dialogSmWidth addNewItemDialogActions">
+                        <Button variant="contained" onClick={this.approveRequisition} className="primary-btn">
+                            Yes
+                        </Button>
+                        <Button variant="contained" onClick={() => this.setState({ openDialog: false })} className="default-btn">
+                            No
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
             </div>
         )
     }

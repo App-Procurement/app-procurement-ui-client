@@ -27,12 +27,12 @@ function addRequisition(data) {
         requisitionServices.addRequisition(data)
             .then(
                 response => {
-                    if (response.code === 200) {
+                    if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 create_requisition_status: status.SUCCESS,
-                                create_requisition: response.object
+                                create_requisition: response
                             }
                         }));
                     } else {
@@ -72,13 +72,14 @@ function getRequisitions(data) {
         requisitionServices.getRequisitions(data)
             .then(
                 response => {
-                    if (response.code === 200) {
+                    if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 requisition_status: status.SUCCESS,
-                                requisition_list: response.object
+                                requisition_list: response
                             }
+                            
                         }));
                     } else {
                         dispatch(dispatchFunction({
@@ -117,12 +118,13 @@ function getRequisition(data) {
         requisitionServices.getRequisition(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response) {
+                        console.log("response get Req by id",response)
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 get_edit_requisition_status: status.SUCCESS,
-                                editRequisitiondata: response.object
+                                editRequisitiondata: response
                             }
                         }));
                     } else {
@@ -162,12 +164,12 @@ function editRequisition(data) {
         requisitionServices.editRequisition(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 update_requisition_status: status.SUCCESS,
-                                updateRequisition: response.object
+                                updateRequisition: response
                             }
                         }));
                     } else {
@@ -207,12 +209,12 @@ function getCurrency(data) {
         requisitionServices.getCurrency(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 currency_status: status.SUCCESS,
-                                currency_list_data: response.object
+                                currency_list_data: response
                             }
                         }));
                     } else {
@@ -252,12 +254,12 @@ function deleteRequitionData(data) {
         requisitionServices.deleteRequisition(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 delete_requisition_status: status.SUCCESS,
-                                deleteRequisition: response.object
+                                deleteRequisition: response
                             }
                         }));
                     } else {
@@ -297,12 +299,13 @@ function approveRequisition(data) {
         requisitionServices.approveRequisition(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    console.log("app",response)
+                    if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 approve_requisition_status: status.SUCCESS,
-                                approve_requisition: response.object
+                                approve_requisition: response
                             }
                         }));
                         alert.success(response.message)
@@ -343,12 +346,12 @@ function setRequisitionBuyers(data) {
         requisitionServices.setRequisitionBuyers(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 set_buyer_status: status.SUCCESS,
-                                set_buyer_res: response.object
+                                set_buyer_res: response
                             }
                         }));
                         alert.success(response.message);

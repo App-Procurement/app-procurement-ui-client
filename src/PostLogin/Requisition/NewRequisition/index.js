@@ -100,6 +100,7 @@ class NewRequisition extends Component {
 
     if (prevProps.get_edit_requisition_status !== this.props.get_edit_requisition_status && this.props.get_edit_requisition_status === status.SUCCESS) {
       const { editRequisitiondata } = this.props;
+      console.log("editRequisitiondata", editRequisitiondata)
       if (editRequisitiondata) {
         addRequiData.departmentId = editRequisitiondata.department.id;
         addRequiData.currencyId = editRequisitiondata.currency.id;
@@ -109,7 +110,7 @@ class NewRequisition extends Component {
         addRequiData.totalPrice = editRequisitiondata.totalPrice;
         addRequiData.notes = editRequisitiondata.notes;
         addRequiData.requisitionLineItemLists =
-          editRequisitiondata.requistionItem || [];
+          editRequisitiondata.lineItemList || [];
         this.setState({
           editReq: true,
           addRequiData,
@@ -158,9 +159,9 @@ class NewRequisition extends Component {
     const { addRequiData, open, anchorEl } = this.state;
     const { editRequisitiondata, get_edit_requisition_status } = this.props;
     let retData = [];
-    if (get_edit_requisition_status === status.SUCCESS && editRequisitiondata.requistionItem.length > 0) {
-      for (let i = 0; i < editRequisitiondata.requistionItem; i++) {
-        let data = editRequisitiondata.requistionItem[i];
+    if (get_edit_requisition_status === status.SUCCESS && editRequisitiondata.lineItemList.length > 0) {
+      for (let i = 0; i < editRequisitiondata.lineItemList; i++) {
+        let data = editRequisitiondata.lineItemList[i];
         retData.push(
           <tr key={i}>
             <td>{i + 1}</td>
@@ -579,6 +580,7 @@ class NewRequisition extends Component {
       editReq,
       isLoading
     } = this.state;
+    console.log("requisitionLineItemFile",requisitionLineItemFile)
     const { create_requisition_status, update_requisition_status } = this.props;
     const errorData = this.validate(isSubmitted);
     const errorReqData = this.validateReq(validateSubmit);
@@ -822,7 +824,7 @@ class NewRequisition extends Component {
                       <div className="requisition-submit-button">
                         <Button
                           variant="contained"
-                          className="primary-btn send_requi"
+                          className="primary-btn"
                           onClick={this.handleaddRequiDataClick}
                           disableElevation
                           disabled={
@@ -839,7 +841,7 @@ class NewRequisition extends Component {
                     <div className="requisition-form-right">
                       <Button
                         variant="contained"
-                        className="primary-btn add_new_item"
+                        className="primary-btn"
                         onClick={this.addNewClickOpen}
                         disableElevation
                       >
@@ -1010,7 +1012,7 @@ class NewRequisition extends Component {
                           <Button
                             variant="contained"
                             onClick={this.addNewRequistion}
-                            className="primary-btn inside_new_item"
+                            className="primary-btn"
                           >
                             Save
                           </Button>
