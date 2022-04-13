@@ -824,7 +824,7 @@ class NewRequisition extends Component {
                       <div className="requisition-submit-button">
                         <Button
                           variant="contained"
-                          className="primary-btn"
+                          className="primary-btn send_requi"
                           onClick={this.handleaddRequiDataClick}
                           disableElevation
                           disabled={
@@ -841,7 +841,7 @@ class NewRequisition extends Component {
                     <div className="requisition-form-right">
                       <Button
                         variant="contained"
-                        className="primary-btn"
+                        className="primary-btn add_new_item"
                         onClick={this.addNewClickOpen}
                         disableElevation
                       >
@@ -1012,7 +1012,7 @@ class NewRequisition extends Component {
                           <Button
                             variant="contained"
                             onClick={this.addNewRequistion}
-                            className="primary-btn"
+                            className="primary-btn inside_new_item"
                           >
                             Save
                           </Button>
