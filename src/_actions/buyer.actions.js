@@ -18,12 +18,12 @@ function getBuyer(id) {
         buyerServices.getBuyer(id)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 get_buyer_status: status.SUCCESS,
-                                getBuyer: response.object
+                                getBuyer: response
                             }
                         }));
                     } else {

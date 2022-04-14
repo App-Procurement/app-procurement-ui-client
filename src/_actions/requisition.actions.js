@@ -119,7 +119,6 @@ function getRequisition(data) {
             .then(
                 response => {
                     if (response) {
-                        console.log("response get Req by id",response)
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -299,7 +298,6 @@ function approveRequisition(data) {
         requisitionServices.approveRequisition(data)
             .then(
                 response => {
-                    console.log("app",response)
                     if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,

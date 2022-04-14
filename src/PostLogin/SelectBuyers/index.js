@@ -86,6 +86,7 @@ class SelectBuyers extends Component {
 
   displayApprovedMemberList = () => {
     const { approvedMemberList, activeindex, displayOption } = this.state;
+    console.log("approvedMemberList",approvedMemberList);
     let retData = [];
     for (let i = 0; i < approvedMemberList.length; i++) {
       let row = approvedMemberList[i];
@@ -104,7 +105,7 @@ class SelectBuyers extends Component {
                     className="member-position"
                     style={{ backgroundColor: `${row.shortNameColor}` }}
                   >
-                    {row.name.match(/\b(\w)/g)}
+                    {row.name}
                   </div>
                 </div>
               </div>

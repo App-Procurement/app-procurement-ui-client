@@ -325,7 +325,7 @@ class RequisitionTracker extends Component {
 
                 <Dialog open={openDialog} onClose={() => this.setState({ openDialog: false })} aria-labelledby="form-dialog-title" className="addNewItemDialog">
                     <DialogTitle id="form-dialog-title" className="dialogSmWidth addNewItemDialogTitle">
-                        Appronve Confirmation
+                        Approve Confirmation
                     </DialogTitle>
                     <DialogContent className="dialogSmWidth addNewItemDialogContent">
                         <p>Are you sure to change status from draft to approve?</p>

@@ -164,7 +164,7 @@ class ViewRequisition extends Component {
         requisitionData.currency = editRequisitiondata.currency;
         requisitionData.requisitions = editRequisitiondata.roleName;
         requisitionData.department = editRequisitiondata.department;
-        requisitionData.lineItemList = editRequisitiondata.requistionItem;
+        requisitionData.lineItemList = editRequisitiondata.lineItemList;
         requisitionData.totalPrice = editRequisitiondata.totalPrice;
         requisitionData.status = editRequisitiondata.status;
         this.setState({

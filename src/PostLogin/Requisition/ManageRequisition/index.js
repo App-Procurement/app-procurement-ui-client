@@ -58,6 +58,7 @@ class ManageRequisition extends Component {
                     label: 'Request Department',
                     key: 'department',
                     renderCallback: (value) => {
+                        console.log("value",value)
                         return <td><span className={'department-value'}>{value.name}</span></td>
                     }
                 },

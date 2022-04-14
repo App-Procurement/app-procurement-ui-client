@@ -152,6 +152,7 @@ class ManageRequisitionData extends Component {
         }
         if (prevProps.get_edit_requisition_status !== this.props.get_edit_requisition_status && this.props.get_edit_requisition_status === status.SUCCESS) {
             const { editRequisitiondata } = this.props;
+            console.log("editRequisitiondata",editRequisitiondata)
             if (editRequisitiondata) {
                 requisitionData.createdOn = commonFunctions.convertDateToString(
                     new Date(editRequisitiondata.createdOn)
@@ -162,7 +163,7 @@ class ManageRequisitionData extends Component {
                 requisitionData.currency = editRequisitiondata.currency;
                 requisitionData.requisitions = editRequisitiondata.roleName;
                 requisitionData.department = editRequisitiondata.department;
-                requisitionData.lineItemList = editRequisitiondata.requistionItem;
+                requisitionData.lineItemList = editRequisitiondata.lineItemList;
                 requisitionData.totalPrice = editRequisitiondata.totalPrice;
                 requisitionData.status = editRequisitiondata.status;
                 this.setState({
