@@ -4,7 +4,7 @@ export const apiEndPoint = {
     LOGIN: `${config.apiUrl}/auth/login`,
 
     // *Buyer Api Url
-    BUYER: `${config.apiUrl}/buyers`,
+    BUYER: `${config.apiUrl}/buyer`,
 
     // *Committee Api Url
     COMMITTEE: `${config.apiUrl}/committee`,
