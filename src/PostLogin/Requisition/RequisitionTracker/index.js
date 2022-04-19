@@ -14,7 +14,10 @@ import { connect } from 'react-redux';
 import { status } from '../../../_constants';
 import { commonFunctions, requisitionStatus } from '../../../_utilities';
 import { Dialog, DialogContent, DialogTitle, DialogActions, Tooltip } from '@material-ui/core';
-
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CreateIcon from '@material-ui/icons/Create';
+import { Link } from "react-router-dom";
 class RequisitionTracker extends Component {
     constructor(props) {
         super(props)
@@ -86,17 +89,48 @@ class RequisitionTracker extends Component {
                     key: 'id',
                     renderCallback: (value, row) => {
                         return (
+
                             <td>
+                                <div className="">
+                                
+                                
+                                    {row.status == requisitionStatus.DRAFT &&
+                                        <Tooltip title="You can approve only active status">
+                                            <Button onClick={() => this.onClickApproveReq(value)} area-label="You can approve only active status" className="secondary-btn disabled">
+                                            <ThumbUpIcon  className="disabled" />Approve
+                                            </Button>
+                                        </Tooltip>
+                                    }
+                        
+                                    {row.status == requisitionStatus.ACTIVE &&
+                                        <Button>
+                                            <Button className="secondary-btn" onClick={() => this.onClickApproveReq11(row)}><ThumbUpIcon /> Approve</Button>
+                                        </Button>
+                                    }
+                                      {/* {row.status !== requisitionStatus.ACTIVE &&
+                                        <Tooltip title="You can approve only active status" >
+                                            <Button area-label="You can approve only active status" className="secondary-btn disabled">
+                                            <ThumbUpIcon  className="disabled" />Approve
+                                            </Button>
+                                        </Tooltip>
+                                    }   */}
+                                </div>
                                 {/* {row.status == requisitionStatus.ACTIVE && */}
-                                <Button className="secondary-btn" onClick={() => this.onClickApproveReq(row)}><ThumbUpIcon /> Approve</Button>
+                                {/* <Button className="secondary-btn" onClick={() => this.onClickApproveReq(row)}><ThumbUpIcon /> Approve</Button> */}
                                 {/* } */}
                             </td>
                         )
                     }
+                            
+                        
+                    
                 },
             ],
             requistionList: [],
         }
+    }
+    onClickApproveReq11 = (data) => {
+        this.props.dispatch(requistionAction.approveRequisition({ 'requisitionId': data.id }));
     }
 
     componentDidMount() {
@@ -118,11 +152,11 @@ class RequisitionTracker extends Component {
     onClickApproveReq = (data) => {
         console.log("aaaaaa",data.id)
         const { openDialog } = this.state;
-        let deleteItem = !openDialog;
+        let deleteItem = true;
         
         this.setState({
             openDialog: deleteItem,
-           approveId:data.id
+        //    approveId:data.id
         })
         
     }
@@ -328,15 +362,15 @@ class RequisitionTracker extends Component {
                         Approve Confirmation
                     </DialogTitle>
                     <DialogContent className="dialogSmWidth addNewItemDialogContent">
-                        <p>Are you sure to change status from draft to approve?</p>
+                        <p>Can't approve draft requisition</p>
                     </DialogContent>
                     <DialogActions className="dialogSmWidth addNewItemDialogActions">
-                        <Button variant="contained" onClick={this.approveRequisition} className="primary-btn">
+                        {/* <Button variant="contained" onClick={this.approveRequisition} className="primary-btn">
                             Yes
-                        </Button>
-                        <Button variant="contained" onClick={() => this.setState({ openDialog: false })} className="default-btn">
-                            No
-                        </Button>
+                        </Button> */}
+                        <Button variant="contained" className="primary-btn" onClick={() => this.setState({ openDialog: false })} >
+                            Ok
+                        </Button> 
                     </DialogActions>
                 </Dialog>
 
