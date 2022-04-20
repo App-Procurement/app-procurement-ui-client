@@ -697,7 +697,7 @@ class NewRequisition extends Component {
                       </div>
                       <div className="requester">
                         <label>
-                          <strong>Extra Budgetory</strong>
+                          <strong>Extra Budgetary</strong>
                         </label>
                       </div>
                       <div className="requester">
