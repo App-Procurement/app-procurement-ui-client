@@ -102,8 +102,8 @@ class NewRequisition extends Component {
       const { editRequisitiondata } = this.props;
       console.log("editRequisitiondata", editRequisitiondata)
       if (editRequisitiondata) {
-        addRequiData.departmentId = editRequisitiondata.department.id;
-        addRequiData.currencyId = editRequisitiondata.currency.id;
+        addRequiData.departmentId =editRequisitiondata.department&& editRequisitiondata.department.id;
+        addRequiData.currencyId = editRequisitiondata.currency&&editRequisitiondata.currency.id;
         addRequiData.financialYear = new Date(editRequisitiondata.financialYear).getFullYear();
         addRequiData.status = editRequisitiondata.status;
         addRequiData.roleName = editRequisitiondata.roleName;

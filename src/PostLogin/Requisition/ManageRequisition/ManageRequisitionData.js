@@ -221,7 +221,7 @@ class ManageRequisitionData extends Component {
                                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
                                     <div className="requisitioner-text">
                                         <label>Order Currency</label>
-                                        <span>{requisitionData.currency.countryCode}</span>
+                                        <span>{requisitionData.currency&&requisitionData.currency.countryCode}</span>
                                     </div>
                                 </div>
                                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
@@ -239,7 +239,7 @@ class ManageRequisitionData extends Component {
                                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
                                     <div className="requisitioner-text">
                                         <label>Department</label>
-                                        <span>{requisitionData.department.name}</span>
+                                        <span>{requisitionData.department&&requisitionData.department.name}</span>
                                     </div>
                                 </div>
                                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
