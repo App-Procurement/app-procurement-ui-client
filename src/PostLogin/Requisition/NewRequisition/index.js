@@ -56,6 +56,7 @@ class NewRequisition extends Component {
         requisitionLineItemLists: [],
       },
       openDialog: false,
+      openDialogReq: false,
       anchorEl: null,
       open: false,
       validateSubmit: false,
@@ -100,10 +101,9 @@ class NewRequisition extends Component {
 
     if (prevProps.get_edit_requisition_status !== this.props.get_edit_requisition_status && this.props.get_edit_requisition_status === status.SUCCESS) {
       const { editRequisitiondata } = this.props;
-      console.log("editRequisitiondata", editRequisitiondata)
       if (editRequisitiondata) {
-        addRequiData.departmentId =editRequisitiondata.department&& editRequisitiondata.department.id;
-        addRequiData.currencyId = editRequisitiondata.currency&&editRequisitiondata.currency.id;
+        addRequiData.departmentId = editRequisitiondata.department && editRequisitiondata.department.id;
+        addRequiData.currencyId = editRequisitiondata.currency && editRequisitiondata.currency.id;
         addRequiData.financialYear = new Date(editRequisitiondata.financialYear).getFullYear();
         addRequiData.status = editRequisitiondata.status;
         addRequiData.roleName = editRequisitiondata.roleName;
@@ -117,7 +117,7 @@ class NewRequisition extends Component {
           totalAmount: editRequisitiondata.totalPrice,
           requisitionFile,
         });
-
+  
       }
     }
 
@@ -132,6 +132,7 @@ class NewRequisition extends Component {
           isLoading: false,
         });
       }
+      
       this.props.history.push("/postlogin/managerequisition");
       alert.success("Requisition Update successfully");
     }
@@ -161,8 +162,12 @@ class NewRequisition extends Component {
     let retData = [];
     if (get_edit_requisition_status === status.SUCCESS && editRequisitiondata.lineItemList.length > 0) {
       for (let i = 0; i < editRequisitiondata.lineItemList; i++) {
+
         let data = editRequisitiondata.lineItemList[i];
+console.log("dtaaaaa",data)
+
         retData.push(
+
           <tr key={i}>
             <td>{i + 1}</td>
             <td>{data.itemDescription}</td>
@@ -172,7 +177,7 @@ class NewRequisition extends Component {
             <td>
               <div className="popper-toggle">
                 <Button>
-                  <DeleteIcon onClick={() => this.deleteReqData(i)} />
+                  <DeleteIcon onClick={() => this.deleteReqData(data.id)} />
                 </Button>
                 <Button>
                   <CreateIcon onClick={() => this.editReqData(data, i)} />
@@ -181,6 +186,7 @@ class NewRequisition extends Component {
             </td>
           </tr>
         );
+
       }
     }
 
@@ -189,7 +195,9 @@ class NewRequisition extends Component {
       addRequiData.requisitionLineItemLists.length > 0
     ) {
       for (let i = 0; i < addRequiData.requisitionLineItemLists.length; i++) {
+
         let data = addRequiData.requisitionLineItemLists[i];
+        console.log("dtaaaaa",data)
         retData.push(
           <tr key={i}>
             <td>{i + 1}</td>
@@ -200,7 +208,7 @@ class NewRequisition extends Component {
             <td>
               <div className="popper-toggle">
                 <Button>
-                  <DeleteIcon onClick={() => this.deleteReqData(i)} />
+                  <DeleteIcon onClick={() => this.deleteReqData(data.id)} />
                 </Button>
                 <Button>
                   <CreateIcon onClick={() => this.editReqData(data, i)} />
@@ -417,19 +425,12 @@ class NewRequisition extends Component {
   };
 
   deleteReqData = (id) => {
-    const { addRequiData } = this.state;
-    addRequiData.requisitionLineItemLists.splice(id, 1);
-    let totalprice = 0;
-    if (addRequiData) {
-      for (let i = 0; i < addRequiData.requisitionLineItemLists.length; i++) {
-        totalprice =
-          addRequiData.requisitionLineItemLists[i].price + totalprice;
-      }
-    }
+    const { openDialogReq } = this.state;
+    let deleteItem = true;
     this.setState({
-      addRequiData,
-      totalAmount: totalprice,
-    });
+      openDialogReq: deleteItem,
+       reqLineIteamId:id
+    })
   };
 
   addNewClickOpen = () => {
@@ -565,10 +566,32 @@ class NewRequisition extends Component {
     });
   };
 
+  requisitionLineItemDelete = (id) => {
+      const { addRequiData,reqLineIteamId} = this.state;
+    addRequiData.requisitionLineItemLists.splice(id, 1);
+    let totalprice = 0;
+    if (addRequiData) {
+      for (let i = 0; i < addRequiData.requisitionLineItemLists.length; i++) {
+        totalprice =
+          addRequiData.requisitionLineItemLists[i].price + totalprice;
+      }
+          fetch("http://localhost:7050/api/requisitionLineItem/" + reqLineIteamId, { method: 'DELETE' })
+            .then((response) =>
+              this.setState({
+           
+              }))
+    }
+    this.setState({
+      openDialogReq: false,
+      addRequiData,
+      totalAmount: totalprice,
+    });
+}
   render() {
     const {
       addRequiData,
       isSubmitted,
+      openDialogReq,
       openDialog,
       itemDescription,
       itemQuantity,
@@ -580,7 +603,6 @@ class NewRequisition extends Component {
       editReq,
       isLoading
     } = this.state;
-    console.log("requisitionLineItemFile",requisitionLineItemFile)
     const { create_requisition_status, update_requisition_status } = this.props;
     const errorData = this.validate(isSubmitted);
     const errorReqData = this.validateReq(validateSubmit);
@@ -1027,6 +1049,22 @@ class NewRequisition extends Component {
                       </Dialog>
                     </div>
 
+                    <Dialog open={openDialogReq} onClose={() => this.setState({ openDialogReq: false })} aria-labelledby="form-dialog-title" className="addNewItemDialog">
+                    <DialogTitle id="form-dialog-title" className="dialogSmWidth addNewItemDialogTitle">
+                    Requisition Line Item Confirmation
+                    </DialogTitle>
+                    <DialogContent className="dialogSmWidth addNewItemDialogContent">
+                        <p>Are you sure to delete requisition line item record?</p>
+                    </DialogContent>
+                    <DialogActions className="dialogSmWidth addNewItemDialogActions">
+                        <Button variant="contained" onClick={this.requisitionLineItemDelete} className="primary-btn">
+                            Yes
+                        </Button> 
+                        <Button variant="contained" className="default-btn" onClick={() => this.setState({ openDialogReq: false })} >
+                            Ok
+                        </Button> 
+                    </DialogActions>
+                </Dialog>
                     {/* <div>
                                             <div> <p>Total Estimate Coste</p> </div>
                                             <div> {totalAmount ? <p>{totalAmount}</p> : "00.00 USD"} </div>

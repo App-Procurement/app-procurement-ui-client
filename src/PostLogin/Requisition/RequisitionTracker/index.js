@@ -104,7 +104,7 @@ class RequisitionTracker extends Component {
                         
                                     {row.status == requisitionStatus.ACTIVE &&
                                         <Button>
-                                            <Button className="secondary-btn" onClick={() => this.onClickApproveReq11(row)}><ThumbUpIcon /> Approve</Button>
+                                            <Button className="secondary-btn" onClick={() => this.onClickApproveRequstion(row)}><ThumbUpIcon /> Approve</Button>
                                         </Button>
                                     }
                                       {/* {row.status !== requisitionStatus.ACTIVE &&
@@ -129,7 +129,7 @@ class RequisitionTracker extends Component {
             requistionList: [],
         }
     }
-    onClickApproveReq11 = (data) => {
+    onClickApproveRequstion = (data) => {
         this.props.dispatch(requistionAction.approveRequisition({ 'requisitionId': data.id }));
     }
 
