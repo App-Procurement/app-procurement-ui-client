@@ -1061,7 +1061,7 @@ console.log("dtaaaaa",data)
                             Yes
                         </Button> 
                         <Button variant="contained" className="default-btn" onClick={() => this.setState({ openDialogReq: false })} >
-                            Ok
+                            No
                         </Button> 
                     </DialogActions>
                 </Dialog>

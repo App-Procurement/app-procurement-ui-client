@@ -289,7 +289,7 @@ class ManageRequisitionData extends Component {
                                 </div>
                                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
                                     <div className="requisitioner-text">
-                                        <label>Extra Budgetory</label>
+                                        <label>Extra Budgetary</label>
                                         <span>{this.displayExtraTableData()}</span>
                                     </div>
                                 </div>
