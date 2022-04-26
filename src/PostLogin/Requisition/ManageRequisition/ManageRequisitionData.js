@@ -168,6 +168,7 @@ class ManageRequisitionData extends Component {
                 requisitionData.status = editRequisitiondata.status;
                 this.setState({
                     requisitionData,
+                    extraFile:editRequisitiondata.documentList,
                     isLoading: false,
                 });
             }
@@ -195,6 +196,62 @@ class ManageRequisitionData extends Component {
         }
         return retData;
     };
+    displayExtraTableData = () => {
+        const { extraFile } = this.state;
+      let retData = [];
+        if (
+            extraFile&&
+            extraFile.length > 0
+        ) {
+            for (let i = 0; i < extraFile.length; i++) {
+                let data = extraFile[i];
+                console.log(data)
+                if(data.fileType!="XLSX"){
+                retData.push(
+                    <tr key={i}>
+                        {/* <td>{i + 1}</td> */}
+                        <a  href="#"onClick={() => this.downloadExtraBudgetaryFile(data)}>{data.fileName}</a>
+                    </tr>
+                );
+            }
+        }
+        }
+        return retData;
+     
+    };
+    downloadExtraBudgetaryFile = (data ) => {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        
+        // console.log("row",selectedInvoice,"orderId",selectedInvoice.orderId)
+        fetch("http://localhost:7050/api/download/requisitionsExtraBudgetary"+ "?extraBudgetaryFile=" + data.fileName,requestOptions )
+        .then((response) => response.blob())
+        .then((blob) => {
+            // console.log("response", blob);
+            // Create blob link to download  
+            const url = window.URL.createObjectURL(
+                new Blob([blob]),
+            );
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute(
+                'download',
+                `Synectiks ${data.fileName}`,
+            );
+
+            // Append to html link element page
+            document.body.appendChild(link);
+
+            // Start download
+            link.click();
+
+            // Clean up and remove the link
+            link.parentNode.removeChild(link);
+        });
+        
+    }
     render() {
         const { requisitionData, buyersListTable } = this.state;
         return (
@@ -233,7 +290,7 @@ class ManageRequisitionData extends Component {
                                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
                                     <div className="requisitioner-text">
                                         <label>Extra Budgetory</label>
-                                        <span>{requisitionData.extraBudgetoryFile}</span>
+                                        <span>{this.displayExtraTableData()}</span>
                                     </div>
                                 </div>
                                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
