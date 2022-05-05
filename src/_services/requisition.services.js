@@ -1,3 +1,4 @@
+import { proHeader } from "../_components/Header";
 import { commonFunctions } from "../_utilities";
 import { apiEndPoint } from "./apiEndPoint";
 
@@ -58,8 +59,15 @@ function getRequisitions(data) {
         if (data.fromDate) {
             url += `${url ? '&' : '?'}fromDate=${data.fromDate}`;
         }
+        console.log(" QUery By jitin"); 
+  
     }
+    url += `${url ? '&' : '?'}role=${proHeader.renderRole()}`;
+    console.log(url);
+    
+    
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
+  
     return fetch(`${apiEndPoint.REQUISTIONS}${url}`, requestOptions).then(response => response.json());
 }
 

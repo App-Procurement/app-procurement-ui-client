@@ -27,6 +27,26 @@ import { homeAction } from '../_actions'
 import { connect } from 'react-redux'
 import { status } from '../_constants';
 
+export const proHeader = {
+  renderRole
+};
+
+function renderRole () {
+  var profile = localStorage.getItem("userData");
+  var profileJson = JSON.parse(profile);
+  let retData = "";
+  var row = profileJson.info.user
+  if (row) {
+    console.log("profileJson",row)
+    for (let i = 0; i <row.roles.length; i++) {
+    retData = row.roles[i].name;
+    }
+  }
+
+  return retData;
+}
+
+
 class Header extends Component {
   constructor(props) {
     super(props)
@@ -154,7 +174,7 @@ class Header extends Component {
     return retData;
   }
 
-
+ 
 
   render() {
     const { selected, notification, profile, searchToggle } = this.state;

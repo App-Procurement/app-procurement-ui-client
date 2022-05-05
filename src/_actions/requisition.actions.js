@@ -72,6 +72,7 @@ function getRequisitions(data) {
         requisitionServices.getRequisitions(data)
             .then(
                 response => {
+
                     if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
