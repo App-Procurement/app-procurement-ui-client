@@ -5,6 +5,7 @@ import { alert, commonFunctions } from '../_utilities';
 export const requistionAction = {
     addRequisition,
     getRequisitions,
+    getRequisitionsForapprove,
     getRequisition,
     editRequisition,
     getCurrency,
@@ -70,6 +71,52 @@ function getRequisitions(data) {
             }
         }));
         requisitionServices.getRequisitions(data)
+            .then(
+                response => {
+
+                    if (response) {
+                        dispatch(dispatchFunction({
+                            type: status.SUCCESS,
+                            data: {
+                                requisition_status: status.SUCCESS,
+                                requisition_list: response
+                            }
+                            
+                        }));
+                    } else {
+                        dispatch(dispatchFunction({
+                            type: status.FAILURE,
+                            data: {
+                                requisition_status: status.FAILURE,
+                                requisition_list: response
+                            }
+                        }));
+                        alert.error(response.message);
+                    }
+                },
+                error => {
+                    dispatch(dispatchFunction({
+                        type: status.FAILURE,
+                        data: {
+                            requisition_status: status.FAILURE,
+                            requisition_list: error.message
+                        }
+                    }));
+                    alert.error(error.message);
+                }
+            );
+    };
+}
+function getRequisitionsForapprove(data) {
+    return dispatch => {
+        dispatch(dispatchFunction({
+            type: status.IN_PROGRESS,
+            data: {
+                requisition_status: status.IN_PROGRESS,
+                requisition_list: null
+            }
+        }));
+        requisitionServices.getRequisitionsForapprove(data)
             .then(
                 response => {
 

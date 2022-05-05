@@ -7,6 +7,7 @@ export const requisitionServices = {
     deleteRequisition,
     getRequisitions,
     getRequisition,
+    getRequisitionsForapprove,
     editRequisition,
     getCurrency,
     approveRequisition,
@@ -38,6 +39,35 @@ function deleteRequisition(data) {
     return fetch(`${apiEndPoint.REQUISTIONS}/${data.id}`, requestOptions).then(response => response.json());
 }
 
+function getRequisitionsForapprove(data) {
+    const extraHeaders = {
+        "Content-Type": "application/json"
+    };
+    let url = "";
+    if (data) {
+        if (data.status) {
+            url += `?status=${data.status}`;
+        }
+        if (data.requisitionNo) {
+            url += `${url ? '&' : '?'}id=${data.requisitionNo}`;
+        }
+        if (data.department) {
+            url += `${url ? '&' : '?'}departmentId=${data.department}`;
+        }
+        if (data.toDate) {
+            url += `${url ? '&' : '?'}toDate=${data.toDate}`;
+        }
+        if (data.fromDate) {
+            url += `${url ? '&' : '?'}fromDate=${data.fromDate}`;
+        }
+
+    }
+    url += `${url ? '&' : '?'}role=${proHeader.renderRole()}`;
+
+    const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
+
+    return fetch(`${apiEndPoint.REQUISTIONS}${url}`, requestOptions).then(response => response.json());
+}
 function getRequisitions(data) {
     const extraHeaders = {
         "Content-Type": "application/json"
@@ -59,15 +89,9 @@ function getRequisitions(data) {
         if (data.fromDate) {
             url += `${url ? '&' : '?'}fromDate=${data.fromDate}`;
         }
-        console.log(" QUery By jitin"); 
-  
     }
-    url += `${url ? '&' : '?'}role=${proHeader.renderRole()}`;
-    console.log(url);
-    
-    
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
-  
+
     return fetch(`${apiEndPoint.REQUISTIONS}${url}`, requestOptions).then(response => response.json());
 }
 
