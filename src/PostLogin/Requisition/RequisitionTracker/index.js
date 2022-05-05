@@ -129,14 +129,25 @@ class RequisitionTracker extends Component {
             requistionList: [],
         }
     }
-    onClickApproveRequstion = (data) => {
-        this.props.dispatch(requistionAction.approveRequisition({ 'requisitionId': data.id }));
+    onClickApproveRequstion = (data,dataRoles) => {
+        this.props.dispatch(requistionAction.approveRequisition({ 'requisitionId': data.id,'role':this.state.dataRoles[0].name }));
     }
 
     componentDidMount() {
         this.props.dispatch(requistionAction.getRequisitions());
+        this.rolesData();
         // this.props.dispatch(departmentAction.getDepartment());
     }
+   
+ rolesData = () => {
+    let displayRole=localStorage.getItem("userData");
+    var roleJson = JSON.parse(displayRole);
+    let role=roleJson.info.user.roles
+
+    this.setState({
+     dataRoles : role,
+ });
+}
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.requisition_status !== this.props.requisition_status && this.props.requisition_status === status.SUCCESS) {
@@ -149,7 +160,7 @@ class RequisitionTracker extends Component {
         }
     }
 
-    onClickApproveReq = (data) => {
+    onClickApproveReq =  (data) => {
         console.log("aaaaaa",data.id)
         const { openDialog } = this.state;
         let deleteItem = true;

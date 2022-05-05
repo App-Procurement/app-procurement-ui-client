@@ -1,7 +1,7 @@
 import config from '../config';
 
 export const apiEndPoint = {
-    LOGIN: `${config.apiUrl}/auth/login`,
+    LOGIN: `${config.apiSecurityUrl}/security/public/login`,
 
     // *Buyer Api Url
     BUYER: `${config.apiUrl}/buyer`,

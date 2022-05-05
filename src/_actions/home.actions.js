@@ -125,13 +125,13 @@ function Notificationdata(data) {
     );
     homeServices.Notificationdata(data).then(
       (response) => {
-        if (response.code === 200) {
+        if (response) {
           dispatch(
             dispatchFunction({
               type: status.SUCCESS,
               data: {
                 get_notification_status: status.SUCCESS,
-                get_notification_data: response.object,
+                get_notification_data: response,
               },
             })
           );

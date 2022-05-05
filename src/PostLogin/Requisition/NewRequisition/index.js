@@ -117,7 +117,7 @@ class NewRequisition extends Component {
           totalAmount: editRequisitiondata.totalPrice,
           requisitionFile,
         });
-  
+
       }
     }
 
@@ -132,7 +132,7 @@ class NewRequisition extends Component {
           isLoading: false,
         });
       }
-      
+
       this.props.history.push("/postlogin/managerequisition");
       alert.success("Requisition Update successfully");
     }
@@ -164,7 +164,7 @@ class NewRequisition extends Component {
       for (let i = 0; i < editRequisitiondata.lineItemList; i++) {
 
         let data = editRequisitiondata.lineItemList[i];
-console.log("dtaaaaa",data)
+        console.log("dtaaaaa", data)
 
         retData.push(
 
@@ -197,7 +197,7 @@ console.log("dtaaaaa",data)
       for (let i = 0; i < addRequiData.requisitionLineItemLists.length; i++) {
 
         let data = addRequiData.requisitionLineItemLists[i];
-        console.log("dtaaaaa",data)
+        console.log("dtaaaaa", data)
         retData.push(
           <tr key={i}>
             <td>{i + 1}</td>
@@ -366,6 +366,24 @@ console.log("dtaaaaa",data)
     return departmentoption;
   };
 
+  
+  displayRoles = () => {
+   let displayRole=localStorage.getItem("userData");
+    var roleJson = JSON.parse(displayRole);
+    let role=roleJson.info.user.roles
+    let currencyoption = [];
+    if (role) {
+      for (let i = 0; i < role.length; i++) {
+        currencyoption.push(
+          <option value={role[i].id}>
+            {role[i].name}
+          </option>
+        );
+      }
+    }
+    return currencyoption;
+  };
+
   displayCurrency = () => {
     const { currency_list_data } = this.props;
     let currencyoption = [];
@@ -429,7 +447,7 @@ console.log("dtaaaaa",data)
     let deleteItem = true;
     this.setState({
       openDialogReq: deleteItem,
-       reqLineIteamId:id
+      reqLineIteamId: id
     })
   };
 
@@ -567,7 +585,7 @@ console.log("dtaaaaa",data)
   };
 
   requisitionLineItemDelete = (id) => {
-      const { addRequiData,reqLineIteamId} = this.state;
+    const { addRequiData, reqLineIteamId } = this.state;
     addRequiData.requisitionLineItemLists.splice(id, 1);
     let totalprice = 0;
     if (addRequiData) {
@@ -575,18 +593,18 @@ console.log("dtaaaaa",data)
         totalprice =
           addRequiData.requisitionLineItemLists[i].price + totalprice;
       }
-          fetch("http://localhost:7050/api/requisitionLineItem/" + reqLineIteamId, { method: 'DELETE' })
-            .then((response) =>
-              this.setState({
-           
-              }))
+      fetch("http://localhost:7050/api/requisitionLineItem/" + reqLineIteamId, { method: 'DELETE' })
+        .then((response) =>
+          this.setState({
+
+          }))
     }
     this.setState({
       openDialogReq: false,
       addRequiData,
       totalAmount: totalprice,
     });
-}
+  }
   render() {
     const {
       addRequiData,
@@ -629,7 +647,7 @@ console.log("dtaaaaa",data)
                   <div className="col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
                     <div className="requisition-form-left">
                       <div className="requester">
-                        <div className="form-group">
+                        {/* <div className="form-group">
                           <label>Requester</label>
                           <input
                             type="text"
@@ -642,8 +660,26 @@ console.log("dtaaaaa",data)
                           <span className="text-danger">
                             {errorData.roleName.message}
                           </span>
+                        </div> */}
+                        <div className="form-group">
+                          <label>Requester</label>
+                          <FormControl className="select-menu">
+                            <NativeSelect
+                              name="roleName"
+                              onChange={this.handleStateChange}
+                              isvalid={errorData.roleName.isValid}
+                              value={addRequiData.roleName}
+                            >
+                              <option value="">-Select-</option>
+                              {this.displayRoles()}
+                            </NativeSelect>
+                          </FormControl>
+                          <span className="text-danger">
+                            {errorData.roleName.message}
+                          </span>
                         </div>
                       </div>
+                  
                       <div className="requester">
                         <div className="form-group">
                           <label>Financial year</label>
@@ -1050,21 +1086,21 @@ console.log("dtaaaaa",data)
                     </div>
 
                     <Dialog open={openDialogReq} onClose={() => this.setState({ openDialogReq: false })} aria-labelledby="form-dialog-title" className="addNewItemDialog">
-                    <DialogTitle id="form-dialog-title" className="dialogSmWidth addNewItemDialogTitle">
-                    Requisition Line Item Confirmation
-                    </DialogTitle>
-                    <DialogContent className="dialogSmWidth addNewItemDialogContent">
+                      <DialogTitle id="form-dialog-title" className="dialogSmWidth addNewItemDialogTitle">
+                        Requisition Line Item Confirmation
+                      </DialogTitle>
+                      <DialogContent className="dialogSmWidth addNewItemDialogContent">
                         <p>Are you sure to delete requisition line item record?</p>
-                    </DialogContent>
-                    <DialogActions className="dialogSmWidth addNewItemDialogActions">
+                      </DialogContent>
+                      <DialogActions className="dialogSmWidth addNewItemDialogActions">
                         <Button variant="contained" onClick={this.requisitionLineItemDelete} className="primary-btn">
-                            Yes
-                        </Button> 
+                          Yes
+                        </Button>
                         <Button variant="contained" className="default-btn" onClick={() => this.setState({ openDialogReq: false })} >
-                            No
-                        </Button> 
-                    </DialogActions>
-                </Dialog>
+                          No
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                     {/* <div>
                                             <div> <p>Total Estimate Coste</p> </div>
                                             <div> {totalAmount ? <p>{totalAmount}</p> : "00.00 USD"} </div>

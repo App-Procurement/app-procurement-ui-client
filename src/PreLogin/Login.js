@@ -28,6 +28,9 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
+      rememberMe:'',
+      username:'',
+      active:'',
       email: '',
       password: '',
       isSubmitted: false
@@ -43,19 +46,22 @@ class Login extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.history.push('/postlogin/dashboard')
-    // this.setState({
-    //   isSubmitted: true
-    // });
-    // const errorData = this.validate(true);
-    // if (errorData.isValid) {
-    //   const { email, password } = this.state;
-    //   const sendData = {
-    //     email,
-    //     password
-    //   };
-    //   this.props.dispatch(authActions.login(sendData));
-    // }
+   
+    this.setState({
+      isSubmitted: true
+    });
+    const errorData = this.validate(true);
+    if (errorData.isValid) {
+      const { username, password,active } = this.state;
+      const sendData = {
+        active:"true",
+        username,
+        password
+      };
+      this.props.dispatch(authActions.login("?username=" + username + "&password=" + password ));
+    }
+    
+    // this.props.history.push('/postlogin/dashboard')
   };
 
   validate = (isSubmitted) => {
@@ -66,20 +72,20 @@ class Login extends Component {
     };
     let isValid = true;
     const retData = {
-      email: validObj,
+      username: validObj,
       password: validObj,
       isValid
     };
     if (isSubmitted) {
-      const { email, password } = this.state;
-      if (!email) {
-        retData.email = {
+      const { username, password } = this.state;
+      if (!username) {
+        retData.username = {
           isValid: false,
           message: "Email is required"
         };
         isValid = false;
-      } else if (email && !commonFunctions.validateEmail(email)) {
-        retData.email = {
+      } else if (username && !commonFunctions.validateEmail(username)) {
+        retData.username = {
           isValid: false,
           message: "Enter valid email"
         };
@@ -100,21 +106,28 @@ class Login extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.user_login_status !== this.props.user_login_status && this.props.user_login_status === status.SUCCESS) {
       const { user } = this.props;
-      if (user && user.userDetails && !user.userDetails.emailVerified) {
+        // this.props.history.push(`/prelogin/register/${user.token}`);
+        console.log("1. user",user)
+       
+      if (user && user.info.user && !user.info.user.username) {
+        console.log("2. user",user)
         this.props.history.push(`/prelogin/register/${user.token}`);
       } else {
+        console.log("3. user",user)
         localStorage.setItem("userData", JSON.stringify(this.props.user));
         this.props.history.push('/postlogin/dashboard');
-        if (user && user.userDetails) {
-          GA.dispatchGAEvent(eventCategories.USER, eventActions.LOGIN, `organization=${user.userDetails.organizationId.name};id=${user.userDetails._id}`);
+        if (user && user.info.user) {
+          GA.dispatchGAEvent(eventCategories.USER, eventActions.LOGIN, `organization=${user.info.user.organization.id};id=${user.info.user._id}`);
         }
       }
-    }
+    
+  }
   }
 
   render() {
-    const { email, password, isSubmitted } = this.state;
+    const { username, password, isSubmitted } = this.state;
     const { user_login_status } = this.props;
+    const errorData = this.validate(isSubmitted);
     return (
       <div className="login-wrapper">
         <Box mb={6}>
@@ -129,14 +142,17 @@ class Login extends Component {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
+                  id="username"
                   label="Email Address"
-                  name="email"
+                  name="username"
                   autoComplete="email"
                   autoFocus
-                  value={email}
+                  value={username}
                   onChange={this.handleStateChange}
                 />
+                 <span className="text-danger">
+                            {errorData.username.message}
+                          </span>
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -150,6 +166,9 @@ class Login extends Component {
                   value={password}
                   onChange={this.handleStateChange}
                 />
+                <span className="text-danger">
+                            {errorData.password.message}
+                          </span>
                 <Button
                   type="submit"
                   fullWidth

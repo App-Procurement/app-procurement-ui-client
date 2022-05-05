@@ -9,6 +9,9 @@ function login(data) {
     const extraHeaders = {
         "Content-Type": "application/json"
     };
-    const requestOptions = commonFunctions.getRequestOptions("POST", extraHeaders, JSON.stringify(data), true);
-    return fetch(`${apiEndPoint.LOGIN}`, requestOptions).then(response => response.json());
+    // const requestOptions = commonFunctions.getRequestOptions("POST", extraHeaders, JSON.stringify(data), true);
+    // return fetch(`${apiEndPoint.LOGIN}`, requestOptions).then(response => response.json());
+
+    const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
+    return fetch(`${apiEndPoint.LOGIN}`+data, requestOptions).then(response => response.json());
 }

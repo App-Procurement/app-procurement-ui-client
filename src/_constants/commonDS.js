@@ -23,5 +23,5 @@ export const eventActions = {
 };
 
 export const eventCategories = {
-    USER: "User"
+    USER: "admin"
 };

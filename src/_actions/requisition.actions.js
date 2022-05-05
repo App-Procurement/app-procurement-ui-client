@@ -298,7 +298,9 @@ function approveRequisition(data) {
         requisitionServices.approveRequisition(data)
             .then(
                 response => {
-                    if (response) {
+                    console.log("i am res======",response)
+                    if (response==200) {
+                      
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -326,7 +328,7 @@ function approveRequisition(data) {
                             approve_requisition: error.message
                         }
                     }));
-                    alert.error(error.message);
+                    alert.error("Hava no rights to approve requisition");
                 }
             );
     };

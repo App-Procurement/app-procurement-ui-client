@@ -18,16 +18,20 @@ function login(data) {
         }));
         authServices.login(data)
             .then(
+                
                 response => {
-                    if (response.status) {
+                    console.log("login user",response.cause)
+                    if (response.cause !== null) {
+                        console.log("login user 1---")
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 user_login_status: status.SUCCESS,
-                                user: response.object
+                                user: response
                             }
                         }));
                     } else {
+                        console.log("login user 2---")
                         dispatch(dispatchFunction({
                             type: status.FAILURE,
                             data: {
@@ -35,10 +39,11 @@ function login(data) {
                                 user: response
                             }
                         }));
-                        alert.error(response.message);
+                        alert.error("invalid credential");
                     }
                 },
                 error => {
+                    console.log("login user 3---")
                     dispatch(dispatchFunction({
                         type: status.FAILURE,
                         data: {

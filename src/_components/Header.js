@@ -41,6 +41,7 @@ class Header extends Component {
   }
   componentDidMount() {
     this.props.dispatch(homeAction.Notificationdata());
+    // this.renderProfile();
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.get_notification_status !== prevProps.get_notification_status && this.props.get_notification_status === status.SUCCESS) {
@@ -119,7 +120,7 @@ class Header extends Component {
               <Avatar alt="Remy Sharp" src={data.img} className="user-image" />
               <div className="user-massage">
                 <p style={{ margin: 0 }}>{data.title}</p>
-                <span style={{ margin: 0 }}>{data.description.substring(0,40)}</span>
+                <span style={{ margin: 0 }}>{data.description.substring(0, 40)}</span>
               </div>
             </li>
           </ul>
@@ -128,6 +129,32 @@ class Header extends Component {
     }
     return retData;
   }
+  renderProfile = () => {
+    var profile = localStorage.getItem("userData");
+    var profileJson = JSON.parse(profile);
+    let retData = [];
+    var row = profileJson.info.user
+    
+    if (row) {
+      console.log("profileJson",row)
+      for (let i = 0; i <row.roles.length; i++) {
+      retData.push(
+        <>
+          <div>
+            <strong>{row.email}</strong>
+            
+            <br></br>{row.roles[i].name}
+
+          </div>
+        </>
+      );
+      }
+    }
+
+    return retData;
+  }
+
+
 
   render() {
     const { selected, notification, profile, searchToggle } = this.state;
@@ -203,7 +230,7 @@ class Header extends Component {
                         <Avatar onClick={this.openLogOutModel} alt="Remy Sharp" src={UserImg} className="" />
                       </li>
                       <li>
-                        <span className="user-name" onClick={this.openLogOutModel}><strong>Franklin Jr.</strong> <br></br>Super Admin</span>
+                        <span className="user-name" onClick={this.openLogOutModel}><div>{this.renderProfile()}</div> </span>
                       </li>
                       <li className="last" onClick={this.openLogOutModel}>
                         <ArrowDropDownIcon className=".sort-down" />
