@@ -28,7 +28,8 @@ import { connect } from 'react-redux'
 import { status } from '../_constants';
 
 export const proHeader = {
-  renderRole
+  renderRole,
+  renderId
 };
 
 function renderRole () {
@@ -43,6 +44,18 @@ function renderRole () {
     }
   }
 
+  return retData;
+}
+
+function renderId () {
+  var profile = localStorage.getItem("userData");
+  var profileJson = JSON.parse(profile);
+  let retData = "";
+  var row = profileJson.info.user
+  if (row) {
+    retData = row.id;
+    console.log("Id by jitin",retData)
+  }
   return retData;
 }
 

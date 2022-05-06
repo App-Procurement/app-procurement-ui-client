@@ -80,6 +80,7 @@ class NewRequisition extends Component {
 
   componentDidMount() {
     this.getCurrentFinancialYear();
+    this.renderProfile();
     if (this.props.match.params.id) {
       this.props.dispatch(
         requistionAction.getRequisition({
@@ -238,6 +239,7 @@ class NewRequisition extends Component {
 
   handleaddRequiDataClick = (event) => {
     const {
+      userId,
       addRequiData,
       totalAmount,
       requisitionFile,
@@ -260,6 +262,7 @@ class NewRequisition extends Component {
         financialYear: addRequiData.financialYear,
         status: addRequiData.status,
         roleName: addRequiData.roleName,
+        user:userId,
         totalPrice: totalAmount,
         notes: addRequiData.notes,
         requisitionLineItemLists: addRequiData.requisitionLineItemLists,
@@ -604,6 +607,17 @@ class NewRequisition extends Component {
       addRequiData,
       totalAmount: totalprice,
     });
+  }
+
+  renderProfile = () => {
+    var profile = localStorage.getItem("userData");
+    var profileJson = JSON.parse(profile);
+    let retData = [];
+    var row = profileJson.info.user
+    this.setState({
+      userId:row.id
+    })
+   
   }
   render() {
     const {

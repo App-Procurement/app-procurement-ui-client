@@ -90,6 +90,7 @@ function getRequisitions(data) {
             url += `${url ? '&' : '?'}fromDate=${data.fromDate}`;
         }
     }
+    url += `${url ? '&' : '?'}userId=${proHeader.renderId()}`;
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
 
     return fetch(`${apiEndPoint.REQUISTIONS}${url}`, requestOptions).then(response => response.json());
