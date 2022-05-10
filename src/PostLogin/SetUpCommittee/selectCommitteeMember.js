@@ -20,7 +20,7 @@ class selectCommitteeMember extends Component {
     };
 
     componentDidMount() {
-        this.props.dispatch(committeeAction.searchCommittee());
+        this.props.dispatch(committeeAction.searchCommitteeMembers());
     };
 
     componentDidUpdate(prevProps, prevState) {
@@ -79,8 +79,10 @@ class selectCommitteeMember extends Component {
     displayCommiteeLists = () => {
         let retData = [];
         const { activeindex, committeeMember } = this.state;
+        console.log("row is here",committeeMember)
         for (let i = 0; i < committeeMember.length; i++) {
             let row = committeeMember[i];
+           console.log("commitee row mambers",row)
             retData.push(
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12" key={row.id}>
                     <div className="member-boxs">
@@ -92,7 +94,8 @@ class selectCommitteeMember extends Component {
                         >
                             <div className="d-flex justify-content-center align-items-center user-img">
                                 <div className="d-flex justify-content-center align-items-center image">
-                                    <img src={row.profile} alt="" />
+                                    {/* <img src={row.profileImage} alt="" /> */}
+                                    <img id="profileImage" src={`data:image/jpeg;base64,${row.profileImage}`}></img>
                                 </div>
                             </div>
                             <div className="requisition">
@@ -116,7 +119,7 @@ class selectCommitteeMember extends Component {
                                         <Button className="icon-btn">
                                             <CallIcon className="phone-icon" />
                                         </Button>
-                                        <a href={`tel:${row.contNo}`}>{row.contNo}</a>
+                                        <a href={`tel:${row.phoneNumber}`}>{row.phoneNumber}</a>
                                     </li>
                                     <li>
                                         <Button className="icon-btn">

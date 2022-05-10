@@ -254,6 +254,7 @@ class ViewRequisition extends Component {
 
   setSelectedBuyers = () => {
     const { buyersListTable } = this.state;
+    console.log("buyersListTable=====>",buyersListTable)
     let buyersId = [];
     if (buyersListTable.data && buyersListTable.data.length > 0) {
       this.setState({

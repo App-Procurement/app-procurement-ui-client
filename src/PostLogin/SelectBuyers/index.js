@@ -86,7 +86,7 @@ class SelectBuyers extends Component {
 
   displayApprovedMemberList = () => {
     const { approvedMemberList, activeindex, displayOption } = this.state;
-    console.log("approvedMemberList",approvedMemberList);
+    console.log("approvedMemberList buyer",approvedMemberList);
     let retData = [];
     for (let i = 0; i < approvedMemberList.length; i++) {
       let row = approvedMemberList[i];
@@ -100,12 +100,12 @@ class SelectBuyers extends Component {
               onClick={() => this.setState({ activeindex: i })}>
               <div className="d-flex justify-content-center align-items-center user-img">
                 <div className="d-flex justify-content-center align-items-center image">
-                  <img src={row.profile} alt="" />
+                  <img src={`data:image/jpeg;base64,${row.profileImage}`} alt="" />
                   <div
                     className="member-position"
                     style={{ backgroundColor: `${row.shortNameColor}` }}
                   >
-                    {row.name}
+                    {row.firstName.charAt(0)+ row.lastName.charAt(0)}
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@ class SelectBuyers extends Component {
               <div className="member-details">
                 <ul>
                   <li>
-                    <b>{row.name}</b>
+                    <b>{row.firstName} {row.lastName}</b>
                   </li>
                   <li>
                     <span>{row.position}</span>
@@ -158,7 +158,7 @@ class SelectBuyers extends Component {
                     <Button className="icon-btn">
                       <CallIcon className="phone-icon" />
                     </Button>
-                    <a href={`tel:${row.contNo}`}>{row.contNo}</a>
+                    <a href={`tel:${row.phoneNumber}`}>{row.phoneNumber}</a>
                   </li>
                   <li>
                     <Button className="icon-btn">
@@ -187,6 +187,7 @@ class SelectBuyers extends Component {
 
   setSelectedBuyer = () => {
     const { approvedMemberList } = this.state;
+    // console.logI("approvedMemberList hello====>",approvedMemberList)
     let count = 0;
     for (let i = 0; i < approvedMemberList.length; i++) {
       if (approvedMemberList[i].isSected) {

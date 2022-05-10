@@ -6,6 +6,7 @@ export const committeeServices = {
     addCommittee,
     searchCommittee,
     getCommitteeType,
+    searchCommitteeMembers,
 }
 
 function searchCommittee() {
@@ -14,6 +15,13 @@ function searchCommittee() {
     };
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
     return fetch(`${apiEndPoint.COMMITTEE}`, requestOptions).then(response => response.json());
+}
+function searchCommitteeMembers() {
+    const extraHeaders = {
+        "Content-Type": "application/json"
+    };
+    const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
+    return fetch(`${apiEndPoint.COMMITTEEMEMBERS}`, requestOptions).then(response => response.json());
 }
 
 function addCommittee(data) {
@@ -29,5 +37,5 @@ function getCommitteeType() {
         "Content-Type": "application/json"
     };
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
-    return fetch(`${apiEndPoint.COMMITTEE}/type`, requestOptions).then(response => response.json());
+    return fetch(`${apiEndPoint.COMMITTEE}`, requestOptions).then(response => response.json());
 }

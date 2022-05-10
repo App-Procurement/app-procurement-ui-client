@@ -179,6 +179,7 @@ class SetUpCommittee extends Component {
 
     displayCommitee = () => {
         const { comitteeType } = this.state;
+        console.log("comitteeType",comitteeType)
         let retoption = [];
         if (comitteeType && comitteeType.length > 0) {
             for (let i = 0; i < comitteeType.length; i++) {

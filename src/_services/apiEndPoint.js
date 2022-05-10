@@ -8,6 +8,7 @@ export const apiEndPoint = {
 
     // *Committee Api Url
     COMMITTEE: `${config.apiUrl}/committee`,
+    COMMITTEEMEMBERS: `${config.apiUrl}/committeeMembers`,
 
     // *Contact Api Url
     CONTACT: `${config.apiUrl}/contacts`,

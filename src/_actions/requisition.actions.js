@@ -394,6 +394,7 @@ function setRequisitionBuyers(data) {
         requisitionServices.setRequisitionBuyers(data)
             .then(
                 response => {
+                    console.log("response buyer",response)
                     if (response) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,

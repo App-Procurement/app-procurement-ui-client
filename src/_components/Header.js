@@ -38,7 +38,6 @@ function renderRole () {
   let retData = "";
   var row = profileJson.info.user
   if (row) {
-    console.log("profileJson",row)
     for (let i = 0; i <row.roles.length; i++) {
     retData = row.roles[i].name;
     }
@@ -54,7 +53,6 @@ function renderId () {
   var row = profileJson.info.user
   if (row) {
     retData = row.id;
-    console.log("Id by jitin",retData)
   }
   return retData;
 }
@@ -169,7 +167,6 @@ class Header extends Component {
     var row = profileJson.info.user
     
     if (row) {
-      console.log("profileJson",row)
       for (let i = 0; i <row.roles.length; i++) {
       retData.push(
         <>
