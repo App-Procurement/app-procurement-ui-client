@@ -12,7 +12,8 @@ export const requistionAction = {
     deleteRequitionData,
     approveRequisition,
     changeAddBuyerState,
-    setRequisitionBuyers
+    setRequisitionBuyers,
+    getRequisitionBuyers
 };
 
 
@@ -243,6 +244,58 @@ function editRequisition(data) {
             );
     };
 }
+function getRequisitionBuyers(data) {
+    return (dispatch) => {
+        dispatch(
+          dispatchFunction({
+            type: status.IN_PROGRESS,
+            data: {
+              search_buyer_status: status.IN_PROGRESS,
+              search_buyer_data: null,
+            },
+          })
+        );
+        requisitionServices.getRequisitionBuyers(data).then(
+          (response) => {
+              console.log("re==========?",response)
+            if (response) {
+              dispatch(
+                dispatchFunction({
+                  type: status.SUCCESS,
+                  data: {
+                    search_buyer_status: status.SUCCESS,
+                    search_buyer_data: response,
+                  },
+                })
+              );
+            } else {
+              dispatch(
+                dispatchFunction({
+                  type: status.FAILURE,
+                  data: {
+                    search_buyer_status: status.FAILURE,
+                    search_buyer_data: response,
+                  },
+                })
+              );
+              alert.error(response.message);
+            }
+          },
+          (error) => {
+            dispatch(
+              dispatchFunction({
+                type: status.FAILURE,
+                data: {
+                  search_buyer_status: status.FAILURE,
+                  search_buyer_data: error.message,
+                },
+              })
+            );
+            alert.error(error.message);
+          }
+        );
+      };
+}
 
 function getCurrency(data) {
     return dispatch => {
@@ -376,7 +429,7 @@ function approveRequisition(data) {
                             approve_requisition: error.message
                         }
                     }));
-                    alert.error("Hava no rights to approve requisition");
+                    alert.error("Have no rights to approve requisition");
                 }
             );
     };

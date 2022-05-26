@@ -152,7 +152,6 @@ class ManageRequisitionData extends Component {
         }
         if (prevProps.get_edit_requisition_status !== this.props.get_edit_requisition_status && this.props.get_edit_requisition_status === status.SUCCESS) {
             const { editRequisitiondata } = this.props;
-            console.log("editRequisitiondata",editRequisitiondata)
             if (editRequisitiondata) {
                 requisitionData.createdOn = commonFunctions.convertDateToString(
                     new Date(editRequisitiondata.createdOn)

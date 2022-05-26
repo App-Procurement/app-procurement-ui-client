@@ -339,9 +339,9 @@ class Dashbord extends Component {
     return pinData;
   }
   render() {
-    console.log("Props", this.props)
+    // console.log("Props", this.props)
     const { lineData, data, invoices, PieChartEmailData, contactsData, dashboardData } = this.state;
-    console.log("This is List", dashboardData.statisticsList)
+    // console.log("This is List", dashboardData.statisticsList)
     const BorderLinearProgress = withStyles((theme) =>
       createStyles({
         root: {

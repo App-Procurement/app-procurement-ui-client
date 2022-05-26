@@ -581,6 +581,7 @@ class NewRequisition extends Component {
   };
   saveToDraft = () => {
     let { addRequiData } = this.state;
+    console.log("addRequiData",addRequiData)
     addRequiData.status = requisitionStatus.DRAFT;
     this.setState({
       addRequiData,

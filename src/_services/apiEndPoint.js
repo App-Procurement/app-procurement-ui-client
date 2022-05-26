@@ -5,6 +5,7 @@ export const apiEndPoint = {
 
     // *Buyer Api Url
     BUYER: `${config.apiUrl}/buyer`,
+    BUYERREQUISTIONSLink:`${config.apiUrl}/buyerRequisitionLink`,
 
     // *Committee Api Url
     COMMITTEE: `${config.apiUrl}/committee`,
@@ -44,7 +45,7 @@ export const apiEndPoint = {
 
     //*generate po api url
 
-    PURCHASEORDERS: `${config.apiUrl}/purchaseorders`,
+    PURCHASEORDERS: `${config.apiUrl}/purchaseOrder`,
 
     //recievedefq api url
 

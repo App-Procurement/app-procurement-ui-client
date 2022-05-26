@@ -33,7 +33,7 @@ class ViewRequisition extends Component {
           },
           {
             label: "Name",
-            key: "name",
+            key: "firstName",
             renderCallback: (value) => {
               return (
                 <td>
@@ -77,11 +77,11 @@ class ViewRequisition extends Component {
           },
           {
             label: "Telephone",
-            key: "contNo",
+            key: "phoneNumber",
             renderCallback: (value) => {
               return (
                 <td>
-                  <span className={"contNo"}>{value}</span>
+                  <span className={"phoneNumber"}>{value}</span>
                 </td>
               );
             },
@@ -184,6 +184,7 @@ class ViewRequisition extends Component {
               buyersListTable.data.push(selected_buyer_list.approvedMemberList[i]);
             }
           }
+          console.log("buyersListTable====>",buyersListTable)
         }
         this.setState({
           buyersListTable,

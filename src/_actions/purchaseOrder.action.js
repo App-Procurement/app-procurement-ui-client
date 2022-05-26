@@ -24,13 +24,15 @@ function searchPurchaseOrder(data) {
     );
     purchaseOrderServices.searchPurchaseOrder(data).then(
       (response) => {
-        if (response.code == 200) {
+        console.log("safdasfasdfadsf",response)
+        if (response) {
+          
           dispatch(
             dispatchFunction({
               type: status.SUCCESS,
               data: {
                 search_purchase_status: status.SUCCESS,
-                search_purchase_order: response.object,
+                search_purchase_order: response,
               },
             })
           );

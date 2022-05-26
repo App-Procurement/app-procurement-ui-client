@@ -65,7 +65,7 @@ class GeneratePo extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className={"department-value"}>{value.name}</span>
+                {/* <span className={"department-value"}>{value.name}</span> */}
               </td>
             );
           },
@@ -98,7 +98,7 @@ class GeneratePo extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className='department-value'>{value.code}</span>
+                {/* <span className='department-value'>{value.code}</span> */}
               </td>
             );
           },

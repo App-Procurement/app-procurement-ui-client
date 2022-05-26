@@ -11,7 +11,8 @@ export const requisitionServices = {
     editRequisition,
     getCurrency,
     approveRequisition,
-    setRequisitionBuyers
+    setRequisitionBuyers,
+    getRequisitionBuyers
 }
 
 function addRequisition(data) {
@@ -143,4 +144,12 @@ function setRequisitionBuyers(data) {
     };
     const requestOptions = commonFunctions.getRequestOptions("POST", extraHeaders, JSON.stringify(data));
     return fetch(`${apiEndPoint.BUYER}/${data.requisitionID}`, requestOptions).then(response => response.json());
+}
+
+function getRequisitionBuyers(data) {
+    const extraHeaders = {
+        "Content-Type": "application/json"
+    };
+    const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
+    return fetch(`${apiEndPoint.BUYERREQUISTIONSLink}`, requestOptions).then(response => response.json());
 }
