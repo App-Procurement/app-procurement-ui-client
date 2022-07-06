@@ -22,14 +22,31 @@ select:focus-visible {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-.MuiCheckbox-colorPrimary.Mui-checked {
-    color: #6317c1 !important;
+.MuiCheckbox-colorPrimary {
+    font-size: 14px;
+
+    .MuiIconButton-colorPrimary {
+        padding: 0;
+    }
+
+    &.Mui-checked {
+        color: #6317c1 !important;
+    }
+}
+
+.MuiRadio-colorPrimary {
+    font-size: 14px;
+
+    .MuiIconButton-colorPrimary {
+        padding: 0;
+    }
+
+    &.Mui-checked {
+        color: #6317c1 !important;
+    }
 }
 
 .wrapper {
-    display: table;
-    height: 100vh;
-    overflow: hidden;
     width: 100%;
     background-color: #f9f9f9;
 }
@@ -60,7 +77,7 @@ select:focus-visible {
 }
 
 .main-content {
-    margin-top: 25px;
+    margin-top: 15px;
     width: 100%;
 }
 
@@ -124,16 +141,36 @@ select:focus-visible {
 }
 
 .date-picker {
+    position: relative;
+
     .picker-input__text {
         border: none;
         font-size: 14px;
         font-weight: 500;
+        width: 200px;
         color: #393939;
         padding: 8px 15px;
         border-radius: 8px;
         background-color: #f5f5f5;
     }
+
+    .calendar-icon {
+        position: absolute;
+        top: 5px;
+        right: 8px;
+    }
 }
+
+.new-requeust-massge {
+    textarea {
+        padding: 20px;
+        width: 400px;
+        border-radius: 8px;
+        border: none;
+        background-color: #f5f5f5;
+    }
+}
+
 
 .select-menu {
     width: 200px;
@@ -142,7 +179,7 @@ select:focus-visible {
     background-color: $requisition-button-bg;
 
     .MuiNativeSelect-select {
-        padding: 8px 10px;
+        padding: 11px 10px;
         font-size: 14px;
         font-weight: 500;
         color: #393939;
@@ -345,6 +382,7 @@ select:focus-visible {
         font-weight: 500;
         line-height: 18px;
         color: #393939;
+        text-transform: capitalize;
     }
 
     .form-control {
@@ -462,8 +500,10 @@ select:focus-visible {
         }
     }
 }
+
 .membar-list {
     margin-top: 25px;
+
     .member-boxs {
         display: block;
         margin-bottom: 25px;
@@ -697,6 +737,268 @@ select:focus-visible {
     }
 }
 
+.sender-bottom-section {
+    text-align: right;
+    border-radius: 15px 15px 0 0;
+
+    .chat-box {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: 52px;
+    }
+
+    .sender-inner-section {
+        position: absolute;
+        width: calc(100% + 30px);
+        left: 0;
+        bottom: 0;
+        margin: 0 -15px;
+
+        .user-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 0px;
+            padding: 10px 16px;
+            border: 1px solid $icon-color;
+            border-radius: 15px 15px 0 0;
+            background-color: #ffffff;
+
+            .user-image {
+                display: flex;
+                align-items: center;
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                }
+
+                span {
+                    font-size: 14px;
+                    line-height: 20px;
+                    font-weight: 500;
+                    color: $buttons-bg;
+                    margin-left: 10px;
+                }
+            }
+
+            .menu-icons {
+                span {
+                    margin-left: 15px;
+                    color: #777e90;
+
+                    &.uparrow-icon {
+                        cursor: pointer;
+                    }
+                }
+            }
+
+        }
+
+        .chatroom-inner-content-right {
+            padding: 15px 0;
+            background-color: #ffffff;
+
+            .massage-chat-section {
+                padding: 0 15px;
+
+                .user-massage-content {
+                    width: 100%;
+                    display: flex;
+                    margin-bottom: 25px;
+
+                    .user-image {
+                        margin-right: 15px;
+                        display: flex;
+                        overflow: hidden;
+                        border-radius: 50%;
+                        width: 35px;
+                        height: 35px;
+                    }
+
+                    .user-massage-box {
+                        max-width: 65%;
+                    }
+
+                    .user-massage-text {
+                        background: #efefef;
+                        padding: 15px;
+                        border-radius: 10px;
+                        border-top-left-radius: 0;
+                        display: inline-block;
+                        position: relative;
+                        text-align: left;
+
+                        p {
+                            font-size: 14px;
+                            font-weight: 500;
+                            line-height: 20px;
+                            color: $text-color;
+                            margin: 0;
+                        }
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            left: -9px;
+                            border-style: solid;
+                            border-width: 8px 6px 0px 9px;
+                            border-color: #efefef transparent transparent transparent;
+                        }
+                    }
+                }
+
+                .sender-massage-content {
+                    float: right;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: end;
+                    margin-bottom: 25px;
+
+                    .user-image {
+                        display: flex;
+                        margin-left: 15px;
+                        overflow: hidden;
+                        border-radius: 50%;
+                        width: 35px;
+                        height: 35px;
+                    }
+
+                    .sender-massage-box {
+                        max-width: 65%;
+
+                        .sender-massage-text {
+                            background: #d7f5e7;
+                            padding: 15px;
+                            border-radius: 10px;
+                            border-top-right-radius: 0;
+                            display: inline-block;
+                            position: relative;
+
+                            p {
+                                font-size: 14px;
+                                font-weight: 500;
+                                line-height: 20px;
+                                color: $text-color;
+                                margin: 0;
+                            }
+
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                top: 0;
+                                right: -9px;
+                                border-style: solid;
+                                border-width: 8px 9px 0px 9px;
+                                border-color: #d7f5e7 transparent transparent transparent;
+                            }
+                        }
+                    }
+
+                }
+
+                .doc-section {
+                    margin-bottom: 25px;
+                    width: 100%;
+                    display: flex;
+                    align-items: flex-start;
+
+                    .doc-user-img {
+                        width: 35px;
+                        height: 35px;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        margin-right: 15px;
+                        display: inline-block;
+                        vertical-align: top;
+                    }
+
+                    .doc-images-box {
+                        max-width: 59.6%;
+                        ;
+                        display: inline-block;
+                        border-radius: 10px;
+                        border: 3px solid #efefef;
+
+                        .doc-inner-box {
+                            display: inline-block;
+                            background: #efefef;
+
+
+                            .doc-attachment-files {
+                                display: inline-block;
+                                border: 2px solid #efefef;
+
+                                img {
+                                    width: 83.2px;
+                                    height: 83.2px;
+                                    border-radius: 8px;
+                                }
+
+                            }
+                        }
+
+
+                    }
+                }
+            }
+
+            .sender-bottom-section {
+                .type-massage {
+                    width: 100%;
+                    position: relative;
+
+                    .control-form {
+                        width: 100%;
+                        font-size: 14px;
+                        line-height: 45px;
+                        font-weight: 400;
+                        color: $text-color;
+                        height: 45px;
+                        border: none;
+                        border-radius: 5px;
+                        padding: 10px 50px 10px 50px;
+                        background: #f2f2f2;
+                    }
+
+                    .user-image {
+                        position: absolute;
+                        top: 8px;
+                        left: 10px;
+                        overflow: hidden;
+                        border-radius: 50%;
+                        width: 30px;
+                        height: 30px;
+                    }
+
+                    .send-btn {
+                        display: inline-block;
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+
+                        .massage-send-btn {
+                            min-width: 0;
+                            padding: 14px 14px;
+                            box-shadow: none;
+                            vertical-align: middle;
+                            height: 45px;
+                            background: $buttons-bg;
+                            color: $button-text-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 @media only screen and (max-width: 992px) {
     .captcha {
         .vendor-btn {
@@ -705,6 +1007,7 @@ select:focus-visible {
             margin-top: 25px;
         }
     }
+
 }
 
 @media only screen and (max-width: 540px) {
@@ -735,11 +1038,69 @@ select:focus-visible {
     }
 }
 
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .sender-bottom-section {
+        .sender-inner-section {
+            .chatroom-inner-content-right {
+                .massage-chat-section {
+                    .doc-section {
+                        .doc-images-box {
+                            max-width: 56.4%;
+                            display: inline-block;
+                            border-radius: 10px;
+                            border: 3px solid #efefef;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .sender-bottom-section {
+        .sender-inner-section {
+            .chatroom-inner-content-right {
+                .massage-chat-section {
+                    .doc-section {
+                        .doc-images-box {
+                            max-width: 46.5%;
+                            display: inline-block;
+                            border-radius: 10px;
+                            border: 3px solid #efefef;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 540px) and (max-width: 767px) {
+    .sender-bottom-section {
+        .sender-inner-section {
+            .chatroom-inner-content-right {
+                .massage-chat-section {
+                    .doc-section {
+                        .doc-images-box {
+                            max-width: 37.6%;
+                            display: inline-block;
+                            border-radius: 10px;
+                            border: 3px solid #efefef;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @media (max-width: 767px) {
     .content-page {
         padding-top: 66px;
     }
+
+
 }
 
 @media only screen and (max-width: 540px) {
@@ -751,6 +1112,23 @@ select:focus-visible {
 
         .text-danger {
             padding-left: 0px !important;
+        }
+    }
+
+    .sender-bottom-section {
+        .sender-inner-section {
+            .chatroom-inner-content-right {
+                .massage-chat-section {
+                    .doc-section {
+                        .doc-images-box {
+                            max-width: 60.2%;
+                            display: inline-block;
+                            border-radius: 10px;
+                            border: 3px solid #efefef;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-import config from '../config';
+// import config from '../config';
 import { commonFunctions } from "../_utilities";
 import { apiEndPoint } from './apiEndPoint';
 export const homeServices = {
@@ -7,13 +7,13 @@ export const homeServices = {
     Notificationdata
 }
 
-function Userdata() {
-    const extraHeaders = {
-        "Content-Type": "application/json"
-    };
-    const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
-    return fetch(`${config.apiUrl}/Userdata`, requestOptions).then(response => response.json());
-}
+// function Userdata() {
+//     const extraHeaders = {
+//         "Content-Type": "application/json"
+//     };
+//     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
+//     return fetch(`${config.apiUrl}/Userdata`, requestOptions).then(response => response.json());
+// }
 
 
 function Dashboarddata() {

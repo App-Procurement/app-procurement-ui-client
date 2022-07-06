@@ -3,6 +3,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import './table.css';
 import Loader from '../_components/commonLoader';
+import { withTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 const sortEnum = {
     NONE: 0,
@@ -70,7 +72,7 @@ export class Table extends React.Component {
                                     key = key.toLowerCase();
                                 }
                                 if (column.renderCallback) {
-                                    if (column.key == 'sno') {
+                                    if (column.key === 'sno') {
                                         jsx = column.renderCallback(row[key], i);
                                     } else {
                                         jsx = column.renderCallback(row[key], row);
@@ -85,7 +87,7 @@ export class Table extends React.Component {
                     }
                 }
             } else {
-                retData.push(<tr><td colSpan={cLength} style={{ textAlign: "center" }}>There is no data</td></tr>);
+                retData.push(<tr><td colSpan={cLength} style={{ textAlign: "center" }}>{t("There is no data")}</td></tr>);
             }
         } else {
             retData.push(<tr><td colSpan={cLength} style={{ textAlign: "center" }}><Loader /></td></tr>);
@@ -164,7 +166,7 @@ export class Table extends React.Component {
             if (!item.isRemoved) {
                 retData.push(
                     <th key={i}>
-                        {item.label}
+                        {t(item.label)}
                         <span onClick={(e) => { this.sortTable(item.key, e, onClickSortType) }} className={`sort-icon ${icon}`}></span>
                     </th>
                 );
@@ -369,7 +371,7 @@ export class Table extends React.Component {
                 retData.push(
                     <label className="option" htmlFor={item.key}>
                         <input id={item.key} checked={!item.isRemoved} type="checkbox" onChange={(e) => this.handleChecked(e, i)} />
-                        {item.label}
+                        {t(item.label)}
                     </label>
                 );
             }
@@ -408,7 +410,7 @@ export class Table extends React.Component {
         return (
             <div className={`${tableClasses.parentClass} custom-table ${dark ? 'dark' : ''}`}>
                 <div className={`${tableClasses.tableParent} data-table-parent`}>
-                    <table className={`${tableClasses.table} data-table`}>
+                    <table className={`${tableClasses.table} data-table`} >
                         <thead>
                             <tr>
                                 {this.tableHeader()}
@@ -427,4 +429,7 @@ export class Table extends React.Component {
     }
 }
 
-export default Table;
+// export default Table;
+
+const connectedTable = withTranslation()(Table);
+export default connectedTable;

@@ -1,10 +1,10 @@
 import React, { Component, Suspense } from 'react';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../_components/Header';
 import SideMenu from '../_components/SideMenu';
 import routes from '../_routes/routes';
-import { rolesAction, emailActions, departmentAction, requistionAction } from '../_actions';
+import { emailActions, departmentAction, requistionAction } from '../_actions';
 import Loader from './../_components/commonLoader';
 import { status } from "../_constants";
 
@@ -25,7 +25,7 @@ class DefaultLayout extends Component {
   componentDidUpdate(prevProps, prevState) {
     if ((this.props.search_all_email_status !== prevProps.search_all_email_status) &&
       this.props.search_all_email_status === status.SUCCESS) {
-      if (this.props.search_all_email.object && this.props.search_all_email.object.length > 0 && this.props.search_all_email.type == 'inbox') {
+      if (this.props.search_all_email.object && this.props.search_all_email.object.length > 0 && this.props.search_all_email.type === 'inbox') {
         this.props.dispatch(emailActions.searchallinboxemails(this.props.search_all_email.object))
       }
       else {

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { committeeAction } from '../../_actions';
 import { status } from '../../_constants';
 import { alert } from '../../_utilities';
-import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
+import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 class selectCommitteeMember extends Component {
@@ -20,7 +20,7 @@ class selectCommitteeMember extends Component {
     };
 
     componentDidMount() {
-        this.props.dispatch(committeeAction.searchCommitteeMembers());
+        this.props.dispatch(committeeAction.searchCommittee());
     };
 
     componentDidUpdate(prevProps, prevState) {
@@ -42,7 +42,6 @@ class selectCommitteeMember extends Component {
                 });
             }
         }
-        console.log(prevProps.selected_member_list !== this.props.selected_member_list && this.props.selected_committee_status === status.SUCCESS)
         if (prevProps.selected_member_list !== this.props.selected_member_list && this.props.selected_committee_status === status.SUCCESS) {
             this.props.history.push('/postlogin/setupcommittee');
         }
@@ -79,23 +78,17 @@ class selectCommitteeMember extends Component {
     displayCommiteeLists = () => {
         let retData = [];
         const { activeindex, committeeMember } = this.state;
-        console.log("row is here",committeeMember)
         for (let i = 0; i < committeeMember.length; i++) {
             let row = committeeMember[i];
-           console.log("commitee row mambers",row)
             retData.push(
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12" key={row.id}>
                     <div className="member-boxs">
-                        <Card
-                            className={
-                                activeindex == i ? "members-box active" : "members-box"
-                            }
+                        <Card className={activeindex === i ? "members-box active" : "members-box"}
                             onClick={() => this.setState({ activeindex: i })}
                         >
                             <div className="d-flex justify-content-center align-items-center user-img">
                                 <div className="d-flex justify-content-center align-items-center image">
-                                    {/* <img src={row.profileImage} alt="" /> */}
-                                    <img id="profileImage" src={`data:image/jpeg;base64,${row.profileImage}`}></img>
+                                    <img src={row.profile} alt="" />
                                 </div>
                             </div>
                             <div className="requisition">
@@ -119,7 +112,7 @@ class selectCommitteeMember extends Component {
                                         <Button className="icon-btn">
                                             <CallIcon className="phone-icon" />
                                         </Button>
-                                        <a href={`tel:${row.phoneNumber}`}>{row.phoneNumber}</a>
+                                        <a href={`tel:${row.contNo}`}>{row.contNo}</a>
                                     </li>
                                     <li>
                                         <Button className="icon-btn">
@@ -138,7 +131,6 @@ class selectCommitteeMember extends Component {
     }
 
     render() {
-        const { isSubmitted } = this.state;
         return (
             <div className="main-content">
                 <div className="setup-committee-section">

@@ -1,13 +1,13 @@
-import { rulesServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+// import { rulesServices } from '../_services';
+// import { alert, commonFunctions } from '../_utilities';
 
-export const rulesAction = {
-    // addRules,
-    // deleteRules,
-    // searchRules,
-    // getRulesByName,
-    // updateRules
-};
+// export const rulesAction = {
+//     // addRules,
+//     // deleteRules,
+//     // searchRules,
+//     // getRulesByName,
+//     // updateRules
+// };
 
 // function addRules(data) {
 //     return dispatch => {
@@ -174,16 +174,16 @@ export const rulesAction = {
 //     };
 // }
 
-function dispatchFunction(data) {
-    // if (data.data && data.data.code === 401) {
-    //     commonFunctions.onLogout();
-    //     return {
-    //         type: authConstants.USER_LOGOUT,
-    //         data: null
-    //     };
-    // }
-    return {
-        type: data.type,
-        data: data.data
-    };
-}
+// function dispatchFunction(data) {
+//     // if (data.data && data.data.code === 401) {
+//     //     commonFunctions.onLogout();
+//     //     return {
+//     //         type: authConstants.USER_LOGOUT,
+//     //         data: null
+//     //     };
+//     // }
+//     return {
+//         type: data.type,
+//         data: data.data
+//     };
+// }

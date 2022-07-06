@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
-import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CallIcon from "@material-ui/icons/Call";
 import MailIcon from "@material-ui/icons/Mail";
-import ReorderIcon from "@material-ui/icons/Reorder";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import SearchIcon from "@material-ui/icons/Search";
 import "simplebar/dist/simplebar.min.css";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
@@ -25,12 +22,12 @@ import {
   DialogContent,
   DialogTitle,
   DialogActions,
-  Tooltip,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import { alert } from "../../_utilities";
 import Pagination from "../../_components/Pagination";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 class Vendors extends Component {
   constructor(props) {
     super(props);
@@ -63,7 +60,7 @@ class Vendors extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.delete_vendor_status !== this.props.delete_vendor_status &&
-      this.props.delete_vendor_status == status.SUCCESS
+      this.props.delete_vendor_status === status.SUCCESS
     ) {
       this.setState({
         openDialog: false,
@@ -137,9 +134,16 @@ class Vendors extends Component {
   toggleDisplayOptions = () => {
     this.setState({ displayOption: !this.state.displayOption });
   };
-  // editContact = (id) => {
-  //     this.props.history.push(`/postlogin/newcontact/${id}`);
-  // }
+
+
+
+  editContact = (id) => {
+    this.props.history.push(`/postlogin/newcontact/${id}`);
+  }
+
+
+
+
   handleStateChange = (index, e) => {
     let { vendorList } = this.state;
     const { checked } = e.target;
@@ -196,7 +200,7 @@ class Vendors extends Component {
               <div className='member-boxs'>
                 <Card
                   className={
-                    activeIndex == i ? "members-box active" : "members-box"
+                    activeIndex === i ? "members-box active" : "members-box"
                   }
                   onClick={() => this.setState({ activeIndex: i })}>
                   <div className='d-flex justify-content-center align-items-center user-img'>
@@ -300,15 +304,15 @@ class Vendors extends Component {
     });
   };
 
-  // addMoreContcat = () => {
-  //     let { inviteList } = this.state;
-  //     if (inviteList && inviteList.length < 5) {
-  //         inviteList.push({ email: '', name: '' });
-  //         this.setState({
-  //             inviteList,
-  //         })
-  //     }
-  // }
+  addMoreContcat = () => {
+    let { inviteList } = this.state;
+    if (inviteList && inviteList.length < 5) {
+      inviteList.push({ email: '', name: '' });
+      this.setState({
+        inviteList,
+      })
+    }
+  }
 
   removeinviter = (index) => {
     let { inviteList } = this.state;
@@ -330,7 +334,7 @@ class Vendors extends Component {
               <div className='row justify-content-center align-items-center'>
                 <div className='col-xl-6 col-lg-12 col-md-12 col-sm-12 '>
                   <div className='heading'>
-                    <h4>Recommended vendors</h4>
+                    <h4>{t("Recommended vendors")}</h4>
                     <p>Lorem ipsum dolor sit amet</p>
                   </div>
                 </div>
@@ -342,7 +346,7 @@ class Vendors extends Component {
                           type='email'
                           className='form-control'
                           id='exampleFormControlInput1'
-                          placeholder='Search here'
+                          placeholder={t("Search here")}
                           onChange={this.onSearchChange}
                         />
                         <button>
@@ -371,7 +375,7 @@ class Vendors extends Component {
                             className='invite-btn'
                             onClick={this.openInviteDialog}>
                             <PersonAddIcon className='user-icon' />
-                            Add Vendors
+                            {t("Add Vendors")}
                           </Button>
                         </li>
                         {/*<li className="last">
@@ -434,7 +438,7 @@ class Vendors extends Component {
           aria-labelledby='form-dialog-title'
           className='invite-module'>
           <DialogTitle id='form-dialog-title' className='invite-module-header'>
-            Invite members to your contact list
+            {t("Invite members to your contact list")}
             <CloseIcon className='close-icon' onClick={this.openInviteDialog} />
           </DialogTitle>
           <DialogContent className='invite-module-content'>
@@ -442,10 +446,10 @@ class Vendors extends Component {
               <>
                 <div className='row'>
                   <div className='col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5'>
-                    <label className='d-block'>Email Address</label>
+                    <label className='d-block'>{t("Email Address")}</label>
                   </div>
                   <div className='col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5'>
-                    <label className='d-block'>Name (Optional)</label>
+                    <label className='d-block'>{t("Name")} ({t("Optional")})</label>
                   </div>
                 </div>
                 {inviteList.map((invite, index) => {
@@ -507,7 +511,7 @@ class Vendors extends Component {
               className='invitation-btn'
               onClick={this.sendInvitation}>
               <PersonAddIcon className='user-icon' />
-              Send Invitation
+              {t("Send Invitation")}
             </Button>
           </DialogActions>
         </Dialog>
@@ -530,6 +534,5 @@ function mapStateToProps(state) {
     deleteVendor,
   };
 }
-
-const connectVendors = connect(mapStateToProps)(Vendors);
-export default connectVendors;
+const connectVendors = withTranslation()(connect(mapStateToProps)(Vendors))
+export default connectVendors

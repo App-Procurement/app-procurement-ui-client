@@ -3,7 +3,7 @@ import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
 import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
-import { RangeDatePicker, DatePicker } from "@y0c/react-datepicker";
+import { RangeDatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
@@ -11,6 +11,8 @@ import { recievedrfpAction } from "../../_actions";
 import { status } from "../../_constants";
 import { connect } from "react-redux";
 import { commonFunctions } from "../../_utilities";
+import { t } from "i18next";
+import { withTranslation } from "react-i18next";
 
 class RecievedRfq extends Component {
   constructor(props) {
@@ -100,7 +102,7 @@ class RecievedRfq extends Component {
           },
         },
         {
-          label: "Carrency",
+          label: "Currency",
           key: "currency",
           renderCallback: (value) => {
             return (
@@ -150,7 +152,7 @@ class RecievedRfq extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.props.fetch_recieved_rfq_status !==
-        prevProps.fetch_recieved_rfq_status &&
+      prevProps.fetch_recieved_rfq_status &&
       this.props.fetch_recieved_rfq_status === status.SUCCESS
     ) {
       if (
@@ -186,17 +188,17 @@ class RecievedRfq extends Component {
   };
 
   render() {
-    const { requiData, isSubmitted, tableData, columns, indx } = this.state;
+    const { requiData, tableData, columns, indx } = this.state;
     return (
       <div className="main-content">
         <div className="receivedrfq-content">
           <div className="heading">
-            <h4>Received RFQ from Buyers</h4>
+            <h4>{t("Received RFQ from Buyers")}</h4>
           </div>
           <div className="requisitions-filter">
             <div className="form-group row col-form-group">
               <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                Filter By Status
+                {t("Filter By Status")}
               </label>
               <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                 <FormControl className="select-menu">
@@ -216,7 +218,7 @@ class RecievedRfq extends Component {
             </div>
             <div className="form-group row col-form-group">
               <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                Date Range
+                {t("Date Range")}
               </label>
               <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                 <div className="d-flex align-items-center">
@@ -272,4 +274,6 @@ const mapStateToProps = (state) => {
     recieved_rfq_list,
   };
 };
-export default connect(mapStateToProps, null)(RecievedRfq);
+
+const connectedRecievedRfq = withTranslation()(connect(mapStateToProps)(RecievedRfq));
+export default connectedRecievedRfq;

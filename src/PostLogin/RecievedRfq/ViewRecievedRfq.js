@@ -38,11 +38,11 @@ class ViewRecievedRfq extends Component {
                 retData.push(
                     <tr key={i}>
                         <td>{i + 1}</td>
-                        {data.itemDescription &&  <td>{data.itemDescription}</td>}
-                        {data.orderQuantity && <td>{data.orderQuantity}</td>} 
-                        {data.ratePerItem &&  <td>{data.ratePerItem}</td>}
+                        {data.itemDescription && <td>{data.itemDescription}</td>}
+                        {data.orderQuantity && <td>{data.orderQuantity}</td>}
+                        {data.ratePerItem && <td>{data.ratePerItem}</td>}
                         <td>{data.price}</td>
-                        <td><a href="#">Download File</a></td>
+                        <td><a href="#foo">Download File</a></td>
                     </tr>
                 );
             }

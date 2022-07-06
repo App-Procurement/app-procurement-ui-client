@@ -1,37 +1,27 @@
-import React, { Component } from "react";
-import Joannah from "../../assets/images/dashbord/joannah.png";
-import Johnson from "../../assets/images/dashbord/johnson.png";
-import Marteens from "../../assets/images/dashbord/marteens.png";
-import Machel from "../../assets/images/dashbord/machel.png";
-import Kevin from "../../assets/images/dashbord/kevin.png";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Avatar from "@material-ui/core/Avatar";
-import AvatarGroup from "@material-ui/lab/AvatarGroup";
-import Button from "@material-ui/core/Button";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import ChatIcon from "@material-ui/icons/Chat";
-import AddIcon from "@material-ui/icons/Add";
-import { ReactSortable } from "react-sortablejs";
-import IconButton from "@material-ui/core/IconButton";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogActions,
-  Tooltip,
-  ThemeProvider,
-} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-// import {Dialog} from '@material-ui/core';
-
-import { kanbanActions } from "../../_actions/kanban.actions";
-import { connect } from "react-redux";
-import { status } from "../../_constants";
+import React, { Component } from 'react';
+import Joannah from '../../assets/images/dashbord/joannah.png';
+import Machel from '../../assets/images/dashbord/machel.png';
+import Kevin from '../../assets/images/dashbord/kevin.png';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import Avatar from '@material-ui/core/Avatar';
+import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import Button from '@material-ui/core/Button';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import ChatIcon from '@material-ui/icons/Chat';
+import AddIcon from '@material-ui/icons/Add';
+import { ReactSortable } from 'react-sortablejs';
+import IconButton from '@material-ui/core/IconButton';
+import { Dialog, DialogContent, DialogTitle, DialogActions } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { kanbanActions } from '../../_actions/kanban.actions';
+import { connect } from 'react-redux';
+import { status } from '../../_constants';
+import { withTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 class Kanban extends Component {
   constructor(props) {
@@ -52,15 +42,12 @@ class Kanban extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     let { onProgressCount, completedCount } = this.state;
-    if (
-      prevProps.kanban_status !== this.props.kanban_status &&
-      this.props.kanban_status === status.SUCCESS
-    ) {
+    if (prevProps.kanban_status !== this.props.kanban_status && this.props.kanban_status === status.SUCCESS) {
       if (this.props.kanban_list) {
         const { kanban_list } = this.props;
         for (let i = 0; i < kanban_list.length; i++) {
           let data = kanban_list[i];
-          if (data.progressPer == 100) {
+          if (data.progressPer === 100) {
             completedCount++;
           } else {
             onProgressCount++;
@@ -75,25 +62,18 @@ class Kanban extends Component {
     }
   }
   displayQuatation = (quatationList) => {
-    // const { quatationList } = this.state;
     let retData = [];
     if (quatationList && quatationList.length > 0) {
       for (let i = 0; i < quatationList.length; i++) {
         let row = quatationList[i];
-        let time = row.time.split("T");
-        let emailtime = time[1].split(".");
+        let time = row.time.split('T');
+        let emailtime = time[1].split('.');
         retData.push(
-          <div className="col-12" key={row.title}>
+          <div className="col-12" key={i + 1}>
             <div className="suppliers-list">
               <div className="suppliers-content">
-                <div
-                  className={`heading ${row.color}`}
-                  style={{ color: `#ffab2e` }}
-                >
-                  <span
-                    className="icon"
-                    style={{ backgroundColor: `#ffab2e` }}
-                  ></span>
+                <div className={`heading ${row.color}`} style={{ color: `#ffab2e` }}>
+                  <span className="icon" style={{ backgroundColor: `#ffab2e` }}></span>
                   {row.type}
                   <IconButton className="float-right right-icon">
                     <MoreHorizIcon />
@@ -105,7 +85,7 @@ class Kanban extends Component {
                     variant="determinate"
                     value={row.progressPer}
                     bar="#ffab2e"
-                    style={{ backgroundColor: "#dadada" }}
+                    style={{ backgroundColor: '#dadada' }}
                   />
                 </div>
                 <div className="user-text">
@@ -132,7 +112,7 @@ class Kanban extends Component {
             <div className="suppliers-list">
               <div className="suppliers-content important">
                 <div className="dragdrop-file">
-                  <span>Move card hare</span>
+                  <span>{t('Move card hare')}</span>
                 </div>
               </div>
             </div>
@@ -142,18 +122,15 @@ class Kanban extends Component {
     }
     return retData;
   };
-  //  invite poople onclick
   invitePeoples = () => {
-    // alert("wroking")
     const { invitePeoples } = this.state;
     let dialog = !invitePeoples;
     this.setState({
       invitePeoples: dialog,
     });
   };
-  // dilog
   render() {
-    const { invitePeoples, onProgressCount, completedCount } = this.state;
+    const { invitePeoples } = this.state;
     let { quatationList, onProgress, revised, completed } = this.state;
     return (
       <div className="main-content">
@@ -163,7 +140,7 @@ class Kanban extends Component {
               <KeyboardBackspaceIcon />
             </IconButton>
             <div className="head-content">
-              <h4>Quotations by Suppliers</h4>
+              <h4>{t('Quotations by Suppliers')}</h4>
               <p>Created by Liolya Chan on June31,200</p>
             </div>
             <IconButton className="head-menu-icon">
@@ -179,92 +156,65 @@ class Kanban extends Component {
                       <Avatar alt="Remy Sharp" src={Joannah} />
                       <Avatar alt="Travis Howard" src={Machel} />
                       <Avatar alt="Cindy Baker" src={Kevin} />
-                      <Avatar
-                        alt="Agnes Walker"
-                        src="/static/images/avatar/4.jpg"
-                      />
-                      <Avatar
-                        alt="Trevor Henderson"
-                        src="/static/images/avatar/5.jpg"
-                      />
+                      <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+                      <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
                     </AvatarGroup>
                   </div>
                   <div className="head-btn">
-                    <Button
-                      variant="contained"
-                      className="invite-btn"
-                      onClick={this.invitePeoples}
-                    >
+                    <Button variant="contained" className="invite-btn" onClick={this.invitePeoples}>
                       <PersonAddIcon className="btn-icon" />
-                      Invite People
+                      {t('Invite People')}
                     </Button>
                     <Button variant="outlined" className="private-btn">
-                      Private
+                      {t('Private')}
                     </Button>
                     <Button variant="contained" className="edit-btn">
-                      Edit
+                      {t('Edit')}
                     </Button>
                     <Button variant="outlined" className="comments-btn">
                       <ChatIcon className="btn-icon" />
-                      45 Comments
+                      45 {t('Comments')}
                     </Button>
                   </div>
                 </div>
               </div>
               <div className="col-xl-4 col-lg-12 col-md-12 col-sm-12">
                 <div className="head-right">
-                  <p>Total Progress 60%</p>
+                  <p>{t('Total Progress')} 60%</p>
                   <span>
-                    <LinearProgress
-                      variant="determinate"
-                      value={40}
-                      style={{ backgroundColor: "#dadada" }}
-                    />
+                    <LinearProgress variant="determinate" value={40} style={{ backgroundColor: '#dadada' }} />
                   </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {/* invite friends ---------------*/}
-        <Dialog
-          open={invitePeoples}
-          aria-labelledby="form-dialog-title"
-          className="invite-module"
-        >
+        <Dialog open={invitePeoples} aria-labelledby="form-dialog-title" className="invite-module">
           <DialogTitle id="form-dialog-title" className="invite-module-header">
-            Invite members to your contact list
+            {t('Invite members to your contact list')}
             <CloseIcon className="close-icon" onClick={this.invitePeoples} />
           </DialogTitle>
           <DialogContent className="invite-module-content">
             <>
               <div className="row">
                 <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
-                  <label className="d-block">Email Address</label>
+                  <label className="d-block">{t('Email Address')}</label>
                 </div>
                 <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
-                  <label className="d-block">Name (Optional)</label>
+                  <label className="d-block">
+                    {t('Name')} ({t('Optional')})
+                  </label>
                 </div>
               </div>
               <div className="row">
                 <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                   <div className="form-group form-group-common">
-                    <input
-                      type="text"
-                      name="email"
-                      placeholder="Eg.James@example.com"
-                      className="form-control"
-                    />
+                    <input type="text" name="email" placeholder="Eg.James@example.com" className="form-control" />
                   </div>
                 </div>
                 <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                   <div className="form-group form-group-common">
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Eg.james"
-                      className="form-control"
-                    />
+                    <input type="text" name="name" placeholder="Eg.james" className="form-control" />
                   </div>
                 </div>
                 <div className="col-xl-2 col-lg-2 col-md-2 col-2">
@@ -278,13 +228,9 @@ class Kanban extends Component {
             </div>
           </DialogContent>
           <DialogActions className="invite-module-footer">
-            <Button
-              variant="contained"
-              className="invitation-btn"
-              onClick={this.sendInvitation}
-            >
+            <Button variant="contained" className="invitation-btn" onClick={this.sendInvitation}>
               <PersonAddIcon className="user-icon" />
-              Send Invitation
+              {t('Send Invitation')}
             </Button>
           </DialogActions>
         </Dialog>
@@ -331,30 +277,24 @@ class Kanban extends Component {
               </div>
             </div>
           </div>
-          {/* {this.movecardHerr()} */}
           <div className="row">
             <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              {quatationList.length === 0 &&
-                this.displayQuatation(quatationList)}
+              {quatationList.length === 0 && this.displayQuatation(quatationList)}
               <ReactSortable
                 list={quatationList}
-                setList={(newState) =>
-                  this.setState({ quatationList: newState })
-                }
+                setList={(newState) => this.setState({ quatationList: newState })}
                 className="row"
                 group="cards"
                 style={{
-                  position: `${quatationList <= 0 ? "absolute" : "relative"}`,
-                  height: `${quatationList <= 0 ? "112px" : "auto"}`,
-                  top: "0",
-                  width: `${quatationList <= 0 ? "100%" : "auto"}`,
+                  position: `${quatationList <= 0 ? 'absolute' : 'relative'}`,
+                  height: `${quatationList <= 0 ? '112px' : 'auto'}`,
+                  top: '0',
+                  width: `${quatationList <= 0 ? '100%' : 'auto'}`,
                 }}
-                onChange={(order, sortable, evt) => {}}
-                onEnd={(evt) => {}}
+                onChange={() => {}}
+                onEnd={() => {}}
               >
-                {quatationList &&
-                  quatationList.length > 0 &&
-                  this.displayQuatation(quatationList)}
+                {quatationList && quatationList.length > 0 && this.displayQuatation(quatationList)}
               </ReactSortable>
             </div>
             <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -365,17 +305,15 @@ class Kanban extends Component {
                 className="row"
                 group="cards"
                 style={{
-                  position: `${onProgress <= 0 ? "absolute" : "relative"}`,
-                  height: `${onProgress <= 0 ? "112px" : "auto"}`,
-                  top: "0",
-                  width: `${onProgress <= 0 ? "100%" : "auto"}`,
+                  position: `${onProgress <= 0 ? 'absolute' : 'relative'}`,
+                  height: `${onProgress <= 0 ? '112px' : 'auto'}`,
+                  top: '0',
+                  width: `${onProgress <= 0 ? '100%' : 'auto'}`,
                 }}
-                onChange={(order, sortable, evt) => {}}
-                onEnd={(evt) => {}}
+                onChange={() => {}}
+                onEnd={() => {}}
               >
-                {onProgress &&
-                  onProgress.length > 0 &&
-                  this.displayQuatation(onProgress)}
+                {onProgress && onProgress.length > 0 && this.displayQuatation(onProgress)}
               </ReactSortable>
             </div>
             <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -386,17 +324,15 @@ class Kanban extends Component {
                 className="row"
                 group="cards"
                 style={{
-                  position: `${completed <= 0 ? "absolute" : "relative"}`,
-                  height: `${completed <= 0 ? "112px" : "auto"}`,
-                  top: "0",
-                  width: `${completed <= 0 ? "100%" : "auto"}`,
+                  position: `${completed <= 0 ? 'absolute' : 'relative'}`,
+                  height: `${completed <= 0 ? '112px' : 'auto'}`,
+                  top: '0',
+                  width: `${completed <= 0 ? '100%' : 'auto'}`,
                 }}
-                onChange={(order, sortable, evt) => {}}
-                onEnd={(evt) => {}}
+                onChange={() => {}}
+                onEnd={() => {}}
               >
-                {completed &&
-                  completed.length > 0 &&
-                  this.displayQuatation(completed)}
+                {completed && completed.length > 0 && this.displayQuatation(completed)}
               </ReactSortable>
             </div>
 
@@ -408,17 +344,15 @@ class Kanban extends Component {
                 className="row"
                 group="cards"
                 style={{
-                  position: `${revised <= 0 ? "absolute" : "relative"}`,
-                  height: `${revised <= 0 ? "112px" : "auto"}`,
-                  top: "0",
-                  width: `${revised <= 0 ? "100%" : "auto"}`,
+                  position: `${revised <= 0 ? 'absolute' : 'relative'}`,
+                  height: `${revised <= 0 ? '112px' : 'auto'}`,
+                  top: '0',
+                  width: `${revised <= 0 ? '100%' : 'auto'}`,
                 }}
-                onChange={(order, sortable, evt) => {}}
-                onEnd={(evt) => {}}
+                onChange={() => {}}
+                onEnd={() => {}}
               >
-                {revised &&
-                  revised.length > 0 &&
-                  this.displayQuatation(revised)}
+                {revised && revised.length > 0 && this.displayQuatation(revised)}
               </ReactSortable>
             </div>
           </div>
@@ -435,4 +369,6 @@ function mapStateToProps(state) {
     kanban_list,
   };
 }
-export default connect(mapStateToProps)(Kanban);
+
+const connectedKanban = withTranslation()(connect(mapStateToProps)(Kanban));
+export default connectedKanban;

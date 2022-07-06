@@ -1,21 +1,15 @@
 import React, { Component } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
-import SearchSharpIcon from "@material-ui/icons/SearchSharp";
-
 import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
-import { RangeDatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
 import { connect } from "react-redux";
-import { recievedrfpAction } from "../../_actions";
 import { status } from "../../_constants";
 import { commonFunctions } from "../../_utilities";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
-import InputLabel from "@material-ui/core/InputLabel";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import { reportAction } from "../../_actions";
 
@@ -169,18 +163,17 @@ class Reports extends Component {
   };
 
   handleClickMethod = (event) => {
-    const { requiData } = this.state;
     event.preventDefault();
     this.setState({
       isSubmitted: true,
     });
     const errorData = this.validate(true);
     if (errorData.isValid) {
-      const sendReqData = {
-        status: requiData.status,
-        reqNo: requiData.reqNo,
-        depart: requiData.depart,
-      };
+      // const sendReqData = {
+      //   status: requiData.status,
+      //   reqNo: requiData.reqNo,
+      //   depart: requiData.depart,
+      // };
     }
   };
 
@@ -225,7 +218,7 @@ class Reports extends Component {
   };
 
   render() {
-    const { requiData, isSubmitted, columns, tableData, years, divisions } =
+    const { requiData, isSubmitted, columns, tableData } =
       this.state;
     const errorData = this.validate(isSubmitted);
     return (
@@ -274,7 +267,7 @@ class Reports extends Component {
             valueFromData={{ columns: columns, data: tableData }}
             perPageLimit={6}
             visiblecheckboxStatus={false}
-            isLoading={this.props.recieved_rfp_status === status.IN_PROGRESS}
+            isLoading={this.props.reports_status === status.IN_PROGRESS}
             tableClasses={{
               table: "ticket-tabel",
               tableParent: "tickets-tabel",

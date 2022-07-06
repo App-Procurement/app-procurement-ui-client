@@ -1,4 +1,3 @@
-import config from '../config';
 import { commonFunctions } from "../_utilities";
 import { apiEndPoint } from "./apiEndPoint";
 

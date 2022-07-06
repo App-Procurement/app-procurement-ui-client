@@ -1,4 +1,3 @@
-import config from '../config';
 import { commonFunctions } from "../_utilities";
 import { apiEndPoint } from "./apiEndPoint";
 
@@ -22,7 +21,7 @@ function getInvoice(data) {
         "Content-Type": "application/json"
     };
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
-    return fetch(`${apiEndPoint.INVOICE}/${data.id}`, requestOptions).then(response => response.json());
+    return fetch(`${apiEndPoint.INVOICE}/${data.id}`, requestOptions).then(response => response);
 }
 
 function searchInvoice() {
@@ -30,7 +29,7 @@ function searchInvoice() {
         "Content-Type": "application/json"
     };
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
-    return fetch(`${apiEndPoint.INVOICE}`, requestOptions).then(response => response.json());
+    return fetch(`${apiEndPoint.INVOICE}`, requestOptions).then(response => response);
 }
 
 function getNewInvoice() {

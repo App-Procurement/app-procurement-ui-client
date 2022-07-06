@@ -20,4 +20,4 @@ Install open-api-mocker
 
 Run the open-api-mocker (it will run the server on 5000)
 
-### `open-api-mocker -s openapitools.json -p 5000 -w`
+### ` open-api-mocker -s openapitools.json -p 5000 -w `

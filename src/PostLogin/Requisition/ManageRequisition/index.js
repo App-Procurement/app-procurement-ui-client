@@ -2,15 +2,13 @@ import React, { Component } from "react"
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
 import { RangeDatePicker } from '@y0c/react-datepicker';
 import "rc-calendar/assets/index.css";
 import '@y0c/react-datepicker/assets/styles/calendar.scss';
 import Table from '../../../Table/Table';
 import { connect } from 'react-redux';
-import { requistionAction, departmentAction } from '../../../_actions';
+import { requistionAction } from '../../../_actions';
 import { status } from '../../../_constants';
 import { commonFunctions, requisitionStatus, alert } from '../../../_utilities';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -18,6 +16,8 @@ import CreateIcon from '@material-ui/icons/Create';
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle, DialogActions, Tooltip } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 class ManageRequisition extends Component {
     constructor(props) {
         super(props)
@@ -44,36 +44,35 @@ class ManageRequisition extends Component {
                     label: 'Requisitions No',
                     key: 'id',
                     renderCallback: (value) => {
-                        return <td><span className={'requisitions-no'}>{value}</span></td>
+                        return <td>{value && <span className={'requisitions-no'}>{value}</span>}</td>
                     }
                 },
                 {
                     label: 'Request Date',
                     key: 'createdOn',
                     renderCallback: (value) => {
-                        return <td><span className={'date'}>{commonFunctions.convertDateToString(new Date(value))}</span></td>
+                        return <td>{value && <span className={'date'}>{commonFunctions.convertDateToString(new Date(value))}</span>}</td>
                     }
                 },
                 {
                     label: 'Request Department',
                     key: 'department',
                     renderCallback: (value) => {
-                        console.log("value",value)
-                        return <td><span className={'department-value'}>{value&& value.name}</span></td>
+                        return <td> {value && value.name && <span className={'department-value'}>{value.name}</span>}</td>
                     }
                 },
                 {
                     label: 'Requestor',
                     key: 'createdBy',
                     renderCallback: (value) => {
-                        return <td><span className={'requestor'}>{value}</span></td>
+                        return value ? <td><span className={'requestor'}>{value}</span></td> : <></>
                     }
                 },
                 {
                     label: 'Requisitions Total',
                     key: 'totalPrice',
                     renderCallback: (value, row) => {
-                        return <td><span className="price">{row.currency&&row.currency.code} {value}</span></td>
+                        return <td>{row && row.currency && row.currency.code && value && <span className="price">{row.currency.code} {value}</span>}</td>
                     }
                 },
                 {
@@ -82,7 +81,7 @@ class ManageRequisition extends Component {
                     renderCallback: (value) => {
                         return (
                             <td>
-                                <span className="status">{value}</span>
+                                {value && <span className="status">{value}</span>}
                             </td>
                         );
                     }
@@ -94,7 +93,7 @@ class ManageRequisition extends Component {
                         return (
                             <td>
                                 <div className="popper-toggle">
-                                    {row.status == requisitionStatus.APPROVED &&
+                                    {row.status === requisitionStatus.APPROVED &&
                                         <Tooltip title="You can not edit approved requisition">
                                             <Button area-label="You can not edit approved requisition" className="disabled">
                                                 <CreateIcon />
@@ -111,7 +110,7 @@ class ManageRequisition extends Component {
                                             <Link to={`/postlogin/managerequisition/${value}`}> <CreateIcon /></Link>
                                         </Button>
                                     }
-                                    {row.status == requisitionStatus.DRAFT &&
+                                    {row.status === requisitionStatus.DRAFT &&
                                         <Button>
                                             <DeleteIcon onClick={() => this.onClickDelete(value)} />
                                         </Button>
@@ -222,54 +221,52 @@ class ManageRequisition extends Component {
         if (department_list) {
             for (let i = 0; i < department_list.length; i++) {
                 retData.push(
-                    <option value={department_list[i].id}>{department_list[i].name}</option>
+                    <option key={i} value={department_list[i].id}>{department_list[i].name}</option>
                 )
             }
         }
         return retData;
     }
 
-    validate = (isSubmitted) => {
-        const validObj = {
-            isValid: true,
-            message: ""
-        };
-        let isValid = true;
-        const retData = {
-            status: validObj,
-            requisitionNo: validObj,
-            department: validObj,
-            isValid
-        };
-        if (isSubmitted) {
-            const { searchData } = this.state;
-            if (!searchData.status) {
-                retData.status = {
-                    isValid: false,
-                    message: "Filter By Status  is required"
-                };
-                isValid = false;
-            }
-            if (!searchData.requisitionNo) {
-                retData.requisitionNo = {
-                    isValid: false,
-                    message: "Requisitions no is required"
-                };
-                isValid = false;
-            }
-            if (!searchData.department) {
-                retData.department = {
-                    isValid: false,
-                    message: "Department is required"
-                };
-                isValid = false;
-            }
-
-
-        }
-        retData.isValid = isValid;
-        return retData;
-    };
+    // validate = (isSubmitted) => {
+    //     const validObj = {
+    //         isValid: true,
+    //         message: ""
+    //     };
+    //     let isValid = true;
+    //     const retData = {
+    //         status: validObj,
+    //         requisitionNo: validObj,
+    //         department: validObj,
+    //         isValid
+    //     };
+    //     if (isSubmitted) {
+    //         const { searchData } = this.state;
+    //         if (!searchData.status) {
+    //             retData.status = {
+    //                 isValid: false,
+    //                 message: "Filter By Status  is Required"
+    //             };
+    //             isValid = false;
+    //         }
+    //         if (!searchData.requisitionNo) {
+    //             retData.requisitionNo = {
+    //                 isValid: false,
+    //                 message: "Requisitions No is Required"
+    //             };
+    //             isValid = false;
+    //         }
+    //         if (!searchData.department) {
+    //             retData.department = {
+    //                 isValid: false,
+    //                 message: "Department is Required"
+    //             };
+    //             isValid = false;
+    //         }
+    //     }
+    //     retData.isValid = isValid;
+    //     return retData;
+    // };
 
     handleDatePicker = (start, end) => {
         const { searchData } = this.state;
@@ -287,17 +284,18 @@ class ManageRequisition extends Component {
     }
 
     render() {
-        const { searchData, isSubmitted, openDialog, isLoading } = this.state;
+        const { searchData, openDialog } = this.state;
         const { requisition_status } = this.props;
         return (
             <div className="main-content">
                 <div className="manage-requisitions">
                     <div className="heading">
-                        <h4>Manage Requisitions</h4>
+                        <h4>{t("Manage Requisitions")}</h4>
                     </div>
                     <div className="requisitions-filter">
                         <div className="form-group row col-form-group">
-                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Filter By Status</label>
+                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t("Filter By Status")}</label>
+                            <p className="error">Error Message</p>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <FormControl className="select-menu">
                                     <NativeSelect name="status" value={searchData.status}
@@ -313,15 +311,15 @@ class ManageRequisition extends Component {
                             </div>
                         </div>
                         <div className="form-group row col-form-group">
-                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Requisitions no</label>
+                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t("Requisitions no")}</label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
-                                <input placeholder="647598" name="requisitionNo" value={searchData.requisitionNo}
+                                <input placeholder="647598" name="requisitionNo" value={searchData.requisitionNo || ""}
                                     onChange={this.handleStateChange} className="light-input" />
                                 {/* <span className="d-block w-100 text-danger">{errorData.requisitionNo.message}</span> */}
                             </div>
                         </div>
                         <div className="form-group row col-form-group">
-                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Date Range</label>
+                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t("Date Range")}</label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <div className="d-flex align-items-center">
                                     <div className="d-flex align-items-center date-picker">
@@ -333,7 +331,7 @@ class ManageRequisition extends Component {
                             </div>
                         </div>
                         <div className="form-group row col-form-group">
-                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Department</label>
+                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t("Department")}</label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <FormControl className="select-menu filter-status">
                                     <NativeSelect name="department" value={searchData.department} onChange={this.handleStateChange}>
@@ -347,7 +345,7 @@ class ManageRequisition extends Component {
                         <div className="form-group row col-form-group">
                             <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label"></label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-button">
-                                <Button variant="contained" className="primary-btn search_button_manage" disableElevation onClick={this.onClickSearch} disabled={requisition_status === status.IN_PROGRESS}>
+                                <Button variant="contained" className="primary-btn" disableElevation onClick={this.onClickSearch} disabled={requisition_status === status.IN_PROGRESS}>
                                     Search
                                 </Button>
                                 <Button variant="contained" onClick={this.clearSearch} className="default-btn ml-2">
@@ -357,7 +355,7 @@ class ManageRequisition extends Component {
                         </div>
                     </div>
                     <Table valueFromData={{ columns: this.state.columns, data: this.state.requistionList }} perPageLimit={6} visiblecheckboxStatus={false}
-                        isLoading={this.props.requisition_status == status.IN_PROGRESS}
+                        isLoading={this.props.requisition_status === status.IN_PROGRESS}
                         tableClasses={{ table: "ticket-tabel", tableParent: "tickets-tabel", parentClass: "all-support-ticket-tabel" }} searchKey="subject" showingLine="Showing %start% to %end% of %total% Tickets" />
                 </div>
                 <Dialog open={openDialog} onClose={() => this.setState({ openDialog: false })} aria-labelledby="form-dialog-title" className="addNewItemDialog">
@@ -393,6 +391,5 @@ function mapStateToProps(state) {
         delete_requisition_status
     };
 }
-
-const connectedManageRequisition = connect(mapStateToProps)(ManageRequisition);
-export default (connectedManageRequisition);
+const connectedManageRequisition = withTranslation()(connect(mapStateToProps)(ManageRequisition));
+export default connectedManageRequisition;

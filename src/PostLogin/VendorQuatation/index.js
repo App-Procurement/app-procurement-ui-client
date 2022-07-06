@@ -2,14 +2,16 @@ import React, { Component } from "react"
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '@material-ui/core/Button';
-import { RangeDatePicker, DatePicker } from '@y0c/react-datepicker';
+import { RangeDatePicker } from '@y0c/react-datepicker';
 import Table from '../../Table/Table';
 import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
-import { Link, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { Link } from "@material-ui/core";
 import { commonFunctions } from "../../_utilities";
 import { connect } from "react-redux";
 import { vendorAction } from '../../_actions';
 import { status } from "../../_constants";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 
 class VendorQuotation extends Component {
     constructor(props) {
@@ -93,7 +95,7 @@ class VendorQuotation extends Component {
         this.props.dispatch(vendorAction.getVendorQuotation())
     }
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.vendor_quotation_status !== prevProps.vendor_quotation_status && this.props.vendor_quotation_status == status.SUCCESS) {
+        if (this.props.vendor_quotation_status !== prevProps.vendor_quotation_status && this.props.vendor_quotation_status === status.SUCCESS) {
             if (this.props.vendor_quotation && this.props.vendor_quotation.length > 0) {
                 this.setState({
                     vendorQuatation: this.props.vendor_quotation
@@ -132,12 +134,12 @@ class VendorQuotation extends Component {
             <div className="main-content">
                 <div className="receivedrfq-content">
                     <div className="heading">
-                        <h4>Vendor quotation</h4>
+                        <h4>{t("Vendor quotation")}</h4>
                     </div>
                     <div className="requisitions-filter">
                         <div className="form-group row col-form-group">
                             <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                                Filter By Status
+                                {t("Filter By Status")}
                             </label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <FormControl className="select-menu">
@@ -160,7 +162,7 @@ class VendorQuotation extends Component {
                         </div>
                         <div className="form-group row col-form-group">
                             <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                                Date Range
+                                {t("Date Range")}
                             </label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <div className="d-flex align-items-center">
@@ -217,5 +219,6 @@ function mapStateToProps(state) {
         vendor_quotation,
     }
 }
-const connectVendorQuotation = connect(mapStateToProps, null)(VendorQuotation);
-export default connectVendorQuotation
+
+const connectedVendorQuotation = withTranslation()(connect(mapStateToProps)(VendorQuotation));
+export default connectedVendorQuotation;

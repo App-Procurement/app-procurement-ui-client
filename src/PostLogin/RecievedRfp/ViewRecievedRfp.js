@@ -5,8 +5,6 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import BlockIcon from "@material-ui/icons/Block";
 import { recievedrfpAction } from "../../_actions";
 import { status } from "../../_constants";
-import Loader from "../../_components/commonLoader";
-import { commonFunctions } from "../../_utilities";
 
 class ViewRecievedRfp extends Component {
   constructor(props) {
@@ -48,7 +46,7 @@ class ViewRecievedRfp extends Component {
 
   addRecievedRfp = (status) => {
     const { comment } = this.state;
-    if (comment && comment != "") {
+    if (comment && comment !== "") {
       this.props.dispatch(
         recievedrfpAction.addRecieveRFP({
           id: this.props.match.params.id,

@@ -1,6 +1,6 @@
 import { status } from "../_constants";
 import { emailServices } from "../_services";
-import { alert, commonFunctions } from "../_utilities";
+import { alert } from "../_utilities";
 
 export const emailActions = {
   recentcommunication,
@@ -51,7 +51,7 @@ function recentcommunication(data) {
       (error) => {
         dispatch(
           dispatchFunction({
-            type: status.status.FAILURE,
+            type: status.FAILURE,
             data: {
               search_email_status: status.FAILURE,
               search_email: error.message,
@@ -77,7 +77,7 @@ function searchallemails(data) {
     );
     emailServices.searchallemails(data).then(
       (response) => {
-        
+
         if (response.code === 200) {
           dispatch(
             dispatchFunction({

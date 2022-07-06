@@ -1,13 +1,13 @@
-import { rolesServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+// import { rolesServices } from '../_services';
+// import { alert, commonFunctions } from '../_utilities';
 
-export const rolesAction = {
-    // addRoles,
-    // deleteRoles,
-    // getRoles,
-    // searchRoles,
-    // updateRoles
-};
+// export const rolesAction = {
+//     // addRoles,
+//     // deleteRoles,
+//     // getRoles,
+//     // searchRoles,
+//     // updateRoles
+// };
 
 // function addRoles(data) {
 //     return dispatch => {
@@ -174,16 +174,16 @@ export const rolesAction = {
 //     };
 // }
 
-function dispatchFunction(data) {
-    // if (data.data && data.data.code === 401) {
-    //     commonFunctions.onLogout();
-    //     return {
-    //         type: authConstants.USER_LOGOUT,
-    //         data: null
-    //     };
-    // }
-    return {
-        type: data.type,
-        data: data.data
-    };
-}
+// function dispatchFunction(data) {
+//     // if (data.data && data.data.code === 401) {
+//     //     commonFunctions.onLogout();
+//     //     return {
+//     //         type: authConstants.USER_LOGOUT,
+//     //         data: null
+//     //     };
+//     // }
+//     return {
+//         type: data.type,
+//         data: data.data
+//     };
+// }

@@ -1,7 +1,8 @@
 import React from 'react';
-import ManageRequisitionData from '../PostLogin/Requisition/ManageRequisition/ManageRequisitionData';
-import SendRfq from '../PostLogin/SendRfq';
-import VendorQuotation from '../PostLogin/VendorQuatation';
+// import ManageRequisitionData from '../PostLogin/Requisition/ManageRequisition/ManageRequisitionData';
+// import SendRfq from '../PostLogin/SendRfq';
+// import VendorQuotation from '../PostLogin/VendorQuatation';
+
 const Dashbord = React.lazy(() => import('../PostLogin/Dashbord'));
 const EmailPage = React.lazy(() => import('../PostLogin/Email/EmailPage'));
 const Kanban = React.lazy(() => import('../PostLogin/Kanban'));
@@ -19,7 +20,7 @@ const Contact = React.lazy(() => import('../PostLogin/Contact'));
 const addNewContact = React.lazy(() => import('../PostLogin/Contact/addNewContact'));
 const VendorEnroll = React.lazy(() => import('../PostLogin/VendorEnroll'));
 const Invoices = React.lazy(() => import('../PostLogin/Invoices'));
-const ViewInvoice = React.lazy(() => import('../PostLogin/Invoices/ViewInvoice'))
+const ViewInvoice = React.lazy(() => import('../PostLogin/Invoices/ViewInvoice'));
 const Calender = React.lazy(() => import('../PostLogin/Calender'));
 const selectCommitteeMember = React.lazy(() => import('../PostLogin/SetUpCommittee/selectCommitteeMember'));
 const ViewRecievedRfp = React.lazy(() => import('../PostLogin/RecievedRfp/ViewRecievedRfp'));
@@ -27,59 +28,351 @@ const TrackRfp = React.lazy(() => import('../PostLogin/RecievedRfp/TrackRfp'));
 const ViewRecievedRfq = React.lazy(() => import('../PostLogin/RecievedRfq/ViewRecievedRfq'));
 const ViewPurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/viewPo'));
 const AddInvoices = React.lazy(() => import('../PostLogin/Invoices/AddNewInvoice'));
-const ApprovePo = React.lazy(() => import('../PostLogin/GeneratePo/approvePo'));
+const PurcahseOrder = React.lazy(() => import('../PostLogin/GeneratePo/purchaseOrder'));
 const BudgetOverview = React.lazy(() => import('../PostLogin/BudgetOverview'));
 const Reports = React.lazy(() => import('../PostLogin/Reports'));
-const PurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/purchaseOrder'));
+const ApprovePurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/approvePo'));
 const BudgetAllocate = React.lazy(() => import('../PostLogin/BudgetOverview/allocatedBudget'));
-const BudgetAllocation = React.lazy(() => import("../PostLogin/BudgetOverview/BudgetAllocation"));
-const Vendors = React.lazy(() => import("../PostLogin/Vendors/index"));
-
-
-
+const BudgetAllocation = React.lazy(() => import('../PostLogin/BudgetOverview/BudgetAllocation'));
+const VendorQuotation = React.lazy(() => import('../PostLogin/VendorQuatation'));
+const Vendors = React.lazy(() => import('../PostLogin/Vendors'));
+const SendRfq = React.lazy(() => import('../PostLogin/SendRfq'));
+const ManageRequisitionData = React.lazy(() =>
+	import('../PostLogin/Requisition/ManageRequisition/ManageRequisitionData')
+);
+const ChatRoom = React.lazy(() => import('../PostLogin/ChatRoom/index'));
+const RequestForPurpose = React.lazy(() => import('../PostLogin/RequestForPurpose'));
+const CreateNewRequest = React.lazy(() => import('../PostLogin/RequestForPurpose/createNewRequest'));
+const ViewRequest = React.lazy(() => import('../PostLogin/RequestForPurpose/viewRequests'));
+const PurchaseRequisition = React.lazy(() => import('../PostLogin/Requisition/PurchaseRequisition'));
+const PurchaseRequisitionDetail = React.lazy(() =>
+	import('../PostLogin/Requisition/PurchaseRequisition/PurchaseRequisitionDetail')
+);
+const ActiveProductCatalogue = React.lazy(() => import('../PostLogin/ManageSupplier/ActiveProductCatalogue'));
+const AddSupplier = React.lazy(() => import('../PostLogin/ManageSupplier/AddSupplier'));
+const CreatChatRooms = React.lazy(() => import('../PostLogin/ChatRoom/CreateChatRoom'));
+const ManageSupplier = React.lazy(() => import('../PostLogin/ManageSupplier/index'));
+const ActiveSuppliers = React.lazy(() => import('../PostLogin/ManageSupplier/ActiveSupplier'));
+const ViewSupplierDetail = React.lazy(() => import('../PostLogin/ManageSupplier/ViewSupplierDetail'));
+const AddProduct =React.lazy(()=>import('../PostLogin/ManageSupplier/AddProduct'));
+const Setting =React.lazy(()=>import('../PostLogin/Setting'));
 const routes = [
-    { path: '/postlogin/dashboard', exact: true, name: 'Dashbord', component: Dashbord },
-    // { path: '/postlogin/email', exact: true, name: 'EmailPage', component: EmailPage },
-    { path: '/postlogin/email/:type/', exact: true, name: 'EmailPage', component: EmailPage },
-    { path: '/postlogin/email/:type/:priorty', exact: true, name: 'EmailPage', component: EmailPage },
-    { path: '/postlogin/email/:type/:priorty/:id', exact: true, name: 'EmailPage', component: EmailPage },
-    { path: '/postlogin/kanban', exact: true, name: 'Kanban', component: Kanban },
-    { path: '/postlogin/requisitiontracker', exact: true, name: 'RequisitionTracker', component: RequisitionTracker },
-    { path: '/postlogin/newrequisition', exact: true, name: 'NewRequisition', component: NewRequisition },
-    { path: '/postlogin/managerequisition/:id', exact: true, name: 'NewRequisition', component: NewRequisition },
-    { path: '/postlogin/approvedrequisition', exact: true, name: 'ApprovedRequisition', component: ApprovedRequisition },
-    { path: '/postlogin/viewdetails/:id', exact: true, name: 'ViewRequisition', component: ViewRequisition },
-    { path: '/postlogin/selectbuyers/:id', exact: true, name: 'SelectBuyers', component: SelectBuyers },
-    { path: '/postlogin/setupcommittee', exact: true, name: 'SetUpCommittee', component: SetUpCommittee },
-    { path: '/postlogin/frp/:url', exact: true, name: 'RecievedRfp', component: RecievedRfp },
-    { path: '/postlogin/recievedrfq', exact: true, name: 'RecievedRfq', component: RecievedRfq },
-    { path: '/postlogin/generatepo', exact: true, name: 'GeneratePo', component: GeneratePo },
-    { path: '/postlogin/generatepo/:id', exact: true, name: 'ViewPurchaseOrder', component: ViewPurchaseOrder },
-    { path: '/postlogin/contact', exact: true, name: 'Contact', component: Contact },
-    { path: '/postlogin/newcontact', exact: true, name: 'addNewContact', component: addNewContact },
-    { path: '/postlogin/newcontact/:id', exact: true, name: 'addNewContact', component: addNewContact },
-    { path: '/postlogin/vendorenroll', exact: true, name: 'VendorEnroll', component: VendorEnroll },
-    { path: '/postlogin/invoices', exact: true, name: 'Invoices', component: Invoices },
-    { path: '/postlogin/viewinvoice/:id', exact: true, name: 'ViewInvoices', component: ViewInvoice },
-    { path: '/postlogin/managerequisition', exact: true, name: 'ManageRequisition', component: ManageRequisition },
-    { path: '/postlogin/calender', exact: true, name: 'Calender', component: Calender },
-    { path: '/postlogin/selectecommittee', exact: true, name: 'selectCommitteeMember', component: selectCommitteeMember },
-    { path: '/postlogin/frp/:url/:id', exact: true, name: 'ViewRecievedRfp', component: ViewRecievedRfp },
-    { path: '/postlogin/frp/:url/trackrfp/:id', exact: true, name: 'TrackRfp', component: TrackRfp },
-    { path: '/postlogin/recivedrfq/:id', exact: true, name: 'ViewRecievedRfq', component: ViewRecievedRfq },
-    { path: '/postlogin/invoices/newinvoice', exact: true, name: 'AddInvoices', component: AddInvoices },
-    { path: '/postlogin/approvepo', exact: true, name: 'ApprovePo', component: ApprovePo },
-    { path: '/postlogin/budgetoverview', exact: true, name: 'BudgetOverview', component: BudgetOverview },
-    { path: '/postlogin/reports', exact: true, name: 'Reports', component: Reports },
-    { path: '/postlogin/approvepo/:id', exact: true, name: 'PurchaseOrder', component: PurchaseOrder },
-    { path: '/postlogin/budgetoverview/:id', exact: true, name: 'BudgetAllocate', component: BudgetAllocate },
-    { path: "/postlogin/budgetallocation", exact: true, name: "BudgetAllocation", component: BudgetAllocation },
-    { path: "/postlogin/vendorquotation", exact: true, name: "VendorQuotation", component: VendorQuotation },
-    { path: '/postlogin/vendors', exact: true, name: "Vendors", component: Vendors },
-    { path: '/postlogin/sendrfq', exact: true, name: "sendrfq", component: SendRfq },
-    { path: '/postlogin/requisitiondetails/:id', exact: true, name: 'ManageRequisitionData', component: ManageRequisitionData },
+	{
+		path: '/postlogin/dashboard',
+		exact: true,
+		name: 'Dashbord',
+		component: Dashbord
+	},
+	// { path: '/postlogin/email', exact: true, name: 'EmailPage', component: EmailPage },
+	{
+		path: '/postlogin/email/:type/',
+		exact: true,
+		name: 'EmailPage',
+		component: EmailPage
+	},
+	{
+		path: '/postlogin/email/:type/:priorty',
+		exact: true,
+		name: 'EmailPage',
+		component: EmailPage
+	},
+	{
+		path: '/postlogin/email/:type/:priorty/:id',
+		exact: true,
+		name: 'EmailPage',
+		component: EmailPage
+	},
+	{ path: '/postlogin/kanban', exact: true, name: 'Kanban', component: Kanban },
+	{
+		path: '/postlogin/requisitiontracker',
+		exact: true,
+		name: 'RequisitionTracker',
+		component: RequisitionTracker
+	},
+	{
+		path: '/postlogin/newrequisition',
+		exact: true,
+		name: 'NewRequisition',
+		component: NewRequisition
+	},
+	{
+		path: '/postlogin/managerequisition/:id',
+		exact: true,
+		name: 'NewRequisition',
+		component: NewRequisition
+	},
+	{
+		path: '/postlogin/approvedrequisition',
+		exact: true,
+		name: 'ApprovedRequisition',
+		component: ApprovedRequisition
+	},
+	{
+		path: '/postlogin/purchaserequisition',
+		exact: true,
+		name: 'PurchaseRequisition',
+		component: PurchaseRequisition
+	},
+	{
+		path: '/postlogin/purchaserequisition/:id',
+		exact: true,
+		name: 'PurchaseRequisitionDetail',
+		component: PurchaseRequisitionDetail
+	},
+	{
+		path: '/postlogin/viewdetails/:id',
+		exact: true,
+		name: 'ViewRequisition',
+		component: ViewRequisition
+	},
+	{
+		path: '/postlogin/selectbuyers/:id',
+		exact: true,
+		name: 'SelectBuyers',
+		component: SelectBuyers
+	},
+	{
+		path: '/postlogin/setupcommittee',
+		exact: true,
+		name: 'SetUpCommittee',
+		component: SetUpCommittee
+	},
+	{
+		path: '/postlogin/frp/:url',
+		exact: true,
+		name: 'RecievedRfp',
+		component: RecievedRfp
+	},
+	{
+		path: '/postlogin/recievedrfq',
+		exact: true,
+		name: 'RecievedRfq',
+		component: RecievedRfq
+	},
+	{
+		path: '/postlogin/generatepo',
+		exact: true,
+		name: 'GeneratePo',
+		component: GeneratePo
+	},
+	{
+		path: '/postlogin/generatepo/:id',
+		exact: true,
+		name: 'ViewPurchaseOrder',
+		component: ViewPurchaseOrder
+	},
+	{
+		path: '/postlogin/contact',
+		exact: true,
+		name: 'Contact',
+		component: Contact
+	},
+	{
+		path: '/postlogin/newcontact',
+		exact: true,
+		name: 'addNewContact',
+		component: addNewContact
+	},
+	{
+		path: '/postlogin/newcontact/:id',
+		exact: true,
+		name: 'addNewContact',
+		component: addNewContact
+	},
+	{
+		path: '/postlogin/vendorenroll',
+		exact: true,
+		name: 'VendorEnroll',
+		component: VendorEnroll
+	},
+	{
+		path: '/postlogin/invoices',
+		exact: true,
+		name: 'Invoices',
+		component: Invoices
+	},
+	{
+		path: '/postlogin/viewinvoice/:id',
+		exact: true,
+		name: 'ViewInvoices',
+		component: ViewInvoice
+	},
+	{
+		path: '/postlogin/managerequisition',
+		exact: true,
+		name: 'ManageRequisition',
+		component: ManageRequisition
+	},
+	{
+		path: '/postlogin/calender',
+		exact: true,
+		name: 'Calender',
+		component: Calender
+	},
+	{
+		path: '/postlogin/selectecommittee',
+		exact: true,
+		name: 'selectCommitteeMember',
+		component: selectCommitteeMember
+	},
+	{
+		path: '/postlogin/frp/:url/:id',
+		exact: true,
+		name: 'ViewRecievedRfp',
+		component: ViewRecievedRfp
+	},
+	{
+		path: '/postlogin/frp/:url/trackrfp/:id',
+		exact: true,
+		name: 'TrackRfp',
+		component: TrackRfp
+	},
+	{
+		path: '/postlogin/recivedrfq/:id',
+		exact: true,
+		name: 'ViewRecievedRfq',
+		component: ViewRecievedRfq
+	},
+	{
+		path: '/postlogin/invoices/newinvoice',
+		exact: true,
+		name: 'AddInvoices',
+		component: AddInvoices
+	},
+	{
+		path: '/postlogin/purchaseorder',
+		exact: true,
+		name: 'PurcahseOrder',
+		component: PurcahseOrder
+	},
+	{
+		path: '/postlogin/budgetoverview',
+		exact: true,
+		name: 'BudgetOverview',
+		component: BudgetOverview
+	},
+	{
+		path: '/postlogin/reports',
+		exact: true,
+		name: 'Reports',
+		component: Reports
+	},
+	{
+		path: '/postlogin/approvepo/:id',
+		exact: true,
+		name: 'ApprovePurchaseOrder',
+		component: ApprovePurchaseOrder
+	},
+	{
+		path: '/postlogin/budgetoverview/:id',
+		exact: true,
+		name: 'BudgetAllocate',
+		component: BudgetAllocate
+	},
+	{
+		path: '/postlogin/budgetallocation',
+		exact: true,
+		name: 'BudgetAllocation',
+		component: BudgetAllocation
+	},
+	{
+		path: '/postlogin/vendorquotation',
+		exact: true,
+		name: 'VendorQuotation',
+		component: VendorQuotation
+	},
+	{
+		path: '/postlogin/vendors',
+		exact: true,
+		name: 'Vendors',
+		component: Vendors
+	},
+	{
+		path: '/postlogin/sendrfq',
+		exact: true,
+		name: 'sendrfq',
+		component: SendRfq
+	},
+	{
+		path: '/postlogin/requisitiondetails/:id',
+		exact: true,
+		name: 'ManageRequisitionData',
+		component: ManageRequisitionData
+	},
+	{
+		path: '/postlogin/chatroom',
+		exact: true,
+		name: 'ChatRoom',
+		component: ChatRoom
+	},
+	{
+		path: '/postlogin/createchatroom',
+		exact: true,
+		name: 'CreateChatRoom',
+		component: CreatChatRooms
+	},
+	{
+		path: '/postlogin/requestforpurpose',
+		exact: true,
+		name: 'RequestPurpose',
+		component: RequestForPurpose
+	},
+	{
+		path: '/postlogin/requestforpurpose/viewrequest/:id',
+		exact: true,
+		name: 'ViewRequest',
+		component: ViewRequest
+	},
+	{
+		path: '/postlogin/requestforpurpose/newrequest',
+		exact: true,
+		name: 'CreateNewRequest',
+		component: CreateNewRequest
+	},
+	{
+		path: '/postlogin/managesupplier',
+		exact: true,
+		name: 'ManageSupplier',
+		component: ManageSupplier
+	},
+	{
+		path: '/postlogin/managesupplier/activesuppliers',
+		exact: true,
+		name: 'ActiveSuppliers',
+		component: ActiveSuppliers
+	},
+	{
+		path: '/postlogin/managesupplier/addsupplier',
+		exact: true,
+		name: 'AddSupplier',
+		component: AddSupplier
+	},
+	{
+		path: '/postlogin/activeproductcatalogue',
+		exact: true,
+		name: 'ActiveProductCatalogue',
+		component: ActiveProductCatalogue
+	},
+  {
+    path: '/postlogin/viewsupplierdetail',
+    exact: true,
+    name: 'ViewSupplierDetail',
+    component: ViewSupplierDetail
+  
+  },
+  {
+    path:'/postlogin/addproduct',
+    exact: true,
+    name: 'AddProduct',
+    component: AddProduct
+  },
+  {
+    path:'/postlogin/setting',
+    exact: true,
+    name: 'Setting',
+    component: Setting
+  }
 
-
-]
+];
 
 export default routes;

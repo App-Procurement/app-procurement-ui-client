@@ -1,6 +1,6 @@
 import { status } from '../_constants';
 import { contactServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+import { alert } from '../_utilities';
 
 export const contactAction = {
   addContact,
@@ -23,19 +23,22 @@ function fetchContactList() {
     contactServices.fetchContactList()
       .then(
         response => {
-          if (response.code == 200) {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                get_contact_status: status.SUCCESS,
-                getContact: response.object
-              }
-            }));
+          const code = response.status;
+          if (code === 200) {
+            response.json().then(data => {
+              dispatch(dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  get_contact_status: status.SUCCESS,
+                  getContact: data
+                }
+              }));
+            });
           } else {
             dispatch(dispatchFunction({
               type: status.FAILURE,
               data: {
-                get_contact_status: status.SUCCESS,
+                get_contact_status: status.FAILURE,
                 getContact: response
               }
             }));
@@ -68,15 +71,18 @@ function addContact(data) {
     contactServices.addContact(data)
       .then(
         response => {
-          if (response.code == 200) {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                add_contact_status: status.SUCCESS,
-                addContact: response.object
-              }
-            }));
-            alert.success(response.message);
+          const code = response.status;
+          if (code === 200) {
+            response.json().then(data => {
+              dispatch(dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  add_contact_status: status.SUCCESS,
+                  addContact: data
+                }
+              }));
+              alert.success('Contact added successfully');
+            });
           } else {
             dispatch(dispatchFunction({
               type: status.FAILURE,
@@ -114,15 +120,18 @@ function deleteContact(id) {
     contactServices.deleteContact(id)
       .then(
         response => {
-          if (response.code == 200) {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                delete_contact_status: status.SUCCESS,
-                deleteContact: response.object
-              }
-            }));
-            alert.success(response.message);
+          const code = response.status;
+          if (code === 200) {
+            alert.success('contact deleted successfully');
+            response.json().then(data => {
+              dispatch(dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  delete_contact_status: status.SUCCESS,
+                  deleteContact: data
+                }
+              }));
+            });
           } else {
             dispatch(dispatchFunction({
               type: status.FAILURE,
@@ -153,27 +162,27 @@ function getContactData(data) {
     dispatch(dispatchFunction({
       type: status.IN_PROGRESS,
       data: {
-        get_contact_status: status.IN_PROGRESS,
-        getContact: null
+        get_contact_singal_status: status.IN_PROGRESS,
+        contact: null
       }
     }));
     contactServices.getContactData(data)
       .then(
         response => {
-          if (response.code == 200) {
+          if (response.code === 200) {
             dispatch(dispatchFunction({
               type: status.SUCCESS,
               data: {
-                get_contact_status: status.SUCCESS,
-                getContact: response.object
+                get_contact_singal_status: status.SUCCESS,
+                contact: response.object
               }
             }));
           } else {
             dispatch(dispatchFunction({
               type: status.FAILURE,
               data: {
-                get_contact_status: status.FAILURE,
-                getContact: response
+                get_contact_singal_status: status.FAILURE,
+                contact: response
               }
             }));
             alert.error(response.message);
@@ -183,8 +192,8 @@ function getContactData(data) {
           dispatch(dispatchFunction({
             type: status.FAILURE,
             data: {
-              get_contact_status: status.FAILURE,
-              getContact: error.message
+              get_contact_singal_status: status.FAILURE,
+              contact: error.message
             }
           }));
           alert.error(error.message);
@@ -205,7 +214,7 @@ function updateContact(data) {
     contactServices.updateContact(data)
       .then(
         response => {
-          if (response.code == 200) {
+          if (response.code === 200) {
             dispatch(dispatchFunction({
               type: status.SUCCESS,
               data: {

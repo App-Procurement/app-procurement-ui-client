@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Route, NavLink } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { commonFunctions, alert, GA } from '../_utilities';
+import { GA } from '../_utilities';
 import { eventActions, eventCategories } from '../_constants';
 import routes from '../_routes/loginRoutes';
 

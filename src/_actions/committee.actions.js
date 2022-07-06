@@ -1,6 +1,6 @@
 import { status } from '../_constants';
 import { committeeServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+import { alert } from '../_utilities';
 
 export const committeeAction = {
     addCommittee,
@@ -8,8 +8,7 @@ export const committeeAction = {
     getCommitteeType,
     searchCommittee,
     // updateCommittee,
-    addSelectedMember,
-    searchCommitteeMembers
+    addSelectedMember
 };
 
 function addCommittee(data) {
@@ -24,18 +23,21 @@ function addCommittee(data) {
         committeeServices.addCommittee(data)
             .then(
                 response => {
-                    if (response == 200) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                add_committee_status: status.SUCCESS,
-                                addCommittee: response.object
-                            }
-                        }));
-                        alert.success(response.message);
+                    const code = response.status;
+                    if (code === 200) {
+                        alert.success('Send Invitation Successfully');
+                        response.json().then(data => {
+                            dispatch(dispatchFunction({
+                                type: status.SUCCESS,
+                                data: {
+                                    add_committee_status: status.SUCCESS,
+                                    addCommittee: data
+                                }
+                            }));
+                        });
                     } else {
                         dispatch(dispatchFunction({
-                            type: status.SUCCESS,
+                            type: status.FAILURE,
                             data: {
                                 add_committee_status: status.FAILURE,
                                 addCommittee: response
@@ -136,59 +138,17 @@ function searchCommittee(data) {
         committeeServices.searchCommittee(data)
             .then(
                 response => {
-                    if (response ) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                search_committee_status: status.SUCCESS,
-                                searchCommittee: response
-                            }
-                        }));
-                    } else {
-                        dispatch(dispatchFunction({
-                            type: status.FAILURE,
-                            data: {
-                                search_committee_status: status.FAILURE,
-                                searchCommittee: response
-                            }
-                        }));
-                        alert.error(response.message);
-                    }
-                },
-                error => {
-                    dispatch(dispatchFunction({
-                        type: status.FAILURE,
-                        data: {
-                            search_committee_status: status.FAILURE,
-                            searchCommittee: error.message
-                        }
-                    }));
-                    alert.error(error.message);
-                }
-            );
-    };
-}
-
-function searchCommitteeMembers(data) {
-    return dispatch => {
-        dispatch(dispatchFunction({
-            type: status.IN_PROGRESS,
-            data: {
-                search_committee_status: status.IN_PROGRESS,
-                searchCommittee: null
-            }
-        }));
-        committeeServices.searchCommitteeMembers(data)
-            .then(
-                response => {
-                    if (response ) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                search_committee_status: status.SUCCESS,
-                                searchCommittee: response
-                            }
-                        }));
+                    const code = response.status;
+                    if (code === 200) {
+                        response.json().then(data => {
+                            dispatch(dispatchFunction({
+                                type: status.SUCCESS,
+                                data: {
+                                    search_committee_status: status.SUCCESS,
+                                    searchCommittee: data
+                                }
+                            }));
+                        });
                     } else {
                         dispatch(dispatchFunction({
                             type: status.FAILURE,
@@ -226,14 +186,17 @@ function getCommitteeType(data) {
         committeeServices.getCommitteeType(data)
             .then(
                 response => {
-                    if (response) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                get_committee_type_status: status.SUCCESS,
-                                getCommitteeType: response
-                            }
-                        }));
+                    const code = response.status;
+                    if (code === 200) {
+                        response.json().then(data => {
+                            dispatch(dispatchFunction({
+                                type: status.SUCCESS,
+                                data: {
+                                    get_committee_type_status: status.SUCCESS,
+                                    getCommitteeType: data
+                                }
+                            }));
+                        });
                     } else {
                         dispatch(dispatchFunction({
                             type: status.FAILURE,

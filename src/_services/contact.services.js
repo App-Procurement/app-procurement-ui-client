@@ -1,4 +1,3 @@
-import config from '../config';
 import { commonFunctions } from "../_utilities";
 import { apiEndPoint } from "./apiEndPoint";
 
@@ -16,7 +15,7 @@ function addContact(data) {
         "Content-Type": "application/json"
     };
     const requestOptions = commonFunctions.getRequestOptions("POST", extraHeaders, JSON.stringify(data));
-    return fetch(`${apiEndPoint.CONTACT}`, requestOptions).then(response => response.json());
+    return fetch(`${apiEndPoint.CONTACT}`, requestOptions).then(response => response);
 }
 
 function deleteContact(data) {
@@ -24,7 +23,7 @@ function deleteContact(data) {
         "Content-Type": "application/json"
     };
     const requestOptions = commonFunctions.getRequestOptions("DELETE", extraHeaders, null);
-    return fetch(`${apiEndPoint.CONTACT}/${data.id}`, requestOptions).then(response => response.json());
+    return fetch(`${apiEndPoint.CONTACT}/${data.id}`, requestOptions).then(response => response);
 }
 
 function fetchContactList() {
@@ -32,7 +31,7 @@ function fetchContactList() {
         "Content-Type": "application/json"
     };
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
-    return fetch(`${apiEndPoint.CONTACT}`, requestOptions).then(response => response.json());
+    return fetch(`${apiEndPoint.CONTACT}`, requestOptions).then(response => response);
 }
 
 function getContactData(data) {

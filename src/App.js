@@ -4,30 +4,33 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LoginLayout, DefaultLayout } from './Layout';
 import Loading from './_components/Loading';
-
+import i18n from './i18next';
+import { I18nextProvider } from 'react-i18next';
 class App extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
     render() {
         return (
-            <BrowserRouter>
-                <Suspense fallback={Loading}>
-                    <Route
-                        exact
-                        path="/"
-                        render={() => {
-                            return (
-                                <Redirect to="/prelogin/login" />
-                            )
-                        }}
-                    />
-                    <Route path="/prelogin/login" component={LoginLayout} />
-                    <Route path="/postlogin" component={DefaultLayout} />
+            <I18nextProvider i18n={i18n}>
+                <BrowserRouter>
+                    <Suspense fallback={Loading}>
+                        <Route
+                            exact
+                            path="/"
+                            render={() => {
+                                return (
+                                    <Redirect to="/prelogin/login" />
+                                )
+                            }}
+                        />
+                        <Route path="/prelogin/login" component={LoginLayout} />
+                        <Route path="/postlogin" component={DefaultLayout} />
 
-                    <ToastContainer enableMultiContainer containerId={'TOP_RIGHT'} position={toast.POSITION.TOP_RIGHT} />
-                </Suspense>
-            </BrowserRouter>
+                        <ToastContainer enableMultiContainer containerId={'TOP_RIGHT'} position={toast.POSITION.TOP_RIGHT} />
+                    </Suspense>
+                </BrowserRouter>
+            </I18nextProvider>
         );
     }
 }

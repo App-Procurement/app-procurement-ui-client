@@ -1,0 +1,388 @@
+.purchase-requisition {
+    .request-purpose-head {
+        margin: 30px 0;
+
+        .request-purpose-head-left {
+            h3 {
+                margin: 0;
+                color: #727272;
+            }
+        }
+
+        .request-purpose-head-right {
+            float: right;
+
+            .new-requisition-btn {
+                border-radius: 5px;
+                background: $buttons-bg;
+                color: $button-text-color;
+                text-transform: capitalize;
+
+                i {
+                    margin-right: 8px;
+                    line-height: 17px;
+                }
+            }
+        }
+    }
+
+    .progress-rfp-boxs {
+        margin-bottom: 30px;
+
+        .progress-box {
+            padding: 20px 15px;
+            height: 120px;
+            border-radius: 15px;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+            .purchased-image {
+                width: 65px;
+                height: 65px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                background-color: #377ffc;
+            }
+
+            .approved {
+                background-color: #d3ede0;
+            }
+
+            .pending {
+                background-color: #ffe9da;
+            }
+
+            .rejected {
+                background-color: #cfeeff;
+            }
+
+            .progress-img {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 15px;
+                position: relative;
+
+                img {
+                    width: 50px;
+                }
+
+                span {
+                    position: absolute;
+                    top: 13px;
+                    right: -8px;
+                    width: 20px;
+                    height: 20px;
+                    text-align: center;
+                    color: #fff;
+                    font-weight: 700;
+                    line-height: 20px;
+                    background: #5fcffd;
+                    border-radius: 50%;
+                }
+
+                .mail-icon {
+                    font-size: 50px;
+                    color: #7924ca;
+                }
+
+                .in-progress {
+                    width: 18px;
+                    height: 45px;
+                    margin-right: 5px;
+                    border-radius: 15px;
+                    display: inline-block;
+                    background-color: #dfecf2;
+                }
+
+                .complate-progress {
+                    width: 18px;
+                    height: 75px;
+                    border-radius: 15px;
+                    display: inline-block;
+                    background-image: linear-gradient(180deg, #60dfff, #7ff0ffb0);
+                }
+            }
+
+            .progress-content {
+                max-width: 140px;
+                display: inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                .title {
+                    font-size: 14px;
+                    line-height: 20px;
+                    color: #a5a5a5;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    margin-bottom: 15px;
+                }
+
+                span {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #a5a5a5;
+                }
+
+                h4 {
+                    margin: 0;
+                    line-height: 26px;
+                    font-weight: 700;
+                }
+
+                .completed {
+                    margin-bottom: 10px;
+                    position: relative;
+                    padding-left: 20px;
+                    display: block;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    span {
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: #a5a5a5;
+                    }
+
+                    h5 {
+                        margin: 0;
+                        line-height: 16px;
+                        font-weight: 700;
+
+                        &::before {
+                            content: "";
+                            width: 10px;
+                            height: 10px;
+                            background: #60dfff;
+                            border-radius: 50%;
+                            position: absolute;
+                            top: 5px;
+                            left: 0px;
+                        }
+                    }
+
+                }
+
+                .in-progrss {
+                    position: relative;
+                    padding-left: 20px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    span {
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: #a5a5a5;
+                    }
+
+                    h5 {
+                        margin: 0;
+                        line-height: 16px;
+                        font-weight: 700;
+
+                        &::before {
+                            content: "";
+                            width: 10px;
+                            height: 10px;
+                            background: #dfecf2;
+                            border-radius: 50%;
+                            position: absolute;
+                            top: 5px;
+                            left: 0px;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    .search-fillter {
+        margin-bottom: 30px;
+
+        .fillter-btn {
+
+            border-color: $buttons-bg;
+            color: $buttons-bg;
+            text-transform: capitalize;
+            padding: 8px 20px;
+            font-size: 16px;
+
+            i {
+                margin-right: 15px;
+                font-size: 18px;
+            }
+        }
+    }
+
+    .request-no-content {
+        width: 100%;
+        padding: 30px;
+        border-radius: 15px;
+        background: $body-box-bg;
+        box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+        -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+        -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+        .request-content-heading {
+            margin-bottom: 25px;
+
+            h4 {
+                margin: 0;
+                color: #000000;
+            }
+        }
+
+        .requisitioner-text {
+            max-width: 228px;
+
+            label {
+                display: block;
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 500;
+                color: #727272;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            span {
+                display: block;
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 500;
+                color: #311b4e;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-transform: capitalize;
+            }
+
+            .status-btn {
+                border-radius: 8px;
+                box-shadow: none;
+                text-transform: none;
+                background: #ffebcc;
+
+                span {
+                    color: #ffab2d;
+                }
+            }
+        }
+    }
+
+    .order-line-content {
+        .order-line-heading {
+            margin: 25px 0;
+
+            h3 {
+                margin: 0;
+                font-weight: 400;
+                color: #727272;
+            }
+        }
+    }
+
+    .purchase-requisition-bottom-content {
+        .requisition-download-file {
+            .approval-btn {
+                font-size: 16px;
+                border-radius: 8px;
+                background: #6418c3;
+                text-transform: capitalize;
+                color: #ffff;
+                padding: 10px 30px;
+
+                i {
+                    font-size: 25px;
+                    color: #ffffff;
+                    margin-right: 15px;
+                }
+            }
+        }
+
+        .purchase-inner-content {
+            .massage-type {
+                width: 100%;
+                padding: 15px;
+                border: none;
+                font-size: 14px;
+                line-height: 20px;
+                height: 170px;
+                border-radius: 10px;
+            }
+
+            .approve-content-buttons {
+                text-align: right;
+
+                .purchase-order {
+                    display: block;
+                    margin-top: 20px;
+
+                    .purchase-btn {
+                        width: 230px;
+                        font-size: 18px;
+                        text-transform: capitalize;
+                        padding: 10px;
+                        box-shadow: none;
+                        color: #ffffff;
+                        background: #6418c3;
+                    }
+
+                    .cancel-btn {
+                        font-weight: 400;
+                        background: #ff3c5f;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .purchase-requisition {
+        .progress-rfp-boxs {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .purchase-requisition {
+        .progress-rfp-boxs {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .purchase-requisition {
+        .request-no-content {
+            .requisitioner-text {
+                max-width: 100%;
+            }
+        }
+
+        .purchase-requisition-bottom-content {
+            .purchase-inner-content {
+                .approve-content-buttons {
+                    text-align: left;
+                    margin-bottom: 30px;
+                }
+            }
+        }
+    }
+}

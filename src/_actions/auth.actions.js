@@ -1,6 +1,6 @@
 import { status } from '../_constants';
 import { authServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+import { alert } from '../_utilities';
 
 export const authActions = {
     login,
@@ -18,20 +18,16 @@ function login(data) {
         }));
         authServices.login(data)
             .then(
-                
                 response => {
-                    console.log("login user",response.cause)
-                    if (response.cause !== null) {
-                        console.log("login user 1---")
+                    if (response.status) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 user_login_status: status.SUCCESS,
-                                user: response
+                                user: response.object
                             }
                         }));
                     } else {
-                        console.log("login user 2---")
                         dispatch(dispatchFunction({
                             type: status.FAILURE,
                             data: {
@@ -39,11 +35,10 @@ function login(data) {
                                 user: response
                             }
                         }));
-                        alert.error("invalid credential");
+                        alert.error(response.message);
                     }
                 },
                 error => {
-                    console.log("login user 3---")
                     dispatch(dispatchFunction({
                         type: status.FAILURE,
                         data: {

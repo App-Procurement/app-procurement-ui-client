@@ -8,9 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CallIcon from "@material-ui/icons/Call";
 import MailIcon from "@material-ui/icons/Mail";
-import ReorderIcon from "@material-ui/icons/Reorder";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import SearchIcon from "@material-ui/icons/Search";
 import "simplebar/dist/simplebar.min.css";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
@@ -20,11 +18,15 @@ import { contactAction } from "../../_actions";
 import { status } from "../../_constants";
 import Checkbox from "@material-ui/core/Checkbox";
 import Loader from '../../_components/commonLoader';
-import { Dialog, DialogContent, DialogTitle, DialogActions, Tooltip } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, DialogActions } from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { alert } from "../../_utilities";
 import Pagination from "../../_components/Pagination"
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
+// import "../../assets/scss/contact.scss"
+
 class Contact extends Component {
   constructor(props) {
     super(props);
@@ -161,21 +163,22 @@ class Contact extends Component {
         if (i >= currentPage * perPageLimit && i <= (currentPage * perPageLimit + (perPageLimit - 1))) {
           let row = contactUserList[i];
           retData.push(
-            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12" key={row.name} >
+            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12" key={row.id} >
               <div className="member-boxs">
                 <Card
-                  className={activeIndex == i ? "members-box active" : "members-box"}
+                  key={i}
+                  className={activeIndex === i ? "members-box active" : "members-box"}
                   onClick={() => this.setState({ activeIndex: i })}
                 >
                   <div className="d-flex justify-content-center align-items-center user-img">
                     <div className="d-flex justify-content-center align-items-center image">
                       <img src={row.profile} alt="" />
-                      <div className="member-position" style={{ backgroundColor: `${row.shortNameColor}` }} >{row.name.match(/\b(\w)/g)} </div>
+                      {/* <div className="member-position" style={{ backgroundColor: `${row.shortNameColor}` }} >{row.name.match(/\b(\w)/g)} </div> */}
                     </div>
                   </div>
                   <div className="d-inline-block menu-icon" style={{ display: "flex" }} >
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon onClick={i === activeIndex ? this.toggleDisplayOptions : null} />
+                    <IconButton aria-label="settings" onClick={i === activeIndex ? this.toggleDisplayOptions : null} >
+                      <MoreVertIcon />
                     </IconButton>
                     <div className="settings-toggle">
                       {displayOption && i === activeIndex ? (
@@ -183,7 +186,7 @@ class Contact extends Component {
                           <span onClick={() => this.editContact(row.id)}>
                             <EditTwoToneIcon /> Edit
                           </span>
-                          <span onClick={(id) => this.onClickDelete(row.id)}>
+                          <span onClick={() => this.onClickDelete(row.id)}>
                             <HighlightOffIcon /> Delete
                           </span>
                         </>
@@ -194,14 +197,14 @@ class Contact extends Component {
                     <Checkbox
                       name="saveReq"
                       color="primary"
-                      checked={row.isSelected}
+                      checked={row.isSelected || false}
                       onChange={(e) => this.handleStateChange(i, e)}
                     />
                   </div>
                   <div className="member-details">
                     <ul>
-                      <li> <b>{row.name}</b></li>
-                      <li> <span>{row.position}</span> </li>
+                      <li> <b>{row.firstName}</b></li>
+                      <li> <span>{row.designation}</span> </li>
                       <li> <p>{row.company}</p></li>
                     </ul>
                   </div>
@@ -211,7 +214,7 @@ class Contact extends Component {
                         <Button className="icon-btn">
                           <CallIcon className="phone-icon" />
                         </Button>
-                        <a href={`tel:${row.contNo}`}>{row.contNo}</a>
+                        <a href={`tel:${row.phoneNumber}`}>{row.phoneNumber}</a>
                       </li>
                       <li>
                         <Button className="icon-btn">
@@ -229,7 +232,7 @@ class Contact extends Component {
       }
     }
     else {
-      retData.push(<Loader />);
+      retData.push(<Loader key={""} />);
     }
     return retData;
   }
@@ -282,7 +285,7 @@ class Contact extends Component {
           count--;
         }
       }
-      if (count == inviteList.length) {
+      if (count === inviteList.length) {
         this.props.dispatch(contactAction.sendInvitation({ 'userId': 2, 'inviteusers': inviteList }));
       } else {
         alert.error('invite user email is required');
@@ -300,7 +303,7 @@ class Contact extends Component {
               <div className="row justify-content-center align-items-center">
                 <div className="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
                   <div className="heading">
-                    <h4>Contacts</h4>
+                    <h4>{t("Contacts")}</h4>
                     <p>Lorem ipsum dolor sit amet</p>
                   </div>
                 </div>
@@ -342,7 +345,7 @@ class Contact extends Component {
                             onClick={this.openInviteDialog}
                           >
                             <PersonAddIcon className="user-icon" />
-                            Invite
+                            {t("Invite")}
                           </Button>
                         </li>
                         <li className="last">
@@ -352,7 +355,7 @@ class Contact extends Component {
                             className="add-buyres-btn"
                           >
                             <PersonAddIcon className="user-icon" />
-                            New Contact
+                            {t("New Contact")}
                           </Link>
                         </li>
                       </ul>
@@ -406,7 +409,7 @@ class Contact extends Component {
                 </div>
                 {inviteList.map((invite, index) => {
                   return (
-                    <div className="row">
+                    <div className="row" key={index}>
                       <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                         <div className="form-group form-group-common">
                           <input type="text" value={invite.email} name="email" placeholder="Eg.James@example.com" className="form-control" onChange={(e) => this.handleStateInviteChange(e, index)} />
@@ -479,6 +482,5 @@ function mapStateToProps(state) {
     send_invitation_status
   };
 }
-
-const connectedContact = connect(mapStateToProps)(Contact);
+const connectedContact = withTranslation()(connect(mapStateToProps)(Contact));
 export default connectedContact;

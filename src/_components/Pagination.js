@@ -29,7 +29,7 @@ class Pagination extends Component {
                     <li key={i}>
                         <a
                             className={currentPage === i ? 'active' : ''}
-                            href=""
+                            href="#foo"
                             onClick={(e) => this.navigatePage('btn-click', e, i)}
                         >
                             {i + 1}
@@ -62,6 +62,7 @@ class Pagination extends Component {
             case 'btn-click':
                 currentPage = i;
                 break;
+            default:
         }
         this.setState({
             currentPage

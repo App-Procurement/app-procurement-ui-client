@@ -3,7 +3,7 @@ import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
 import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
-import { RangeDatePicker, DatePicker } from "@y0c/react-datepicker";
+import { RangeDatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../../Table/Table";
@@ -13,6 +13,8 @@ import { requistionAction } from "../../../_actions";
 import { connect } from "react-redux";
 import { status } from "../../../_constants";
 import { commonFunctions, requisitionStatus } from "../../../_utilities";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 
 class ApprovedRequisition extends Component {
   constructor(props) {
@@ -39,7 +41,7 @@ class ApprovedRequisition extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className={"requisitions-no"}>{value}</span>
+                {value && <span className={"requisitions-no"}>{value}</span>}
               </td>
             );
           },
@@ -63,7 +65,7 @@ class ApprovedRequisition extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className={"department-value"}>{value.name}</span>
+                {value && value.name && <span className={"department-value"}>{value.name}</span>}
               </td>
             );
           },
@@ -74,7 +76,7 @@ class ApprovedRequisition extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className={"department-value"}>{value}</span>
+                {value && <span className={"department-value"}>{value}</span>}
               </td>
             );
           },
@@ -85,9 +87,9 @@ class ApprovedRequisition extends Component {
           renderCallback: (value, row) => {
             return (
               <td>
-                <span className="btn details-btn">
+                {value && row && row.currency && row.currency.code && <span className="btn details-btn">
                   {row.currency.code} {value}
-                </span>
+                </span>}
               </td>
             );
           },
@@ -98,7 +100,7 @@ class ApprovedRequisition extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className="department-value">{value}</span>
+                {value && <span className="department-value">{value}</span>}
               </td>
             );
           },
@@ -109,12 +111,12 @@ class ApprovedRequisition extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <Link
+                {value && <Link
                   to={`/postlogin/viewdetails/${value}`}
                   className="btn details-btn"
                 >
                   {"View Details"}
-                </Link>
+                </Link>}
               </td>
             );
           },
@@ -224,7 +226,7 @@ class ApprovedRequisition extends Component {
     if (department_list) {
       for (let i = 0; i < department_list.length; i++) {
         retData.push(
-          <option value={department_list[i].id}>{department_list[i].name}</option>
+          <option key={department_list[i].id} value={department_list[i].id}>{department_list[i].name}</option>
         );
       }
     }
@@ -232,18 +234,18 @@ class ApprovedRequisition extends Component {
   };
 
   render() {
-    const { searchData, isLoading } = this.state;
+    const { searchData } = this.state;
     const { requisition_status } = this.props;
     return (
       <div className="main-content">
         <div className="approved-content">
           <div className="heading">
-            <h4>Approved Requisitions</h4>
+            <h4>{t("Approved Requisitions")}</h4>
           </div>
           <div className="requisitions-filter">
             <div className="form-group row col-form-group">
               <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                Requisitions no
+                {t("Requisitions no")}
               </label>
               <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                 <input
@@ -258,7 +260,7 @@ class ApprovedRequisition extends Component {
             </div>
             <div className="form-group row col-form-group">
               <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                Date Range
+                {t("Date Range")}
               </label>
               <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                 <div className="d-flex align-items-center">
@@ -275,7 +277,7 @@ class ApprovedRequisition extends Component {
             </div>
             <div className="form-group row col-form-group">
               <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                Department
+                {t("Department")}
               </label>
               <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                 <FormControl className="select-menu filter-status">
@@ -352,8 +354,5 @@ function mapStateToProps(state) {
     department_list,
   };
 }
-
-const connectedApprovedRequisition = connect(mapStateToProps)(
-  ApprovedRequisition
-);
+const connectedApprovedRequisition = withTranslation()(connect(mapStateToProps)(ApprovedRequisition));
 export default connectedApprovedRequisition;

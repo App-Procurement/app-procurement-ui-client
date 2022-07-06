@@ -2,27 +2,23 @@ import React, { Component } from "react"
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
 import { RangeDatePicker } from '@y0c/react-datepicker';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import "rc-calendar/assets/index.css";
 import '@y0c/react-datepicker/assets/styles/calendar.scss';
 import Table from '../../../Table/Table';
-import { requistionAction, departmentAction } from '../../../_actions';
+import { requistionAction } from '../../../_actions';
 import { connect } from 'react-redux';
 import { status } from '../../../_constants';
 import { commonFunctions, requisitionStatus } from '../../../_utilities';
-import { Dialog, DialogContent, DialogTitle, DialogActions, Tooltip } from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CreateIcon from '@material-ui/icons/Create';
-import { Link } from "react-router-dom";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
+
 class RequisitionTracker extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            openDialog: false,
             searchData: {
                 status: "",
                 requisitionNo: "",
@@ -42,35 +38,35 @@ class RequisitionTracker extends Component {
                     label: 'Requisitions No',
                     key: 'id',
                     renderCallback: (value) => {
-                        return <td><span className={'requisitions-no'}>{value}</span></td>
+                        return <td>{value && <span className={'requisitions-no'}>{value}</span>}</td>
                     }
                 },
                 {
                     label: 'Request Date',
                     key: 'createdOn',
                     renderCallback: (value) => {
-                        return <td><span className={'date'}>{commonFunctions.convertDateToString(new Date(value))}</span></td>
+                        return <td>{value && <span className={'date'}>{commonFunctions.convertDateToString(new Date(value))}</span>}</td>
                     }
                 },
                 {
                     label: 'Request Department',
                     key: 'department',
                     renderCallback: (value) => {
-                        return <td><span className={'department-value'}>{value&&value.name}</span></td>
+                        return <td>{value && value.name && <span className={'department-value'}>{value.name}</span>}</td>
                     }
                 },
                 {
                     label: 'Requestor',
                     key: 'createdBy',
                     renderCallback: (value) => {
-                        return <td><span className={'requestor'}>{value}</span></td>
+                        return <td>{value && <span className={'requestor'}>{value}</span>}</td>
                     }
                 },
                 {
                     label: 'Requisitions Total',
                     key: 'totalPrice',
                     renderCallback: (value, row) => {
-                        return <td><span className="price">{row.currency&&row.currency.code} {value}</span></td>
+                        return <td>{value && row && row.currency && row.currency.code && <span className="price">{row.currency.code} {value}</span>}</td>
                     }
                 },
                 {
@@ -79,7 +75,7 @@ class RequisitionTracker extends Component {
                     renderCallback: (value) => {
                         return (
                             <td>
-                                <span className="status">{value}</span>
+                                {value && <span className="status">{value}</span>}
                             </td>
                         );
                     }
@@ -89,65 +85,23 @@ class RequisitionTracker extends Component {
                     key: 'id',
                     renderCallback: (value, row) => {
                         return (
-
                             <td>
-                                <div className="">
-                                
-                                
-                                    {row.status == requisitionStatus.DRAFT &&
-                                        <Tooltip title="You can approve only active status">
-                                            <Button onClick={() => this.onClickApproveReq(value)} area-label="You can approve only active status" className="secondary-btn disabled">
-                                            <ThumbUpIcon  className="disabled" />Approve
-                                            </Button>
-                                        </Tooltip>
-                                    }
-                        
-                                    {row.status == requisitionStatus.ACTIVE &&
-                                        <Button>
-                                            <Button className="secondary-btn" onClick={() => this.onClickApproveRequstion(row)}><ThumbUpIcon /> Approve</Button>
-                                        </Button>
-                                    }
-                                      {/* {row.status !== requisitionStatus.ACTIVE &&
-                                        <Tooltip title="You can approve only active status" >
-                                            <Button area-label="You can approve only active status" className="secondary-btn disabled">
-                                            <ThumbUpIcon  className="disabled" />Approve
-                                            </Button>
-                                        </Tooltip>
-                                    }   */}
-                                </div>
                                 {/* {row.status == requisitionStatus.ACTIVE && */}
-                                {/* <Button className="secondary-btn" onClick={() => this.onClickApproveReq(row)}><ThumbUpIcon /> Approve</Button> */}
+                                {row && <Button className="secondary-btn" onClick={() => this.onClickApproveReq(row)}><ThumbUpIcon /> Approve</Button>}
                                 {/* } */}
                             </td>
                         )
                     }
-                            
-                        
-                    
                 },
             ],
             requistionList: [],
         }
     }
-    onClickApproveRequstion = (data,dataRoles) => {
-        this.props.dispatch(requistionAction.approveRequisition({ 'requisitionId': data.id,'role':this.state.dataRoles[0].name }));
-    }
 
     componentDidMount() {
-        this.props.dispatch(requistionAction.getRequisitionsForapprove());
-        this.rolesData();
+        this.props.dispatch(requistionAction.getRequisitions());
         // this.props.dispatch(departmentAction.getDepartment());
     }
-   
- rolesData = () => {
-    let displayRole=localStorage.getItem("userData");
-    var roleJson = JSON.parse(displayRole);
-    let role=roleJson.info.user.roles
-
-    this.setState({
-     dataRoles : role,
- });
-}
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.requisition_status !== this.props.requisition_status && this.props.requisition_status === status.SUCCESS) {
@@ -156,20 +110,12 @@ class RequisitionTracker extends Component {
             });
         }
         if (prevProps.approve_requisition_status !== this.props.approve_requisition_status && this.props.approve_requisition_status === status.SUCCESS) {
-            this.props.dispatch(requistionAction.getRequisitionsForapprove());
+            this.props.dispatch(requistionAction.getRequisitions());
         }
     }
 
-    onClickApproveReq =  (data) => {
-        console.log("aaaaaa",data.id)
-        const { openDialog } = this.state;
-        let deleteItem = true;
-        
-        this.setState({
-            openDialog: deleteItem,
-        //    approveId:data.id
-        })
-        
+    onClickApproveReq = (data) => {
+        this.props.dispatch(requistionAction.approveRequisition({ 'requisitionId': data.id, 'roleName': data.roleName }));
     }
 
     validate = (isSubmitted) => {
@@ -235,7 +181,7 @@ class RequisitionTracker extends Component {
             fromDate: searchData.fromDate,
             toDate: searchData.toDate
         }
-        this.props.dispatch(requistionAction.getRequisitionsForapprove(sendReqData));
+        this.props.dispatch(requistionAction.getRequisitions(sendReqData));
     }
 
     clearSearch = () => {
@@ -248,7 +194,7 @@ class RequisitionTracker extends Component {
         this.setState({
             searchData
         });
-        this.props.dispatch(requistionAction.getRequisitionsForapprove({}));
+        this.props.dispatch(requistionAction.getRequisitions({}));
     }
 
     renderDepartments = () => {
@@ -257,7 +203,7 @@ class RequisitionTracker extends Component {
         if (department_list) {
             for (let i = 0; i < department_list.length; i++) {
                 retData.push(
-                    <option value={department_list[i].id}>{department_list[i].name}</option>
+                    <option key={department_list[i].id} value={department_list[i].id}>{department_list[i].name}</option>
                 )
             }
         }
@@ -278,27 +224,20 @@ class RequisitionTracker extends Component {
             searchData
         })
     }
-    approveRequisition = () => {
-        this.props.dispatch(requistionAction.approveRequisition({'requisitionId': this.state.approveId}));
-        this.setState({
-            openDialog: false,
-            isLoading: true
-        })
-    }
 
     render() {
-        const { searchData, isSubmitted ,openDialog} = this.state;
+        const { searchData } = this.state;
         const { requisition_status } = this.props;
         // const errorData = this.validate(isSubmitted);
         return (
             <div className="main-content">
                 <div className="requisitions-tracker">
                     <div className="heading">
-                        <h4>Requisitions Tracker</h4>
+                        <h4>{t("Requisitions Tracker")}</h4>
                     </div>
                     <div className="requisitions-filter">
                         <div className="form-group row col-form-group">
-                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Filter By Status</label>
+                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t("Filter By Status")}</label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <FormControl className="select-menu">
                                     <NativeSelect name="status" value={searchData.status}
@@ -313,14 +252,14 @@ class RequisitionTracker extends Component {
                             </div>
                         </div>
                         <div className="form-group row col-form-group">
-                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Requisitions no</label>
+                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t("Requisitions no")}</label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <input placeholder="621345" name="requisitionNo" value={searchData.requisitionNo}
                                     onChange={this.handleStateChange} className="light-input" />
                             </div>
                         </div>
                         <div className="form-group row col-form-group">
-                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Date Range</label>
+                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t("Date Range")}</label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <div className="d-flex align-items-center">
                                     <div className="d-flex align-items-center date-picker">
@@ -331,11 +270,11 @@ class RequisitionTracker extends Component {
                             </div>
                         </div>
                         <div className="form-group row col-form-group">
-                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Department</label>
+                            <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t("Department")}</label>
                             <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                 <FormControl className="select-menu filter-status">
                                     <NativeSelect name="department" value={searchData.department} onChange={this.handleStateChange}>
-                                        <option value="">-Select-</option>
+                                        <option value="" >-Select-</option>
                                         {this.renderDepartments()}
                                     </NativeSelect>
                                 </FormControl>
@@ -357,7 +296,7 @@ class RequisitionTracker extends Component {
                         valueFromData={{ columns: this.state.columns, data: this.state.requistionList }}
                         perPageLimit={6}
                         visiblecheckboxStatus={false}
-                        isLoading={this.props.requisition_status == status.IN_PROGRESS}
+                        isLoading={this.props.requisition_status === status.IN_PROGRESS}
                         tableClasses={{
                             table: "ticket-tabel",
                             tableParent: "tickets-tabel",
@@ -367,24 +306,6 @@ class RequisitionTracker extends Component {
                         showingLine="Showing %start% to %end% of %total% Tickets"
                     />
                 </div>
-
-                <Dialog open={openDialog} onClose={() => this.setState({ openDialog: false })} aria-labelledby="form-dialog-title" className="addNewItemDialog">
-                    <DialogTitle id="form-dialog-title" className="dialogSmWidth addNewItemDialogTitle">
-                        Approve Confirmation
-                    </DialogTitle>
-                    <DialogContent className="dialogSmWidth addNewItemDialogContent">
-                        <p>Can't approve draft requisition</p>
-                    </DialogContent>
-                    <DialogActions className="dialogSmWidth addNewItemDialogActions">
-                        {/* <Button variant="contained" onClick={this.approveRequisition} className="primary-btn">
-                            Yes
-                        </Button> */}
-                        <Button variant="contained" className="primary-btn" onClick={() => this.setState({ openDialog: false })} >
-                            Ok
-                        </Button> 
-                    </DialogActions>
-                </Dialog>
-
             </div>
         )
     }
@@ -403,6 +324,5 @@ function mapStateToProps(state) {
         department_list,
     };
 }
-
-const connectedRequisitionTracker = connect(mapStateToProps)(RequisitionTracker);
-export default (connectedRequisitionTracker);
+const connectedRequisitionTracker = withTranslation()(connect(mapStateToProps)(RequisitionTracker));
+export default connectedRequisitionTracker;

@@ -1,5 +1,5 @@
 import { status } from "../_constants";
-import { alert, commonFunctions } from '../_utilities';
+import { alert } from '../_utilities';
 import { reportServices } from "../_services";
 export const reportAction = {
     getRepots

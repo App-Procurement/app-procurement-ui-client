@@ -1,6 +1,6 @@
 import { status } from '../_constants';
 import { buyerServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+import { alert } from '../_utilities';
 
 export const buyerAction = {
     getBuyer
@@ -18,24 +18,28 @@ function getBuyer(id) {
         buyerServices.getBuyer(id)
             .then(
                 response => {
-                    if (response) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                get_buyer_status: status.SUCCESS,
-                                getBuyer: response
-                            }
-                        }));
-                    } else {
-                        dispatch(dispatchFunction({
-                            type: status.FAILURE,
-                            data: {
-                                get_buyer_status: status.FAILURE,
-                                getBuyer: response
-                            }
-                        }));
-                        alert.error(response.message);
-                    }
+                    const code = response.status;
+                    response.json().then((data) => {
+                        if (code === 200) {
+                            dispatch(dispatchFunction({
+
+                                type: status.SUCCESS,
+                                data: {
+                                    get_buyer_status: status.SUCCESS,
+                                    getBuyer: data
+                                }
+                            }));
+                        } else {
+                            dispatch(dispatchFunction({
+                                type: status.FAILURE,
+                                data: {
+                                    get_buyer_status: status.FAILURE,
+                                    getBuyer: data
+                                }
+                            }));
+                            alert.error(response.message);
+                        }
+                    })
                 },
                 error => {
                     dispatch(dispatchFunction({
@@ -46,9 +50,10 @@ function getBuyer(id) {
                         }
                     }));
                     alert.error(error.message);
+
                 }
             );
-    };
+    }
 }
 
 function dispatchFunction(data) {

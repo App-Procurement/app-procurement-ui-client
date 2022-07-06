@@ -1,6 +1,6 @@
 import { status } from "../_constants";
 import { kanbanServices } from "../_services";
-import { alert, commonFunctions } from "../_utilities";
+import { alert } from "../_utilities";
 
 export const kanbanActions = {
   fetchKanbanList,

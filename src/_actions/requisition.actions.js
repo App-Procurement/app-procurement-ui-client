@@ -1,19 +1,17 @@
 import { status } from '../_constants';
 import { requisitionServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+import { alert } from '../_utilities';
 
 export const requistionAction = {
     addRequisition,
     getRequisitions,
-    getRequisitionsForapprove,
     getRequisition,
     editRequisition,
     getCurrency,
     deleteRequitionData,
     approveRequisition,
     changeAddBuyerState,
-    setRequisitionBuyers,
-    getRequisitionBuyers
+    setRequisitionBuyers
 };
 
 
@@ -29,12 +27,12 @@ function addRequisition(data) {
         requisitionServices.addRequisition(data)
             .then(
                 response => {
-                    if (response) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 create_requisition_status: status.SUCCESS,
-                                create_requisition: response
+                                create_requisition: response.object
                             }
                         }));
                     } else {
@@ -74,62 +72,17 @@ function getRequisitions(data) {
         requisitionServices.getRequisitions(data)
             .then(
                 response => {
-
-                    if (response) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                requisition_status: status.SUCCESS,
-                                requisition_list: response
-                            }
-                            
-                        }));
-                    } else {
-                        dispatch(dispatchFunction({
-                            type: status.FAILURE,
-                            data: {
-                                requisition_status: status.FAILURE,
-                                requisition_list: response
-                            }
-                        }));
-                        alert.error(response.message);
-                    }
-                },
-                error => {
-                    dispatch(dispatchFunction({
-                        type: status.FAILURE,
-                        data: {
-                            requisition_status: status.FAILURE,
-                            requisition_list: error.message
-                        }
-                    }));
-                    alert.error(error.message);
-                }
-            );
-    };
-}
-function getRequisitionsForapprove(data) {
-    return dispatch => {
-        dispatch(dispatchFunction({
-            type: status.IN_PROGRESS,
-            data: {
-                requisition_status: status.IN_PROGRESS,
-                requisition_list: null
-            }
-        }));
-        requisitionServices.getRequisitionsForapprove(data)
-            .then(
-                response => {
-
-                    if (response) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                requisition_status: status.SUCCESS,
-                                requisition_list: response
-                            }
-                            
-                        }));
+                    const code = response.status;
+                    if (code === 200) {
+                        response.json().then(data => {
+                            dispatch(dispatchFunction({
+                                type: status.SUCCESS,
+                                data: {
+                                    requisition_status: status.SUCCESS,
+                                    requisition_list: data.object
+                                }
+                            }));
+                        });
                     } else {
                         dispatch(dispatchFunction({
                             type: status.FAILURE,
@@ -167,24 +120,29 @@ function getRequisition(data) {
         requisitionServices.getRequisition(data)
             .then(
                 response => {
-                    if (response) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                get_edit_requisition_status: status.SUCCESS,
-                                editRequisitiondata: response
-                            }
-                        }));
-                    } else {
-                        dispatch(dispatchFunction({
-                            type: status.FAILURE,
-                            data: {
-                                get_edit_requisition_status: status.FAILURE,
-                                editRequisitiondata: response
-                            }
-                        }));
-                        alert.error(response.message);
-                    }
+                    const code = response.status;
+                    response.json().then((data) => {
+                        if (code === 200) {
+                            dispatch(dispatchFunction({
+                                type: status.SUCCESS,
+                                data: {
+                                    get_edit_requisition_status: status.SUCCESS,
+                                    editRequisitiondata: data
+                                }
+                            }));
+                        } else {
+                            dispatch(dispatchFunction({
+                                type: status.FAILURE,
+                                data: {
+                                    get_edit_requisition_status: status.FAILURE,
+                                    editRequisitiondata: data
+                                }
+                            }));
+                            alert.error(response.message);
+                        }
+                    })
+
+
                 },
                 error => {
                     dispatch(dispatchFunction({
@@ -212,12 +170,12 @@ function editRequisition(data) {
         requisitionServices.editRequisition(data)
             .then(
                 response => {
-                    if (response) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 update_requisition_status: status.SUCCESS,
-                                updateRequisition: response
+                                updateRequisition: response.object
                             }
                         }));
                     } else {
@@ -244,58 +202,6 @@ function editRequisition(data) {
             );
     };
 }
-function getRequisitionBuyers(data) {
-    return (dispatch) => {
-        dispatch(
-          dispatchFunction({
-            type: status.IN_PROGRESS,
-            data: {
-              search_buyer_status: status.IN_PROGRESS,
-              search_buyer_data: null,
-            },
-          })
-        );
-        requisitionServices.getRequisitionBuyers(data).then(
-          (response) => {
-              console.log("re==========?",response)
-            if (response) {
-              dispatch(
-                dispatchFunction({
-                  type: status.SUCCESS,
-                  data: {
-                    search_buyer_status: status.SUCCESS,
-                    search_buyer_data: response,
-                  },
-                })
-              );
-            } else {
-              dispatch(
-                dispatchFunction({
-                  type: status.FAILURE,
-                  data: {
-                    search_buyer_status: status.FAILURE,
-                    search_buyer_data: response,
-                  },
-                })
-              );
-              alert.error(response.message);
-            }
-          },
-          (error) => {
-            dispatch(
-              dispatchFunction({
-                type: status.FAILURE,
-                data: {
-                  search_buyer_status: status.FAILURE,
-                  search_buyer_data: error.message,
-                },
-              })
-            );
-            alert.error(error.message);
-          }
-        );
-      };
-}
 
 function getCurrency(data) {
     return dispatch => {
@@ -309,14 +215,17 @@ function getCurrency(data) {
         requisitionServices.getCurrency(data)
             .then(
                 response => {
-                    if (response) {
-                        dispatch(dispatchFunction({
-                            type: status.SUCCESS,
-                            data: {
-                                currency_status: status.SUCCESS,
-                                currency_list_data: response
-                            }
-                        }));
+                    const code = response.status;
+                    if (code === 200) {
+                        response.json().then(data => {
+                            dispatch(dispatchFunction({
+                                type: status.SUCCESS,
+                                data: {
+                                    currency_status: status.SUCCESS,
+                                    currency_list_data: data
+                                }
+                            }));
+                        });
                     } else {
                         dispatch(dispatchFunction({
                             type: status.FAILURE,
@@ -354,12 +263,12 @@ function deleteRequitionData(data) {
         requisitionServices.deleteRequisition(data)
             .then(
                 response => {
-                    if (response) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 delete_requisition_status: status.SUCCESS,
-                                deleteRequisition: response
+                                deleteRequisition: response.object
                             }
                         }));
                     } else {
@@ -396,21 +305,21 @@ function approveRequisition(data) {
                 approve_requisition: null
             }
         }));
-        requisitionServices.approveRequisition(data)
-            .then(
-                response => {
-                    console.log("i am res======",response)
-                    if (response==200) {
-                      
+        requisitionServices.approveRequisition(data).then(
+            response => {
+                const code = response.status;
+                response.json().then((data) => {
+                    if (code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 approve_requisition_status: status.SUCCESS,
-                                approve_requisition: response
+                                approve_requisition: data
                             }
-                        }));
-                        alert.success(response.message)
-                    } else {
+                        }))
+                        alert.success("Requisition Approved Successfully")
+                    }
+                    else {
                         dispatch(dispatchFunction({
                             type: status.FAILURE,
                             data: {
@@ -420,18 +329,19 @@ function approveRequisition(data) {
                         }));
                         alert.error(response.message);
                     }
-                },
-                error => {
-                    dispatch(dispatchFunction({
-                        type: status.FAILURE,
-                        data: {
-                            approve_requisition_status: status.FAILURE,
-                            approve_requisition: error.message
-                        }
-                    }));
-                    alert.error("Have no rights to approve requisition");
-                }
-            );
+                })
+            },
+            error => {
+                dispatch(dispatchFunction({
+                    type: status.FAILURE,
+                    data: {
+                        approve_requisition_status: status.FAILURE,
+                        approve_requisition: error.message
+                    }
+                }));
+                alert.error(error.message);
+            }
+        );
     };
 }
 
@@ -447,13 +357,12 @@ function setRequisitionBuyers(data) {
         requisitionServices.setRequisitionBuyers(data)
             .then(
                 response => {
-                    console.log("response buyer",response)
-                    if (response) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 set_buyer_status: status.SUCCESS,
-                                set_buyer_res: response
+                                set_buyer_res: response.object
                             }
                         }));
                         alert.success(response.message);

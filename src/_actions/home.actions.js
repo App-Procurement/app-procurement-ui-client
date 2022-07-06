@@ -1,6 +1,6 @@
 import { status } from "../_constants";
 import { homeServices } from "../_services";
-import { alert, commonFunctions } from "../_utilities";
+import { alert } from "../_utilities";
 
 export const homeAction = {
   Userdata,
@@ -125,13 +125,13 @@ function Notificationdata(data) {
     );
     homeServices.Notificationdata(data).then(
       (response) => {
-        if (response) {
+        if (response.code === 200) {
           dispatch(
             dispatchFunction({
               type: status.SUCCESS,
               data: {
                 get_notification_status: status.SUCCESS,
-                get_notification_data: response,
+                get_notification_data: response.object,
               },
             })
           );

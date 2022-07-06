@@ -7,12 +7,12 @@ export const buyerServices = {
 }
 
 
-function getBuyer(id) {
+function getBuyer(data) {
     const extraHeaders = {
         "Content-Type": "application/json"
     };
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
-    return fetch(`${apiEndPoint.BUYER}`, requestOptions).then(response => response.json());
+    return fetch(`${apiEndPoint.BUYER}`, requestOptions).then(response => response);
 }
 
 // function updateBuyer(data) {

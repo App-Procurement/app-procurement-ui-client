@@ -10,7 +10,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 import { connect } from "react-redux";
-import { requistionAction, departmentAction } from "../../../_actions";
+import { requistionAction } from "../../../_actions";
 import { status } from "../../../_constants";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -31,7 +31,9 @@ import pptIcon from "../../../assets/images/icons/pptIcon.png";
 import csvIcon from "../../../assets/images/icons/csvIcon.png";
 import { IconButton } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
-import Loader from '../../../_components/commonLoader';
+import Loader from "../../../_components/commonLoader";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 
 class NewRequisition extends Component {
   constructor(props) {
@@ -56,7 +58,6 @@ class NewRequisition extends Component {
         requisitionLineItemLists: [],
       },
       openDialog: false,
-      openDialogReq: false,
       anchorEl: null,
       open: false,
       validateSubmit: false,
@@ -80,7 +81,6 @@ class NewRequisition extends Component {
 
   componentDidMount() {
     this.getCurrentFinancialYear();
-    this.renderProfile();
     if (this.props.match.params.id) {
       this.props.dispatch(
         requistionAction.getRequisition({
@@ -91,34 +91,43 @@ class NewRequisition extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { addRequiData, requisitionFile, requisitionFileName } = this.state;
-    if (prevProps.create_requisition_status !== this.props.create_requisition_status && this.props.create_requisition_status === status.SUCCESS) {
+    const { addRequiData, requisitionFile } = this.state;
+
+    if (
+      prevProps.create_requisition_status !==
+      this.props.create_requisition_status &&
+      this.props.create_requisition_status === status.SUCCESS
+    ) {
       alert.success("Add requisition successful");
       this.props.history.push("/postlogin/managerequisition");
       this.setState({
-        isLoading: false
-      })
+        isLoading: false,
+      });
     }
 
-    if (prevProps.get_edit_requisition_status !== this.props.get_edit_requisition_status && this.props.get_edit_requisition_status === status.SUCCESS) {
+    if (
+      prevProps.get_edit_requisition_status !==
+      this.props.get_edit_requisition_status &&
+      this.props.get_edit_requisition_status === status.SUCCESS
+    ) {
       const { editRequisitiondata } = this.props;
       if (editRequisitiondata) {
-        addRequiData.departmentId = editRequisitiondata.department && editRequisitiondata.department.id;
-        addRequiData.currencyId = editRequisitiondata.currency && editRequisitiondata.currency.id;
-        addRequiData.financialYear = new Date(editRequisitiondata.financialYear).getFullYear();
+        addRequiData.departmentId = editRequisitiondata.id;
+        addRequiData.currencyId = editRequisitiondata.currency;
+        addRequiData.financialYear = editRequisitiondata.financialYear
+
         addRequiData.status = editRequisitiondata.status;
         addRequiData.roleName = editRequisitiondata.roleName;
         addRequiData.totalPrice = editRequisitiondata.totalPrice;
         addRequiData.notes = editRequisitiondata.notes;
         addRequiData.requisitionLineItemLists =
-          editRequisitiondata.lineItemList || [];
+          editRequisitiondata.requistionItem || [];
         this.setState({
           editReq: true,
           addRequiData,
           totalAmount: editRequisitiondata.totalPrice,
           requisitionFile,
         });
-
       }
     }
 
@@ -133,11 +142,9 @@ class NewRequisition extends Component {
           isLoading: false,
         });
       }
-
       this.props.history.push("/postlogin/managerequisition");
       alert.success("Requisition Update successfully");
     }
-
   }
 
   tableToggle = (e) => {
@@ -158,17 +165,17 @@ class NewRequisition extends Component {
   }
 
   displayTableData = () => {
-    const { addRequiData, open, anchorEl } = this.state;
+    const { addRequiData } = this.state;
     const { editRequisitiondata, get_edit_requisition_status } = this.props;
     let retData = [];
-    if (get_edit_requisition_status === status.SUCCESS && editRequisitiondata.lineItemList.length > 0) {
-      for (let i = 0; i < editRequisitiondata.lineItemList; i++) {
-
-        let data = editRequisitiondata.lineItemList[i];
-        console.log("dtaaaaa", data)
-
+    if (
+      get_edit_requisition_status === status.SUCCESS &&
+      editRequisitiondata.requistionItem &&
+      editRequisitiondata.requistionItem.length > 0
+    ) {
+      for (let i = 0; i < editRequisitiondata.requistionItem; i++) {
+        let data = editRequisitiondata.requistionItem[i];
         retData.push(
-
           <tr key={i}>
             <td>{i + 1}</td>
             <td>{data.itemDescription}</td>
@@ -178,7 +185,7 @@ class NewRequisition extends Component {
             <td>
               <div className="popper-toggle">
                 <Button>
-                  <DeleteIcon onClick={() => this.deleteReqData(data.id)} />
+                  <DeleteIcon onClick={() => this.deleteReqData(i)} />
                 </Button>
                 <Button>
                   <CreateIcon onClick={() => this.editReqData(data, i)} />
@@ -187,7 +194,6 @@ class NewRequisition extends Component {
             </td>
           </tr>
         );
-
       }
     }
 
@@ -196,9 +202,7 @@ class NewRequisition extends Component {
       addRequiData.requisitionLineItemLists.length > 0
     ) {
       for (let i = 0; i < addRequiData.requisitionLineItemLists.length; i++) {
-
         let data = addRequiData.requisitionLineItemLists[i];
-        console.log("dtaaaaa", data)
         retData.push(
           <tr key={i}>
             <td>{i + 1}</td>
@@ -209,7 +213,7 @@ class NewRequisition extends Component {
             <td>
               <div className="popper-toggle">
                 <Button>
-                  <DeleteIcon onClick={() => this.deleteReqData(data.id)} />
+                  <DeleteIcon onClick={() => this.deleteReqData(i)} />
                 </Button>
                 <Button>
                   <CreateIcon onClick={() => this.editReqData(data, i)} />
@@ -239,7 +243,6 @@ class NewRequisition extends Component {
 
   handleaddRequiDataClick = (event) => {
     const {
-      userId,
       addRequiData,
       totalAmount,
       requisitionFile,
@@ -254,35 +257,34 @@ class NewRequisition extends Component {
     const errorData = this.validate(true);
     if (errorData.isValid) {
       this.setState({
-        isLoading: true
-      })
+        isLoading: true,
+      });
       let obj = {
         departmentId: addRequiData.departmentId,
         currencyId: addRequiData.currencyId,
         financialYear: addRequiData.financialYear,
         status: addRequiData.status,
         roleName: addRequiData.roleName,
-        user:userId,
         totalPrice: totalAmount,
         notes: addRequiData.notes,
         requisitionLineItemLists: addRequiData.requisitionLineItemLists,
       };
-      if (editReq == true) {
+      if (editReq === true) {
         obj.id = this.props.match.params.id;
       }
       const sendData = {
         requisitionLineItemFile,
         obj,
         requisitionFile,
-        fileDescription
+        fileDescription,
       };
-      if (editReq == false) {
+      if (editReq === false) {
         this.props.dispatch(requistionAction.addRequisition(sendData));
       } else {
         this.props.dispatch(requistionAction.editRequisition(sendData));
       }
     } else {
-      alert.error("Please enter all required fields");
+      alert.error("Please Enter all Required Fields");
     }
   };
 
@@ -303,52 +305,51 @@ class NewRequisition extends Component {
     };
     const { addRequiData } = this.state;
     if (isSubmitted) {
-
       if (!addRequiData.roleName) {
         retData.roleName = {
           isValid: false,
-          message: "Requester name is required",
+          message: "Requester Name is Required",
         };
         isValid = false;
       }
       if (!addRequiData.financialYear) {
         retData.financialYear = {
           isValid: false,
-          message: "FinancialYear is required",
+          message: "Financial Year is Required",
         };
         isValid = false;
       } else if (addRequiData.financialYear.length > 4) {
         retData.financialYear = {
           isValid: false,
-          message: "FinancialYear Must Be 4 Digit",
+          message: "Financial Year Must Be in 4 Digits",
         };
         isValid = false;
       }
       if (!addRequiData.departmentId) {
         retData.departmentId = {
           isValid: false,
-          message: "Department  is required",
+          message: "Department is Required",
         };
         isValid = false;
       }
       if (!addRequiData.currencyId) {
         retData.currencyId = {
           isValid: false,
-          message: "Currency is required",
+          message: "Currency is Required",
         };
         isValid = false;
       }
       if (!addRequiData.notes) {
         retData.notes = {
           isValid: false,
-          message: "GeneralText is required",
+          message: "General Text is Required",
         };
         isValid = false;
       }
       if (!addRequiData.status) {
         retData.status = {
           isValid: false,
-          message: "Status is required",
+          message: "Status is Required",
         };
         isValid = false;
       }
@@ -362,29 +363,13 @@ class NewRequisition extends Component {
     if (department_list) {
       for (let i = 0; i < department_list.length; i++) {
         departmentoption.push(
-          <option value={department_list[i].id}>{department_list[i].name}</option>
-        );
-      }
-    }
-    return departmentoption;
-  };
-
-  
-  displayRoles = () => {
-   let displayRole=localStorage.getItem("userData");
-    var roleJson = JSON.parse(displayRole);
-    let role=roleJson.info.user.roles
-    let currencyoption = [];
-    if (role) {
-      for (let i = 0; i < role.length; i++) {
-        currencyoption.push(
-          <option value={role[i].id}>
-            {role[i].name}
+          <option key={i} value={department_list[i].id}>
+            {department_list[i].name}
           </option>
         );
       }
     }
-    return currencyoption;
+    return departmentoption;
   };
 
   displayCurrency = () => {
@@ -393,7 +378,7 @@ class NewRequisition extends Component {
     if (currency_list_data) {
       for (let i = 0; i < currency_list_data.length; i++) {
         currencyoption.push(
-          <option value={currency_list_data[i].id}>
+          <option key={i} value={currency_list_data[i]}>
             {currency_list_data[i].code}
           </option>
         );
@@ -406,12 +391,12 @@ class NewRequisition extends Component {
     let { requisitionLineItemFile, requisitionFile } = this.state;
     const { name, files } = e.target;
     if (files && files.length > 0) {
-      if (name == "requisitionFile") {
+      if (name === "requisitionFile") {
         requisitionFile.push(...Array.from(files));
         this.setState({
           requisitionFile,
         });
-      } else if (name == "requisitionLineItemFile") {
+      } else if (name === "requisitionLineItemFile") {
         requisitionLineItemFile.push(...Array.from(files));
         this.setState({
           requisitionLineItemFile,
@@ -422,9 +407,9 @@ class NewRequisition extends Component {
 
   handleRemove = (index, fileName) => {
     let { requisitionLineItemFile, requisitionFile } = this.state;
-    if (fileName == "requisitionFile") {
+    if (fileName === "requisitionFile") {
       requisitionFile.splice(index, 1);
-    } else if (fileName == "requisitionLineItemFile") {
+    } else if (fileName === "requisitionLineItemFile") {
       requisitionLineItemFile.splice(index, 1);
     }
     this.setState({
@@ -446,16 +431,23 @@ class NewRequisition extends Component {
   };
 
   deleteReqData = (id) => {
-    const { openDialogReq } = this.state;
-    let deleteItem = true;
+    const { addRequiData } = this.state;
+    addRequiData.requisitionLineItemLists.splice(id, 1);
+    let totalprice = 0;
+    if (addRequiData) {
+      for (let i = 0; i < addRequiData.requisitionLineItemLists.length; i++) {
+        totalprice =
+          addRequiData.requisitionLineItemLists[i].price + totalprice;
+      }
+    }
     this.setState({
-      openDialogReq: deleteItem,
-      reqLineIteamId: id
-    })
+      addRequiData,
+      totalAmount: totalprice,
+    });
   };
 
   addNewClickOpen = () => {
-    let { openDialog, addRequiData } = this.state;
+    let { openDialog } = this.state;
     this.setState({
       openDialog: !openDialog,
     });
@@ -475,7 +467,6 @@ class NewRequisition extends Component {
       editReq,
       itemQuantity,
       ratePerItem,
-      totalAmount,
       editIndex,
       isEdit,
     } = this.state;
@@ -486,7 +477,7 @@ class NewRequisition extends Component {
     const errorData = this.validateReq(true);
     if (errorData.isValid) {
       let price = itemQuantity * ratePerItem;
-      if (isEdit == false || (editReq == true && isEdit == false)) {
+      if (isEdit === false || (editReq === true && isEdit === false)) {
         addRequiData.requisitionLineItemLists.push({
           itemDescription: itemDescription,
           price: price,
@@ -551,21 +542,21 @@ class NewRequisition extends Component {
       if (!itemDescription) {
         retData.itemDescription = {
           isValid: false,
-          message: "Requester Item description is required",
+          message: "Requester Item description is Required",
         };
         isValid = false;
       }
       if (!itemQuantity) {
         retData.itemQuantity = {
           isValid: false,
-          message: "Requester Quantity is required",
+          message: "Requester Quantity is Required",
         };
         isValid = false;
       }
       if (!ratePerItem) {
         retData.ratePerItem = {
           isValid: false,
-          message: "Requester Item Price is required",
+          message: "Requester Item Price is Required",
         };
         isValid = false;
       }
@@ -581,50 +572,16 @@ class NewRequisition extends Component {
   };
   saveToDraft = () => {
     let { addRequiData } = this.state;
-    console.log("addRequiData",addRequiData)
     addRequiData.status = requisitionStatus.DRAFT;
     this.setState({
       addRequiData,
     });
   };
 
-  requisitionLineItemDelete = (id) => {
-    const { addRequiData, reqLineIteamId } = this.state;
-    addRequiData.requisitionLineItemLists.splice(id, 1);
-    let totalprice = 0;
-    if (addRequiData) {
-      for (let i = 0; i < addRequiData.requisitionLineItemLists.length; i++) {
-        totalprice =
-          addRequiData.requisitionLineItemLists[i].price + totalprice;
-      }
-      fetch("http://localhost:7050/api/requisitionLineItem/" + reqLineIteamId, { method: 'DELETE' })
-        .then((response) =>
-          this.setState({
-
-          }))
-    }
-    this.setState({
-      openDialogReq: false,
-      addRequiData,
-      totalAmount: totalprice,
-    });
-  }
-
-  renderProfile = () => {
-    var profile = localStorage.getItem("userData");
-    var profileJson = JSON.parse(profile);
-    let retData = [];
-    var row = profileJson.info.user
-    this.setState({
-      userId:row.id
-    })
-   
-  }
   render() {
     const {
       addRequiData,
       isSubmitted,
-      openDialogReq,
       openDialog,
       itemDescription,
       itemQuantity,
@@ -634,7 +591,7 @@ class NewRequisition extends Component {
       requisitionLineItemFile,
       requisitionFile,
       editReq,
-      isLoading
+      isLoading,
     } = this.state;
     const { create_requisition_status, update_requisition_status } = this.props;
     const errorData = this.validate(isSubmitted);
@@ -645,7 +602,7 @@ class NewRequisition extends Component {
           <div className="main-content">
             <div className="new-req-section">
               <div className="d-block heading">
-                <h4 className="d-inline-block">{editReq == false ? "Add New" : "Edit"} Requisition</h4>
+                <h4 className="d-inline-block">{editReq === false ? `${t("Add New")}` : "Edit"} {t("Requisition")}</h4>
                 <div className="heading-buttons">
                   <Button
                     variant="outlined"
@@ -653,7 +610,7 @@ class NewRequisition extends Component {
                     onClick={this.saveToDraft}
                   >
                     <SaveIcon />
-                    Save to Draft
+                    {t(" Save to Draft")}
                   </Button>
                 </div>
               </div>
@@ -662,47 +619,29 @@ class NewRequisition extends Component {
                   <div className="col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
                     <div className="requisition-form-left">
                       <div className="requester">
-                        {/* <div className="form-group">
-                          <label>Requester</label>
+                        <div className="form-group">
+                          <label>{t("Requester")}</label>
                           <input
                             type="text"
                             name="roleName"
-                            value={addRequiData.roleName}
+                            value={addRequiData.roleName || ""}
                             onChange={this.handleStateChange}
                             placeholder="PSDS Admin"
-                            isvalid={errorData.roleName.isValid}
+                          // isvalid={errorData.roleName.isValid}
                           />
-                          <span className="text-danger">
-                            {errorData.roleName.message}
-                          </span>
-                        </div> */}
-                        <div className="form-group">
-                          <label>Requester</label>
-                          <FormControl className="select-menu">
-                            <NativeSelect
-                              name="roleName"
-                              onChange={this.handleStateChange}
-                              isvalid={errorData.roleName.isValid}
-                              value={addRequiData.roleName}
-                            >
-                              <option value="">-Select-</option>
-                              {this.displayRoles()}
-                            </NativeSelect>
-                          </FormControl>
                           <span className="text-danger">
                             {errorData.roleName.message}
                           </span>
                         </div>
                       </div>
-                  
                       <div className="requester">
                         <div className="form-group">
-                          <label>Financial year</label>
+                          <label>{t("Financial year")}</label>
                           <input
                             type="text"
                             name="financialYear"
-                            isvalid={errorData.financialYear.isValid}
-                            value={addRequiData.financialYear}
+                            // isvalid={errorData.financialYear.isValid}
+                            value={addRequiData.financialYear || ""}
                             onChange={this.handleStateChange}
                           />
                           <span className="text-danger">
@@ -712,12 +651,12 @@ class NewRequisition extends Component {
                       </div>
                       <div className="requester">
                         <div className="form-group">
-                          <label>Department</label>
+                          <label>{t("Department")}</label>
                           <FormControl className="select-menu">
                             <NativeSelect
                               name="departmentId"
                               value={addRequiData.departmentId}
-                              isvalid={errorData.departmentId.isValid}
+                              // isvalid={errorData.departmentId.isValid}
                               onChange={this.handleStateChange}
                             >
                               <option value="">-Select-</option>
@@ -731,12 +670,12 @@ class NewRequisition extends Component {
                       </div>
                       <div className="requester">
                         <div className="form-group">
-                          <label>Currency</label>
+                          <label>{t("Currency")}</label>
                           <FormControl className="select-menu">
                             <NativeSelect
                               name="currencyId"
                               onChange={this.handleStateChange}
-                              isvalid={errorData.currencyId.isValid}
+                              // isvalid={errorData.currencyId.isValid}
                               value={addRequiData.currencyId}
                             >
                               <option value="">-Select-</option>
@@ -751,7 +690,7 @@ class NewRequisition extends Component {
                       <div className="requester">
                         <div className="form-group">
                           <p className="requisition-text">
-                            General Purpose for Requisition
+                            {t("General Purpose for Requisition")}
                           </p>
                           <TextareaAutosize
                             className="text-box"
@@ -759,8 +698,8 @@ class NewRequisition extends Component {
                             placeholder=""
                             defaultValue=""
                             name="notes"
-                            value={addRequiData.notes}
-                            isvalid={errorData.notes.isValid}
+                            value={addRequiData.notes || ""}
+                            // isvalid={errorData.notes.isValid}
                             onChange={this.handleStateChange}
                           />
                           <span className="text-danger">
@@ -770,12 +709,12 @@ class NewRequisition extends Component {
                       </div>
                       <div className="requester">
                         <label>
-                          <strong>Extra Budgetary</strong>
+                          <strong>{t("Extra Budgetory")}</strong>
                         </label>
                       </div>
                       <div className="requester">
-                        <label>Attach Files</label>
-                        {requisitionFile && requisitionFile.length == 0 && (
+                        <label>{t("Attach Files")}</label>
+                        {requisitionFile && requisitionFile.length === 0 && (
                           <div className="attach">
                             <input
                               type="file"
@@ -787,7 +726,7 @@ class NewRequisition extends Component {
                             />
                             <CloudUploadIcon className="icon" />
                             <div className="file-content">
-                              <p>Upload file</p>
+                              <p>{t("Upload file")}</p>
                               <span>PDF, DOC, PPT, JPG, PNG</span>
                             </div>
                           </div>
@@ -873,21 +812,22 @@ class NewRequisition extends Component {
                               <FormControlLabel
                                 value={requisitionStatus.DRAFT}
                                 checked={
-                                  addRequiData.status == requisitionStatus.DRAFT
+                                  addRequiData.status === requisitionStatus.DRAFT
                                 }
                                 name="status"
                                 control={<Radio color="primary" />}
-                                label="Save Requisition"
+                                label={t("Save Requisition")}
                                 onChange={this.handleStateChange}
                               />
                               <FormControlLabel
                                 value={requisitionStatus.ACTIVE}
                                 name="status"
                                 checked={
-                                  addRequiData.status == requisitionStatus.ACTIVE
+                                  addRequiData.status ===
+                                  requisitionStatus.ACTIVE
                                 }
                                 control={<Radio color="primary" />}
-                                label="Send For Approval"
+                                label={t("Send For Approval")}
                                 onChange={this.handleStateChange}
                               />
                             </RadioGroup>
@@ -897,12 +837,12 @@ class NewRequisition extends Component {
                       <div className="requisition-submit-button">
                         <Button
                           variant="contained"
-                          className="primary-btn send_requi"
+                          className="primary-btn"
                           onClick={this.handleaddRequiDataClick}
                           disableElevation
                           disabled={
-                            create_requisition_status == status.IN_PROGRESS ||
-                            update_requisition_status == status.IN_PROGRESS
+                            create_requisition_status === status.IN_PROGRESS ||
+                            update_requisition_status === status.IN_PROGRESS
                           }
                         >
                           Send
@@ -914,13 +854,13 @@ class NewRequisition extends Component {
                     <div className="requisition-form-right">
                       <Button
                         variant="contained"
-                        className="primary-btn add_new_item"
+                        className="primary-btn"
                         onClick={this.addNewClickOpen}
                         disableElevation
                       >
-                        Add New Item
+                        {t("Add New Item")}
                       </Button>
-                      <div className="item-heading">Requisition Items</div>
+                      <div className="item-heading">{t("Requisition Items")}</div>
                       <SimpleBar>
                         <div className="item-detail">
                           <table width="100%">
@@ -941,7 +881,7 @@ class NewRequisition extends Component {
                       </SimpleBar>
                       <div className="requisition">
                         {requisitionLineItemFile &&
-                          requisitionLineItemFile.length == 0 && (
+                          requisitionLineItemFile.length === 0 && (
                             <div className="requisition-file">
                               <input
                                 type="file"
@@ -976,7 +916,9 @@ class NewRequisition extends Component {
                                         target="_blank"
                                         rel="noreferrer"
                                       >
-                                        <div className="file-name">{file.name}</div>
+                                        <div className="file-name">
+                                          {file.name}
+                                        </div>
                                       </a>
                                     </div>
                                     <div className="col-2 pr-0">
@@ -1013,7 +955,7 @@ class NewRequisition extends Component {
                             )}
                         </ul>
                         <div className="total-amount">
-                          <span>Total Estimate Coste</span>
+                          <span>{t("Total Estimate Coste")}</span>
                           <p>{totalAmount ? totalAmount : "00.00 USD"}</p>
                         </div>
                       </div>
@@ -1028,7 +970,7 @@ class NewRequisition extends Component {
                           id="form-dialog-title"
                           className="dialogSmWidth addNewItemDialogTitle"
                         >
-                          Add New Item
+                          {t("Add New Item")}
                           <Button
                             onClick={this.addNewClickClose}
                             className="modal-close-btn"
@@ -1039,7 +981,9 @@ class NewRequisition extends Component {
                         <DialogContent className="dialogSmWidth addNewItemDialogContent">
                           <div className="form-row">
                             <div className="col-sm-12 col-md-6 form-group">
-                              <p className="requisition-text">Requisition Item</p>
+                              <p className="requisition-text">
+                                {t("Requisition Item")}
+                              </p>
                               <input
                                 type="text"
                                 name="itemDescription"
@@ -1085,7 +1029,7 @@ class NewRequisition extends Component {
                           <Button
                             variant="contained"
                             onClick={this.addNewRequistion}
-                            className="primary-btn inside_new_item"
+                            className="primary-btn"
                           >
                             Save
                           </Button>
@@ -1100,36 +1044,17 @@ class NewRequisition extends Component {
                       </Dialog>
                     </div>
 
-                    <Dialog open={openDialogReq} onClose={() => this.setState({ openDialogReq: false })} aria-labelledby="form-dialog-title" className="addNewItemDialog">
-                      <DialogTitle id="form-dialog-title" className="dialogSmWidth addNewItemDialogTitle">
-                        Requisition Line Item Confirmation
-                      </DialogTitle>
-                      <DialogContent className="dialogSmWidth addNewItemDialogContent">
-                        <p>Are you sure to delete requisition line item record?</p>
-                      </DialogContent>
-                      <DialogActions className="dialogSmWidth addNewItemDialogActions">
-                        <Button variant="contained" onClick={this.requisitionLineItemDelete} className="primary-btn">
-                          Yes
-                        </Button>
-                        <Button variant="contained" className="default-btn" onClick={() => this.setState({ openDialogReq: false })} >
-                          No
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
                     {/* <div>
                                             <div> <p>Total Estimate Coste</p> </div>
                                             <div> {totalAmount ? <p>{totalAmount}</p> : "00.00 USD"} </div>
                                         </div> */}
-
                   </div>
                 </div>
               </div>
             </div>
           </div>
         }
-        {isLoading &&
-          <Loader />
-        }
+        {isLoading && <Loader />}
       </>
     );
   }
@@ -1158,6 +1083,5 @@ function mapStateToProps(state) {
     update_requisition_status,
   };
 }
-
-const connectedNewRequistion = connect(mapStateToProps)(NewRequisition);
-export default connectedNewRequistion;
+const connectedNewRequisition = withTranslation()(connect(mapStateToProps)(NewRequisition));
+export default connectedNewRequisition;

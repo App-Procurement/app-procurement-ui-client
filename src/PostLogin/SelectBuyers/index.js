@@ -8,10 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CallIcon from "@material-ui/icons/Call";
 import MailIcon from "@material-ui/icons/Mail";
-import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
-import ReorderIcon from "@material-ui/icons/Reorder";
+import Checkbox from "@material-ui/core/Checkbox";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import SearchIcon from "@material-ui/icons/Search";
 import { connect } from "react-redux";
 import { buyerAction, requistionAction } from "../../_actions";
@@ -40,7 +38,7 @@ class SelectBuyers extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.get_buyer_status !== this.props.get_buyer_status && this.props.get_buyer_status === status.SUCCESS) {
       if (this.props.selected_buyer_list && this.props.selected_buyer_list.approvedMemberList && this.props.selected_buyer_list.approvedMemberList.length > 0) {
-        if (this.props.selected_buyer_list.id == this.props.match.params.id) {
+        if (this.props.selected_buyer_list.id === this.props.match.params.id) {
           this.setState({
             approvedMemberList: this.props.selected_buyer_list
               .approvedMemberList,
@@ -86,26 +84,25 @@ class SelectBuyers extends Component {
 
   displayApprovedMemberList = () => {
     const { approvedMemberList, activeindex, displayOption } = this.state;
-    console.log("approvedMemberList buyer",approvedMemberList);
     let retData = [];
     for (let i = 0; i < approvedMemberList.length; i++) {
       let row = approvedMemberList[i];
       retData.push(
         <div
           className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
-          key={row.name}
+          key={row.firstName}
         >
           <div className="member-boxs">
-            <Card className={activeindex == i ? "members-box active" : "members-box"}
+            <Card className={activeindex === i ? "members-box active" : "members-box"}
               onClick={() => this.setState({ activeindex: i })}>
               <div className="d-flex justify-content-center align-items-center user-img">
                 <div className="d-flex justify-content-center align-items-center image">
-                  <img src={`data:image/jpeg;base64,${row.profileImage}`} alt="" />
+                  <img src={row.profile} alt="" />
                   <div
                     className="member-position"
                     style={{ backgroundColor: `${row.shortNameColor}` }}
                   >
-                    {row.firstName.charAt(0)+ row.lastName.charAt(0)}
+                    {row.firstName.match(/\b(\w)/g)}
                   </div>
                 </div>
               </div>
@@ -134,7 +131,6 @@ class SelectBuyers extends Component {
                 <Checkbox
                   name="saveReq"
                   color="primary"
-                  name="saveReq"
                   checked={row.isSected}
                   onChange={(e) => this.handleStateChange(i, e)}
                 />
@@ -142,13 +138,13 @@ class SelectBuyers extends Component {
               <div className="member-details">
                 <ul>
                   <li>
-                    <b>{row.firstName} {row.lastName}</b>
+                    <b>{row.firstName}</b>
                   </li>
                   <li>
-                    <span>{row.position}</span>
+                    <span>{row.middleName}</span>
                   </li>
                   <li>
-                    <p>{row.company}</p>
+                    <p>{row.lastName}</p>
                   </li>
                 </ul>
               </div>
@@ -187,7 +183,6 @@ class SelectBuyers extends Component {
 
   setSelectedBuyer = () => {
     const { approvedMemberList } = this.state;
-    // console.logI("approvedMemberList hello====>",approvedMemberList)
     let count = 0;
     for (let i = 0; i < approvedMemberList.length; i++) {
       if (approvedMemberList[i].isSected) {
@@ -206,7 +201,7 @@ class SelectBuyers extends Component {
   };
 
   searchbuyer = (e) => {
-    const { value, name } = e.target;
+    const { value } = e.target;
     const { duplicateData } = this.state;
     this.setState({
       searchval: value,
@@ -217,8 +212,8 @@ class SelectBuyers extends Component {
         for (let i = 0; i < duplicateData.length; i++) {
           let row = duplicateData[i];
           if (
-            row["name"].toLowerCase().indexOf(value) !== -1 ||
-            row["name"].indexOf(value) !== -1
+            row["firstName"].toLowerCase().indexOf(value) !== -1 ||
+            row["firstName"].indexOf(value) !== -1
           ) {
             queryResult.push(duplicateData[i]);
             // break;

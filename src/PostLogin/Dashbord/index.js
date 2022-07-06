@@ -1,47 +1,34 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import moment from 'moment';
 import DateFormat from './DateFormat';
-import RecentEmails from './RecentEmails';
-import MostTagUsed from './MostTagUsed';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, } from "recharts";
-import { Pie, PieChart, ResponsiveContainer, Cell } from 'recharts';
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import { createStyles, withStyles } from '@material-ui/core/styles';
-import { LineChart, Line } from 'recharts';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
-import CollectionsIcon from '@material-ui/icons/Collections';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import { Line, Bar, Pie } from 'react-chartjs-2';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import ColorizeIcon from '@material-ui/icons/Colorize';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import AddIcon from '@material-ui/icons/Add';
-import EmailIcon from '@material-ui/icons/Email';
-import Switch from '@material-ui/core/Switch';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Box from '@material-ui/core/Box';
 import AmountIcon from '../../assets/images/amount-icon.png';
-import rfpImg from '../../assets/images/rfp-img.png';
-import spend from '../../assets/images/spend.png';
-import Approval1 from '../../assets/images/dashbord/approval1.png';
-import Approval2 from '../../assets/images/dashbord/approval2.png';
-import Approval3 from '../../assets/images/dashbord/approval3.png';
-import EmailBackground from '../../assets/images/dashbord/email-background.png';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
-import "react-circular-progressbar/dist/styles.css";
+import 'react-circular-progressbar/dist/styles.css';
 import { connect } from 'react-redux';
-import { contactAction, homeAction, invoiceAction } from "../../_actions";
-import { status } from "../../_constants";
-import RecentActivity from './RecentActivity'
-import Requisition from './Requisition'
-import StatictisRFP from "./StatictisRFP";
-import BudgetOverview from "./BudgetOverview";
-import { red } from "@material-ui/core/colors";
+import { contactAction, homeAction, invoiceAction } from '../../_actions';
+import { status } from '../../_constants';
+import ActivityFeeds from './ActivityFeeds';
+import TopSellers from './TopSellers';
+import { withTranslation } from 'react-i18next';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement,
+} from 'chart.js';
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement);
 
 class Dashbord extends Component {
   constructor(props) {
@@ -50,100 +37,233 @@ class Dashbord extends Component {
       date: moment,
       dashboardData: {},
       data: [],
-      lineData: [
-        {
-          name: "",
-          pv: 10
-        },
-        {
-          name: "Sun",
-          pv: 400
-        },
-        {
-          name: "Mon",
-          pv: 700
-        },
-        {
-          name: "Tue",
-          pv: 200
-        },
-        {
-          name: "Wed",
-          pv: 300
-        },
-        {
-          name: "Thu",
-          pv: 500
-        },
-        {
-          name: "Fri",
-          pv: 800
-        },
-        {
-          name: "Sat",
-          pv: 300
-        },
-        {
-          name: "",
-          pv: 10
-        },
-      ],
-      lineCharData: {
-        labels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-        datasets: [{
-          data: [65, 59, 80, 81, 56, 55, 40],
-          fill: false,
-          borderColor: 'blue',
-          tension: 0.1
-        }],
-
-      },
-      secondLineChart: {
-        labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-        datasets: [{
-          label: '46 Eemail',
-          borderColor: 'blue',
-        }],
-      },
       startDate: new Date(),
       endDate: new Date(),
       checkedA: true,
       checkedB: true,
       invoices: [],
+      lineData: {
+        labels: ['', '', '', '', ''],
+        datasets: [
+          {
+            fill: false,
+            borderColor: '#9b51e0',
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4,
+            pointRadius: 0,
+            data: [10, 400, 700, 200, 300, 10],
+          },
+        ],
+      },
+      lineOptions: {
+        plugins: {
+          legend: {
+            display: false,
+            labels: {
+              usePointStyle: true,
+            },
+          },
+          tooltips: {
+            enabled: false,
+          },
+        },
+        scales: {
+          x: {
+            display: false,
+            grid: {
+              display: false,
+            },
+            ticks: {
+              display: false,
+            },
+          },
+          y: {
+            display: false,
+            grid: {
+              display: false,
+            },
+            ticks: {
+              display: false,
+            },
+          },
+        },
+      },
+      purchaseOrderLine: {
+        total: null,
+        labels: [
+          'Tech',
+          'operations',
+          'Sanitations',
+          'office supplies',
+          'marketing',
+          'Tech',
+          'operations',
+          'Sanitations',
+          'office supplies',
+          'marketing',
+        ],
+        datasets: [
+          {
+            data: [210, 600, 600, 500, 100, 300, 800, 900, 400],
+            lineTension: 0.2,
+            backgroundColor: ['#b792d1', '#b792d1', '#4f0a80', '#b792d1'],
+          },
+        ],
+      },
+      purchaseOrderLineOptions: {
+        plugins: {
+          scales: {
+            y: {
+              ticks: {
+                fontColor: 'black',
+                stepSize: 10,
+                beginAtZero: true,
+              },
+              gridLines: {
+                display: false,
+              },
+            },
+            x: {
+              ticks: {
+                fontColor: 'black',
+                display: false,
+                stepSize: 10,
+              },
+              gridLines: {
+                display: false,
+              },
+            },
+          },
+          legend: {
+            display: false,
+          },
+          responsive: true,
+        },
+      },
       PieChartEmailData: [
-        { COLORS: '#0088FE', value: 763, title: 'Total RFP', per: 27 },
-        { COLORS: '#00C49F', value: 321, title: 'Todays RFP', per: 11 },
-        { COLORS: '#FFBB28', value: 69, title: 'In Progress', per: 22 },
-        { COLORS: '#FF8042', value: 154, title: 'Completed ', per: 15 },
-        { COLORS: 'blue', value: 696, title: 'Approved ', per: 25 },
+        { COLORS: '#5dbafb', value: 321, title: 'Todays RFP', per: 11 },
+        { COLORS: '#44d7b6', value: 69, title: 'In Progress', per: 22 },
+        { COLORS: '#dd8aff', value: 154, title: 'Completed ', per: 15 },
+        { COLORS: '#ffb833', value: 154, title: 'Completed ', per: 15 },
+        { COLORS: '#6418c3', value: 696, title: 'Approved ', per: 25 },
       ],
-      statisticsData: [
-        { name: 'Production Parts', value: 81, trailColor: "rgba(241, 231, 254, 1)", pathColor: "blue" },
-        { name: 'Appliances', value: 44, trailColor: "rgba(241, 231, 254, 1)", pathColor: "rgba(154, 18, 179, 1)" },
-        { name: 'It & Telecom', value: 75, trailColor: "rgba(241, 231, 254, 1)", pathColor: "DodgerBlue" },
-        { name: 'Office Equipments', value: 70, trailColor: "rgba(241, 231, 254, 1)", pathColor: "Tomato" },
-        { name: 'Marketing', value: 22, trailColor: "rgba(241, 231, 254, 1)", pathColor: "Orange" },
-        { name: 'Educational Supplies', value: 62, trailColor: "rgba(241, 231, 254, 1)", pathColor: "DodgerBlue" },
-      ],
-      pinnedEmailsData: [
-        {
-          title: "New RFP for our department",
-          des: "Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker",
-          img: Approval1,
+      spendAnalysis: {
+        total: null,
+        labels: ['Tech', 'operations', 'Sanitations', 'office supplies', 'marketing'],
+        datasets: [
+          {
+            data: [210, 600, 600, 500, 100],
+            lineTension: 0.2,
+            backgroundColor: ['#b792d1', '#b792d1', '#4f0a80', '#b792d1'],
+          },
+        ],
+      },
+      spendAnalysisOptions: {
+        indexAxis: 'y',
+        plugins: {
+          scales: {
+            y: {
+              ticks: {
+                fontColor: 'black',
+                stepSize: 10,
+                beginAtZero: true,
+              },
+              gridLines: {
+                display: false,
+              },
+            },
+            x: {
+              ticks: {
+                fontColor: 'black',
+                display: false,
+                stepSize: 10,
+              },
+              gridLines: {
+                display: false,
+              },
+            },
+          },
+          legend: {
+            display: false,
+          },
+          responsive: true,
         },
-        {
-          title: "Need approval for the quotation",
-          des: "Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker",
-          img: Approval2,
+      },
+      requisitionStatusData: {
+        labels: ['Active RFP', 'Approve RFP', 'Reject RFP'],
+        datasets: [
+          {
+            data: [103, 27, 22],
+            backgroundColor: ['#4f0a80', '#1fad96', '#f2b40a'],
+          },
+        ],
+      },
+      requisitionStatusOptions: {
+        plugins: {
+          legend: {
+            labels: {
+              usePointStyle: true,
+              pointStyle: 'circle',
+            },
+            display: true,
+            position: 'bottom',
+            responsive: true,
+            align: 'middle',
+          },
         },
-        {
-          title: "Please release the quotation amount",
-          des: "Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker",
-          img: Approval3,
+      },
+      purchaseOrder: {
+        labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+          {
+            label: 'Active',
+            fill: false,
+            borderColor: '#4f0f7a',
+            cubicInterpolationMode: 'monotone',
+            tension: 0.3,
+            pointRadius: 0,
+            data: [80, 120, 110, 150, 160, 90, 70, 50, 160, 100, 120, 70],
+          },
+          {
+            label: 'Approved',
+            fill: false,
+            borderColor: '#0f7a6f',
+            cubicInterpolationMode: 'monotone',
+            tension: 0.3,
+            pointRadius: 0,
+            data: [50, 80, 90, 100, 80, 40, 60, 70, 80, 60, 40, 90],
+          },
+          {
+            label: 'Settled',
+            fill: false,
+            borderColor: '#ac9dc4',
+            cubicInterpolationMode: 'monotone',
+            tension: 0.3,
+            pointRadius: 0,
+            data: [10, 20, 10, 50, 60, 40, 70, 20, 60, 70, 40, 70],
+          },
+        ],
+      },
+      purchaseOrderOptions: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
         },
-      ],
-      contactsData: [],
-      contLimt: 5
+        stacked: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+          },
+        },
+      },
     };
   }
 
@@ -151,35 +271,30 @@ class Dashbord extends Component {
     this.props.dispatch(contactAction.fetchContactList());
     this.props.dispatch(homeAction.Dashboarddata());
     this.props.dispatch(invoiceAction.searchInvoice());
-
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.get_contact_status !== this.props.get_contact_status && this.props.get_contact_status === status.SUCCESS) {
-      if (this.props.getContact && this.props.getContact.length > 0) {
-        this.setState({
-          contactsData: this.props.getContact,
-        });
-      }
-    }
-    if (this.props.get_dashboard_data_status !== prevProps.get_dashboard_data_status &&
-      this.props.get_dashboard_data_status === status.SUCCESS) {
+    if (
+      this.props.get_dashboard_data_status !== prevProps.get_dashboard_data_status &&
+      this.props.get_dashboard_data_status === status.SUCCESS
+    ) {
       if (this.props.dashboarddata) {
         this.setState({
           dashboardData: this.props.dashboarddata,
-          data: this.props.dashboarddata.requisitionChart
+          data: this.props.dashboarddata.requisitionChart,
         });
       }
-
     }
-    if (prevProps.search_invoice_status !== this.props.search_invoice_status && this.props.search_invoice_status === status.SUCCESS) {
+    if (
+      prevProps.search_invoice_status !== this.props.search_invoice_status &&
+      this.props.search_invoice_status === status.SUCCESS
+    ) {
       if (this.props.search_invoice_data && this.props.search_invoice_data.length > 0) {
         this.setState({
           invoices: this.props.search_invoice_data,
-        })
+        });
       }
     }
-
   }
 
   displayInvoice = () => {
@@ -188,14 +303,13 @@ class Dashbord extends Component {
     if (invoices && invoices.length > 0) {
       for (let i = 0; i < invoices.length; i++) {
         let element = invoices[i];
-        let time = element.RequestDate.split('T');
         invoiceData.push(
-          <div className="d-flex justify-content-center align-items-center pb-3" key={element.RequisitionsNo}>
+          <div className="d-flex justify-content-center align-items-center pb-3" key={element.id}>
             <div className="col-xl-5 col-lg-5 col-md-5 col-5 px-0">
               <div className="payment">
-                <div className="graphic" ></div>
+                <div className="graphic" />
                 <div className="payment-content">
-                  <a href="#">&#35;{element.RequisitionsNo}</a>
+                  <a href="#foo">&#35;{element.RequisitionsNo}</a>
                   <p>{element.RequestDepartment}</p>
                 </div>
               </div>
@@ -212,102 +326,29 @@ class Dashbord extends Component {
               </div>
             </div>
             <div className="col-xl-3 col-lg-3 col-md-3 col-3 px-0 text-right">
-              <div className="timing">
-                <span>{time[0]}</span>
-              </div>
-            </div>
-          </div>
-        )
-      }
-    }
-    return invoiceData
-  }
-
-  onChangeData = (value, value1) => {
-    this.setState({
-      endDate: value,
-      startDate: value1
-    })
-  }
-
-  displayContactData = () => {
-    const { contactsData, contLimt } = this.state;
-    let retData = [];
-    for (let i = 0; i < contactsData.length; i++) {
-      let element = contactsData[i]
-      if (i < contLimt) {
-        retData.push(
-          <div className="user-content" key={element.name}>
-            <div className="d-inline-block user-img">
-              <img src={element.profile} alt="" />
-            </div>
-            <div className="d-inline-block user-position">
-              <p>{element.name}</p>
-              <span>{element.email}</span>
-            </div>
-            <div className="d-inline-block mail-icon disabled">
-              <IconButton className="d-inline-block mail-icon disabled">
-                <EmailIcon />
-              </IconButton>
-            </div>
-          </div>
-        )
-      }
-    }
-    return retData;
-  }
-  statisticsDataColors(value) {
-    let color = ""
-    if (value > 1 && value < 25) {
-      color = "#E74C3C"
-    }
-    if (value > 25 && value < 50) {
-      color = "rgb(100, 24, 195)"
-    }
-    if (value > 50 && value < 75) {
-      color = "#28B463"
-    }
-    if (value > 75 && value < 100) {
-      color = "#3498DB"
-    }
-    return color
-  }
-  displayStatisticsData = () => {
-    const { dashboardData, statisticsData } = this.state;
-    let retData = [];
-    if (dashboardData && dashboardData.statisticsList && dashboardData.statisticsList.length > 0) {
-      for (let i = 0; i < dashboardData.statisticsList.length; i++) {
-        let data = dashboardData.statisticsList[i];
-        retData.push(
-          <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" key={data.name}>
-            <div className="production-progress">
-              <CircularProgressbar
-                value={data.value}
-                text={`${data.value}%`}
-                strokeWidth={20}
-                styles={buildStyles({
-                  strokeLinecap: {},
-                  trailColor: "#E5E7E9",
-                  pathColor: this.statisticsDataColors(data.value),
-                  textColor: "black"
-                })}
-              />
-              <p>{data.name}</p>
+              <div className="timing"></div>
             </div>
           </div>
         );
       }
     }
-    return retData;
-  }
+    return invoiceData;
+  };
+
+  onChangeData = (value, value1) => {
+    this.setState({
+      endDate: value,
+      startDate: value1,
+    });
+  };
+
   handleUrls = (url, type) => {
     if (type) {
-      this.props.history.push(`${url}/${type}`)
+      this.props.history.push(`${url}/${type}`);
+    } else {
+      this.props.history.push(`${url}`);
     }
-    else {
-      this.props.history.push(`${url}`)
-    }
-  }
+  };
   displayPinedEmail = () => {
     const { pinnedEmailsData } = this.state;
     let pinData = [];
@@ -337,493 +378,335 @@ class Dashbord extends Component {
       }
     }
     return pinData;
-  }
-  render() {
-    // console.log("Props", this.props)
-    const { lineData, data, invoices, PieChartEmailData, contactsData, dashboardData } = this.state;
-    // console.log("This is List", dashboardData.statisticsList)
-    const BorderLinearProgress = withStyles((theme) =>
-      createStyles({
-        root: {
-          height: 10,
-          borderRadius: 5,
-        },
-        colorPrimary: {
-          backgroundColor: theme.palette.grey[theme.palette.type === 'light' ? 200 : 700],
-        },
-        bar: {
-          borderRadius: 5,
-          backgroundImage: 'linear-gradient(to right, #6418c3 , #9f19c5)',
-        },
-      }),
+  };
 
-    )(LinearProgress);
+  onClickCreateNewRequester = (id) => {
+    this.props.history.push(`/postlogin/requestforpurpose/newrequest`);
+  };
+  render() {
+    const {
+      dashboardData,
+      lineData,
+      purchaseOrderLine,
+      purchaseOrderLineOptions,
+      lineOptions,
+      spendAnalysis,
+      spendAnalysisOptions,
+      requisitionStatusData,
+      requisitionStatusOptions,
+      purchaseOrder,
+      purchaseOrderOptions,
+    } = this.state;
+    const { Requisitions } = dashboardData;
+    const { t } = this.props;
     return (
       <div className="main-content">
-        <div className="dashbord-top-section">
-          <div className="row justify-content-center align-items-center">
-            <div className="col-lg-4">
-              <div className="heading">
-                <h3>Dashbord</h3>
-                <span>Lorem ipsum dolor sit amet</span>
-              </div>
-            </div>
-            <div className="col-lg-8">
-              <div className="row justify-content-center align-items-center">
-                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 pr-lg-2">
-                  <div className="search-bar">
-                    <div className="form-group">
-                      <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Search here" />
-                      <button><i className="fas fa-search"></i></button>
-                    </div>
-                  </div>
+        <div className="dashbord-content">
+          <div className="dashbord-top-section">
+            <div className="row justify-content-center align-items-center">
+              <div className="col-xl-8 col-lg-8 col-md-6 col-sm-12 ">
+                <div className="heading">
+                  <h3>{this.props.t('Dashboard')}</h3>
+                  <span>Hello, James, Welcome to Synectiks</span>
                 </div>
-                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 pl-lg-2">
-                  <div className="calender">
-                    <DateFormat className="d-block" />
-                  </div>
+              </div>
+              <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                <div className="calender">
+                  <DateFormat className="d-block" />
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        {dashboardData &&
-          <div className="progress-rfp-boxs">
+          {dashboardData && Requisitions && (
+            <div className="progress-rfp-boxs">
+              <div className="row">
+                <div
+                  key={Requisitions.purchase.id}
+                  className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2"
+                  onClick={() => this.handleUrls(`/postlogin/purchaserequisition`, '')}
+                >
+                  <div className="progress-box">
+                    <div className="progress-content">
+                      <div className="title">Purchase Requistion</div>
+                      {Requisitions && Requisitions.purchase && <h4>{Requisitions.purchase.val}</h4>}
+                      <div className="progres-bar-text">
+                        <span className="purchase_requistion-box">&#8605;</span>
+                        <p>&#43; 14 &#37; Last Month</p>
+                      </div>
+                    </div>
+                    <div className="purchased-image">
+                      <CircularProgressbar
+                        value={66}
+                        text={`+74%`}
+                        strokeWidth={15}
+                        styles={buildStyles({
+                          strokeLinecap: {},
+                          trailColor: '#E5E7E9',
+                          pathColor: '#38cb89',
+                          textColor: 'black',
+                        })}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  key={Requisitions.approve.id}
+                  className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2"
+                  onClick={() => this.handleUrls(`/postlogin/purchaseorder`, '')}
+                >
+                  <div className="progress-box">
+                    <div className="progress-content">
+                      <div className="title">Purchase Order</div>
+                      {Requisitions && Requisitions.approve && <h4>{Requisitions.approve.val}</h4>}
+                      <div className="progres-bar-text">
+                        <span className="purchase-order-box">&#8605;</span>
+                        <p>&#43; 14 &#37; Last Month</p>
+                      </div>
+                    </div>
+                    <div className="purchased-image approved">
+                      <CircularProgressbar
+                        value={66}
+                        text={`+74%`}
+                        strokeWidth={15}
+                        styles={buildStyles({
+                          strokeLinecap: {},
+                          trailColor: '#E5E7E9',
+                          pathColor: '#ffa600',
+                          textColor: 'black',
+                        })}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div key={Requisitions.pending.id} className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2">
+                  <div className="progress-box">
+                    <div className="progress-content">
+                      <div className="title">Budget</div>
+                      {Requisitions && Requisitions.pending && <h4>{Requisitions.pending.val}</h4>}
+                      <div className="progres-bar-text">
+                        <span className="budget-box">&#8605;</span>
+                        <p>&#43; 14 &#37; Last Month</p>
+                      </div>
+                    </div>
+                    <div className="purchased-image pending">
+                      <CircularProgressbar
+                        value={66}
+                        text={`+74%`}
+                        strokeWidth={15}
+                        styles={buildStyles({
+                          strokeLinecap: {},
+                          trailColor: '#E5E7E9',
+                          pathColor: '#ff5630',
+                          textColor: 'black',
+                        })}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div key={Requisitions.rejected.id} className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2">
+                  <div className="progress-box">
+                    <div className="progress-content">
+                      <div className="title">Report</div>
+                      {Requisitions && Requisitions.rejected && <h4>{Requisitions.rejected.val}</h4>}
+                      <div className="progres-bar-text">
+                        <span className="purchase_requistion-box">&#8605;</span>
+                        <p>&#43; 39&#8228;69 &#37;</p>
+                      </div>
+                    </div>
+                    <div className="graph-chart">
+                      <div className="invoice">
+                        <Line data={lineData} options={lineOptions} width={100} height={100} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="progress-categories-section">
             <div className="row">
-              <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2" onClick={() => this.handleUrls(`/postlogin/frp`, "todayfrp")}>
-                <div className="progress-box">
-                  <div className="progress-img">
-                    <img src={rfpImg} alt="" />
-                  </div>
-                  <div className="progress-content" >
-                    {dashboardData.todayRFP && <h3>{dashboardData.todayRFP}</h3>}
-                    <span>Today's RFP</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2 pl-lg-2" onClick={() => this.handleUrls(`/postlogin/frp`, 'totalfrp')}>
-                <div className="progress-box">
-                  <div className="progress-img">
-                    <img src={rfpImg} alt="" />
-                  </div>
-                  <div className="progress-content">
-                    {dashboardData.totalRFP && <h3>{dashboardData.totalRFP}</h3>}
-                    <span>Total RFP</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2 pl-lg-2" onClick={() => this.handleUrls(`/postlogin/frp`, 'rejectedrfp')}>
-                <div className="progress-box">
-                  <div className="progress-img">
-                    <img src={rfpImg} alt="" />
-                  </div>
-                  <div className="progress-content">
-                    {dashboardData.totalRFP && <h3>{dashboardData.totalRFP}</h3>}
-                    <span>Rejected RFP</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pl-lg-2" onClick={() => this.handleUrls('/postlogin/email/inbox', `important`)}>
-                <div className="progress-box">
-                  <div className="progress-img">
-                    <div className="mail-icon"><i className="fa fa-envelope"></i></div>
-                    <span>&#33;</span>
-                  </div>
-                  <div className="progress-content">
-                    <h3>35</h3>
-                    <span>Important Emails</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2 pt-3">
-                <div className="progress-box">
-                  <div className="progress-img order">
-                    <div className="in-progress"></div>
-                    <div className="complate-progress"></div>
-                  </div>
-                  <div className="progress-content">
-                    <div className="completed">
-                      {dashboardData.completeOrder && <h5>{dashboardData.completeOrder}</h5>}
-                      <span>Completed Orders</span>
-                    </div>
-                    <div className="in-progrss">
-                      {dashboardData.inprogressOrder && <h5>{dashboardData.inprogressOrder}</h5>}
-                      <span>In-progrss Orders</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        }
-        <div className="recent-requisition-section">
-          <div className="row">
-            <div className="col-xl-7 col-md-7 col-12">
-              <RecentActivity />
-            </div>
-            <div className="col-xl-5 col-md-5 col-12">
-              <Requisition />
-            </div>
-          </div>
-        </div>
-        <div className="average-section">
-          <div className="row">
-            {dashboardData &&
-              <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 pr-lg-2">
-                <div className="average-left">
-                  <div className="average-form">
-                    <div className="row justify-content-center align-items-center">
-                      <div className="col-lg-7 col-md-7 col-sm-7">
-                        <div className="total-spend">
-                          <div className="spend-img">
-                            <img src={spend} alt="" />
-                          </div>
-                          <div className="spend-content">
-                            <span>Total Spend</span>
-                            {dashboardData.totalspent && <h4>${dashboardData.totalspent}</h4>}
-                          </div>
+              <div className="col-xl-7 col-lg-7 col-md-6 col-sm-12">
+                <div className="statistics-requisitions-chart">
+                  <div className="requisitions-chart-header">
+                    <div className="row d-flex align-items-center justify-content-center">
+                      <div className="col-lg-6">
+                        <div className="header-left">
+                          <h4>Spend Analysis</h4>
+                          <span>Top Spending categories</span>
                         </div>
                       </div>
-                      <div className="col-lg-5 col-md-5 col-sm-5">
-                        <div className="last-month">
-                          <span>Average form last month</span>
-                          <p> <strong><TrendingUpIcon />  &#43; 0&#44; 5&#37; </strong> increase</p>
-                        </div>
+                      <div className="col-lg-6">
+                        <div className="header-right"></div>
                       </div>
                     </div>
                   </div>
-                  <div className="requisition-section">
-                    <div className="row">
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 pr-lg-2">
-                        <div className="Requisition-box">
-                          <div className="Requisition-content">
-                            <span className="d-block">Pendding Requisition</span>
-                            {dashboardData.requisitionPendding && <h4>{dashboardData.requisitionPendding}</h4>}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 pl-lg-2">
-                        <div className="Requisition-box">
-                          <div className="Requisition-content">
-                            <span className="d-block">Invoices</span>
-                            {dashboardData.invoices && <h4>{dashboardData.invoices}</h4>}
-                          </div>
-                          <div className="invoices-img">
-                            <img src={invoices} alt="" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 pr-lg-2">
-                        <div className="Requisition-box">
-                          <div className="Requisition-content">
-                            <span>Total PO&#39;s</span>
-                            {dashboardData.totalPO && <h4>{dashboardData.totalPO}</h4>}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 pl-lg-2">
-                        <div className="Requisition-box">
-                          <div className="Requisition-content">
-                            <span>Pendding PO&#39;s</span>
-                          </div>
-                          <div className="d-block pendding-progress">
-                            <BorderLinearProgress variant="determinate" value={(dashboardData.totalPO / dashboardData.penddingPo) * 100} className="" />
-                            {dashboardData.penddingPo && <h4>{dashboardData.penddingPo}</h4>}
-                            <div className="last-month">
-                              <p> <strong>&#8722; 0&#44; 8&#37; </strong> From last month</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            }
-            <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 pl-lg-2">
-              <div className="average-right">
-                <div className="statistics-graph">
-                  <div className="requistions-heading">
-                    <div className="row">
-                      <div className="col-lg-6 col-md-6 col-sm-6 ">
-                        <h5 className="d-block">Requistions Spend Overview</h5>
-                        <div className="totalpaid">
-                          <div className="paid-content">
-                            <span>Total Paid</span>
-                            <label>1,567</label>
-                          </div>
-                          <div className="paid-content unpaid">
-                            <span>Total Unpaid</span>
-                            <label>569</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-6 col-md-6 col-sm-6">
-                        <div className="requistions-dropdown">
-                          <div className="opensens-dropdown">
-                            <FormControl className="opensens-content">
-                              <NativeSelect>
-                                <option value="">Monthly</option>
-                                <option value={10}>abc</option>
-                                <option value={20}>def</option>
-                                <option value={30}>abc</option>
-                              </NativeSelect>
-                            </FormControl>
-                            <IconButton className="meore-menu-icon">
-                              <MoreVertIcon />
-                            </IconButton>
-                          </div>
-                          <div className="requistions-checkbox">
-                            <label>Number</label>
-                            <Switch
-                              size="small"
-                              color="primary"
-                              name="checkedB"
-                              inputProps={{ 'aria-label': 'primary checkbox' }}
-                            />
-                            <label>Analytics</label>
-                            <Switch
-                              size="small"
-                              color="primary"
-                              name="checkedB"
-                              inputProps={{ 'aria-label': 'primary checkbox' }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <SimpleBar style={{ maxHeight: '300px' }} className="user-content">
+                  <SimpleBar style={{ maxHeight: '400px' }} className="user-content">
                     <div className="chartbar-content">
-                      <BarChart
-                        width={550}
-                        height={255}
-                        data={data}
-                        margin={{
-                          right: 30,
-                        }}
-                      >
-                        <XAxis dataKey="name" />
-                        <YAxis tickCount={6} />
-                        <Tooltip />
-                        {/* <Legend /> */}
-                        <Bar dataKey="TotalUnpaid" fill="#8884d8" />
-                        <Bar dataKey="TotalPaid" fill="#82ca9d" />
-                      </BarChart>
+                      <Bar data={spendAnalysis} options={spendAnalysisOptions} height={110} />
                     </div>
+                  </SimpleBar>
+                </div>
+              </div>
+              <div className="col-xl-5 col-lg-5 col-md-6 col-sm-12">
+                <div className="email-categories">
+                  <div className="purchase-order-head">
+                    <h4>Requistion Status</h4>
+                    <div className="dropdown-menu">
+                      <select name="" className="approved-dropdown">
+                        <option value="Month">Month</option>
+                        <option value="Month">January</option>
+                        <option value="Month">February</option>
+                        <option value="Month">March</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="chart-content">
+                    <div className="chart-box">
+                      <Pie data={requisitionStatusData} options={requisitionStatusOptions} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="purchase-order-section">
+            <div className="row">
+              <div className="col-12">
+                <div className="purchase-order-head">
+                  <h5>Purchase Order</h5>
+                  <div className="dropdown-menu">
+                    <select name="" className="approved-dropdown">
+                      <option value="Month">Month</option>
+                      <option value="Month">January</option>
+                      <option value="Month">February</option>
+                      <option value="Month">March</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="line-graph-text">
+                  <ul>
+                    <li>
+                      <h4 className="active">3254</h4>
+                      <span>Active</span>
+                    </li>
+                    <li>
+                      <h4 className="approved">251</h4>
+                      <span>Approved</span>
+                    </li>
+                    <li>
+                      <h4 className="settled">320</h4>
+                      <span>Settled</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="line-graph-content">
+                  <Line data={purchaseOrder} options={purchaseOrderOptions} height={100} />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="recent-requisition-section">
+            <div className="row">
+              <div className="col-xl-6 col-md-6 col-12">
+                <ActivityFeeds t={t} />
+              </div>
+              <div className="col-xl-6 col-md-6 col-12">
+                <div className="deliveries-transit">
+                  <div className="deliveries-transit-head">
+                    <h5>Deliveries in transit</h5>
+                  </div>
+                  <SimpleBar className="deliveries-transit-inner">
+                    <Box sx={{ flexGrow: 1 }} className="deliveries-box">
+                      <div className="order-id">
+                        <label>Order Id: 4523451</label>
+                        <i class="far fa-ellipsis-h"></i>
+                      </div>
+                      <LinearProgress variant="determinate" value={50} />
+                      <div className="order-time">
+                        <span>14:45 AM,July 03</span>
+                        <span>14:45 AM,July 03</span>
+                      </div>
+                      <div className="order-id mb-0">
+                        <label>New york USA</label>
+                        <label>New york USA</label>
+                      </div>
+                    </Box>
+                    <Box sx={{ flexGrow: 1 }} className="deliveries-box">
+                      <div className="order-id">
+                        <label>Order Id: 4523451</label>
+                        <i class="far fa-ellipsis-h"></i>
+                      </div>
+                      <LinearProgress variant="determinate" value={80} />
+                      <div className="order-time">
+                        <span>14:45 AM,July 03</span>
+                        <span>14:45 AM,July 03</span>
+                      </div>
+                      <div className="order-id mb-0">
+                        <label>New york USA</label>
+                        <label>New york USA</label>
+                      </div>
+                    </Box>
+                    <Box sx={{ flexGrow: 1 }} className="deliveries-box">
+                      <div className="order-id">
+                        <label>Order Id: 4523451</label>
+                        <i class="far fa-ellipsis-h"></i>
+                      </div>
+                      <LinearProgress variant="determinate" value={40} />
+                      <div className="order-time">
+                        <span>14:45 AM,July 03</span>
+                        <span>14:45 AM,July 03</span>
+                      </div>
+                      <div className="order-id mb-0">
+                        <label>New york USA</label>
+                        <label>New york USA</label>
+                      </div>
+                    </Box>
+                    <Box sx={{ flexGrow: 1 }} className="deliveries-box">
+                      <div className="order-id">
+                        <label>Order Id: 4523451</label>
+                        <i class="far fa-ellipsis-h"></i>
+                      </div>
+                      <LinearProgress variant="determinate" value={40} />
+                      <div className="order-time">
+                        <span>14:45 AM,July 03</span>
+                        <span>14:45 AM,July 03</span>
+                      </div>
+                      <div className="order-id mb-0">
+                        <label>New york USA</label>
+                        <label>New york USA</label>
+                      </div>
+                    </Box>
                   </SimpleBar>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="latest-invoices-secton">
-          <div className="row">
-            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 pr-lg-2">
-              <div className="production-progress-left">
-                <div className="row justify-content-center align-items-center pb-3">
-                  <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
-                    <div className="heading">Statistics</div>
-                  </div>
-                  <div className="col-xl-8 col-lg-8 col-md-8 col-sm-6 col-12">
-                    <div className="show-value">
-                      <ul>
-                        <li className="frist">
-                          <Checkbox
-                            defaultChecked
-                            color="primary"
-                            inputProps={{ 'aria-label': 'secondary checkbox' }}
-                          />
-                          <label>Chart</label>
-                        </li>
-                        <li>
-                          <Checkbox
-                            defaultChecked
-                            color="primary"
-                            inputProps={{ 'aria-label': 'seco ndary checkbox' }}
-                          />
-                          <label>Show Value</label>
-                        </li>
-                      </ul>
-                      <IconButton className="more-menu-icon">
-                        <MoreVertIcon />
-                      </IconButton>
+          <div className="top-seller-section">
+            <div className="row">
+              <div className="col-xl-7 col-lg-7 col-md-6 col-sm-12">
+                <div className="statistics-requisitions-chart">
+                  <div className="requisitions-chart-header">
+                    <h4>Spend Analysis</h4>
+                    <div className="dropdown-menu">
+                      <select name="" className="approved-dropdown">
+                        <option value="Year">2022</option>
+                        <option value="Year">2023</option>
+                        <option value="Year">2024</option>
+                        <option value="Year">2025</option>
+                      </select>
                     </div>
                   </div>
-                </div>
-                <div className="row">
-                  {this.displayStatisticsData()}
-                </div>
-              </div>
-            </div>
-            {/* <LatestPayment /> */}
-            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 pl-lg-2">
-              <div className="production-progress-right">
-                <div className="heading">
-                  Latest Invoice Payment
-                  <IconButton className="meore-menu-icon">
-                    <MoreVertIcon />
-                  </IconButton>
-                </div>
-                <div className="payment-update">
-                  <SimpleBar className="invoice">
-                    <div className="invoice-inner">
-                      {this.displayInvoice()}
+                  <SimpleBar style={{ maxHeight: '500px' }} className="user-content">
+                    <div className="chartbar-content">
+                      <Bar data={purchaseOrderLine} options={purchaseOrderLineOptions} />
                     </div>
                   </SimpleBar>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="cenversation-sectin">
-          <div className="row">
-            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 pr-lg-2">
-              <div className="cenversation-left">
-                <div className="image"><img src={EmailBackground} alt="" /></div>
-                <div className="cenversation-content">
-                  {dashboardData && dashboardData.email && <h2>{dashboardData.email}</h2>}
-                  <b className="d-block">Total emails that you have</b>
-                  <span className="d-block">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                  </span>
-                  <div className="compose-btn">
-                    <Button variant="contained" className="compose-email">&#43; Compose Email</Button>
-                    <Button variant="contained" className="compose-email inbox-btn">Go To inbox</Button>
-                  </div>
-                </div>
+              <div className="col-xl-5 col-md-6 col-12">
+                <TopSellers t={t} />
               </div>
-            </div>
-            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 pl-lg-2">
-              <div className="cenversation-right">
-                <div className="pagemaker-heading">
-                  <h5>Conversation Statistics</h5>
-                  <div className="conversation-btn">
-                    <Button variant="outlined" className="report-btn"><SystemUpdateAltIcon />Save Reports</Button>
-                  </div>
-                </div>
-                <div className="cenversation-content">
-                  <span>software like Aldus PageMaker including versions.</span>
-                  <div className="graph-chart">
-                    <SimpleBar className="invoice">
-                      <LineChart width={480} height={225} data={lineData}>
-                        <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={6} />
-                        <XAxis dataKey="name" />
-                      </LineChart>
-                    </SimpleBar>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="contact-section">
-          <div className="row">
-            <div className="col-xl-3 col-lg-4 col-md-12 col-sm-12 pr-lg-2">
-              <div className="contact-left">
-                <div className="row justify-content-center align-items-center">
-                  <div className="col-9">
-                    <div className="heading">
-                      <h4>Contacts</h4>
-                      <span>You have <strong>{contactsData.length}</strong> contacts</span>
-                    </div>
-                  </div>
-                  <div className="col-3 text-right">
-                    <IconButton className="contect-btn">
-                      <AddIcon />
-                    </IconButton>
-                  </div>
-                </div>
-                <div className="contect-list">
-                  {this.displayContactData()}
-                  <div className="view-btn">
-                    <Button variant="contained" className="view-more">View More</Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-9 col-lg-8 col-md-12 col-sm-12 pl-lg-2">
-              <RecentEmails />
-            </div>
-          </div>
-        </div>
-        <div className="progress-categories-section">
-          <div className="row">
-            <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 pr-lg-2">
-              <MostTagUsed />
-            </div>
-            <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 pr-lg-2 pl-lg-2">
-              <div className="email-categories">
-                <h4>Email Categories</h4>
-                <span>Lorem ipsum dolor sit amet</span>
-                <div className="chart-content">
-                  <ResponsiveContainer height={200} width={200}>
-                    <PieChart height={200} width={200}>
-                      <Pie
-                        data={PieChartEmailData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        dataKey="value"
-                      >
-                        {PieChartEmailData.map((element) => (
-                          <Cell key={element.value} fill={element.COLORS} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="chart-details">
-                    <ul style={{ listStyle: 'none' }}>
-                      {PieChartEmailData.map(element => (
-                        <li style={{ display: 'block', alignItems: 'center' }} key={element.title}><div style={{ backgroundColor: element.COLORS, height: 15, width: 15, borderRadius: 5, display: 'inline-block', marginRight: '10px', marginTop: '-2px', verticalAlign: 'middle' }} />{element.title}({element.per}%) <span><b>{element.value}</b></span></li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 pl-lg-2">
-              <div className="pinned-emails">
-                <div className="heading">
-                  <h5>Pinned Emails</h5>
-                  <span>Lorem ipsum dolor sit amet</span>
-                </div>
-                <Button variant="outlined" className="report-btn">View More <ArrowRightIcon /></Button>
-                <div className="publishing">
-                  <div className="d-block heading">
-                    <span>Please review the Quotation</span>
-                    <IconButton className="contect-btn">
-                      <ColorizeIcon className="social-icon" />
-                    </IconButton>
-                  </div>
-                  <p>Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker</p>
-                  <div className="publish-btn">
-                    <Button variant="outlined" className="cover-preview-btn"><InsertDriveFileIcon className="social-icon" />Master_file.fig</Button>
-                    <Button variant="outlined" className="cover-preview-btn"><CollectionsIcon className="social-icon" />CoverPreview.jpg</Button>
-                    <Button variant="outlined" className="cover-preview-btn file-moe active">4 files more</Button>
-                  </div>
-                </div>
-                <div className="publish-content">
-                  <SimpleBar style={{ maxHeight: '225px' }}>
-                    <ul>
-                      {this.displayPinedEmail()}
-                    </ul>
-                  </SimpleBar>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="budget-statictis-section">
-          <div className="row">
-            <div className="col-xl-7 col-lg-7 col-md-7 col-sm-12 pr-lg-2">
-              <BudgetOverview />
-            </div>
-            <div className="col-xl-5 col-lg-7 col-md-7 col-sm-12 pl-lg-2">
-              <StatictisRFP />
             </div>
           </div>
         </div>
@@ -832,14 +715,22 @@ class Dashbord extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  const { get_contact_status, getContact, get_dashboard_data_status, dashboarddata, search_invoice_status, search_invoice_data } = state.procurement;
+  const {
+    get_contact_status,
+    getContact,
+    get_dashboard_data_status,
+    dashboarddata,
+    search_invoice_status,
+    search_invoice_data,
+  } = state.procurement;
   return {
     get_contact_status,
     getContact,
     get_dashboard_data_status,
     dashboarddata,
     search_invoice_status,
-    search_invoice_data
-  }
-}
-export default connect(mapStateToProps)(Dashbord);
+    search_invoice_data,
+  };
+};
+const connectedDeshboard = withTranslation()(connect(mapStateToProps)(Dashbord));
+export default connectedDeshboard;

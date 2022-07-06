@@ -1,6 +1,6 @@
 import { status } from "../_constants";
 import { invoiceServices } from "../_services";
-import { alert, commonFunctions } from "../_utilities";
+import { alert } from "../_utilities";
 
 export const invoiceAction = {
   addInvoice,
@@ -24,26 +24,25 @@ function addInvoice(data) {
     );
     invoiceServices.addInvoice(data).then(
       (response) => {
-        if (response.status) {
-          dispatch(
-            dispatchFunction({
+        const code = response.status;
+        if (code === 200) {
+          response.json().then(data => {
+            dispatch(dispatchFunction({
               type: status.SUCCESS,
               data: {
                 add_invoice_status: status.SUCCESS,
-                addInvoice: response.object,
-              },
-            })
-          );
+                addInvoice: data
+              }
+            }));
+          });
         } else {
-          dispatch(
-            dispatchFunction({
-              type: status.FAILURE,
-              data: {
-                add_invoice_status: status.FAILURE,
-                addInvoice: response,
-              },
-            })
-          );
+          dispatch(dispatchFunction({
+            type: status.FAILURE,
+            data: {
+              add_invoice_status: status.FAILURE,
+              addInvoice: response
+            }
+          }));
           alert.error(response.message);
         }
       },
@@ -128,26 +127,25 @@ function getInvoice(data) {
     );
     invoiceServices.getInvoice(data).then(
       (response) => {
-        if (response.code == 200) {
-          dispatch(
-            dispatchFunction({
+        const code = response.status;
+        if (code === 200) {
+          response.json().then(data => {
+            dispatch(dispatchFunction({
               type: status.SUCCESS,
               data: {
                 get_invoice_status: status.SUCCESS,
-                get_invoice_data: response.object,
-              },
-            })
-          );
+                get_invoice_data: data
+              }
+            }));
+          });
         } else {
-          dispatch(
-            dispatchFunction({
-              type: status.FAILURE,
-              data: {
-                get_invoice_status: status.FAILURE,
-                get_invoice_data: response,
-              },
-            })
-          );
+          dispatch(dispatchFunction({
+            type: status.FAILURE,
+            data: {
+              get_invoice_status: status.FAILURE,
+              get_invoice_data: response
+            }
+          }));
           alert.error(response.message);
         }
       },
@@ -180,7 +178,7 @@ function getNewInvoice(data) {
     );
     invoiceServices.getNewInvoice(data).then(
       (response) => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           dispatch(
             dispatchFunction({
               type: status.SUCCESS,
@@ -231,26 +229,25 @@ function searchInvoice(data) {
     );
     invoiceServices.searchInvoice(data).then(
       (response) => {
-        if (response.code == 200) {
-          dispatch(
-            dispatchFunction({
+        const code = response.status;
+        if (code === 200) {
+          response.json().then(data => {
+            dispatch(dispatchFunction({
               type: status.SUCCESS,
               data: {
                 search_invoice_status: status.SUCCESS,
-                search_invoice_data: response.object,
-              },
-            })
-          );
+                search_invoice_data: data
+              }
+            }));
+          });
         } else {
-          dispatch(
-            dispatchFunction({
-              type: status.FAILURE,
-              data: {
-                search_invoice_status: status.FAILURE,
-                search_invoice_data: response,
-              },
-            })
-          );
+          dispatch(dispatchFunction({
+            type: status.FAILURE,
+            data: {
+              search_invoice_status: status.FAILURE,
+              search_invoice_data: response
+            }
+          }));
           alert.error(response.message);
         }
       },

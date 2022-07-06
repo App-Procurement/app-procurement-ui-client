@@ -11,6 +11,10 @@ import { connect } from "react-redux";
 import { recievedrfpAction } from "../../_actions";
 import { status } from "../../_constants";
 import { commonFunctions } from "../../_utilities";
+import { withTranslation } from "react-i18next";
+import  { t } from "i18next";
+
+
 // import { th } from "date-fns/locale";
 
 class RecievedRfp extends Component {
@@ -38,6 +42,7 @@ class RecievedRfp extends Component {
           },
         },
         {
+
           label: "Requisition No",
           key: "id",
           renderCallback: (value) => {
@@ -49,7 +54,7 @@ class RecievedRfp extends Component {
           },
         },
         {
-          label: "Request Dept",
+          label: t('Request Dept'),
           key: "department",
           renderCallback: (value) => {
             return (
@@ -144,7 +149,6 @@ class RecievedRfp extends Component {
       }
     }
   }
-
   onClickShowViewDetails = (id) => {
     let url = this.props.match.params.url;
     this.props.history.push(`/postlogin/frp/${url}/${id}`);
@@ -160,18 +164,18 @@ class RecievedRfp extends Component {
   };
 
   handleClickMethod = (event) => {
-    const { requiData } = this.state;
+    // const { requiData } = this.state;
     event.preventDefault();
     this.setState({
       isSubmitted: true,
     });
     const errorData = this.validate(true);
     if (errorData.isValid) {
-      const sendReqData = {
-        status: requiData.status,
-        reqno: requiData.reqno,
-        depart: requiData.depart,
-      };
+      // const sendReqData = {
+      //   status: requiData.status,
+      //   reqno: requiData.reqno,
+      //   depart: requiData.depart,
+      // };
     }
   };
 
@@ -222,12 +226,12 @@ class RecievedRfp extends Component {
       <div className="main-content">
         <div className="recieved">
           <div className="heading">
-            <h4>Recieved RFP</h4>
+            <h4>{t("Recieved RFP")}</h4>
           </div>
           <div className="requisitions-filter">
             <div className="form-group row col-form-group">
               <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                Filter By Status
+                {t("Filter By Status")}
               </label>
               <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                 <FormControl className="select-menu">
@@ -250,7 +254,7 @@ class RecievedRfp extends Component {
             </div>
             <div className="form-group row col-form-group">
               <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                Date Range
+                {t("Date Range")}
               </label>
               <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                 <div className="d-flex align-items-center">
@@ -304,4 +308,6 @@ const mapStateToProps = (state) => {
     recieved_rfp_list,
   };
 };
-export default connect(mapStateToProps)(RecievedRfp);
+
+const connectedRecievedRfp = withTranslation()(connect(mapStateToProps)(RecievedRfp));
+export default connectedRecievedRfp;

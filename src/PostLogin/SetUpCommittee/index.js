@@ -9,11 +9,11 @@ import MailIcon from '@material-ui/icons/Mail';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import { connect } from 'react-redux';
 import { committeeAction } from '../../_actions';
 import { status } from '../../_constants';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 class SetUpCommittee extends Component {
     constructor(props) {
         super(props)
@@ -30,7 +30,7 @@ class SetUpCommittee extends Component {
     };
 
     componentDidMount() {
-        this.props.dispatch(committeeAction.getCommitteeType());
+        // this.props.dispatch(committeeAction.getCommitteeType());
         if (this.props.selected_member_list && this.props.selected_member_list.committeeMember && this.props.selected_member_list.committeeMember.length > 0) {
             this.setState({
                 committeeMember: this.props.selected_member_list.committeeMember,
@@ -120,15 +120,15 @@ class SetUpCommittee extends Component {
 
     displayCommiteeLists = () => {
         let retData = [];
-        const { activeindex, deletePopup, committeeMember, displayOption } = this.state;
+        const { activeindex, committeeMember, displayOption } = this.state;
         for (let i = 0; i < committeeMember.length; i++) {
             let row = committeeMember[i];
-            if (row.isSelected == true) {
+            if (row.isSelected === true) {
                 retData.push(
                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12" key={row.id}>
                         <div className="member-boxs">
                             <Card className={
-                                activeindex == i ? "members-box active" : "members-box"
+                                activeindex === i ? "members-box active" : "members-box"
                             } onClick={() => this.setState({ activeindex: i })}>
                                 <div className="d-inline-block menu-icon" style={{ display: "flex" }}>
                                     <IconButton aria-label="settings">
@@ -179,7 +179,6 @@ class SetUpCommittee extends Component {
 
     displayCommitee = () => {
         const { comitteeType } = this.state;
-        console.log("comitteeType",comitteeType)
         let retoption = [];
         if (comitteeType && comitteeType.length > 0) {
             for (let i = 0; i < comitteeType.length; i++) {
@@ -196,7 +195,7 @@ class SetUpCommittee extends Component {
         let selectedMember = [];
         if (committeeMember && committeeMember.length > 0) {
             for (let i = 0; i < committeeMember.length; i++) {
-                if (committeeMember[i].isSelected == true) {
+                if (committeeMember[i].isSelected === true) {
                     selectedMember.push(committeeMember[i].id);
                 }
             }
@@ -216,13 +215,13 @@ class SetUpCommittee extends Component {
             <div className="main-content">
                 <div className="setup-committee-section">
                     <div className="d-flex w-100 align-items-center heading">
-                        <h4 className="d-inline-block">SetUp Committee</h4>
+                        <h4 className="d-inline-block">{t("SetUp Committee")}</h4>
                     </div>
                     <div className="setup-committee-content">
                         <div className="add-members">
                             <div className="form-group row col-form-group">
                                 <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                                    Select Committee Type
+                                    {t("Select Committee Type")}
                                 </label>
                                 <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                     <FormControl className="select-menu">
@@ -236,7 +235,7 @@ class SetUpCommittee extends Component {
                             </div>
                             <div className="form-group row col-form-group">
                                 <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
-                                    Add Committee Members
+                                    {t("Add Committee Members")}
                                 </label>
                                 <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                                     <Button variant="contained" className="primary-btn" disableElevation onClick={this.handleClickMethod}>
@@ -249,7 +248,7 @@ class SetUpCommittee extends Component {
                         {committeeMember && committeeMember.length > 0 &&
                             <div className="pt-4 select-members">
                                 <div className="mb-4 heading">
-                                    <h5>Selected Committee Members</h5>
+                                    <h5>{t("Selected Committee Members")}</h5>
                                 </div>
                                 <div className="membar-list">
                                     <div className="row">
@@ -282,6 +281,5 @@ function mapStateToProps(state) {
         getCommitteeType
     };
 }
-
-const connectedSetUpCommittee = connect(mapStateToProps)(SetUpCommittee);
-export default (connectedSetUpCommittee);
+const connectedSetUpCommittee = withTranslation()(connect(mapStateToProps)(SetUpCommittee));
+export default connectedSetUpCommittee;

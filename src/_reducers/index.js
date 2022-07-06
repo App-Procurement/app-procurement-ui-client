@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { authConstants } from "../_constants";
 import { procurement } from './procurement.reducer';
 
 const appReducers = combineReducers({

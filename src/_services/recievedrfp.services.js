@@ -1,4 +1,3 @@
-import config from '../config';
 import { commonFunctions } from "../_utilities";
 import { apiEndPoint } from "./apiEndPoint";
 
@@ -10,10 +9,10 @@ export const recievedrfpServices = {
     getRecieveRFQ,
     addRecieveRFQ,
     getTrackRfpData,
-    sendRFQ
+    sendRFQ,
+    getActivites
     
 }
-
 function searchRecievedRFP(data) {
     const extraHeaders = {
         "Content-Type": "application/json"
@@ -77,4 +76,12 @@ function sendRFQ(data){
     };
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
     return fetch(`${apiEndPoint.SENDRFQ}/`, requestOptions).then(response => response.json());
+}
+
+function getActivites(data){
+    const extraHeaders = {
+        "Content-Type": "application/json"
+    };
+    const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
+    return fetch(`${apiEndPoint.ACTIVITES}`, requestOptions).then(response => response.json());
 }

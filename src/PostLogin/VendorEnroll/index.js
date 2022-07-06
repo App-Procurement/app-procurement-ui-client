@@ -14,6 +14,8 @@ import IconButton from "@material-ui/core/IconButton";
 import { vendorAction } from "../../_actions";
 import { connect } from "react-redux";
 import { status } from "../../_constants";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 
 class VendorEnroll extends Component {
   constructor(props) {
@@ -47,29 +49,29 @@ class VendorEnroll extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const{requiData}=this.state;
+    const { requiData } = this.state;
     if (prevProps.add_vendor_status !== this.props.add_vendor_status && this.props.add_vendor_status === status.SUCCESS) {
-      requiData.firstName= '';
-      requiData.lastName= '';
-      requiData.gender= '';
-      requiData.fatherName= '';
-      requiData.brithDate= '';
-      requiData.phoneNo= '';
-      requiData.designation= '';
-      requiData.companyName= '';
-      requiData.RegistrationNo= '';
-      requiData.directorName= '';
-      requiData.address= '';
-      requiData.bidder= '';
-      requiData.city= '';
-      requiData.establishment= '';
-      requiData.state= '';
-      requiData.business= '';
-      requiData.postalCode= '';
-      requiData.legalStatus= '';
-      requiData.panNo= '';
-      requiData.companyCategory= '';
-      requiData.captcha= '';
+      requiData.firstName = '';
+      requiData.lastName = '';
+      requiData.gender = '';
+      requiData.fatherName = '';
+      requiData.brithDate = '';
+      requiData.phoneNo = '';
+      requiData.designation = '';
+      requiData.companyName = '';
+      requiData.RegistrationNo = '';
+      requiData.directorName = '';
+      requiData.address = '';
+      requiData.bidder = '';
+      requiData.city = '';
+      requiData.establishment = '';
+      requiData.state = '';
+      requiData.business = '';
+      requiData.postalCode = '';
+      requiData.legalStatus = '';
+      requiData.panNo = '';
+      requiData.companyCategory = '';
+      requiData.captcha = '';
       this.setState({
         requiData,
         isSubmitted: false,
@@ -165,28 +167,28 @@ class VendorEnroll extends Component {
       if (!requiData.firstName) {
         retData.firstName = {
           isValid: false,
-          message: "First name is required",
+          message: t("First Name is Required"),
         };
         isValid = false;
       }
       if (!requiData.lastName) {
         retData.lastName = {
           isValid: false,
-          message: "Last name is required",
+          message: t("Last Name is Required"),
         };
         isValid = false;
       }
       if (!requiData.gender) {
         retData.gender = {
           isValid: false,
-          message: "Gender is required",
+          message: t("Gender is Required"),
         };
         isValid = false;
       }
       if (!requiData.fatherName) {
         retData.fatherName = {
           isValid: false,
-          message: "Father name is required",
+          message: t("Father Name is Required"),
         };
         isValid = false;
       }
@@ -194,126 +196,126 @@ class VendorEnroll extends Component {
 
         retData.brithDate = {
           isValid: false,
-          message: "D. O. B is required",
+          message: t("D. O. B is Required"),
         };
         isValid = false;
       }
       if (!requiData.phoneNo) {
         retData.phoneNo = {
           isValid: false,
-          message: "Phone number is required",
+          message: t("Phone Number is Required"),
         };
         isValid = false;
       }
       if (requiData.phoneNo.length > 13 || requiData.phoneNo.length < 10) {
         retData.phoneNo = {
           isValid: false,
-          message: "Phone number is invalid"
+          message: t("Phone Number is Invalid")
         }
         isValid = false
       }
       if (!requiData.designation) {
         retData.designation = {
           isValid: false,
-          message: "Designation is required",
+          message: t("Designation is Required"),
         };
         isValid = false;
       }
       if (!requiData.companyName) {
         retData.companyName = {
           isValid: false,
-          message: "Company name is required",
+          message: t("Company Name is Required"),
         };
         isValid = false;
       }
       if (!requiData.RegistrationNo) {
         retData.RegistrationNo = {
           isValid: false,
-          message: "Registration No is required",
+          message: t("Registration No is Required"),
         };
         isValid = false;
       }
       if (!requiData.directorName) {
         retData.directorName = {
           isValid: false,
-          message: "Director name is required",
+          message: t("Director Name is Required"),
         };
         isValid = false;
       }
       if (!requiData.address) {
         retData.address = {
           isValid: false,
-          message: "Address is required",
+          message: t("Address is Required"),
         };
         isValid = false;
       }
       if (!requiData.bidder) {
         retData.bidder = {
           isValid: false,
-          message: "Bidder is required",
+          message: t("Bidder is Required"),
         };
         isValid = false;
       }
       if (!requiData.city) {
         retData.city = {
           isValid: false,
-          message: "city is required",
+          message: t("City is Required"),
         };
         isValid = false;
       }
       if (!requiData.establishment) {
         retData.establishment = {
           isValid: false,
-          message: "Establishment is required",
+          message: t("Establishment is Required"),
         };
         isValid = false;
       }
       if (!requiData.state) {
         retData.state = {
           isValid: false,
-          message: "State is required",
+          message: t("State is Required"),
         };
         isValid = false;
       }
       if (!requiData.business) {
         retData.business = {
           isValid: false,
-          message: "Business is required",
+          message: t("Business is Required"),
         };
         isValid = false;
       }
       if (!requiData.postalCode) {
         retData.postalCode = {
           isValid: false,
-          message: "Postal code is required",
+          message: t("Postal code is Required"),
         };
         isValid = false;
       }
       if (!requiData.legalStatus) {
         retData.legalStatus = {
           isValid: false,
-          message: "Legal status is required",
+          message: t("Legal status is Required"),
         };
         isValid = false;
       }
       if (!requiData.panNo) {
         retData.panNo = {
           isValid: false,
-          message: "Pan / Tan is required",
+          message: t("Pan / Tan is Required"),
         };
         isValid = false;
       }
       if (!requiData.companyCategory) {
         retData.companyCategory = {
           isValid: false,
-          message: "Company category is required",
+          message: t("Company Category is Required"),
         };
         isValid = false;
       }
       if (!requiData.captcha) {
         retData.captcha = {
           isValid: false,
-          message: "Captcha is required",
+          message: t("Captcha is Required"),
         };
         isValid = false;
       }
@@ -329,24 +331,24 @@ class VendorEnroll extends Component {
       <div className="main-content">
         <div className="vendor-content">
           <div className="heading">
-            <h4 className="d-block">Online Enrollment of Vendor</h4>
+            <h4 className="d-block">{t("Online Enrollment of Vendor")}</h4>
             <span className="d-block">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor
             </span>
           </div>
           <div className="d-inline-block vendor-enrollment">
-            <div className="d-block add-contcat-heading">Parsonal Details</div>
+            <div className="d-block add-contcat-heading">{t("Parsonal Details")}</div>
             <div className="row">
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">First Name</label>
+                  <label className="d-block">{t("First Name")}</label>
                   <input
                     type="text"
                     name="firstName"
-                    value={requiData.firstName}
+                    value={requiData.firstName || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.firstName.isValid}
+                    // isvalid={errorData.firstName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -357,13 +359,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Last Name</label>
+                  <label className="d-block">{t("Last Name")}</label>
                   <input
                     type="text"
                     name="lastName"
-                    value={requiData.lastName}
+                    value={requiData.lastName || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.lastName.isValid}
+                    // isvalid={errorData.lastName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -374,13 +376,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Gender</label>
+                  <label className="d-block">{t("Gender")}</label>
                   <FormControl className="select">
                     <NativeSelect
                       name="gender"
                       value={requiData.gender}
                       onChange={this.handleStateChange}
-                      isvalid={errorData.gender.isValid}
+                    // isvalid={errorData.gender.isValid}
                     >
                       <option value="">-Select-</option>
                       <option value={10}>Male</option>
@@ -395,13 +397,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Father's Name</label>
+                  <label className="d-block">{t("Father's Name")}</label>
                   <input
                     type="text"
                     name="fatherName"
-                    value={requiData.fatherName}
+                    value={requiData.fatherName || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.fatherName.isValid}
+                    // isvalid={errorData.fatherName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -417,7 +419,7 @@ class VendorEnroll extends Component {
                     name="brithDate"
                     value={requiData.brithDate}
                     onChange={this.handleDateChange}
-                    isvalid={errorData.brithDate.isValid}
+                    // isvalid={errorData.brithDate.isValid}
                     placeholder="DD/MM/YYYY"
                   />
                   <span className="text-danger">
@@ -427,13 +429,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Phone Number</label>
+                  <label className="d-block">{t("Phone Number")}</label>
                   <input
                     type="number"
                     name="phoneNo"
-                    value={requiData.phoneNo}
+                    value={requiData.phoneNo || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.phoneNo.isValid}
+                    // isvalid={errorData.phoneNo.isValid}
                     placeholder="+91"
                     className="form-control"
                   />
@@ -444,13 +446,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Designation</label>
+                  <label className="d-block">{t("Designation")}</label>
                   <input
                     type="text"
                     name="designation"
-                    value={requiData.designation}
+                    value={requiData.designation || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.designation.isValid}
+                    // isvalid={errorData.designation.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -462,17 +464,17 @@ class VendorEnroll extends Component {
             </div>
           </div>
           <div className="d-inline-block vendor-enrollment">
-            <div className="d-block add-contcat-heading">Company Details</div>
+            <div className="d-block add-contcat-heading">{t("Company Details")}</div>
             <div className="row">
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Company Name</label>
+                  <label className="d-block">{t("Company Name")}</label>
                   <input
                     type="text"
                     name="companyName"
-                    value={requiData.companyName}
+                    value={requiData.companyName || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.companyName.isValid}
+                    // isvalid={errorData.companyName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -483,13 +485,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Registration No</label>
+                  <label className="d-block">{t("Registration No")}</label>
                   <input
                     type="text"
                     name="RegistrationNo"
-                    value={requiData.RegistrationNo}
+                    value={requiData.RegistrationNo || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.RegistrationNo.isValid}
+                    // isvalid={errorData.RegistrationNo.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -501,14 +503,14 @@ class VendorEnroll extends Component {
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
                   <label className="d-block">
-                    Named of the Partner / Director
+                    {t("Name of the Partner / Director")}
                   </label>
                   <input
                     type="text"
                     name="directorName"
-                    value={requiData.directorName}
+                    value={requiData.directorName || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.directorName.isValid}
+                    // isvalid={errorData.directorName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -519,13 +521,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Registered Address</label>
+                  <label className="d-block">{t("Registered Address")}</label>
                   <input
                     type="text"
                     name="address"
-                    value={requiData.address}
+                    value={requiData.address || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.address.isValid}
+                    // isvalid={errorData.address.isValid}
                     placeholder="Street No: 436/13"
                     className="form-control"
                   />
@@ -536,24 +538,24 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Bidder Type</label>
+                  <label className="d-block">{t("Bidder Type")}</label>
                   <RadioGroup
                     aria-label="quiz"
                     name="bidder"
                     className="bidder-box"
                     value={requiData.bidder}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.bidder.isValid}
+                  // isvalid={errorData.bidder.isValid}
                   >
                     <FormControlLabel
                       value="best"
                       control={<Radio />}
-                      label="Indian"
+                      label={t("Indian")}
                     />
                     <FormControlLabel
                       value="worst"
                       control={<Radio />}
-                      label="Foreign"
+                      label={t("Foreign")}
                     />
                   </RadioGroup>
                   <span className="text-danger">
@@ -567,9 +569,9 @@ class VendorEnroll extends Component {
                   <input
                     type="text"
                     name="city"
-                    value={requiData.city}
+                    value={requiData.city || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.city.isValid}
+                    // isvalid={errorData.city.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -578,13 +580,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Establishment Year</label>
+                  <label className="d-block">{t("Establishment Year")}</label>
                   <input
                     type="text"
                     name="establishment"
-                    value={requiData.establishment}
+                    value={requiData.establishment || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.establishment.isValid}
+                    // isvalid={errorData.establishment.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -595,13 +597,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">State</label>
+                  <label className="d-block">{t("State")}</label>
                   <input
                     type="text"
                     name="state"
-                    value={requiData.state}
+                    value={requiData.state || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.state.isValid}
+                    // isvalid={errorData.state.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -610,13 +612,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Nature of Business</label>
+                  <label className="d-block">{t("Nature of Business")}</label>
                   <input
                     type="text"
                     name="business"
-                    value={requiData.business}
+                    value={requiData.business || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.business.isValid}
+                    // isvalid={errorData.business.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -627,13 +629,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Postal Code </label>
+                  <label className="d-block">{t("Postal Code")}</label>
                   <input
                     type="text"
                     name="postalCode"
-                    value={requiData.postalCode}
+                    value={requiData.postalCode || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.postalCode.isValid}
+                    // isvalid={errorData.postalCode.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -644,13 +646,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Legal Status</label>
+                  <label className="d-block">{t("Legal Status")}</label>
                   <input
                     type="text"
                     name="legalStatus"
-                    value={requiData.legalStatus}
+                    value={requiData.legalStatus || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.legalStatus.isValid}
+                    // isvalid={errorData.legalStatus.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -661,13 +663,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">PAN/TAN Number</label>
+                  <label className="d-block">{t("PAN/TAN Number")}</label>
                   <input
                     type="text"
                     name="panNo"
-                    value={requiData.panNo}
+                    value={requiData.panNo || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.panNo.isValid}
+                    // isvalid={errorData.panNo.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -676,13 +678,13 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Company Category</label>
+                  <label className="d-block">{t("Company Category")}</label>
                   <input
                     type="text"
                     name="companyCategory"
-                    value={requiData.companyCategory}
+                    value={requiData.companyCategory || ""}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.companyCategory.isValid}
+                    // isvalid={errorData.companyCategory.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -693,21 +695,21 @@ class VendorEnroll extends Component {
               </div>
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
-                  <label className="d-block">Enter Captcha</label>
+                  <label className="d-block">{t("Enter Captcha")}</label>
                   <div className="d-flex aline-item-center captcha">
                     <input
                       type="text"
                       name="captcha"
-                      value={requiData.captcha}
+                      value={requiData.captcha || ""}
                       onChange={this.handleStateChange}
-                      isvalid={errorData.captcha.isValid}
+                      // isvalid={errorData.captcha.isValid}
                       placeholder=""
                       className="form-control"
                     />
                     <div className="captcha-text">8 T 83 TY</div>
                     <IconButton className="refresh-btn">
                       <LoopIcon />
-                      <span>Refresh</span>
+                      <span>{t("Refresh")}</span>
                     </IconButton>
                   </div>
                   <span className="text-danger">
@@ -718,7 +720,7 @@ class VendorEnroll extends Component {
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group">
                   <Button variant="contained" className="back-btn">
-                    Back
+                    {t("Back")}
                   </Button>
                   <Button
                     variant="contained"
@@ -726,7 +728,7 @@ class VendorEnroll extends Component {
                     disableElevation
                     onClick={this.handleClickMethod}
                   >
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </div>
               </div>
@@ -745,4 +747,5 @@ const mapStateToProps = (state) => {
     addVendor
   }
 }
-export default connect(mapStateToProps)(VendorEnroll);
+const connectedVendorEnroll = withTranslation()(connect(mapStateToProps)(VendorEnroll));
+export default connectedVendorEnroll;

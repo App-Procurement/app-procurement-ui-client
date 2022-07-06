@@ -3,7 +3,7 @@ import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
 import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
-import { RangeDatePicker, DatePicker } from "@y0c/react-datepicker";
+import { RangeDatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
@@ -11,6 +11,8 @@ import { recievedrfpAction } from "../../_actions";
 import { status } from "../../_constants";
 import { connect } from "react-redux";
 import { commonFunctions } from "../../_utilities";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 
 class SendRfq extends Component {
   constructor(props) {
@@ -150,7 +152,6 @@ class SendRfq extends Component {
   };
 
   handleClickMethod = (event) => {
-    const { requiData } = this.state;
     event.preventDefault();
     this.setState({
       isSubmitted: true,
@@ -158,17 +159,17 @@ class SendRfq extends Component {
   };
 
   render() {
-    const { requiData, isSubmitted, tableData, columns, indx } = this.state;
+    const { requiData, tableData, columns, indx } = this.state;
     return (
       <div className='main-content'>
         <div className='receivedrfq-content'>
           <div className='heading'>
-            <h4>Send RFQ to Vendors</h4>
+            <h4>{t("Send RFQ to Vendors")}</h4>
           </div>
           <div className='requisitions-filter'>
             <div className='form-group row col-form-group'>
               <label className='col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label'>
-                Filter By Status
+                {t("Filter By Status")}
               </label>
               <div className='col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field'>
                 <FormControl className='select-menu'>
@@ -187,7 +188,7 @@ class SendRfq extends Component {
             </div>
             <div className='form-group row col-form-group'>
               <label className='col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label'>
-                Date Range
+                {t("Date Range")}
               </label>
               <div className='col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field'>
                 <div className='d-flex align-items-center'>
@@ -207,7 +208,7 @@ class SendRfq extends Component {
                   className='primary-btn'
                   disableElevation
                   onClick={this.handleClickMethod}>
-                  Search
+                  {t("Search")}
                 </Button>
               </div>
             </div>
@@ -239,4 +240,5 @@ const mapStateToProps = (state) => {
     send_rfq_data,
   };
 };
-export default connect(mapStateToProps, null)(SendRfq);
+const connectSendRfq = withTranslation()(connect(mapStateToProps)(SendRfq))
+export default connectSendRfq

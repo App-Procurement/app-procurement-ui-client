@@ -1,6 +1,6 @@
 import { status } from '../_constants';
 import { vendorServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+import { alert } from '../_utilities';
 
 export const vendorAction = {
     addVendor,
@@ -70,7 +70,7 @@ function deleteVendor(id) {
         vendorServices.deleteVendors(id)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -116,7 +116,7 @@ function fetchVendorList() {
         vendorServices.fetchVendors()
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -252,7 +252,7 @@ function getVendorQuotation(data) {
         vendorServices.vendorQuotation(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {

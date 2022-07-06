@@ -1,52 +1,53 @@
-import React, { Component } from "react";
-import CreateIcon from "@material-ui/icons/Create";
-import MoveToInboxIcon from "@material-ui/icons/MoveToInbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import ArchiveIcon from "@material-ui/icons/Archive";
-import StarIcon from "@material-ui/icons/Star";
-import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import MailIcon from "@material-ui/icons/Mail";
-import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
-import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { IconButton } from "@material-ui/core";
-import SimpleBar from "simplebar-react";
-import "simplebar/dist/simplebar.min.css";
-import { emailActions } from "../../_actions/email.actions";
-import { connect } from "react-redux";
-import { status } from "../../_constants";
-import EmailDetail from "./emailDetail";
-import Pagination from "../../_components/Pagination";
-import EmailsPage from "./EmailsPage";
-import ComposeEmail from "./ComposeEmail";
-import CancelIcon from "@material-ui/icons/Cancel";
-import { withRouter } from "react-router-dom";
-import ListItemText from "@material-ui/core/ListItemText";
+import React, { Component } from 'react';
+import CreateIcon from '@material-ui/icons/Create';
+import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import ArchiveIcon from '@material-ui/icons/Archive';
+import StarIcon from '@material-ui/icons/Star';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import MailIcon from '@material-ui/icons/Mail';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { IconButton } from '@material-ui/core';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
+import { emailActions } from '../../_actions/email.actions';
+import { connect } from 'react-redux';
+import { status } from '../../_constants';
+import EmailDetail from './emailDetail';
+import Pagination from '../../_components/Pagination';
+import EmailsPage from './EmailsPage';
+import ComposeEmail from './ComposeEmail';
+import { withRouter } from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
+import { t } from 'i18next';
+
 class EmailPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       emails: [],
       composEmail: false,
-      detailEmail: "",
+      detailEmail: '',
       activendex: [],
       isSelectAll: false,
       perPageLimit: 5,
       currentPage: 0,
       emailData: [],
       isSubmitted: false,
-      searchEmail: "inbox",
-      priorty: "important",
+      searchEmail: 'inbox',
+      priorty: 'important',
       sendEmailData: {
-        subject: "",
-        emaildetail: "",
+        subject: '',
+        emaildetail: '',
         to: [],
         bcc: [],
-        senderId: "2",
+        senderId: '2',
         attechment: [],
         emailLength: 0,
       },
@@ -66,7 +67,7 @@ class EmailPage extends Component {
   };
 
   componentDidMount() {
-    const { id, draftId, type, priorty } = this.props.match.params;
+    const { id, type, priorty } = this.props.match.params;
 
     if (type && !priorty) {
       this.props.history.push(`/postlogin/email/${type}/${this.state.priorty}`);
@@ -81,9 +82,7 @@ class EmailPage extends Component {
     } else {
       let { sendEmailData, preselectValue } = this.state;
       this.props.dispatch(emailActions.recentcommunication());
-      this.props.dispatch(
-        emailActions.searchallemails({ search: this.state.searchEmail })
-      );
+      this.props.dispatch(emailActions.searchallemails({ search: this.state.searchEmail }));
       sendEmailData.to = preselectValue;
       this.setState({ sendEmailData });
     }
@@ -113,10 +112,7 @@ class EmailPage extends Component {
       emailLength = 0;
       if (inbox_data && inbox_data.length > 0) {
         for (let i = 0; i < inbox_data.length; i++) {
-          if (
-            inbox_data[i].isRead === "false" ||
-            inbox_data[i].isRead === false
-          ) {
+          if (inbox_data[i].isRead === 'false' || inbox_data[i].isRead === false) {
             emailLength++;
           }
         }
@@ -124,13 +120,12 @@ class EmailPage extends Component {
       }
     }
     if (
-      this.props.search_all_email_status !==
-      prevProps.search_all_email_status &&
+      this.props.search_all_email_status !== prevProps.search_all_email_status &&
       this.props.search_all_email_status === status.SUCCESS
     ) {
       if (this.props.search_all_email && this.props.search_all_email.length > 0) {
         let data = this.props.search_all_email;
-        if (this.props.match.params.type === "inbox") {
+        if (this.props.match.params.type === 'inbox') {
           this.props.dispatch(emailActions.searchallinboxemails(data));
         }
         if (data && data.length > 0) {
@@ -152,37 +147,23 @@ class EmailPage extends Component {
         }
       }
     }
-    if (
-      prevProps.send_email_status !== this.props.send_email_status &&
-      this.send_email_status === status.SUCCESS
-    ) {
+    if (prevProps.send_email_status !== this.props.send_email_status && this.send_email_status === status.SUCCESS) {
       this.setState({
         composEmail: false,
         sendEmailData: {},
       });
     }
-    // this.setState({searchEmail:this.props.params})
   }
   displayEmailList = () => {
-    const {
-      emailData,
-      activIndex,
-      currentPage,
-      perPageLimit,
-      searchEmail,
-      priorty,
-    } = this.state;
+    const { emailData, currentPage, perPageLimit, searchEmail, priorty } = this.state;
     let otherData = {};
     let retData = [];
     if (emailData && emailData.length > 0) {
       for (let i = 0; i < emailData.length; i++) {
-        if (
-          i >= currentPage * perPageLimit &&
-          i <= currentPage * perPageLimit + (perPageLimit - 1)
-        ) {
+        if (i >= currentPage * perPageLimit && i <= currentPage * perPageLimit + (perPageLimit - 1)) {
           let row = emailData[i];
-          let time = row.time.split("T");
-          time = time[1].split(".");
+          let time = row.time.split('T');
+          time = time[1].split('.');
           otherData = {
             perPageLimit,
             currentPage,
@@ -192,7 +173,7 @@ class EmailPage extends Component {
             priorty,
           };
           retData.push(
-            <li className={emailData[i].isChecked === true ? "active" : ""}>
+            <li className={emailData[i].isChecked === true ? 'active' : ''}>
               <EmailsPage
                 row={row}
                 otherData={otherData}
@@ -211,7 +192,7 @@ class EmailPage extends Component {
     this.props.dispatch(emailActions.reademail({ id: id, type: type }));
   };
   setSelectedMail = (e, index, value) => {
-    let { emailData, isSelectAll, activendex } = this.state;
+    let { emailData, isSelectAll } = this.state;
     let count = 0;
     emailData[index].isChecked = value;
     for (let i = 0; i < emailData.length; i++) {
@@ -252,11 +233,11 @@ class EmailPage extends Component {
         let email = emails[i];
         retData.push(
           <li>
-            <div className='recent-image'>
-              <img src={email.profile} height='50px' width='50px' alt='' />
-              <div className='enabled'></div>
+            <div className="recent-image">
+              <img src={email.profile} height="50px" width="50px" alt="" />
+              <div className="enabled"></div>
             </div>
-            <div className='recent-name'>
+            <div className="recent-name">
               <span>{email.name}</span>
             </div>
           </li>
@@ -266,12 +247,8 @@ class EmailPage extends Component {
     return retData;
   };
   countryToFlag = (isoCode) => {
-    return typeof String.fromCodePoint !== "undefined"
-      ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) =>
-          String.fromCodePoint(char.charCodeAt(0) + 127397)
-        )
+    return typeof String.fromCodePoint !== 'undefined'
+      ? isoCode.toUpperCase().replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
       : isoCode;
   };
 
@@ -300,33 +277,23 @@ class EmailPage extends Component {
   };
 
   render() {
-    const {
-      composEmail,
-      isSelectAll,
-      detailEmail,
-      searchEmail,
-      emailLength,
-      priorty,
-    } = this.state;
+    const { composEmail, isSelectAll, detailEmail, searchEmail, emailLength, priorty } = this.state;
     return (
-      <div className='main-content'>
-        <div className='compose-email-section'>
-          <div className='row'>
-            <div className='col-xl-3 col-lg-4 col-md-4 col-sm-12'>
-              <div className='compose-left'>
-                <div className='compose-btn'>
-                  <Button
-                    type='button'
-                    onClick={this.onClickShowCompos}
-                    className='compose active'>
+      <div className="main-content">
+        <div className="compose-email-section">
+          <div className="row">
+            <div className="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+              <div className="compose-left">
+                <div className="compose-btn">
+                  <Button type="button" onClick={this.onClickShowCompos} className="compose active">
                     <CreateIcon />
-                    ComposEmail
+                    {t('Compose Email')}
                   </Button>
                 </div>
-                <div className='compose-tabs'>
-                  <div className='heading'>
-                    folders
-                    <span className='last'>
+                <div className="compose-tabs">
+                  <div className="heading">
+                    {t('folders')}
+                    <span className="last">
                       <ChevronRightIcon />
                     </span>
                     <span>
@@ -334,116 +301,103 @@ class EmailPage extends Component {
                     </span>
                   </div>
                   <ul>
-                    <li
-                      className={searchEmail === "inbox" ? "active" : ""}
-                      onClick={() => this.setEmailType("inbox")}>
-                      <button className='btn'>
+                    <li className={searchEmail === 'inbox' ? 'active' : ''} onClick={() => this.setEmailType('inbox')}>
+                      <button className="btn">
                         <span>
                           <MoveToInboxIcon />
                         </span>
-                        Inbox
-                        {emailLength && emailLength > 0 && (
-                          <span className='float-right length'>
-                            {emailLength}
-                          </span>
-                        )}
+                        {t('Inbox')}
+                        {emailLength && emailLength > 0 && <span className="float-right length">{emailLength}</span>}
                       </button>
                     </li>
-                    <li
-                      className={searchEmail === "sent" ? "active" : ""}
-                      onClick={() => this.setEmailType("sent")}>
-                      <button className='btn'>
+                    <li className={searchEmail === 'sent' ? 'active' : ''} onClick={() => this.setEmailType('sent')}>
+                      <button className="btn">
                         <span>
-                          <i class='fas fa-paper-plane'></i>
+                          <i className="fas fa-paper-plane"></i>
                         </span>
-                        Sent
+                        {t('Sent')}
                       </button>
                     </li>
-                    <li
-                      className={searchEmail === "draft" ? "active" : ""}
-                      onClick={() => this.setEmailType("draft")}>
-                      <button className='btn'>
+                    <li className={searchEmail === 'draft' ? 'active' : ''} onClick={() => this.setEmailType('draft')}>
+                      <button className="btn">
                         <span>
                           <DraftsIcon />
                         </span>
-                        Draft
+                        {t('Draft')}
                       </button>
                     </li>
                     <li
-                      className={searchEmail === "archived" ? "active" : ""}
-                      onClick={() => this.setEmailType("archived")}>
-                      <button className='btn'>
+                      className={searchEmail === 'archived' ? 'active' : ''}
+                      onClick={() => this.setEmailType('archived')}
+                    >
+                      <button className="btn">
                         <span>
                           <ArchiveIcon />
                         </span>
-                        Archived
+                        {t('Archived')}
                       </button>
                     </li>
                     <li
-                      className={searchEmail == "favorites" ? "active" : ""}
-                      onClick={() => this.setEmailType("favorites")}>
-                      <button className='btn'>
+                      className={searchEmail === 'favorites' ? 'active' : ''}
+                      onClick={() => this.setEmailType('favorites')}
+                    >
+                      <button className="btn">
                         <span>
                           <StarIcon />
                         </span>
-                        Favourites
+                        {t('Favourites')}
                       </button>
                     </li>
-                    <li
-                      className={searchEmail === "spam" ? "active" : ""}
-                      onClick={() => this.setEmailType("spam")}>
-                      <button className='btn'>
+                    <li className={searchEmail === 'spam' ? 'active' : ''} onClick={() => this.setEmailType('spam')}>
+                      <button className="btn">
                         <span>
                           <CreateNewFolderIcon />
                         </span>
-                        Spam
+                        {t('Spam')}
                       </button>
                     </li>
                   </ul>
                 </div>
-                <div className='recent-content'>
-                  <div className='heading'>Recent communication</div>
+                <div className="recent-content">
+                  <div className="heading">{t('Recent Communication')}</div>
                   <ul>{this.displayEmail()}</ul>
                 </div>
-                <div className='tag-btn'>
-                  <div className='heading'>Tags</div>
-                  <Button variant='contained' className='primary'>
+                <div className="tag-btn">
+                  <div className="heading">{t('Tags')}</div>
+                  <Button variant="contained" className="primary">
                     &#35;Waitingfor approval
                   </Button>
-                  <Button variant='contained' className='secondary'>
+                  <Button variant="contained" className="secondary">
                     &#35;pending
                   </Button>
-                  <Button variant='contained' className='danger'>
+                  <Button variant="contained" className="danger">
                     confirm
                   </Button>
-                  <Button variant='contained' className='info'>
+                  <Button variant="contained" className="info">
                     &#35;weeklymeetings
                   </Button>
                 </div>
               </div>
             </div>
-            <div className='col-xl-9 col-lg-8 col-md-8 col-sm-12'>
+            <div className="col-xl-9 col-lg-8 col-md-8 col-sm-12">
               {composEmail === true ? (
                 <ComposeEmail onClickShowCompos={this.onClickShowCompos} />
               ) : (
                 <>
-                  {detailEmail !== "" ? (
-                    <EmailDetail
-                      closeDetailPage={this.closeDetailPage}
-                      emailid={detailEmail}
-                    />
+                  {detailEmail !== '' ? (
+                    <EmailDetail closeDetailPage={this.closeDetailPage} emailid={detailEmail} />
                   ) : (
-                    <div className='compose-right'>
-                      <div className='head-top'>
-                        <div className='row justify-content-center align-items-center'>
-                          <div className='col-xl-7 col-lg-10 col-md-10 col-sm-10 col-10'>
-                            <div className='social-button'>
-                              <div className='check-box'>
+                    <div className="compose-right">
+                      <div className="head-top">
+                        <div className="row justify-content-center align-items-center">
+                          <div className="col-xl-7 col-lg-10 col-md-10 col-sm-10 col-10">
+                            <div className="social-button">
+                              <div className="check-box">
                                 <FormControlLabel
                                   control={
                                     <Checkbox
-                                      name='checkedB'
-                                      color='primary'
+                                      name="checkedB"
+                                      color="primary"
                                       checked={isSelectAll}
                                       onChange={this.setSelectAllEmail}
                                     />
@@ -451,53 +405,50 @@ class EmailPage extends Component {
                                 />
                               </div>
                               <ul>
-                                <li onClick={() => this.emailType("important")}>
+                                <li onClick={() => this.emailType('important')}>
                                   <a
-                                    href='#'
-                                    className={
-                                      priorty === "important" ? "active" : ""
-                                    }
-                                    onClick={(e) => e.preventDefault()}>
+                                    href="#foo"
+                                    className={priorty === 'important' ? 'active' : ''}
+                                    onClick={(e) => e.preventDefault()}
+                                  >
                                     <span>
                                       <MailIcon />
                                     </span>
-                                    Important
+                                    {t('Important')}
                                   </a>
                                 </li>
-                                <li onClick={() => this.emailType("socials")}>
+                                <li onClick={() => this.emailType('socials')}>
                                   <a
                                     onClick={(e) => e.preventDefault()}
-                                    href='#'
-                                    className={
-                                      priorty === "socials" ? "active" : ""
-                                    }>
+                                    href="#foo"
+                                    className={priorty === 'socials' ? 'active' : ''}
+                                  >
                                     <span>
                                       <SupervisorAccountIcon />
                                     </span>
-                                    Socials
+                                    {t('Socials')}
                                   </a>
                                 </li>
-                                <li onClick={() => this.emailType("promotion")}>
+                                <li onClick={() => this.emailType('promotion')}>
                                   <a
-                                    href='#'
-                                    className={
-                                      priorty === "promotion" ? "active" : ""
-                                    }
-                                    onClick={(e) => e.preventDefault()}>
+                                    href="#foo"
+                                    className={priorty === 'promotion' ? 'active' : ''}
+                                    onClick={(e) => e.preventDefault()}
+                                  >
                                     <span>
                                       <ConfirmationNumberIcon />
                                     </span>
-                                    Promotion
+                                    {t('Promotion')}
                                   </a>
                                 </li>
                               </ul>
                             </div>
                           </div>
-                          <div className='col-xl-5 col-lg-2 col-md-2 col-sm-2 col-2'>
-                            <div className='social-icons'>
+                          <div className="col-xl-5 col-lg-2 col-md-2 col-sm-2 col-2">
+                            <div className="social-icons">
                               <ul>
                                 <li>
-                                  <IconButton className='icon'>
+                                  <IconButton className="icon">
                                     <MoreVertIcon />
                                   </IconButton>
                                 </li>
@@ -506,15 +457,12 @@ class EmailPage extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className='recent-content'>
+                      <div className="recent-content">
                         <SimpleBar>
                           <ul>{this.displayEmailList()}</ul>
                         </SimpleBar>
                       </div>
-                      <Pagination
-                        ref={this.paginationRef}
-                        changeCurrentPage={this.onChangeCurrentPage}
-                      />
+                      <Pagination ref={this.paginationRef} changeCurrentPage={this.onChangeCurrentPage} />
                     </div>
                   )}
                 </>
@@ -548,4 +496,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(EmailPage));
+export default withTranslation()(withRouter(connect(mapStateToProps)(EmailPage)));

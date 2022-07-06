@@ -1,0 +1,642 @@
+.manage-supplier-conntent {
+    .supplier-added-heading {
+        padding: 20px 25px;
+        border-radius: 5px;
+        background-color: #f6eeff;
+
+        h5 {
+            color: #6418c3;
+            font-weight: 500;
+            margin: 0;
+        }
+    }
+
+    .request-purpose-head {
+        margin: 30px 0;
+
+        .request-purpose-head-left {
+            h3 {
+                margin: 0;
+                color: $buttons-bg;
+            }
+
+            h4 {
+                margin: 0;
+                color: $buttons-bg;
+            }
+        }
+
+        .request-purpose-head-right {
+            display: flex;
+            align-items: center;
+            justify-content: end;
+
+            .add-Supplier-button {
+                ul {
+                    margin: 0;
+                    padding: 0;
+                    display: inline-block;
+                    margin-right: 20px;
+
+                    li {
+                        display: block;
+                        list-style: none;
+
+                        .head-right-btn {
+                            height: 45px;
+                            width: 45px;
+                            font-size: 16px;
+                            color: #52cdf4;
+                            text-align: center;
+                            border-radius: 10px;
+                            background: #ffffff;
+                            padding: 0;
+                            min-width: 0;
+                        }
+                    }
+                }
+
+                a {
+                    .new-requisition-btn {
+                        border-radius: 5px;
+                        background: $buttons-bg;
+                        color: $button-text-color;
+                        text-transform: capitalize;
+                        height: 40px;
+
+                        i {
+                            margin-right: 8px;
+                            line-height: 17px;
+                        }
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                .new-requisition-btn {
+                    border-radius: 5px;
+                    background: $buttons-bg;
+                    color: $button-text-color;
+                    text-transform: capitalize;
+                    height: 40px;
+
+                    i {
+                        margin-right: 8px;
+                        line-height: 17px;
+                    }
+                }
+            }
+
+            .search-fillter {
+                margin-left: 20px;
+
+                .fillter-btn {
+                    border-color: $buttons-bg;
+                    color: $buttons-bg;
+                    text-transform: capitalize;
+                    background: transparent;
+                    border: 1px solid $buttons-bg;
+
+                    .download-icon {
+                        margin-right: 10px;
+                    }
+                }
+            }
+
+        }
+    }
+
+    .progress-rfp-boxs {
+        margin-bottom: 30px;
+
+        .progress-box {
+            padding: 20px 15px;
+            height: 120px;
+            border-radius: 15px;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+            .progress-content {
+                max-width: 100%;
+                display: inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                .title {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    margin-bottom: 15px;
+
+                    a {
+                        font-size: 14px;
+                        line-height: 20px;
+                        color: #a5a5a5;
+                        font-weight: 500;
+                        text-decoration: none;
+
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                }
+
+                h4 {
+                    margin: 0;
+                    line-height: 26px;
+                    font-weight: 700;
+                }
+
+            }
+        }
+    }
+
+    .recent-suppliers-table {
+        .heading {
+            margin: 25px 0;
+
+            h4 {
+                margin: 0;
+                font-weight: 500;
+                color: #727272;
+            }
+        }
+    }
+
+    .add-supplier-details {
+        .account-holder-details {
+            .detail-heading {
+                margin: 25px 0;
+
+                h4 {
+                    margin: 0;
+                    color: #727272;
+                    font-weight: 500;
+                }
+            }
+
+            .requisitions-filter {
+                width: 100%;
+                padding: 30px 20px;
+                border-radius: 10px;
+                background: #ffffff;
+                background: $body-box-bg;
+                box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+                -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+                -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+                .form-group-common {
+                    span {
+                        font-size: 14px;
+                        line-height: 20px;
+                        font-weight: 400;
+                        color: #010101;
+                    }
+
+                    .form-control {
+                        height: 50px;
+                        line-height: 50px;
+                    }
+
+                    .bidder-box {
+                        flex-direction: row;
+
+                        .MuiFormControlLabel-root {
+                            margin-bottom: 0;
+
+                            .PrivateSwitchBase-root-1 {
+                                padding: 5px;
+                            }
+                        }
+
+                        .MuiRadio-colorSecondary.Mui-checked {
+                            color: #6418c3;
+                        }
+                    }
+
+                    .new-requeust-massge {
+                        .payment-select-menu {
+                            width: 100%;
+                            color: #393939;
+                            border-radius: 8px;
+                            background-color: $requisition-button-bg;
+
+                            .MuiNativeSelect-select {
+                                padding: 15px 15px;
+                                font-size: 14px;
+                                font-weight: 500;
+                                color: #393939;
+
+                                &:focus {
+                                    border-radius: 8px;
+                                }
+                            }
+
+                            .MuiInputBase-root {
+                                &::before {
+                                    display: none;
+                                }
+
+                                &::after {
+                                    display: none;
+                                }
+
+                                .MuiNativeSelect-icon {
+                                    margin-right: 8px;
+                                }
+                            }
+
+                        }
+
+                        textarea {
+                            width: 100%;
+                            height: 180px;
+                        }
+                    }
+                }
+            }
+
+            .attach {
+                position: relative;
+                font-size: 14px;
+                font-weight: 500;
+                width: auto;
+                color: #7924ca;
+                height: 35px;
+                padding: 5px 25px;
+                border-radius: 8px;
+                display: inline-block;
+                background-color: #f5f5f5;
+                border: 1px solid #7924ca;
+
+                .icon {
+                    display: inline-block;
+                    color: #7924ca;
+                    position: absolute;
+                    // height: 35px;
+                    line-height: 40px;
+                }
+
+                .file-content {
+                    padding-left: 35px;
+
+                    P {
+                        font-size: 12px;
+                        font-weight: 500;
+                        line-height: 23px;
+                        color: $text-color;
+                        margin: 0;
+                    }
+
+                    span {
+                        font-size: 10px;
+                        line-height: 15px;
+                        font-weight: 500;
+                    }
+                }
+
+                input {
+                    opacity: 0;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    cursor: pointer;
+                    text-indent: -9999px;
+                    z-index: 1;
+                }
+            }
+
+            .create-btn {
+                text-align: center;
+                margin-top: 50px;
+
+                .primary-btn {
+                    padding: 8px 35px;
+                    border: none;
+                }
+            }
+        }
+    }
+
+    .add-product-box {
+        width: 100%;
+        padding: 30px 20px;
+        border-radius: 10px;
+        background: #ffffff;
+        background: $body-box-bg;
+        box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+        -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+        -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+        .form-group-common {
+            .form-control {
+                height: 50px;
+                line-height: 50px;
+            }
+
+            .attach {
+                position: relative;
+                font-size: 14px;
+                font-weight: 500;
+                width: 100%;
+                color: #7924ca;
+                height: 50px;
+                padding: 5px 25px;
+                border-radius: 8px;
+                display: inline-block;
+                background-color: #f5f5f5;
+                border: 1px solid #7924ca;
+
+                input {
+                    opacity: 0;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    cursor: pointer;
+                    text-indent: -9999px;
+                    z-index: 1;
+                }
+
+                .file-content {
+                    display: flex;
+                    align-items: center;
+                    justify-content: start;
+                    position: absolute;
+                    top: 13px;
+
+                    .icon {
+                        display: inline-block;
+                        color: #7924ca;
+                        position: absolute;
+                        font-size: 32px;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 23px;
+                        color: #7924ca;
+                        margin: 0;
+                        padding-left: 50px;
+                    }
+                }
+            }
+        }
+    }
+
+    .approve-content-buttons {
+        padding: 25px 0 0 0;
+
+        .purchase-order {
+            display: block;
+
+            .purchase-btn {
+                width: 230px;
+                font-size: 18px;
+                text-transform: capitalize;
+                padding: 10px;
+                box-shadow: none;
+                color: #ffffff;
+                background: #6418c3;
+            }
+
+            .cancel-btn {
+                font-weight: 400;
+                background: #ff3c5f;
+                margin-top: 20px;
+            }
+        }
+    }
+}
+
+.update-supplier-dialog {
+    width: 100%;
+
+    .additem-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 35px 15px 24px;
+
+        .dialog-heading {
+            display: inline-block;
+            padding: 0;
+            color: $buttons-bg;
+        }
+
+        .modal-close-btn {
+            padding: 3px 3px;
+            min-width: 0;
+            background: #e02020;
+            border-radius: 50%;
+            color: #ffff;
+        }
+    }
+
+    .dialog-searchbar {
+        padding: 15px 40px 15px 24px;
+
+        h5 {
+            margin: 0;
+            color: #252525;
+        }
+
+        .search-bar-section {
+            text-align: right;
+
+            .search-bar {
+                display: inline-block;
+                position: relative;
+
+                .control-form {
+                    border: none;
+                    background: #ffffff;
+                    height: 40px;
+                    padding: 10px 10px 10px 40px;
+                    line-height: 35px;
+                    font-size: 16px;
+                    border-radius: 8px;
+                    width: 400px;
+                    box-shadow: rgba(0, 0, 0, 0.11) 0px 2px 4px, rgba(0, 0, 0, 0.15) 0px 2px 4px;
+                }
+
+                i {
+                    position: absolute;
+                    top: 14px;
+                    left: 10px;
+                    color: $buttons-bg;
+                }
+            }
+
+            .fillter-btn {
+                display: inline-block;
+                margin-left: 30px;
+            }
+        }
+    }
+
+    .item-list {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px 15px 24px;
+
+        .item-number {
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: 400;
+            color: $buttons-bg;
+        }
+
+        .clear-form {
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: 400;
+            color: $text-color;
+        }
+    }
+
+    .MuiDialog-container {
+        .MuiDialog-paperWidthSm {
+            max-width: 100%;
+            width: 60%;
+            background-color: #f9f9f9;
+            border-radius: 0 !important;
+            border: 2px solid #000;
+
+            .addNewItemDialogContent {
+                width: 100%;
+
+                .custom-table .data-table-parent {
+                    background: #ffffff;
+                }
+
+                .supplier-inner-content {
+                    padding: 50px;
+                    border-radius: 10px;
+                    background: $body-box-bg;
+
+                    .heading {
+                        h5 {
+                            color: $buttons-bg;
+                            margin-bottom: 20px;
+
+                            span {
+                                color: $text-color;
+                            }
+
+                            p {
+                                font-size: 14px;
+                                line-height: 20px;
+                                font-weight: 500;
+                                color: #c4c4c4;
+                            }
+                        }
+                    }
+
+                    .download-btn {
+                        margin: 50px 0;
+
+                        a {
+                            .new-requisition-btn {
+                                width: 280px;
+                                height: 45px;
+                                border-radius: 5px;
+                                background: $buttons-bg;
+                                color: #ffffff;
+                                text-transform: capitalize;
+                            }
+
+                            &:hover {
+                                text-decoration: none;
+                            }
+                        }
+
+                        .new-requisition-btn {
+                            width: 280px;
+                            height: 45px;
+                            border-radius: 5px;
+                            background: $buttons-bg;
+                            color: #ffffff;
+                            text-transform: capitalize;
+                        }
+
+                    }
+
+                    .upload-file-box {
+
+                        .attach {
+                            position: relative;
+                            font-size: 14px;
+                            font-weight: 500;
+                            width: 80%;
+                            height: 150px;
+                            color: #90898a;
+                            border-radius: 8px;
+                            display: inline-block;
+                            background-color: #f5f6fa;
+                            border: 1px dashed $buttons-bg;
+
+
+
+                            .file-content {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                height: 100%;
+
+                                .file-inner-content {
+                                    .icon {
+                                        display: inline-block;
+                                        color: $buttons-bg;
+                                        font-size: 40px;
+                                    }
+
+                                    P {
+                                        font-size: 12px;
+                                        font-weight: 500;
+                                        line-height: 15px;
+                                        color: $text-color;
+                                        margin: 0;
+
+                                        span {
+                                            color: $buttons-bg;
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            input {
+                                opacity: 0;
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                height: 100%;
+                                cursor: pointer;
+                                text-indent: -9999px;
+                                z-index: 1;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+}

@@ -1,7 +1,7 @@
 
 import { status } from '../_constants';
 import { recievedrfpServices } from '../_services';
-import { alert, commonFunctions } from '../_utilities';
+import { alert } from '../_utilities';
 
 export const recievedrfpAction = {
     searchRecievedRFP,
@@ -11,7 +11,8 @@ export const recievedrfpAction = {
     getRecieveRFQ,
     addRecieveRFQ,
     getTrackRfpData,
-    sendRFQ
+    sendRFQ,
+    getActivites
 };
 
 function searchRecievedRFP(data) {
@@ -26,7 +27,7 @@ function searchRecievedRFP(data) {
         recievedrfpServices.searchRecievedRFP(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -59,6 +60,51 @@ function searchRecievedRFP(data) {
     };
 }
 
+function getActivites(data) {
+    return dispatch => {
+        dispatch(dispatchFunction({
+            type: status.IN_PROGRESS,
+            data: {
+                get_activity_status: status.IN_PROGRESS,
+                get_activity_list: null
+            }
+        }));
+        recievedrfpServices.getActivites(data)
+            .then(
+                response => {
+                    if (response.code == 200) {
+                        dispatch(dispatchFunction({
+                            type: status.SUCCESS,
+                            data: {
+                                get_activity_status: status.SUCCESS,
+                                get_activity_list: response.object
+                            }
+                        }));
+                    } else {
+                        dispatch(dispatchFunction({
+                            type: status.FAILURE,
+                            data: {
+                                get_activity_status: status.FAILURE,
+                                get_activity_list: response
+                            }
+                        }));
+                        alert.error(response.message);
+                    }
+                },
+                error => {
+                    dispatch(dispatchFunction({
+                        type: status.FAILURE,
+                        data: {
+                            get_activity_status: status.FAILURE,
+                            get_activity_list: error.message
+                        }
+                    }));
+                    alert.error(error.message);
+                }
+            );
+    };
+}
+
 function getRecieveRFP(data) {
     return dispatch => {
         dispatch(dispatchFunction({
@@ -71,7 +117,7 @@ function getRecieveRFP(data) {
         recievedrfpServices.getRecieveRFP(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -116,7 +162,7 @@ function addRecieveRFP(data) {
         recievedrfpServices.addRecieveRFP(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -207,7 +253,7 @@ function getRecieveRFQ(data) {
         recievedrfpServices.getRecieveRFQ(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -298,7 +344,7 @@ function getTrackRfpData(data) {
         recievedrfpServices.getTrackRfpData(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
@@ -343,7 +389,7 @@ function sendRFQ(data) {
         recievedrfpServices.sendRFQ(data)
             .then(
                 response => {
-                    if (response.code == 200) {
+                    if (response.code === 200) {
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {

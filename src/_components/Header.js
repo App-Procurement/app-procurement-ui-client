@@ -15,48 +15,14 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
-import EvansjohnImg from '../assets/images/dashbord/evansjohn-img.png'
-import Kevin from '../assets/images/dashbord/kevin.png';
-import Joannah from '../assets/images/dashbord/joannah.png';
-import Machel from '../assets/images/dashbord/machel.png';
-import Approval1 from '../assets/images/dashbord/approval1.png'
-import Approval2 from '../assets/images/dashbord/approval2.png'
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import { homeAction } from '../_actions'
 import { connect } from 'react-redux'
 import { status } from '../_constants';
-
-export const proHeader = {
-  renderRole,
-  renderId
-};
-
-function renderRole () {
-  var profile = localStorage.getItem("userData");
-  var profileJson = JSON.parse(profile);
-  let retData = "";
-  var row = profileJson.info.user
-  if (row) {
-    for (let i = 0; i <row.roles.length; i++) {
-    retData = row.roles[i].name;
-    }
-  }
-
-  return retData;
-}
-
-function renderId () {
-  var profile = localStorage.getItem("userData");
-  var profileJson = JSON.parse(profile);
-  let retData = "";
-  var row = profileJson.info.user
-  if (row) {
-    retData = row.id;
-  }
-  return retData;
-}
-
+import { withTranslation } from 'react-i18next';
+import i18n from '../i18next';
+import { t } from 'i18next';
 
 class Header extends Component {
   constructor(props) {
@@ -72,7 +38,6 @@ class Header extends Component {
   }
   componentDidMount() {
     this.props.dispatch(homeAction.Notificationdata());
-    // this.renderProfile();
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.get_notification_status !== prevProps.get_notification_status && this.props.get_notification_status === status.SUCCESS) {
@@ -86,6 +51,11 @@ class Header extends Component {
     this.setState({
       selected: value
     })
+    if (value === "GB") {
+      return i18n.changeLanguage("en")
+    } else if (value === "FR") {
+      return i18n.changeLanguage("fr")
+    }
   }
 
   handleOnClick = () => {
@@ -160,31 +130,6 @@ class Header extends Component {
     }
     return retData;
   }
-  renderProfile = () => {
-    var profile = localStorage.getItem("userData");
-    var profileJson = JSON.parse(profile);
-    let retData = [];
-    var row = profileJson.info.user
-    
-    if (row) {
-      for (let i = 0; i <row.roles.length; i++) {
-      retData.push(
-        <>
-          <div>
-            <strong>{row.email}</strong>
-            
-            <br></br>{row.roles[i].name}
-
-          </div>
-        </>
-      );
-      }
-    }
-
-    return retData;
-  }
-
- 
 
   render() {
     const { selected, notification, profile, searchToggle } = this.state;
@@ -203,7 +148,7 @@ class Header extends Component {
               </div>
               <div className="col-xl-8 col-12">
                 <div className="d-block text-right header-notification">
-                  <div className="d-none d-xl-inline-block menu"><a href="#">other menus</a></div>
+                  <div className="d-none d-xl-inline-block menu"><a href="#foo">{t("other menus")}</a></div>
                   <div className="notification-list">
                     <Badge onClick={this.openSearchToggle} className="d-lg-none d-inline-block">
                       <SearchIcon />
@@ -225,7 +170,7 @@ class Header extends Component {
                       <div className="user-list">
                         <div className="noti-tittle">
                           <h5>Notification</h5>
-                          <span><a href="#">Clear All</a></span>
+                          <span><a href="#foo">Clear All</a></span>
                         </div>
                         <SimpleBar style={{ maxHeight: '300px' }} className="user-content">
                           {this.notificationDisplay()}
@@ -260,27 +205,29 @@ class Header extends Component {
                         <Avatar onClick={this.openLogOutModel} alt="Remy Sharp" src={UserImg} className="" />
                       </li>
                       <li>
-                        <span className="user-name" onClick={this.openLogOutModel}><div>{this.renderProfile()}</div> </span>
+                        <span className="user-name" onClick={this.openLogOutModel}><strong>Franklin Jr.</strong> <br></br>Super Admin</span>
                       </li>
                       <li className="last" onClick={this.openLogOutModel}>
                         <ArrowDropDownIcon className=".sort-down" />
                       </li>
                     </ul>
-                    {profile && (<>
-                      <div
-                        style={{ position: "fixed", width: "100%", height: "100%", left: "0", top: "0" }}
-                        onClick={this.openModelClose}
-                      ></div>
-                      <div className="profile-menu">
-                        <ul>
-                          <li><AccountCircleIcon className="menu-icon" />Account</li>
-                          <li><SettingsIcon className="menu-icon" />Settings</li>
-                          <li><SportsSoccerIcon className="menu-icon" />Support</li>
-                          <li><LockOutlinedIcon className="menu-icon" />Lock</li>
-                          <li><ExitToAppOutlinedIcon className="menu-icon" />Logout</li>
-                        </ul>
-                      </div>
-                    </>)}
+                    {profile &&
+                      <>
+                        <div
+                          style={{ position: "fixed", width: "100%", height: "100%", left: "0", top: "0" }}
+                          onClick={this.openModelClose}
+                        ></div>
+                        <div className="profile-menu">
+                          <ul>
+                            <li><AccountCircleIcon className="menu-icon" />Account</li>
+                            <li><SettingsIcon className="menu-icon" />Settings</li>
+                            <li><SportsSoccerIcon className="menu-icon" />Support</li>
+                            <li><LockOutlinedIcon className="menu-icon" />Lock</li>
+                            <li><ExitToAppOutlinedIcon className="menu-icon" />Logout</li>
+                          </ul>
+                        </div>
+                      </>
+                    }
                   </div>
                 </div>
               </div>
@@ -299,5 +246,5 @@ const mapStateToProps = (state) => {
     get_notification_status, get_notification_data
   }
 }
-
-export default connect(mapStateToProps)(Header);
+const connectedHeader = withTranslation()(connect(mapStateToProps)(Header));
+export default connectedHeader;

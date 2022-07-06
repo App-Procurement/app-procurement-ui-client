@@ -1,6 +1,6 @@
 import { status } from "../_constants";
 import { departmentServices } from "../_services";
-import { alert, commonFunctions } from "../_utilities";
+import { alert } from "../_utilities";
 
 export const departmentAction = {
   getDepartment,
@@ -18,30 +18,53 @@ function getDepartment(data) {
       })
     );
     departmentServices.getDepartment(data).then(
-      (response) => {
-        if (response.code == 200) {
-          dispatch(
-            dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                get_department_status: status.SUCCESS,
-                department_list: response.object,
-              },
-            })
-          );
+      response => {
+        const code = response.status;
+        if (code === 200) {
+            response.json().then(data => {
+                dispatch(dispatchFunction({
+                    type: status.SUCCESS,
+                    data: {
+                        get_department_status: status.SUCCESS,
+                        department_list: data
+                    }
+                }));
+            });
         } else {
-          dispatch(
-            dispatchFunction({
-              type: status.FAILURE,
-              data: {
-                department_status: status.FAILURE,
-                department_list: response,
-              },
-            })
-          );
-          alert.error(response.message);
+            dispatch(dispatchFunction({
+                type: status.FAILURE,
+                data: {
+                    get_department_status: status.FAILURE,
+                    department_list: response
+                }
+            }));
+            alert.error(response.message);
         }
-      },
+    },
+      // (response) => {
+      //   if (response.code == 200) {
+      //     dispatch(
+      //       dispatchFunction({
+      //         type: status.SUCCESS,
+      //         data: {
+      //           get_department_status: status.SUCCESS,
+      //           department_list: response.object,
+      //         },
+      //       })
+      //     );
+      //   } else {
+      //     dispatch(
+      //       dispatchFunction({
+      //         type: status.FAILURE,
+      //         data: {
+      //           department_status: status.FAILURE,
+      //           department_list: response,
+      //         },
+      //       })
+      //     );
+      //     alert.error(response.message);
+      //   }
+      // },
       (error) => {
         dispatch(
           dispatchFunction({
