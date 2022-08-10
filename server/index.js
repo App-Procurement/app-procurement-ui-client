@@ -48,42 +48,42 @@ const chats =[
       "sender_name": "Michel Slatter",
       "to": "jid_1111"
     },
-    // {
-    //   "attachment": [
-    //     {
-    //       "type": "image",
-    //       "payload": {
-    //         "url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Bachalpsee_reflection.jpg"
-    //       },
-    //       "caption": "Japan"
-    //     },
-    //     {
-    //       "type": "image",
-    //       "payload": {
-    //         "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/Galunggung.jpg"
-    //       },
-    //       "caption": "southern america, northern america, western america, eastern america"
-    //     },
-    //     {
-    //       "type": "image",
-    //       "payload": {
-    //         "url": "https://upload.wikimedia.org/wikipedia/commons/7/73/KERALA_-_32.jpg"
-    //       },
-    //       "caption": "Kerala"
-    //     },
-    //     {
-    //       "type": "image",
-    //       "payload": {
-    //         "url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Top_of_Atmosphere.jpg"
-    //       },
-    //       "caption": ""
-    //     }
-    //   ],
-    //   "type": "image",
-    //   "from": "jid_1109",
-    //   "sender_name": "Michel Slatter",
-    //   "to": "jid_1111"
-    // }
+    {
+      "attachment": [
+        {
+          "type": "image",
+          "payload": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Bachalpsee_reflection.jpg"
+          },
+          "caption": "Japan"
+        },
+        {
+          "type": "image",
+          "payload": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/Galunggung.jpg"
+          },
+          "caption": "southern america, northern america, western america, eastern america"
+        },
+        {
+          "type": "image",
+          "payload": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/7/73/KERALA_-_32.jpg"
+          },
+          "caption": "Kerala"
+        },
+        {
+          "type": "image",
+          "payload": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Top_of_Atmosphere.jpg"
+          },
+          "caption": ""
+        }
+      ],
+      "type": "image",
+      "from": "jid_1109",
+      "sender_name": "Michel Slatter",
+      "to": "jid_1111"
+    }
   ]
 const io = new socketio.Server(5001, {
     cors: {

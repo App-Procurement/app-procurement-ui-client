@@ -93,7 +93,6 @@ class ChatBox extends React.Component {
   };
   render() {
     const { chatToggle, prevChats, userName, message, attachments } = this.state;
-    console.log(attachments);
 
     return (
       <>
@@ -111,18 +110,18 @@ class ChatBox extends React.Component {
                   </div>
                   <div className="menu-icons">
                     <span className="menu-icon">
-                      <i class="far fa-ellipsis-h"></i>
+                      <i className="far fa-ellipsis-h"></i>
                     </span>
                     <span className="pencil-icon">
-                      <i class="fas fa-edit"></i>
+                      <i className="fas fa-edit"></i>
                     </span>
                     {chatToggle ? (
                       <span className="uparrow-icon" onClick={() => this.setState({ chatToggle: false })}>
-                        <i class="fas fa-angle-down"></i>
+                        <i className="fas fa-angle-down"></i>
                       </span>
                     ) : (
                       <span className="uparrow-icon" onClick={() => this.setState({ chatToggle: true })}>
-                        <i class="fas fa-angle-up"></i>
+                        <i className="fas fa-angle-up"></i>
                       </span>
                     )}
                   </div>
@@ -211,11 +210,11 @@ class ChatBox extends React.Component {
                               />
                             </div>
                             <span>
-                              <i class="fas fa-smile-o"></i>
+                              <i className="fas fa-smile-o"></i>
                             </span>
                             <div className="send-btn" onClick={this.sendMessage}>
                               <Button variant="contained" className="massage-send-btn">
-                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                <i className="fa fa-paper-plane" aria-hidden="true"></i>
                               </Button>
                             </div>
                           </div>

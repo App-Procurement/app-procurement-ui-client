@@ -27,7 +27,7 @@ class ManageSupplier extends Component {
           key: "sno",
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"s-no"}>{index + 1}</span>
               </td>
             );
@@ -38,7 +38,7 @@ class ManageSupplier extends Component {
           key: "supplier",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"requisitions-no"}>{value}</span>
               </td>
             );
@@ -49,7 +49,7 @@ class ManageSupplier extends Component {
           key: "accountHolderName",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"department-value"}>{value}</span>
               </td>
             );
@@ -60,7 +60,7 @@ class ManageSupplier extends Component {
           key: "email",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"department-value"}>{value}</span>
               </td>
             );
@@ -71,7 +71,7 @@ class ManageSupplier extends Component {
           key: "currency",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"requestor"}>{value}</span>
               </td>
             );
@@ -82,7 +82,7 @@ class ManageSupplier extends Component {
           key: "paymentTerms",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"department-value"}>{value}</span>
               </td>
             );
@@ -93,7 +93,7 @@ class ManageSupplier extends Component {
           key: "status",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <Button
                   variant="outlined"
                   className="department-value active-btn "
@@ -109,24 +109,24 @@ class ManageSupplier extends Component {
           key: "sno",
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <div className="d-block position-relative edit-delete-modal">
                   <i
-                    class="fa fa-ellipsis-h"
+                    className="fa fa-ellipsis-h"
                     aria-hidden="true"
                     onClick={() =>
-                      this.setState({ supplierActiveIndex: index })
+                      this.setState({ supplierActiveIndex:this.state.supplierActiveIndex===index?-1: index })
                     }
                   ></i>
                   {this.state.supplierActiveIndex === index && (
                     <div className="toggale">
                       <i
-                        class="fa fa-pencil edit"
+                        className="fa fa-pencil edit"
                         aria-hidden="true"
                         onClick={this.openSupplierEditModal}
                       ></i>
                       <i
-                        class="fa fa-trash delete"
+                        className="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
                           this.handleDelete(index, "supplier");
@@ -149,7 +149,7 @@ class ManageSupplier extends Component {
           key: "sno",
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"s-no"}>{index + 1}</span>
               </td>
             );
@@ -160,7 +160,7 @@ class ManageSupplier extends Component {
           key: "productImgUrl",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 {/* <span className={'requisitions-no'}>{value}</span> */}
                 <img alt={value} src={value} height="40px" width="40px" />
               </td>
@@ -172,7 +172,7 @@ class ManageSupplier extends Component {
           key: "productName",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"department-value"}>{value}</span>
               </td>
             );
@@ -183,7 +183,7 @@ class ManageSupplier extends Component {
           key: "itemType",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"department-value"}>{value}</span>
               </td>
             );
@@ -194,7 +194,7 @@ class ManageSupplier extends Component {
           key: "unit",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"requestor"}>{value}</span>
               </td>
             );
@@ -205,7 +205,7 @@ class ManageSupplier extends Component {
           key: "supplier",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"requestor"}>{value}</span>
               </td>
             );
@@ -216,7 +216,7 @@ class ManageSupplier extends Component {
           key: "price",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"requestor"}>${value}</span>
               </td>
             );
@@ -227,7 +227,7 @@ class ManageSupplier extends Component {
           key: "stock",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">{value}</span>
               </td>
             );
@@ -238,7 +238,7 @@ class ManageSupplier extends Component {
           key: "status",
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <Button
                   variant="outlined"
                   className="department-value active-btn "
@@ -254,22 +254,22 @@ class ManageSupplier extends Component {
           key: "sno",
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <div className="d-block position-relative edit-delete-modal">
                   <i
-                    class="fa fa-ellipsis-h"
+                    className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ productActiveIndex: index })}
+                    onClick={() => this.setState({ productActiveIndex:this.state.productActiveIndex===index?-1: index })}
                   ></i>
                   {this.state.productActiveIndex === index && (
                     <div className="toggale">
                       <i
-                        class="fa fa-pencil edit"
+                        className="fa fa-pencil edit"
                         aria-hidden="true"
                         onClick={this.openEditModal}
                       ></i>
                       <i
-                        class="fa fa-trash delete"
+                        className="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
                           this.handleDelete(index, "product");
@@ -665,7 +665,7 @@ class ManageSupplier extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">
-                      <Link to="/postlogin/activeproductcatalogue">
+                      <Link to="/postlogin/managesupplier/activeproductcatalogue">
                         Active Product Catalogue
                       </Link>
                     </div>

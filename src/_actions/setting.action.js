@@ -433,7 +433,7 @@ function getPreferences() {
             dispatch(dispatchFunction({
               type: status.SUCCESS,
               data: {
-                get_getPreferences_status: status.SUCCESS,
+                get_Preferences_status: status.SUCCESS,
                 get_Preferences_data: data.object
               }
             }));
@@ -442,7 +442,7 @@ function getPreferences() {
           dispatch(dispatchFunction({
             type: status.FAILURE,
             data: {
-              get_getPreferences_status: status.FAILURE,
+              get_Preferences_status: status.FAILURE,
               get_Preferences_data: response
             }
           }));
@@ -454,7 +454,7 @@ function getPreferences() {
           dispatchFunction({
             type: status.FAILURE,
             data: {
-              get_getPreferences_status: status.FAILURE,
+              get_Preferences_status: status.FAILURE,
               get_Preferences_data: error.message,
             },
           })

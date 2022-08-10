@@ -37,7 +37,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'sno',
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={index}>
                 <span className={'s-no'}>{index + 1}</span>
               </td>
             );
@@ -48,7 +48,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'name',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'requisitions-no'}>{value}</span>
               </td>
             );
@@ -59,7 +59,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'category',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'department-value'}>{value}</span>
               </td>
             );
@@ -70,7 +70,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'supplier',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'department-value'}>{value}</span>
               </td>
             );
@@ -81,7 +81,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'orderQuantity',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'requestor'}>{value}</span>
               </td>
             );
@@ -92,7 +92,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'unit',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">{value}</span>
               </td>
             );
@@ -103,7 +103,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'ratePerItem',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value"> ${value}</span>
               </td>
             );
@@ -114,7 +114,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'totalcost',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">${value}</span>
               </td>
             );
@@ -125,7 +125,7 @@ class PurchaseRequisitionDetail extends Component {
           key: 'status',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <Button variant="outlined" className="department-value status-btn ">
                   {value}
                 </Button>
@@ -138,18 +138,18 @@ class PurchaseRequisitionDetail extends Component {
           key: 'sno',
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <div className="d-block position-relative edit-delete-modal">
                   <i
-                    class="fa fa-ellipsis-h"
+                    className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex: index })}
+                    onClick={() => this.setState({ activeIndex:this.state.activeIndex===index?-1: index })}
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
-                      <i class="fa fa-pencil edit" aria-hidden="true" onClick={this.openEditModal}></i>
+                      <i className="fa fa-pencil edit" aria-hidden="true" onClick={this.openEditModal}></i>
                       <i
-                        class="fa fa-trash delete"
+                        className="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
                           this.handleDelete(index, value);
@@ -471,7 +471,7 @@ class PurchaseRequisitionDetail extends Component {
               <div className="requisition-download-file">
                 <Button variant="contained" className="approval-btn">
                   {/* onClick={()=>this.openUploadPopup('7c5b0f09-4cda-4788-8e73-c655bf74b5cd')}> */}
-                  <i class="fas fa-cloud-download"></i>
+                  <i className="fas fa-cloud-download"></i>
                   Approval Documents
                 </Button>
               </div>
@@ -481,8 +481,8 @@ class PurchaseRequisitionDetail extends Component {
               <div className="purchase-inner-content">
                 <div className="row d-flex align-items-end justify-content-space-between">
                   <div className="col-xl-4 col-lg-6 col-md-7 col-sm-12 col-12">
-                    <textarea name="note" className="massage-type">
-                      Need for Office Setup!
+                    <textarea name="note" defaultValue ={`Need for Office Setup!`}className="massage-type">
+                      
                     </textarea>
                   </div>
                   <div className="col-xl-4 col-lg-6 col-md-5 col-sm-12 col-12">

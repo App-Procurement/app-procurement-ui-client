@@ -60,7 +60,7 @@ class ActivityFeeds extends Component {
             </div>
             <div className="col-6">
               <div className="head-right">
-                <Link>{this.props.t('See More Activiy')} </Link>
+                <Link to={"/postlogin/dashboard"}>{this.props.t('See More Activiy')} </Link>
               </div>
             </div>
           </div>
@@ -95,8 +95,8 @@ class ActivityFeeds extends Component {
                       <div className="col-2">
                         <div className="d-flex justify-content-end flex-wrap rfp-no">
                           <Button variant="contained" className="user-icon-btn">
-                            <Link>
-                              <i class="fa fa-angle-right"></i>
+                            <Link to ={"/postlogin/dashboard"}>
+                              <i className="fa fa-angle-right"></i>
                             </Link>
                           </Button>
                         </div>

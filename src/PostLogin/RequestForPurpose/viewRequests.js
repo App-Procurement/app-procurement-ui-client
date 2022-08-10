@@ -65,7 +65,7 @@ class ViewRequest extends Component {
           key: 'sno',
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'s-no'}>{index + 1}</span>
               </td>
             );
@@ -76,7 +76,7 @@ class ViewRequest extends Component {
           key: 'name',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'requisitions-no'}>{value}</span>
               </td>
             );
@@ -87,7 +87,7 @@ class ViewRequest extends Component {
           key: 'category',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'department-value'}>{value}</span>
               </td>
             );
@@ -98,7 +98,7 @@ class ViewRequest extends Component {
           key: 'supplier',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'department-value'}>{value}</span>
               </td>
             );
@@ -109,7 +109,7 @@ class ViewRequest extends Component {
           key: 'quantity',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'requestor'}>{value}</span>
               </td>
             );
@@ -120,7 +120,7 @@ class ViewRequest extends Component {
           key: 'unit',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">{value}</span>
               </td>
             );
@@ -131,7 +131,7 @@ class ViewRequest extends Component {
           key: 'price',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">${value}</span>
               </td>
             );
@@ -142,7 +142,7 @@ class ViewRequest extends Component {
           key: 'totalCost',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">${value}</span>
               </td>
             );
@@ -153,7 +153,7 @@ class ViewRequest extends Component {
           key: 'status',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <Button variant="contained" className="warning-btn">
                   {value}
                 </Button>
@@ -166,18 +166,18 @@ class ViewRequest extends Component {
           key: 'sno',
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <div className="d-block position-relative edit-delete-modal">
                   <i
-                    class="fa fa-ellipsis-h"
+                    className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex: index })}
+                    onClick={() => this.setState({ activeIndex:this.state.activeIndex===index?-1: index })}
                   ></i>
                   {this.state.activeIndex === index && (
-                    <div className="toggale">
-                      <i class="fa fa-pencil edit" aria-hidden="true" onClick={this.openEditModal}></i>
+                    <div className="toggale" >
+                      <i className="fa fa-pencil edit" aria-hidden="true" onClick={this.openEditModal}></i>
                       <i
-                        class="fa fa-trash delete"
+                        className="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
                           this.handleDelete(index, value);
@@ -510,17 +510,17 @@ class ViewRequest extends Component {
                     <ul>
                       <li>
                         <Button variant="contained" className="head-right-btn delete-icon">
-                          <i class="fa fa-trash" aria-hidden="true"></i>
+                          <i className="fa fa-trash" aria-hidden="true"></i>
                         </Button>
                       </li>
                       <li>
                         <Button variant="contained" className="head-right-btn comment-icon">
-                          <i class="fa fa-comment" aria-hidden="true"></i>
+                          <i className="fa fa-comment" aria-hidden="true"></i>
                         </Button>
                       </li>
                       <li>
                         <Button variant="contained" className="head-right-btn pencil-icon">
-                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                          <i className="fa fa-pencil" aria-hidden="true"></i>
                         </Button>
                       </li>
                     </ul>
@@ -705,10 +705,10 @@ class ViewRequest extends Component {
 									style={{ display: "none" }}
 								/> */}
                 <span className="pdf-icon">
-                  <i class="fa fa-file-pdf" aria-hidden="true"></i>
+                  <i className="fa fa-file-pdf" aria-hidden="true"></i>
                 </span>
                 Approval Documents
-                {/* <span className="circle-icon"><i class="fa fa-times-circle" aria-hidden="true"></i></span> */}
+                {/* <span className="circle-icon"><i className="fa fa-times-circle" aria-hidden="true"></i></span> */}
               </Button>
             </div>
           </div>

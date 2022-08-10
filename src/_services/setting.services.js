@@ -9,7 +9,8 @@ export const  settingServices= {
     removeWorkFlow,
     getRolesAndPermissions,
     getGroups,
-    getUsers
+    getUsers,
+    getPreferences
 }
 function getWorkflow() {
     const extraHeaders = {
@@ -66,4 +67,11 @@ function getUsers(data){
     };
     const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
     return fetch(`${apiEndPoint.USERSLIST}`, requestOptions).then(response => response);
+}
+function getPreferences(){
+    const extraHeaders = {
+        "Content-Type": "application/json"
+    };
+    const requestOptions = commonFunctions.getRequestOptions("GET", extraHeaders, null);
+    return fetch(`${apiEndPoint.PREFERENCESLIST}`, requestOptions).then(response => response);
 }

@@ -136,7 +136,7 @@ class BudgetAllocation extends Component {
             </div>
             <div className="budget-allocation-filter">
               <div className="row">
-                <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
                   <div className="requisition-form-left">
                     <div className="requester">
                       <div className="form-group">

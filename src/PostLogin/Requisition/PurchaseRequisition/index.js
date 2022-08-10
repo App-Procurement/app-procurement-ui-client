@@ -42,8 +42,8 @@ class PurchaseRequisition extends Component {
 					key: 'sno',
 					renderCallback: (value, index) => {
 						return (
-							<td>
-								<span className={'s-no'}>{index + 1}</span>
+							<td key={index+1}>
+								<span className={'s-no'} >{index + 1}</span>
 							</td>
 						);
 					}
@@ -53,7 +53,7 @@ class PurchaseRequisition extends Component {
 					key: 'createdBy',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={value}>
 								<span className={'requisitions-no'}>{value}</span>
 							</td>
 						);
@@ -64,7 +64,7 @@ class PurchaseRequisition extends Component {
 					key: 'location',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={value}>
 								<span className={'department-value'}>{value}</span>
 							</td>
 						);
@@ -75,7 +75,7 @@ class PurchaseRequisition extends Component {
 					key: 'supplier',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={value}>
 								<span className={'department-value'}>{value.name}</span>
 							</td>
 						);
@@ -86,7 +86,7 @@ class PurchaseRequisition extends Component {
 					key: 'totalPrice',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={value}>
 								<span className={'requestor'}>${value}</span>
 							</td>
 						);
@@ -97,7 +97,7 @@ class PurchaseRequisition extends Component {
 					key: 'createdOn',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={value}>
 								<span className="department-value">
 									{commonFunctions.convertDateToString(new Date(value))}
 								</span>
@@ -110,7 +110,7 @@ class PurchaseRequisition extends Component {
 					key: 'status',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={value}>
 								<Button variant="outlined" className="department-value status-btn ">
 									{value}
 								</Button>
@@ -123,7 +123,7 @@ class PurchaseRequisition extends Component {
 					key: 'id',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={value}>
 								<Link to={`/postlogin/purchaserequisition/${value}`}>View Details</Link>
 							</td>
 						);
@@ -234,7 +234,7 @@ class PurchaseRequisition extends Component {
 					</div>
 					<div className="search-fillter">
 						<Button variant="outlined" className="fillter-btn">
-							<i class="fa fa-filter" aria-hidden="true" />
+							<i className="fa fa-filter" aria-hidden="true" />
 							Search By Filters
 						</Button>
 					</div>

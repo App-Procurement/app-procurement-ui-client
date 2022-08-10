@@ -92,6 +92,22 @@
                     line-height: 20px;
                     margin-top: 10px;
                 }
+
+                &.baseLine {
+                    display: inline-flex;
+                    margin-left: 15px;
+                    width: 90px;
+                    height: 34px;
+                    border: 1px solid #000000;
+                    text-align: center;
+                    font-size: 14px;
+                    line-height: 34px;
+                    font-weight: 500;
+                    color: #311B4E;
+                    border-radius: 3px;
+                    padding: 0 10px;
+                    background-color: #ffffff;
+                }
             }
 
             textarea.form-control {
@@ -99,7 +115,7 @@
             }
 
             .select-menu {
-                width: 256px;
+                width: 100%;
 
                 .MuiSvgIcon-root {
                     background: none;
@@ -212,4 +228,419 @@
         }
     }
 
+}
+
+.roles-permissions-custom-dialog {
+    width: 100%;
+
+    .MuiDialog-container {
+
+        .MuiDialog-paperWidthSm {
+            max-width: 100%;
+            width: 77%;
+            // border-radius: 0 !important;
+
+            .addNewItemDialogContent {
+                width: 100%;
+
+                .custom-table .data-table-parent {
+                    background: #ffffff;
+                }
+            }
+        }
+    }
+
+    &.edit-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                //  width: 400px;
+            }
+        }
+    }
+
+    &.create-step-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                //  width: 800px;
+                background-color: #F5F6FA;
+            }
+        }
+    }
+
+    .custom-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #FFFFFF;
+        padding: 10px 15px;
+
+        .dialog-heading {
+            display: inline-block;
+            padding: 0;
+        }
+
+        .modal-close-btn {
+            padding: 3px 3px;
+            min-width: 0;
+            background: #FF3B5F;
+            border-radius: 50%;
+            color: #ffffff;
+        }
+    }
+
+    .custom-dialog-content {
+        padding: 15px 30px;
+
+        .super-admin-head {
+            h5 {
+                margin: 0;
+                color: #252525;
+            }
+
+            .search-bar-section {
+                text-align: right;
+
+                .search-bar {
+                    display: inline-block;
+                    position: relative;
+
+                    .control-form {
+                        border: none;
+                        background: #ffffff;
+                        height: 40px;
+                        padding: 10px 10px 10px 40px;
+                        line-height: 35px;
+                        font-size: 16px;
+                        border-radius: 8px;
+                        width: 400px;
+                        box-shadow: rgb(0 0 0 / 11%) 0px 2px 4px, rgb(0 0 0 / 15%) 0px 2px 4px;
+                    }
+
+                    i {
+                        position: absolute;
+                        top: 14px;
+                        left: 10px;
+                        color: #6418c3;
+                    }
+                }
+
+                .fillter-btn {
+                    display: inline-block;
+                    margin-left: 30px;
+                }
+            }
+        }
+
+        .user-list {
+            margin-top: 15px;
+
+            p {
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 400;
+                color: #6418C3;
+            }
+        }
+
+        .user-roles-head {
+            background: #ffffff;
+            padding: 12px 15px;
+            border-radius: 5px;
+
+            .user-head-left {
+                .roles-tabs {
+                    ul {
+                        display: block;
+                        padding: 0;
+                        margin: 0;
+
+                        li {
+                            display: inline-block;
+                            margin-right: 30px;
+                            font-size: 16px;
+                            line-height: 32px;
+                            font-weight: 600;
+                            color: #311B4E;
+                            cursor: pointer;
+                            border-bottom: 4px solid transparent;
+
+                            &.active {
+                                border-bottom: 4px solid #6418C3;
+                                color: #6418C3;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .user-head-right {
+                text-align: right;
+
+                ul {
+                    display: block;
+                    padding: 0;
+                    margin: 0;
+
+                    li {
+                        display: inline-block;
+                        margin-right: 15px;
+                        list-style: none;
+
+                        .delete-btn {
+                            background: #FF3A3A !important;
+                        }
+
+                        .delete-all-btn {
+                            background: #FF4F64 !important;
+                        }
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+
+                    }
+                }
+            }
+        }
+
+        .users-tabs {
+            margin-top: 15px;
+
+            .tabs-content {
+                .users-tabs-content {
+                    h5 {
+                        font-size: 18px;
+                        font-weight: 500;
+                        color: #000000;
+                        margin: 0;
+                    }
+
+                    .users-tabs-inner-content {
+                        background: #ffffff;
+                        padding: 20px;
+                        height: 300px;
+                        border-radius: 5px;
+                        margin-top: 15px;
+
+                        .group-btn {
+                            display: inline-flex;
+                            width: auto;
+                            font-size: 13px;
+                            text-transform: capitalize;
+                            padding: 8px 25px;
+                            box-shadow: none;
+                            font-weight: 500;
+                            border-radius: 10px;
+                            margin-right: 25px;
+                            margin-bottom: 20px;
+                        }
+
+                        .green-btn {
+                            color: #0F9D58;
+                            background: #CDFFCC;
+                        }
+
+                        .onahau-btn {
+                            color: #0976B2;
+                            background: #BEF3FE;
+                        }
+
+                        .magnolia-btn {
+                            color: #6418C3;
+                            background: #F6EEFF;
+                        }
+
+                        .violet-btn {
+                            color: #FFFFFF;
+                            background: #9B51E0;
+                        }
+
+                        .blank-btn {
+                            min-width: 150px;
+                            height: 40px;
+                            background: #D0D0D0;
+                        }
+
+                        .assigned-roles-btn {
+                            .group-btn {
+                                display: block;
+                                width: auto;
+                                font-size: 13px;
+                                text-transform: capitalize;
+                                padding: 8px 25px;
+                                box-shadow: none;
+                                font-weight: 500;
+                                border-radius: 10px;
+                                margin-right: 25px;
+                                margin-bottom: 20px;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+}
+
+.invite-btn-dialog {
+    &.edit-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                width: 400px;
+            }
+        }
+    }
+
+    &.create-step-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                width: 500px;
+                padding: 15px 20px;
+                background-color: #F5F6FA;
+            }
+        }
+    }
+
+    .custom-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .dialog-heading {
+            display: inline-block;
+            padding: 0;
+        }
+
+        .modal-close-btn {
+            padding: 3px 3px;
+            min-width: 0;
+            background: transparent;
+            border-radius: 50%;
+            color: #999999;
+        }
+    }
+
+    .custom-dialog-content {
+        .invite-dialog-form {
+            margin-top: 20px;
+
+            .search-bar {
+                .control-form {
+                    width: 100%;
+                    border: none;
+                    text-decoration: underline;
+                    background: #ffffff;
+                    height: 42px;
+                    padding: 12px 25px 12px 25px;
+                    line-height: 42px;
+                    font-size: 16px;
+                    border-radius: 8px;
+                    box-shadow: rgb(0 0 0 / 11%) 0px 2px 4px, rgb(0 0 0 / 15%) 0px 2px 4px;
+                }
+            }
+        }
+
+        .invite-dialog-bottom-content {
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .add-another-text {
+                span {
+                    display: inline-block;
+                    margin-right: 10px;
+                    color: #959191;
+                }
+
+                p {
+                    font-size: 16px;
+                    line-height: 20px;
+                    font-weight: 500;
+                    color: #959191;
+                    display: inline-block;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .roles-permissions-custom-dialog {
+        .custom-dialog-content {
+            .user-roles-head {
+                .user-head-right {
+                    text-align: left;
+                    margin-top: 25px;
+
+                    ul {
+                        li {
+                            display: inline-block;
+                            margin-right: 15px;
+                            margin-bottom: 15px;
+                            list-style: none;
+                        }
+                    }
+                }
+            }
+
+            .users-tabs {
+                .tabs-content {
+                    .users-tabs-content {
+                        margin-top: 15px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1280px) {
+    .roles-permissions-custom-dialog {
+        .custom-dialog-content {
+            .super-admin-head {
+                .search-bar-section {
+                    .search-bar {
+                        .control-form {
+                            width: 325px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+}
+
+@media (max-width: 991px) {
+    .roles-permissions-custom-dialog {
+        .custom-dialog-content {
+            .super-admin-head {
+                .search-bar-section {
+                    text-align: left;
+                    margin-top: 25px;
+
+                    .search-bar {
+                        .control-form {
+                            width: 390px;
+                        }
+                    }
+                }
+            }
+
+            .user-roles-head {
+                padding: 15px;
+
+                .user-head-right {
+                    text-align: left;
+                    margin-top: 25px;
+                }
+            }
+        }
+    }
 }

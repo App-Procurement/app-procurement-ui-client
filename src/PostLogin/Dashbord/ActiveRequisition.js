@@ -42,7 +42,6 @@ class ActiveRequisition extends Component {
   };
   render() {
     const { recentActivity } = this.state;
-    console.log(recentActivity);
     return (
       <div className="active-requisition">
         <div className="active-requisition-head">

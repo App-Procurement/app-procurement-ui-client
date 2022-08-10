@@ -26,9 +26,10 @@ const selectCommitteeMember = React.lazy(() => import('../PostLogin/SetUpCommitt
 const ViewRecievedRfp = React.lazy(() => import('../PostLogin/RecievedRfp/ViewRecievedRfp'));
 const TrackRfp = React.lazy(() => import('../PostLogin/RecievedRfp/TrackRfp'));
 const ViewRecievedRfq = React.lazy(() => import('../PostLogin/RecievedRfq/ViewRecievedRfq'));
-const ViewPurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/viewPo'));
+// const ViewPurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/viewPo'));
 const AddInvoices = React.lazy(() => import('../PostLogin/Invoices/AddNewInvoice'));
 const PurcahseOrder = React.lazy(() => import('../PostLogin/GeneratePo/purchaseOrder'));
+const ViewPurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/viewPurchaseOrder'));
 const BudgetOverview = React.lazy(() => import('../PostLogin/BudgetOverview'));
 const Reports = React.lazy(() => import('../PostLogin/Reports'));
 const ApprovePurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/approvePo'));
@@ -54,8 +55,10 @@ const CreatChatRooms = React.lazy(() => import('../PostLogin/ChatRoom/CreateChat
 const ManageSupplier = React.lazy(() => import('../PostLogin/ManageSupplier/index'));
 const ActiveSuppliers = React.lazy(() => import('../PostLogin/ManageSupplier/ActiveSupplier'));
 const ViewSupplierDetail = React.lazy(() => import('../PostLogin/ManageSupplier/ViewSupplierDetail'));
-const AddProduct =React.lazy(()=>import('../PostLogin/ManageSupplier/AddProduct'));
-const Setting =React.lazy(()=>import('../PostLogin/Setting'));
+const AddProduct = React.lazy(() => import('../PostLogin/ManageSupplier/AddProduct'));
+const Setting = React.lazy(() => import('../PostLogin/Setting'));
+const Request = React.lazy(() => import('../PostLogin/Request'));
+const Message = React.lazy(() => import('../PostLogin/Message'));
 const routes = [
 	{
 		path: '/postlogin/dashboard',
@@ -156,7 +159,7 @@ const routes = [
 		component: GeneratePo
 	},
 	{
-		path: '/postlogin/generatepo/:id',
+		path: '/postlogin/purchaseorder/:id',
 		exact: true,
 		name: 'ViewPurchaseOrder',
 		component: ViewPurchaseOrder
@@ -306,7 +309,7 @@ const routes = [
 		component: ChatRoom
 	},
 	{
-		path: '/postlogin/createchatroom',
+		path: '/postlogin/chatroom/createchatroom',
 		exact: true,
 		name: 'CreateChatRoom',
 		component: CreatChatRooms
@@ -348,30 +351,42 @@ const routes = [
 		component: AddSupplier
 	},
 	{
-		path: '/postlogin/activeproductcatalogue',
+		path: '/postlogin/managesupplier/activeproductcatalogue',
 		exact: true,
 		name: 'ActiveProductCatalogue',
 		component: ActiveProductCatalogue
 	},
-  {
-    path: '/postlogin/viewsupplierdetail',
-    exact: true,
-    name: 'ViewSupplierDetail',
-    component: ViewSupplierDetail
-  
-  },
-  {
-    path:'/postlogin/addproduct',
-    exact: true,
-    name: 'AddProduct',
-    component: AddProduct
-  },
-  {
-    path:'/postlogin/setting',
-    exact: true,
-    name: 'Setting',
-    component: Setting
-  }
+	{
+		path: '/postlogin/viewsupplierdetail',
+		exact: true,
+		name: 'ViewSupplierDetail',
+		component: ViewSupplierDetail
+
+	},
+	{
+		path: '/postlogin/addproduct',
+		exact: true,
+		name: 'AddProduct',
+		component: AddProduct
+	},
+	{
+		path: '/postlogin/setting',
+		exact: true,
+		name: 'Setting',
+		component: Setting
+	},
+	{
+		path: '/postlogin/request',
+		exact: true,
+		name: 'request',
+		component: Request
+	},
+	{
+		path: '/postlogin/message',
+		exact: true,
+		name: 'message',
+		component: Message
+	}
 
 ];
 

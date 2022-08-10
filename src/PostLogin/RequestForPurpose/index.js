@@ -43,7 +43,7 @@ class RequestForPurpose extends Component {
 					key: 'sno',
 					renderCallback: (value, index) => {
 						return (
-							<td>
+							<td key={`${Math.random()}_${index}`}>
 								<span className={'s-no'}>{index + 1}</span>
 							</td>
 						);
@@ -54,7 +54,7 @@ class RequestForPurpose extends Component {
 					key: 'name',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={`${Math.random()}_${value}`}>
 								<span className={'requisitions-no'}>{value}</span>
 							</td>
 						);
@@ -65,7 +65,7 @@ class RequestForPurpose extends Component {
 					key: 'location',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={`${Math.random()}_${value}`}>
 								<span className={'department-value'}>{value}</span>
 							</td>
 						);
@@ -76,7 +76,7 @@ class RequestForPurpose extends Component {
 					key: 'supplier',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={`${Math.random()}_${value}`}>
 								<span className={'department-value'}>{value}</span>
 							</td>
 						);
@@ -87,7 +87,7 @@ class RequestForPurpose extends Component {
 					key: 'totalAmount',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={`${Math.random()}_${value}`}>
 								<span className={'requestor'}>${value}</span>
 							</td>
 						);
@@ -98,7 +98,7 @@ class RequestForPurpose extends Component {
 					key: 'creationDate',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={`${Math.random()}_${value}`}>
 								<span className="department-value">{commonFunctions.convertDateToString(new Date(value))}</span>
 							</td>
 						);
@@ -109,7 +109,7 @@ class RequestForPurpose extends Component {
 					key: 'status',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={`${Math.random()}_${value}`}>
 								<Button variant="outlined" className="department-value status-btn ">{value}</Button>
 							</td>
 						);
@@ -120,7 +120,7 @@ class RequestForPurpose extends Component {
 					key: 'id',
 					renderCallback: (value) => {
 						return (
-							<td>
+							<td key={`${Math.random()}_${value}`}>
 								<Link to={`/postlogin/requestforpurpose/viewrequest/${value}`}>View Details</Link>
 							</td>
 						);
@@ -195,7 +195,7 @@ class RequestForPurpose extends Component {
 										disableElevation
 										onClick={this.onClickCreateNewRequester}
 									>
-										<i class="fa fa-plus" aria-hidden="true"></i>
+										<i className="fa fa-plus" aria-hidden="true"></i>
 										Create New Requisition
 									</Button>
 								</div>
@@ -252,7 +252,7 @@ class RequestForPurpose extends Component {
 					</div>
 					<div className="search-fillter">
 						<Button variant="outlined" className="fillter-btn">
-							<i class="fa fa-filter" aria-hidden="true"></i>
+							<i className="fa fa-filter" aria-hidden="true"></i>
 							Search By Filters
 						</Button>
 					</div>

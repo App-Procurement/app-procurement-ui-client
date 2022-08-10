@@ -268,7 +268,7 @@ class Dashbord extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(contactAction.fetchContactList());
+    // this.props.dispatch(contactAction.fetchContactList());
     this.props.dispatch(homeAction.Dashboarddata());
     this.props.dispatch(invoiceAction.searchInvoice());
   }
@@ -356,7 +356,7 @@ class Dashbord extends Component {
       for (let i = 0; i < pinnedEmailsData.length; i++) {
         let pin = pinnedEmailsData[i];
         pinData.push(
-          <li key={pin.title}>
+          <li key={pin.title}> 
             <div className="user-id">
               <img src={pin.img} alt="" />
             </div>
@@ -620,7 +620,7 @@ class Dashbord extends Component {
                     <Box sx={{ flexGrow: 1 }} className="deliveries-box">
                       <div className="order-id">
                         <label>Order Id: 4523451</label>
-                        <i class="far fa-ellipsis-h"></i>
+                        <i className="far fa-ellipsis-h"></i>
                       </div>
                       <LinearProgress variant="determinate" value={50} />
                       <div className="order-time">
@@ -635,7 +635,7 @@ class Dashbord extends Component {
                     <Box sx={{ flexGrow: 1 }} className="deliveries-box">
                       <div className="order-id">
                         <label>Order Id: 4523451</label>
-                        <i class="far fa-ellipsis-h"></i>
+                        <i className="far fa-ellipsis-h"></i>
                       </div>
                       <LinearProgress variant="determinate" value={80} />
                       <div className="order-time">
@@ -650,7 +650,7 @@ class Dashbord extends Component {
                     <Box sx={{ flexGrow: 1 }} className="deliveries-box">
                       <div className="order-id">
                         <label>Order Id: 4523451</label>
-                        <i class="far fa-ellipsis-h"></i>
+                        <i className="far fa-ellipsis-h"></i>
                       </div>
                       <LinearProgress variant="determinate" value={40} />
                       <div className="order-time">
@@ -665,7 +665,7 @@ class Dashbord extends Component {
                     <Box sx={{ flexGrow: 1 }} className="deliveries-box">
                       <div className="order-id">
                         <label>Order Id: 4523451</label>
-                        <i class="far fa-ellipsis-h"></i>
+                        <i className="far fa-ellipsis-h"></i>
                       </div>
                       <LinearProgress variant="determinate" value={40} />
                       <div className="order-time">
@@ -716,16 +716,16 @@ class Dashbord extends Component {
 }
 const mapStateToProps = (state) => {
   const {
-    get_contact_status,
-    getContact,
+    // get_contact_status,
+    // getContact,
     get_dashboard_data_status,
     dashboarddata,
     search_invoice_status,
     search_invoice_data,
   } = state.procurement;
   return {
-    get_contact_status,
-    getContact,
+    // get_contact_status,
+    // getContact,
     get_dashboard_data_status,
     dashboarddata,
     search_invoice_status,

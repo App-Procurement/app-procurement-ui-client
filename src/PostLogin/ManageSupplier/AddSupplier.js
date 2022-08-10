@@ -443,8 +443,8 @@ class AddSupplier extends React.Component {
                       <div className="new-requeust-massge">
                         <FormControl className="payment-select-menu">
                           <NativeSelect
-                            name="State"
-                            value={companyDetail.city}
+                            name="state"
+                            value={companyDetail.state}
                             onChange={(e) => this.handleStateChange(e, 'company')}
                           >
                             <option value="">Main Office USA</option>
@@ -453,7 +453,7 @@ class AddSupplier extends React.Component {
                             <option value={30}>abc</option>
                           </NativeSelect>
                         </FormControl>
-                        <span className="d-block w-100 text-danger">{errorData.city.message}</span>
+                        <span className="d-block w-100 text-danger">{errorData.state.message}</span>
                       </div>
                     </div>
                   </div>
@@ -480,8 +480,8 @@ class AddSupplier extends React.Component {
                             <div className="new-requeust-massge">
                               <FormControl className="payment-select-menu">
                                 <NativeSelect
-                                  name="State"
-                                  value={companyDetail.city}
+                                  name="country"
+                                  value={companyDetail.country}
                                   onChange={(e) => this.handleStateChange(e, 'company')}
                                 >
                                   <option value="">Main Office USA</option>
@@ -490,7 +490,7 @@ class AddSupplier extends React.Component {
                                   <option value={30}>abc</option>
                                 </NativeSelect>
                               </FormControl>
-                              <span className="d-block w-100 text-danger">{errorData.city.message}</span>
+                              <span className="d-block w-100 text-danger">{errorData.country.message}</span>
                             </div>
                           </div>
                         </div>
@@ -500,8 +500,8 @@ class AddSupplier extends React.Component {
                             <div className="new-requeust-massge">
                               <FormControl className="payment-select-menu">
                                 <NativeSelect
-                                  name="Payment Terms"
-                                  value={companyDetail.city}
+                                  name="paymentTerm"
+                                  value={companyDetail.paymentTerm}
                                   onChange={(e) => this.handleStateChange(e, 'company')}
                                 >
                                   <option value="">Main Office USA</option>
@@ -510,7 +510,7 @@ class AddSupplier extends React.Component {
                                   <option value={30}>abc</option>
                                 </NativeSelect>
                               </FormControl>
-                              <span className="d-block w-100 text-danger">{errorData.city.message}</span>
+                              <span className="d-block w-100 text-danger">{errorData.paymentTerm.message}</span>
                             </div>
                           </div>
                         </div>
@@ -589,9 +589,9 @@ class AddSupplier extends React.Component {
                       <div className="new-requeust-massge">
                         <FormControl className="payment-select-menu">
                           <NativeSelect
-                            name="State"
-                            value={companyDetail.city}
-                            onChange={(e) => this.handleStateChange(e, 'company')}
+                            name="bankName"
+                            value={companyDetail.bankName}
+                            onChange={(e) => this.handleStateChange(e, 'bank')}
                           >
                             <option value="">Main Office USA</option>
                             <option value={10}>abc</option>
@@ -599,7 +599,7 @@ class AddSupplier extends React.Component {
                             <option value={30}>abc</option>
                           </NativeSelect>
                         </FormControl>
-                        <span className="d-block w-100 text-danger">{errorData.city.message}</span>
+                        <span className="d-block w-100 text-danger">{errorData.bankName.message}</span>
                       </div>
                     </div>
                   </div>
@@ -637,9 +637,9 @@ class AddSupplier extends React.Component {
                       <div className="new-requeust-massge">
                         <FormControl className="payment-select-menu">
                           <NativeSelect
-                            name="Currancy"
-                            value={companyDetail.city}
-                            onChange={(e) => this.handleStateChange(e, 'company')}
+                            name="currency"
+                            value={companyDetail.currency}
+                            onChange={(e) => this.handleStateChange(e, 'bank')}
                           >
                             <option value="">Main Office USA</option>
                             <option value={10}>abc</option>
@@ -647,7 +647,7 @@ class AddSupplier extends React.Component {
                             <option value={30}>abc</option>
                           </NativeSelect>
                         </FormControl>
-                        <span className="d-block w-100 text-danger">{errorData.city.message}</span>
+                        <span className="d-block w-100 text-danger">{errorData.currency.message}</span>
                       </div>
                     </div>
                   </div>

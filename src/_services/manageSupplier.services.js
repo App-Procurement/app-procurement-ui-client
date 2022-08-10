@@ -7,6 +7,8 @@ export const manageSupplierServices = {
 	deleteProduct,
 	updateProductList,
 	getActiveSupplierList,
+	updateActiveSupplierList,
+	deleteActiveSupplier,
 	addSupplier,
 	getSupplierDetail,
 	addProduct,
@@ -64,6 +66,20 @@ function getActiveSupplierList(data) {
 	return fetch(`${apiEndPoint.SUPPLIER}`, requestOptions).then((response) => response.json());
 }
 
+function updateActiveSupplierList(data) {
+	const extraHeaders = {
+		'Content-Type': 'application/json'
+	};
+	const requestOptions = commonFunctions.getRequestOptions('POST', extraHeaders, JSON.stringify(data));
+	return fetch(`${apiEndPoint.SUPPLIER}`, requestOptions).then((response) => response.json());
+}
+function deleteActiveSupplier(data) {
+	const extraHeaders = {
+		'Content-Type': 'application/json'
+	};
+	const requestOptions = commonFunctions.getRequestOptions('Delete', extraHeaders, JSON.stringify(data));
+	return fetch(`${apiEndPoint.SUPPLIER}`, requestOptions).then((response) => response.json());
+}
 function addSupplier(data) {
 	const extraHeaders = {
 		'Content-Type': 'application/json'

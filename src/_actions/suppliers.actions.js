@@ -10,6 +10,8 @@ export const manageSupplierAction = {
 	deleteSupplier,
 	updateProductList,
 	getActiveSupplierList,
+	updateActiveSupplierList,
+	deleteActiveSupplier,
 	addSupplier,
 	getSupplierDetail,
 	addProduct,
@@ -211,6 +213,108 @@ function getActiveSupplierList(data) {
 						data: {
 							active_supplier_list_status: status.FAILURE,
 							active_supplier_list_data: error.message
+						}
+					})
+				);
+				alert.error(error.message);
+			}
+		);
+	};
+}
+function updateActiveSupplierList(data) {
+	return (dispatch) => {
+		dispatch(
+			dispatchFunction({
+				type: status.IN_PROGRESS,
+				data: {
+					update_active_supplier_list_status: status.IN_PROGRESS,
+					update_active_supplier_list_data: null
+				}
+			})
+		);
+		manageSupplierServices.updateActiveSupplierList(data).then(
+			(response) => {
+				if (response.code === 200) {
+					dispatch(
+						dispatchFunction({
+							type: status.SUCCESS,
+							data: {
+								update_active_supplier_list_status: status.SUCCESS,
+								update_active_supplier_list_data: response.object
+							}
+						})
+					);
+				} else {
+					dispatch(
+						dispatchFunction({
+							type: status.FAILURE,
+							data: {
+								update_active_supplier_list_status: status.FAILURE,
+								update_active_supplier_list_data: response
+							}
+						})
+					);
+					alert.error(response.message);
+				}
+			},
+			(error) => {
+				dispatch(
+					dispatchFunction({
+						type: status.FAILURE,
+						data: {
+							update_active_supplier_list_status: status.FAILURE,
+							update_active_supplier_list_data: error.message
+						}
+					})
+				);
+				alert.error(error.message);
+			}
+		);
+	};
+}
+function deleteActiveSupplier(data) {
+	return (dispatch) => {
+		dispatch(
+			dispatchFunction({
+				type: status.IN_PROGRESS,
+				data: {
+					delete_active_supplier_status: status.IN_PROGRESS,
+					delete_active_supplier_data: null
+				}
+			})
+		);
+		manageSupplierServices.deleteActiveSupplier(data).then(
+			(response) => {
+				if (response.code === 200) {
+					dispatch(
+						dispatchFunction({
+							type: status.SUCCESS,
+							data: {
+								delete_active_supplier_status: status.SUCCESS,
+								delete_active_supplier_data: response.object
+							}
+						})
+					);
+				} else {
+					dispatch(
+						dispatchFunction({
+							type: status.FAILURE,
+							data: {
+								delete_active_supplier_status: status.FAILURE,
+								delete_active_supplier_data: response
+							}
+						})
+					);
+					alert.error(response.message);
+				}
+			},
+			(error) => {
+				dispatch(
+					dispatchFunction({
+						type: status.FAILURE,
+						data: {
+							delete_active_supplier_status: status.FAILURE,
+							delete_active_supplier_data: error.message
 						}
 					})
 				);

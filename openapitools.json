@@ -8327,6 +8327,11 @@
 									"type": "string",
 									"x-faker": "{{internet.email}}"
 								},
+								"userId": {
+									"type": "intiger",
+									"format":"int64",
+									"x-faker": "datatype.number({ \"min\": 1, \"max\": 10 })"
+								},
 								"location": {
 									"type": "array",
 									"x-count": 3,
@@ -8374,6 +8379,11 @@
 								"userEmail": {
 									"type": "string",
 									"x-faker": "{{internet.email}}"
+								},
+								"userId": {
+									"type": "intiger",
+									"format":"int64",
+									"x-faker": "datatype.number({ \"min\": 1, \"max\": 10 })"
 								},
 								"location": {
 									"type": "array",
@@ -8423,6 +8433,11 @@
 									"type": "string",
 									"x-faker": "{{internet.email}}"
 								},
+								"userId": {
+									"type": "intiger",
+									"format":"int64",
+									"x-faker": "datatype.number({ \"min\": 1, \"max\": 10})"
+								},
 								"location": {
 									"type": "array",
 									"x-count": 3,
@@ -8470,6 +8485,11 @@
 								"userEmail": {
 									"type": "string",
 									"x-faker": "{{internet.email}}"
+								},
+								"userId": {
+									"type": "intiger",
+									"format":"int64",
+									"x-faker": "datatype.number({ \"min\": 1, \"max\": 10 })"
 								},
 								"location": {
 									"type": "array",
@@ -8552,7 +8572,7 @@
 					"id": {
 						"type": "intiger",
 						"format": "int64",
-						"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 20})"
 					},
 					"email": {
 						"type": "string",
@@ -8663,7 +8683,7 @@
 							}
 						}
 					},
-					"Prohibited": {
+					"prohibited": {
 						"type": "array",
 						"x-count": "7",
 						"items": {

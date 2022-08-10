@@ -206,7 +206,7 @@ class GeneratePo extends Component {
             <>
               <div className="generate-order">
                 <div className="heading">
-                  <h4>Generate Purchase Order</h4>
+                  {/* <h4>Generate Purchase Order</h4> */}
                   <span>Lorem ipsum dolor sit amet</span>
                 </div>
                 <div className="row">

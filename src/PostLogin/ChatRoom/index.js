@@ -12,6 +12,7 @@ import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import IconButton from '@material-ui/core/IconButton';
 import { commonFunctions } from '../../_utilities';
+import SimpleBar from 'simplebar-react';
 
 class ChatRoom extends React.Component {
   socket;
@@ -66,7 +67,7 @@ class ChatRoom extends React.Component {
     for (let i = 0; i < rooms.length; i++) {
       const { chatRoomName, members, startDate, status } = rooms[i];
       retData.push(
-        <div
+        <div key={`${i}_chatroom`}
           className={roomIndex === i ? 'chatroom-card active' : 'chatroom-card'}
           onClick={() => this.setState({ roomIndex: i })}
         >
@@ -90,7 +91,7 @@ class ChatRoom extends React.Component {
               <AvatarGroup max={5}>
                 {members &&
                   members.length > 0 &&
-                  members.map(({ profilePic }, index) => <Avatar alt="Remy Sharp" src={profilePic} key={index} />)}
+                  members.map(({ profilePic }, index) => <Avatar alt="Remy Sharp" src={profilePic} key={`${index}pics`} />)}
               </AvatarGroup>
             </div>
             <div className="card-bottom-content">
@@ -148,7 +149,7 @@ class ChatRoom extends React.Component {
       for (let i = 0; i < attachment.length; i++) {
         const { payload } = attachment[i];
         retData.push(
-          <div className="doc-inner-box">
+          <div className="doc-inner-box" key={`${i}_docs`}>
             <div className="doc-attachment-files">
               <img alt="image" src={payload.url} />
             </div>
@@ -166,7 +167,7 @@ class ChatRoom extends React.Component {
       for (let i = 0; i < rooms[roomIndex].members.length; i++) {
         const { category, id, name, profilePic } = rooms[roomIndex].members[i];
         retData.push(
-          <div className="user-content" key={id}>
+          <div className="user-content" key={`${i}_user`}>
             <div className="user-profile-text">
               <div className="image">
                 <img src={profilePic} width={50} height={50} alt="" />
@@ -183,7 +184,8 @@ class ChatRoom extends React.Component {
           </div>
         );
       }
-    } else retData.push(<> NO CONTACT FOUND...</>);
+    } 
+    else retData.push(<div key="empty"> NO CONTACT FOUND...</div>);
     return retData;
   };
 
@@ -198,7 +200,7 @@ class ChatRoom extends React.Component {
             <Button
               variant="contained"
               className="create-room-btn"
-              onClick={() => this.props.history.push('/postlogin/createchatroom')}
+              onClick={() => this.props.history.push('/postlogin/chatroom/createchatroom')}
             >
               Create Room
             </Button>
@@ -227,15 +229,15 @@ class ChatRoom extends React.Component {
                         onChange={(e) => this.handleChange(e)}
                         placeholder="Search"
                       />
-                      <i class="fa fa-search" aria-hidden="true" />
+                      <i className="fa fa-search" aria-hidden="true" />
                     </div>
                     <div className="fillter-btn">
                       <Button variant="contained" className="fillter-icon">
-                        <i class="fa fa-filter" aria-hidden="true" />
+                        <i className="fa fa-filter" aria-hidden="true" />
                       </Button>
                     </div>
                   </div>
-                  <div className="user-list">{this.chatRooms()}</div>
+                  <SimpleBar className="user-list">{this.chatRooms()}</SimpleBar>
                 </div>
               </div>
               <div className="col-lg-8 col-md-7 col-sm-12">
@@ -253,17 +255,17 @@ class ChatRoom extends React.Component {
                     </div>
                     <div className="user-menu-icon">
                       <Button variant="contained" className="icon-btn">
-                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
                       </Button>
                     </div>
                   </div>
                   <div className="chatroom-inner-content-right">
-                    <div className="massage-chat-section">
+                    <SimpleBar className="massage-chat-section">
                       {prevChats && prevChats.length > 0 ? (
                         prevChats.map(({ sender_name, text, attachment }, index) =>
                           attachment && attachment.length > 0 ? (
-                            <div className="doc-section">
-                              <div className="doc-user-img" key={index}>
+                            <div className="doc-section" key={`${index}_chats`}>
+                              <div className="doc-user-img" >
                                 <img
                                   src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
                                   width={35}
@@ -274,7 +276,7 @@ class ChatRoom extends React.Component {
                               <div className="doc-images-box">{this.attachmentsLsit(attachment)}</div>
                             </div>
                           ) : sender_name === userName ? (
-                            <div className="user-massage-content">
+                            <div className="user-massage-content" key={`${index}_chat_rooms`}>
                               <div className="user-image" key={index}>
                                 <img
                                   alt="image"
@@ -283,7 +285,6 @@ class ChatRoom extends React.Component {
                                   src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
                                 />
                               </div>
-
                               {
                                 <div className="user-massage-box">
                                   <div className="user-massage-text">
@@ -293,7 +294,7 @@ class ChatRoom extends React.Component {
                               }
                             </div>
                           ) : (
-                            <div className="sender-massage-content">
+                            <div className="sender-massage-content" key={`${index}_chats`}>
                               <div className="sender-massage-box">
                                 <div className="sender-massage-text">
                                   <p>{text}</p>
@@ -313,7 +314,7 @@ class ChatRoom extends React.Component {
                       ) : (
                         <>loading</>
                       )}
-                    </div>
+                    </SimpleBar>
                     <div className="sender-bottom-section">
                       <div className="row">
                         <div className="col-12">
@@ -335,11 +336,11 @@ class ChatRoom extends React.Component {
                               />
                             </div>
                             <span>
-                              <i class="fas fa-smile-o"></i>
+                              <i className="fas fa-smile-o"></i>
                             </span>
                             <div className="send-btn" onClick={this.sendMessage}>
                               <Button variant="contained" className="massage-send-btn">
-                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                <i className="fa fa-paper-plane" aria-hidden="true"></i>
                               </Button>
                             </div>
                           </div>

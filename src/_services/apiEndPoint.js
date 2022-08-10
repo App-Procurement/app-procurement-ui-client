@@ -93,5 +93,6 @@ export const apiEndPoint = {
   // GET GROUPS LIST FOR SETTING
   GROUPSLIST: `${config.apiUrl}/groupslist`,
   // GET USERS LIST FOR SETTING
-  USERSLIST: `${config.apiUrl}/userrolesandpermissions`
+  USERSLIST: `${config.apiUrl}/userrolesandpermissions`,
+  PREFERENCESLIST:`${config.apiUrl}/getpreferenceslist`
 };

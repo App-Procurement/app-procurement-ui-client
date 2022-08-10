@@ -17,7 +17,7 @@ class AddItemList extends Component {
           key: 'image',
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <img src={value} height="50px" width="50px" />
               </td>
             );
@@ -28,7 +28,7 @@ class AddItemList extends Component {
           key: 'name',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'requisitions-no'}>{value}</span>
               </td>
             );
@@ -39,7 +39,7 @@ class AddItemList extends Component {
           key: 'category',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'department-value'}>{value}</span>
               </td>
             );
@@ -50,7 +50,7 @@ class AddItemList extends Component {
           key: 'type',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'department-value'}>{value}</span>
               </td>
             );
@@ -61,7 +61,7 @@ class AddItemList extends Component {
           key: 'quantity',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'requestor'}>{value}</span>
               </td>
             );
@@ -72,7 +72,7 @@ class AddItemList extends Component {
           key: 'unit',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">{value}</span>
               </td>
             );
@@ -83,7 +83,7 @@ class AddItemList extends Component {
           key: 'price',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">{value}</span>
               </td>
             );
@@ -94,7 +94,7 @@ class AddItemList extends Component {
           key: 'id',
           renderCallback: (value, row) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <Button className="primary-btn" onClick={() => this.props.setSelectedItemList(row)}>
                   Add
                 </Button>
@@ -137,7 +137,7 @@ class AddItemList extends Component {
                   <div className="search-bar-section">
                     <div className="search-bar">
                       <input type="text" name="searchChat" className="control-form" placeholder="Search" />
-                      <i class="fa fa-search" aria-hidden="true" />
+                      <i className="fa fa-search" aria-hidden="true" />
                     </div>
                     <div className="fillter-btn">
                       <Button variant="contained" className="primary-btn fillter-icon">

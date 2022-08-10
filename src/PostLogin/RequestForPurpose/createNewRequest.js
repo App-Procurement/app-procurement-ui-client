@@ -61,7 +61,8 @@ class CreateNewRequest extends Component {
           label: 'S.no',
           key: 'sno',
           renderCallback: (value, index) => {
-            return <td>{index + 1}</td>;
+            return (
+            <td key={`${Math.random()}_${value}`}>{index + 1}</td>)
           },
         },
         {
@@ -69,16 +70,9 @@ class CreateNewRequest extends Component {
           key: 'name',
           renderCallback: (value) => {
             return (
-              <>
-                <td>
+                <td key={`${Math.random()}_${value}`}>
                   <span className={'requisitions-no'}>{value}</span>
                 </td>
-                {this.state.isEdit && (
-                  <td>
-                    <input type="text" />
-                  </td>
-                )}
-              </>
             );
           },
         },
@@ -87,7 +81,7 @@ class CreateNewRequest extends Component {
           key: 'category',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'department-value'}>{value}</span>
               </td>
             );
@@ -98,7 +92,7 @@ class CreateNewRequest extends Component {
           key: 'supplier',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'department-value'}>{value}</span>
               </td>
             );
@@ -109,7 +103,7 @@ class CreateNewRequest extends Component {
           key: 'quantity',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={'requestor'}>{value}</span>
               </td>
             );
@@ -120,7 +114,7 @@ class CreateNewRequest extends Component {
           key: 'unit',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">{value}</span>
               </td>
             );
@@ -131,7 +125,7 @@ class CreateNewRequest extends Component {
           key: 'price',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">${value}</span>
               </td>
             );
@@ -142,7 +136,7 @@ class CreateNewRequest extends Component {
           key: 'totalCost',
           renderCallback: (value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">${value}</span>
               </td>
             );
@@ -153,7 +147,7 @@ class CreateNewRequest extends Component {
           key: 'status',
           renderCallback: (value, row) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <Button className="primary-btn">{value}</Button>
               </td>
             );
@@ -164,18 +158,18 @@ class CreateNewRequest extends Component {
           key: 'sno',
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <div className="d-block position-relative edit-delete-modal">
                   <i
-                    class="fa fa-ellipsis-h"
+                    className="fa fa-ellipsis-h"
                     aria-hidden="true"
                     onClick={() => this.setState({ activeIndex: index })}
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
-                      <i class="fa fa-pencil edit" aria-hidden="true" onClick={this.openEditModal}></i>
+                      <i className="fa fa-pencil edit" aria-hidden="true" onClick={this.openEditModal}></i>
                       <i
-                        class="fa fa-trash delete"
+                        className="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
                           this.onClickDeleteSelectedItem(index);
@@ -631,7 +625,7 @@ class CreateNewRequest extends Component {
                     name="location"
                     value={formData.location}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.location.isValid}
+                    // isvalid={errorData.location.isValid}
                   >
                     <option value="">Main Office USA</option>
                     <option value={10}>abc</option>
@@ -648,7 +642,7 @@ class CreateNewRequest extends Component {
                     name="department"
                     value={formData.department}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.department.isValid}
+                    // isvalid={errorData.department.isValid}
                   >
                     <option value="">HR Department</option>
                     <option value={10}>abc</option>
@@ -667,7 +661,7 @@ class CreateNewRequest extends Component {
                     name="request"
                     value={formData.request}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.request.isValid}
+                    // isvalid={errorData.request.isValid}
                   >
                     <option value="">Purchase</option>
                     <option value={10}>abc</option>
@@ -699,7 +693,7 @@ class CreateNewRequest extends Component {
                     disableElevation
                     onClick={this.openAddNewItemPopup}
                   >
-                    <i class="fa fa-plus-circle" aria-hidden="true" />
+                    <i className="fa fa-plus-circle" aria-hidden="true" />
                     Add Items
                   </Button>
                   <Button
@@ -716,7 +710,7 @@ class CreateNewRequest extends Component {
                     disableElevation
                     // onClick={this.handleClickMethod}
                   >
-                    <i class="fa fa-plus-circle" aria-hidden="true" />
+                    <i className="fa fa-plus-circle" aria-hidden="true" />
                     Import Item
                   </Button>
                 </div>
@@ -741,7 +735,7 @@ class CreateNewRequest extends Component {
             {uploadedFileList && uploadedFileList.length > 0 && (
               <Button
                 variant="contained"
-                className="primary-btn"
+                className="primary-btn mb-3"
                 onClick={() => this.getUploadedDocument(uploadedFileList[0])}
               >
                 Get Documents
@@ -758,7 +752,7 @@ class CreateNewRequest extends Component {
                   onChange={this.handleClickUploadDocument}
                   style={{ display: 'none' }}
                 />
-                <i class="fa fa-plus-circle" aria-hidden="true" />
+                <i className="fa fa-plus-circle" aria-hidden="true" />
                 Attach Documents
               </Button>
             </form>

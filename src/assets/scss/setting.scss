@@ -16,12 +16,16 @@
         width: 100%;
         padding: 0;
 
+        .setting-menu-main {
+            height: 480px;
+        }
+
         .setting-menu {
             background-color: #fff;
             border-radius: 15px;
-            overflow: hidden;
             display: block;
             width: 100%;
+            overflow: hidden;
 
             ul {
                 display: block;
@@ -75,9 +79,9 @@
 
                     .content {
                         display: inline-flex;
-                        width: 210px;
+                        width: calc(100% - 108px);
                         flex-wrap: wrap;
-                        padding-right: 15px;
+                        padding-right: 0px;
                         padding-top: 0px;
                         padding-bottom: 15px;
                         border-bottom: 1px solid #E9E9E9;
@@ -90,6 +94,9 @@
                             color: #311B4E;
                             font-weight: 600;
                             margin-bottom: 4px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
                         }
 
                         p {
@@ -125,9 +132,18 @@
             }
         }
 
+        .setting-menu-mobile {
+            display: none;
+        }
+
+        .setting-right-content-main {
+            height: 480px;
+        }
+
         .setting-right-content {
             display: none;
             width: 100%;
+
 
             &.active {
                 display: block;
@@ -165,6 +181,11 @@
 
                     .form-group-common {
                         .form-control {
+                            line-height: 50px;
+                            height: 50px;
+                        }
+
+                        .picker-input__text {
                             line-height: 50px;
                             height: 50px;
                         }
@@ -577,6 +598,52 @@
                         }
                     }
 
+                    .permissions-group-table {
+                        table {
+                            width: 100%;
+
+                            thead {
+                                tr {
+                                    th {
+                                        border-bottom: 10px solid #fafafa;
+                                        border-right: none;
+                                        text-align: center;
+                                        padding-left: 20px;
+                                        padding-right: 20px;
+                                        color: #727272;
+
+                                        &:first-child {
+                                            text-align: left;
+                                        }
+                                    }
+                                }
+                            }
+
+                            tbody {
+                                tr {
+                                    td {
+                                        border-right: 0;
+                                        text-align: center;
+                                        padding-left: 20px;
+                                        padding-right: 20px;
+                                        color: #311B4E;
+                                        font-weight: 500;
+
+                                        &:first-child {
+                                            text-align: left;
+                                        }
+
+                                        a {
+                                            font-weight: 500;
+                                            text-decoration: underline;
+                                            color: #6418C3;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     .create-step {
                         display: block;
                         padding-top: 50px;
@@ -705,6 +772,134 @@
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .setting-content {
+        .setting-content-inner {
+            .setting-menu-main {
+                height: auto;
+            }
+
+            .setting-menu {
+                display: none;
+            }
+
+            .setting-menu-mobile {
+                display: block;
+                margin-bottom: 30px;
+                position: relative;
+
+                .btn-menu {
+                    width: 100px;
+                    font-size: 18px;
+                    text-transform: capitalize;
+                    padding: 10px;
+                    box-shadow: none;
+                    color: #ffffff;
+                    background: #6418c3;
+                    font-weight: 500;
+                }
+
+                .menu {
+                    position: absolute;
+                    top: 50px;
+                    left: 0;
+                    background-color: #6418c3;
+                    padding: 0;
+                    margin: 0;
+                    list-style: none;
+                    width: 250px;
+                    z-index: 10;
+                    display: none;
+
+                    &.show {
+                        display: block;
+                    }
+
+                    li {
+                        display: block;
+                        padding: 5px 15px;
+                        cursor: pointer;
+                        border-bottom: 1px solid #ffffff;
+                        color: #ffffff;
+                        font-size: 16px;
+                        line-height: 24px;
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            .setting-right-content {
+                overflow-y: auto;
+                height: auto;
+
+                .roles-tabs {
+                    .tabs {
+                        padding-left: 15px;
+                        padding-right: 15px;
+
+                        ul {
+                            li {
+                                margin-right: 15px;
+                                font-size: 14px;
+
+                                &:last-child {
+                                    margin-right: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    .tabs-content {
+                        .create-step {
+                            padding-left: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .setting-content {
+        .setting-content-inner {
+            .setting-right-content {
+                .roles-tabs {
+                    .tabs-content {
+                        .permissions-group-table {
+                            table {
+                                width: 767px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .roles-permissions-custom-dialog {
+        .custom-dialog-content {
+            padding: 15px 15px;
+
+            .super-admin-head {
+                .search-bar-section {
+                    text-align: left;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 15px;
+
+                    .search-bar {
+                        .control-form {
+                            width: 222px;
                         }
                     }
                 }
