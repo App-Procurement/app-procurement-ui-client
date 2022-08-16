@@ -10,6 +10,7 @@ class App extends Component {
     // constructor(props) {
     //     super(props);
     // }
+ 
     render() {
         return (
             <I18nextProvider i18n={i18n}>
@@ -19,9 +20,13 @@ class App extends Component {
                             exact
                             path="/"
                             render={() => {
-                                return (
-                                    <Redirect to="/prelogin/login" />
-                                )
+                                {
+                                    return (
+                                      
+                                    localStorage.getItem('userData')?
+                                     <Redirect to="/postlogin/dashboard" />:<Redirect to="/prelogin/login" />)
+                                     
+                                }
                             }}
                         />
                         <Route path="/prelogin/login" component={LoginLayout} />

@@ -32,6 +32,20 @@ class RollAndPermissions extends Component {
     dispatch(settingAction.getUsers());
     dispatch(settingAction.getGroups());
     dispatch(settingAction.getPreferences());
+    // fetch('https://api.npms.io/v2/search?q=react')
+    // .then(response => response.json())
+    // .then(data => this.setState({ totalReactPackages: data.total }));
+
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    
+    fetch("http://localhost:8095/security/users/listAll", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log("result : ", result))
+      .catch(error => console.log('error', error));
+    
   }
   componentDidUpdate(prevProps, prevState) {
     const {
@@ -62,7 +76,7 @@ class RollAndPermissions extends Component {
           groupsList: [...JSON.parse(JSON.stringify(get_groups_data))],
           dupGroupsList: [...JSON.parse(JSON.stringify(get_groups_data))],
         });
-      }
+      } 
     }
     if (get_users_status !== prevProps.get_users_status && get_users_status === status.SUCCESS) {
       this.setState({
