@@ -1,234 +1,442 @@
-.kanban-head {
-    margin: 0 0 30px 0;
-    padding: 30px 20px;
-    border-radius: 15px;
-    background-color: #ffffff;
-    box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
-    -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
-    -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+.kanban-contant {
+    .kanban-head {
+        margin: 0 0 30px 0;
+        padding: 30px 20px;
+        border-radius: 15px;
+        background-color: #ffffff;
+        box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+        -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+        -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
 
-    .head-top {
-        .head-icon {
-            padding: 8px;
-            color: #ffffff;
-            margin-right: 15px;
-            vertical-align: top;
-            background-color: #8f8f8f;
-        }
-
-        .head-content {
-            display: inline-block;
-
-            h4 {
-                margin: 0;
-                font-weight: 500;
-            }
-
-            p {
-                font-size: 16px;
-                font-weight: 500;
-                color: #8f8f8f;
-                margin: 10px 0 0 0;
-            }
-        }
-
-        .head-menu-icon {
-            padding: 8px;
-            float: right;
-            color: #8f8f8f;
-        }
-    }
-
-    .head-bottom {
-        padding-top: 20px;
-
-        .head-left {
-            text-align: center;
-
-            .group-imags {
-                margin-right: 10px;
-                display: inline-block;
-                vertical-align: middle;
-            }
-
-            .head-btn {
-                display: inline-block;
-                vertical-align: middle;
-
-                button {
-                    margin-right: 10px;
-                    border-radius: 10px;
-                }
-
-                .MuiButton-label {
-                    color: #000000;
-                }
-
-                .MuiButton-root {
-                    font-size: 12px;
-                    font-weight: 600;
-                }
-
-                .invite-btn {
-                    background-color: #f6edfe;
-
-                    .btn-icon {
-                        color: #6318c3;
-                        margin-right: 10px;
-                    }
-                }
-
-                .comments-btn {
-                    margin-right: 0;
-
-                    .btn-icon {
-                        color: #6318c3;
-                        margin-right: 10px;
-                    }
-                }
-            }
-        }
-
-        .head-right {
-            p {
-                font-size: 14px;
-                font-weight: 500;
-                color: #000000;
-                margin: 0 10px 0 0;
-                display: inline-block;
-            }
-
-            span {
-                display: inline-block;
-                width: 185px;
-                .MuiLinearProgress-root{
-                    height: 10px;
-                    border-radius: 5px;
-                }
-                .MuiLinearProgress-barColorPrimary {
-                    background-color: #6418c3;
-                }
-            }
-
-        }
-    }
-
-}
-
-.suppliers-section {
-    .heading {
-        font-size: 16px;
-        line-height: 40px;
-        font-weight: 500;
-        color: #000000;
-        padding-bottom: 15px;
-        vertical-align: middle;
-
-        .count-btn {
-            float: right;
-
-            .plus-btn {
-                min-width: 0;
-                padding: 6px 8px;
-                color: #6318c3;
-                border-radius: 8px;
-                background-color: #f6edfe;
-
-                &:hover {
-                    background-color: #6318c3;
-                    color: #ffffff;
-                }
-
-                &.active {
-                    background-color: #6318c3;
-                    color: #ffffff;
-                }
-            }
-        }
-    }
-
-    .suppliers-list {
-        .suppliers-content {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 15px;
-            background-color: #ffffff;
-            box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
-            -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
-            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
-
-            .dragdrop-file {
+        .head-top {
+            .head-icon {
                 padding: 8px;
-                border-radius: 8px;
-                text-align: center;
-                border: 1px dotted #8f8f8f;
-                background-color: #f5f5f5;
-
-                span {
-                    font-size: 14px;
-                    line-height: 20px;
-                }
+                color: #ffffff;
+                margin-right: 15px;
+                vertical-align: top;
+                background-color: #8f8f8f;
             }
 
-            .heading {
-                font-size: 14px;
-                font-weight: 500;
-                line-height: 20px;
-                color: #000000;
-                padding-left: 0;
-                position: relative;
+            .head-content {
+                display: inline-block;
 
-                .icon {
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                    display: inline-block;
-                    margin-right: 5px;
+                h4 {
+                    margin: 0;
+                    font-weight: 500;
                 }
 
-                .right-icon {
-                    padding: 5px;
-                    color: #8f8f8f;
-                    margin-top: -5px;
-                    margin-right: -5px;
-                }
-            }
-
-            .department {
-                font-size: 14px;
-                font-weight: 500;
-                line-height: 20px;
-                color: #000000;
-                padding-top: 0px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .get-proses {
-                padding: 30px 0 15px 0;
-                .MuiLinearProgress-barColorPrimary{
-                    background-color: #ffab2e;
-                }
-                .MuiLinearProgress-root{
-                    height: 7px;
-                    border-radius: 5px;
-                } 
-            }
-
-            .user-text {
-                .user-images {
-                    display: inline-block;
-                }
-
-                span {
-                    float: right;
-                    font-size: 12px;
-                    line-height: 36px;
+                p {
+                    font-size: 16px;
                     font-weight: 500;
                     color: #8f8f8f;
+                    margin: 10px 0 0 0;
+                }
+            }
+
+            .head-menu-icon {
+                padding: 8px;
+                float: right;
+                color: #8f8f8f;
+            }
+        }
+
+        .head-bottom {
+            padding-top: 20px;
+
+            .head-left {
+                text-align: center;
+
+                .group-imags {
+                    margin-right: 10px;
+                    display: inline-block;
                     vertical-align: middle;
+                }
+
+                .head-btn {
+                    display: inline-block;
+                    vertical-align: middle;
+
+                    button {
+                        margin-right: 10px;
+                        border-radius: 10px;
+                    }
+
+                    .MuiButton-label {
+                        color: #000000;
+                    }
+
+                    .MuiButton-root {
+                        font-size: 12px;
+                        font-weight: 600;
+                    }
+
+                    .invite-btn {
+                        background-color: #f6edfe;
+
+                        .btn-icon {
+                            color: #6318c3;
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .comments-btn {
+                        margin-right: 0;
+
+                        .btn-icon {
+                            color: #6318c3;
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+
+            .head-right {
+                p {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #000000;
+                    margin: 0 10px 0 0;
+                    display: inline-block;
+                }
+
+                span {
+                    display: inline-block;
+                    width: 185px;
+
+                    .MuiLinearProgress-root {
+                        height: 10px;
+                        border-radius: 5px;
+                    }
+
+                    .MuiLinearProgress-barColorPrimary {
+                        background-color: #6418c3;
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    .kanban-header-section {
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+
+        .heading {
+            h4 {
+                margin: 0 0 20px 0;
+                color: $heading-text-color;
+            }
+        }
+
+        .search-bar-left {
+            width: 100%;
+            display: block;
+
+            .form-group {
+                position: relative;
+                margin: 0;
+
+                .form-control {
+                    border: none;
+                    width: 100%;
+                    height: 55px;
+                    font-weight: 500;
+                    border-radius: 10px;
+                    padding-left: 50px;
+                    padding-right: 30px;
+                    box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+                    -webkit-box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+                    -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.3);
+                }
+
+                button {
+                    position: absolute;
+                    top: 16px;
+                    left: 14px;
+                    background-color: transparent;
+                    border: none;
+                    color: #6418c3;
+                    font-size: 16px;
+                }
+            }
+        }
+
+        .search-bar-right {
+            text-align: end;
+
+            ul {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: end;
+
+                li {
+                    margin: 0 15px 0 0;
+                    padding: 0;
+                    display: inline-block;
+
+                    i {
+                        margin-right: 10px;
+                        color: #8f8f8f;
+                        display: inline-block;
+                    }
+
+                    p {
+                        font-size: 12px;
+                        line-height: 16px;
+                        font-weight: 400;
+                        color: #8f8f8f;
+                        display: inline-block;
+                        margin: 0;
+                    }
+
+                    .add-task-btn {
+                        height: 45px;
+                    }
+
+                    .add-step-btn {
+                        background: transparent !important;
+                        border-color: $buttons-bg;
+                        color: $buttons-bg !important;
+                        height: 45px;
+                    }
+                }
+            }
+        }
+    }
+
+    .suppliers-section {
+        .heading {
+            font-size: 16px;
+            line-height: 40px;
+            font-weight: 500;
+            color: #000000;
+            padding-bottom: 15px;
+            vertical-align: middle;
+
+            .count-btn {
+                float: right;
+
+                .plus-btn {
+                    min-width: 0;
+                    padding: 6px 8px;
+                    color: #6318c3;
+                    border-radius: 8px;
+                    background-color: #f6edfe;
+
+                    &:hover {
+                        background-color: #6318c3;
+                        color: #ffffff;
+                    }
+
+                    &.active {
+                        background-color: #6318c3;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+
+        .suppliers-head-section {
+            margin-bottom: 20px;
+
+            .progress-count {
+                width: 100%;
+                height: 60px;
+                padding: 10px 20px;
+                border-radius: 5px;
+                background: $body-box-bg;
+
+                p {
+                    font-size: 14px;
+                    line-height: 40px;
+                    font-weight: 500;
+                    color: $heading-text-color;
+                    margin: 0;
+                }
+
+                &:before {
+                    content: "";
+                    width: 10px;
+                    height: 100%;
+                    background: #6318c3;
+                    position: absolute;
+                    top: 0;
+                    left: 15px;
+                    border-radius: 5px 0 0 5px;
+                }
+            }
+        }
+
+        .suppliers-list {
+            .suppliers-content {
+                margin-top: 10px;
+                margin-bottom: 20px;
+                padding: 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                background-color: #ffffff;
+                box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+                -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+                -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+                .dragdrop-file {
+                    padding: 8px;
+                    border-radius: 8px;
+                    text-align: center;
+                    border: 1px dotted #8f8f8f;
+                    background-color: #f5f5f5;
+
+                    span {
+                        font-size: 14px;
+                        line-height: 20px;
+                    }
+                }
+
+                .heading {
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    color: #000000;
+                    padding-left: 0;
+                    position: relative;
+
+                    .icon {
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        display: inline-block;
+                        margin-right: 5px;
+                    }
+
+                    .right-icon {
+
+                        color: #8f8f8f;
+                        margin-top: -5px;
+                        margin-right: -5px;
+
+                        .menu-icon {
+                            padding: 5px;
+                            display: block;
+                        }
+
+                        i {
+                            display: block;
+                            text-align: center;
+                            color: #F44336;
+                        }
+                    }
+                }
+
+                .update-status-contant {
+                    width: 100%;
+                    display: block;
+                    margin-bottom: 10px;
+
+                    p {
+                        font-size: 14px;
+                        line-height: 18px;
+                        color: $icon-color;
+                        margin: 0 15px 0 0;
+                        display: inline-block;
+                    }
+
+                    .status-btn {
+                        border-radius: 15px;
+                        font-size: 10px;
+                        padding: 2px 20px;
+                        background: #0F9D58;
+                        border: none;
+                        color: $button-text-color;
+                        text-transform: capitalize;
+                    }
+                }
+
+                .user-contant {
+                    .department {
+                        font-size: 16px;
+                        font-weight: 500;
+                        line-height: 20px;
+                        color: #000000;
+                        padding-top: 0px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        margin-bottom: 5px;
+                    }
+
+                    p {
+                        font-size: 12px;
+                        line-height: 16px;
+                        color: $text-color;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .get-proses {
+                    padding: 0 0 10px 0;
+
+                    .progress-text {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 8px;
+
+                        p {
+                            font-size: 12px;
+                            line-height: 16px;
+                            font-weight: 500;
+                            color: $icon-color;
+                            margin: 0;
+                        }
+
+                        span {
+                            font-size: 12px;
+                            line-height: 16px;
+                            font-weight: 500;
+                            color: $icon-color;
+                            margin: 0;
+                        }
+                    }
+
+                    .MuiLinearProgress-barColorPrimary {
+                        background-color: #ffab2e;
+                    }
+
+                    .MuiLinearProgress-root {
+                        height: 7px;
+                        border-radius: 5px;
+                    }
+                }
+
+                .user-text {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    .user-images {
+                        display: flex;
+                        align-items: center;
+                        justify-content: start;
+
+                        i {
+                            margin-right: 5px;
+                            font-size: 25px;
+                            color: $icon-color;
+                        }
+                    }
+
+                    span {
+                        float: right;
+                        font-size: 12px;
+                        line-height: 36px;
+                        font-weight: 500;
+                        color: #8f8f8f;
+                        vertical-align: middle;
+                    }
                 }
             }
         }
@@ -241,7 +449,7 @@
         .suppliers-content {
             .user-text {
                 .user-images {
-                    .MuiAvatar-root{
+                    .MuiAvatar-root {
                         width: 30px;
                         height: 30px;
                     }
@@ -253,166 +461,190 @@
 
 
 @media only screen and (max-width: 1200px) {
-    .kanban-head {
-        .head-bottom {
-            .head-left {
-                float: left;
-                padding-bottom: 15px;
-            }
-
-            .head-right {
-                p {
-                    font-size: 16px;
+    .kanban-contant {
+        .kanban-head {
+            .head-bottom {
+                .head-left {
+                    float: left;
+                    padding-bottom: 15px;
                 }
 
-                span {
-                    width: 50%;
-                    vertical-align: middle;
+                .head-right {
+                    p {
+                        font-size: 16px;
+                    }
+
+                    span {
+                        width: 50%;
+                        vertical-align: middle;
+                    }
                 }
             }
         }
     }
+
 }
 
 @media only screen and (max-width: 992px) {
-    .kanban-head {
-        .head-top {
-            .head-icon {
-                width: 25px;
-                height: 25px;
-                line-height: 16px;
-                margin-top: 3px;
+    .kanban-contant {
+        .kanban-head {
+            .head-top {
+                .head-icon {
+                    width: 25px;
+                    height: 25px;
+                    line-height: 16px;
+                    margin-top: 3px;
 
-                .MuiSvgIcon-root {
-                    font-size: 1rem;
+                    .MuiSvgIcon-root {
+                        font-size: 1rem;
 
+                    }
+                }
+
+                .head-content {
+                    h4 {
+                        font-size: 20px;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        margin: 5px 0 0 0;
+                    }
                 }
             }
 
-            .head-content {
-                h4 {
-                    font-size: 20px;
+            .head-bottom {
+                .head-left {
+                    .group-imags {
+                        display: inline-flex;
+                        padding-bottom: 15px;
+                        margin-right: 0;
+                    }
+
+                    .head-btn {
+                        button {
+                            padding: 5px 8px;
+                        }
+
+                        .invite-btn {
+                            .btn-icon {
+                                margin-right: 5px;
+                            }
+                        }
+
+                        .comments-btn {
+                            .btn-icon {
+                                margin-right: 5px;
+                            }
+                        }
+                    }
                 }
 
-                p {
-                    font-size: 14px;
-                    margin: 5px 0 0 0;
+                .head-right {
+                    p {
+                        font-size: 16px;
+                    }
+
+                    span {
+                        width: 50%;
+                        vertical-align: middle;
+                    }
                 }
             }
         }
 
-        .head-bottom {
-            .head-left {
-                .group-imags {
-                    display: inline-flex;
-                    padding-bottom: 15px;
-                    margin-right: 0;
-                }
+        .suppliers-section {
+            .suppliers-head-section {
+                margin-bottom: 0;
 
-                .head-btn {
-                    button {
-                        padding: 5px 8px;
+                .progress-count {
+                    margin-bottom: 20px;
+
+                    &::before {
+                        height: 75%;
                     }
-
-                    .invite-btn {
-                        .btn-icon {
-                            margin-right: 5px;
-                        }
-                    }
-
-                    .comments-btn {
-                        .btn-icon {
-                            margin-right: 5px;
-                        }
-                    }
-                }
-            }
-
-            .head-right {
-                p {
-                    font-size: 16px;
-                }
-
-                span {
-                    width: 50%;
-                    vertical-align: middle;
                 }
             }
         }
     }
+
 }
 
 @media only screen and (max-width: 540px) {
-    .kanban-head {
-        .head-top {
-            .head-icon {
-                width: 25px;
-                height: 25px;
-                line-height: 16px;
-                margin-top: 3px;
+    .kanban-contant {
+        .kanban-head {
+            .head-top {
+                .head-icon {
+                    width: 25px;
+                    height: 25px;
+                    line-height: 16px;
+                    margin-top: 3px;
 
-                .MuiSvgIcon-root {
-                    font-size: 1rem;
+                    .MuiSvgIcon-root {
+                        font-size: 1rem;
 
-                }
-            }
-
-            .head-content {
-                h4 {
-                    font-size: 14px;
+                    }
                 }
 
-                p {
-                    font-size: 12px;
-                    margin: 5px 0 0 0;
-                    width: 150px;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-            }
-        }
-
-        .head-bottom {
-            .head-left {
-                .group-imags {
-                    display: inline-flex;
-                    padding-bottom: 15px;
-                    margin-right: 0;
-                }
-
-                .head-btn {
-                    button {
-                        padding: 5px 8px;
-                        margin-bottom: 10px;
+                .head-content {
+                    h4 {
+                        font-size: 14px;
                     }
 
-                    .invite-btn {
-                        .btn-icon {
-                            margin-right: 5px;
+                    p {
+                        font-size: 12px;
+                        margin: 5px 0 0 0;
+                        width: 150px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+
+            .head-bottom {
+                .head-left {
+                    .group-imags {
+                        display: inline-flex;
+                        padding-bottom: 15px;
+                        margin-right: 0;
+                    }
+
+                    .head-btn {
+                        button {
+                            padding: 5px 8px;
+                            margin-bottom: 10px;
+                        }
+
+                        .invite-btn {
+                            .btn-icon {
+                                margin-right: 5px;
+                            }
+                        }
+
+                        .comments-btn {
+                            .btn-icon {
+                                margin-right: 5px;
+                            }
                         }
                     }
+                }
 
-                    .comments-btn {
-                        .btn-icon {
-                            margin-right: 5px;
-                        }
+                .head-right {
+                    text-align: center;
+
+                    p {
+                        font-size: 16px;
+                        display: block;
                     }
-                }
-            }
 
-            .head-right {
-                text-align: center;
-                p {
-                    font-size: 16px;
-                    display: block;
-                }
-
-                span {
-                    width: 100%;
-                    vertical-align: middle;
+                    span {
+                        width: 100%;
+                        vertical-align: middle;
+                    }
                 }
             }
         }
     }
+
 }

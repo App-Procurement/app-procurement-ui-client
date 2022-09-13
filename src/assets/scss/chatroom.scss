@@ -217,6 +217,17 @@
                         color: $text-color;
                     }
                 }
+
+                .chat-btn {
+                    text-transform: capitalize;
+                    box-shadow: none;
+                    background: transparent;
+                    margin-right: 15px;
+
+                    a {
+                        color: $text-color;
+                    }
+                }
             }
 
             .search-bar-section {
@@ -296,9 +307,10 @@
                         }
 
                         .user-text {
-                            strong {
+                            label {
                                 font-size: 14px;
                                 line-height: 20px;
+                                font-weight: 500;
                                 color: $text-color;
                             }
 
@@ -492,15 +504,19 @@
                         }
 
                         .doc-images-box {
-                            max-width: 54.3%;
+                            max-width: 55%;
                             display: inline-block;
                             border-radius: 10px;
                             border: 3px solid #efefef;
 
                             .doc-inner-box {
+                                width: 50%;
                                 display: inline-block;
                                 background: #efefef;
 
+                                &.one-file {
+                                    width: 100%;
+                                }
 
                                 .doc-attachment-files {
                                     display: inline-block;
@@ -508,7 +524,7 @@
 
                                     img {
                                         border-radius: 8px;
-                                        width: 180px;
+                                        width: 100%;
                                         height: 180px;
                                     }
 
@@ -780,11 +796,12 @@
                         color: #545454;
                         font-size: 14px;
                     }
+
                     textarea {
                         height: 100px;
                     }
 
-                    .text-danger{
+                    .text-danger {
                         padding-left: 30%;
                     }
 
@@ -885,7 +902,7 @@
 
                     }
 
-                    .text-danger{
+                    .text-danger {
                         padding-left: 30%;
                     }
                 }
@@ -928,24 +945,64 @@
 
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1280px) {
     .chatroom-section {
         .chatroom-inner-content {
+            .chatroom-content-left {
+                .chatroom-inner-head-left {
+                    padding: 15px;
+                }
+
+                .search-bar-section {
+                    padding: 15px;
+
+                    .search-bar {
+                        .control-form {
+                            width: 95%;
+                        }
+                    }
+                }
+
+                .user-list {
+                    padding: 15px;
+
+                    .user-content {
+                        .user-profile-text {
+                            .image {
+                                margin-right: 10px;
+                                width: 35px;
+                                height: 35px;
+                            }
+
+                            .user-text {
+                                label {
+                                    width: 180px;
+                                    font-size: 14px;
+                                    line-height: 20px;
+                                    color: #202020;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             .chatroom-content-right {
+                .chatroom-inner-head-right {
+                    padding: 15px;
+                }
+
                 .chatroom-inner-content-right {
                     .massage-chat-section {
                         .doc-section {
                             .doc-images-box {
-                                max-width: 65%;
-                                display: inline-block;
-                                border-radius: 10px;
-                                border: 3px solid #efefef;
-
                                 .doc-inner-box {
                                     .doc-attachment-files {
                                         img {
-                                            width: 146.5px;
-                                            height: 146.5px;
+                                            height: 100px;
                                         }
                                     }
                                 }
@@ -958,30 +1015,35 @@
     }
 }
 
+
 @media only screen and (max-width: 992px) {
     .chatroom-section {
         .chatroom-inner-content {
+            .chatroom-content-left {
+                .chatroom-inner-head-left {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    .supplies-team-btn {
+                        padding: 6px 10px;
+                        margin: 0;
+                    }
+
+                    .chat-btn {
+                        padding: 6px 10px;
+                        margin: 0;
+                    }
+                }
+            }
+
             .chatroom-content-right {
                 .chatroom-inner-content-right {
-                    .massage-chat-section {
-                        .doc-section {
-                            .doc-images-box {
-                                max-width: 65%;
-                                display: inline-block;
-                                border-radius: 10px;
-                                border: 3px solid #efefef;
+                    padding: 15px;
+                }
 
-                                .doc-inner-box {
-                                    .doc-attachment-files {
-                                        img {
-                                            width: 126.5px;
-                                            height: 126.5px;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                .sender-bottom-section {
+                    margin: 0 -15px;
                 }
             }
         }
@@ -992,33 +1054,42 @@
     .chatroom-section {
         .chatroom-inner-content {
             .chatroom-content-left {
-                .chatroom-inner-head-left {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
+                .user-list {
+                    .user-content {
+                        .user-profile-text {
+                            .user-text {
+                                width: 400px;
+
+                                label {
+                                    width: 400px;
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
             .chatroom-content-right {
+
                 .chatroom-inner-head-right {
-                    margin-left: 0px;
-                }
-            }
-
-            .chatroom-content-right {
-                .chatroom-inner-content-right {
                     margin-left: 0;
+                }
+
+                .chatroom-inner-content-right {
+                    margin: 0;
 
                     .massage-chat-section {
                         .doc-section {
                             .doc-images-box {
-                                max-width: 56%;
+                                max-width: 50%;
 
                                 .doc-inner-box {
                                     .doc-attachment-files {
+                                        display: block;
+
                                         img {
-                                            width: 124.5px;
-                                            height: 124.5px;
+                                            height: 113px;
                                         }
                                     }
                                 }
@@ -1029,33 +1100,36 @@
             }
         }
     }
-
 }
 
 @media only screen and (max-width: 540px) {
     .chatroom-section {
         .chatroom-inner-content {
-            .chatroom-content-right {
-                .chatroom-inner-content-right {
-                    .massage-chat-section {
-                        .doc-section {
-                            .doc-images-box {
-                                max-width: 65.5%;
-                                display: inline-block;
-                                border-radius: 10px;
-                                border: 3px solid #efefef;
+            .chatroom-content-left {
+                .user-list {
+                    .user-content {
+                        .user-profile-text {
+                            .user-text {
+                                width: 195px;
 
-                                .doc-inner-box {
-                                    .doc-attachment-files {
-                                        img {
-                                            width: 87.8px;
-                                            height: 87.8px;
-                                        }
-                                    }
+                                label {
+                                    width: 195px;
+                                    margin-bottom: 0;
                                 }
                             }
                         }
                     }
+                }
+            }
+
+            .chatroom-content-right {
+
+                .chatroom-inner-head-right {
+                    margin-left: 0;
+                }
+
+                .chatroom-inner-content-right {
+                    margin: 0;
                 }
             }
         }

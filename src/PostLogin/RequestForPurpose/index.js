@@ -182,12 +182,12 @@ class RequestForPurpose extends Component {
 				<div className="request-purpose">
 					<div className="request-purpose-head">
 						<div className="row d-flex align-items-center justify-content-center">
-							<div className="col-sm-12 col-md-7 col-lg-8 col-xl-8 col-form-button">
+							<div className="col-12 col-sm-6 col-md-7 col-lg-8 col-xl-8 col-form-button">
 								<div className="request-purpose-head-left">
 									<h3>{t('My Request')}</h3>
 								</div>
 							</div>
-							<div className="col-sm-12 col-md-5 col-lg-4 col-xl-4 col-form-button">
+							<div className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-4 col-form-button">
 								<div className="request-purpose-head-right">
 									<Button
 										variant="contained"

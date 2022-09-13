@@ -62,7 +62,7 @@ class CreateNewRequest extends Component {
           key: 'sno',
           renderCallback: (value, index) => {
             return (
-            <td key={`${Math.random()}_${value}`}>{index + 1}</td>)
+              <td key={`${Math.random()}_${value}`}>{index + 1}</td>)
           },
         },
         {
@@ -70,9 +70,9 @@ class CreateNewRequest extends Component {
           key: 'name',
           renderCallback: (value) => {
             return (
-                <td key={`${Math.random()}_${value}`}>
-                  <span className={'requisitions-no'}>{value}</span>
-                </td>
+              <td key={`${Math.random()}_${value}`}>
+                <span className={'requisitions-no'}>{value}</span>
+              </td>
             );
           },
         },
@@ -204,7 +204,7 @@ class CreateNewRequest extends Component {
       '',
       '',
       {
-        onFormSubmitted: (formName) => {},
+        onFormSubmitted: (formName) => { },
         onFormCompleted: (formName, response) => {
           this.setUploadedDocID(response);
         },
@@ -590,42 +590,38 @@ class CreateNewRequest extends Component {
           </div>
           <div className="requisitions-filter">
             <div className="form-group row col-form-group">
-              <label className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-form-label">{t('Due Date')}</label>
-              <div className="col-sm-12 col-md-8 col-lg-3 col-xl-3 col-form-field">
-                <div className="d-flex align-items-center">
-                  <div className="d-flex align-items-center date-picker">
-                    <DatePicker
-                      selected={dueDate}
-                      placeholder={'YYYY-MM-DD'}
-                      onChange={(date) => this.handleDates(date, 'dueDate')}
-                    />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
-                  </div>
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Due Date')}</label>
+              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
+                <div className="d-flex align-items-center date-picker">
+                  <DatePicker
+                    selected={dueDate}
+                    placeholder={'YYYY-MM-DD'}
+                    onChange={(date) => this.handleDates(date, 'dueDate')}
+                  />
+                  <CalendarTodayTwoToneIcon className="calendar-icon" />
                 </div>
               </div>
-              <label className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-form-label">{t('Delivery Date')}</label>
-              <div className="col-sm-12 col-md-8 col-lg-3 col-xl-3 col-form-field">
-                <div className="d-flex align-items-center">
-                  <div className="d-flex align-items-center date-picker">
-                    <DatePicker
-                      selected={deliverDate}
-                      placeholder={'YYYY-MM-DD'}
-                      onChange={(date) => this.handleDates(date, 'deliveryDate')}
-                    />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
-                  </div>
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Delivery Date')}</label>
+              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
+                <div className="d-flex align-items-center date-picker">
+                  <DatePicker
+                    selected={deliverDate}
+                    placeholder={'YYYY-MM-DD'}
+                    onChange={(date) => this.handleDates(date, 'deliveryDate')}
+                  />
+                  <CalendarTodayTwoToneIcon className="calendar-icon" />
                 </div>
               </div>
             </div>
             <div className="form-group row col-form-group">
-              <label className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-form-label">{t('Location')}</label>
-              <div className="col-sm-12 col-md-8 col-lg-3 col-xl-3 col-form-field">
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Location')}</label>
+              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
                 <FormControl className="select-menu">
                   <NativeSelect
                     name="location"
                     value={formData.location}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.location.isValid}
+                  // isvalid={errorData.location.isValid}
                   >
                     <option value="">Main Office USA</option>
                     <option value={10}>abc</option>
@@ -635,14 +631,14 @@ class CreateNewRequest extends Component {
                 </FormControl>
                 <span className="d-block w-100 text-danger">{errorData.location.message}</span>
               </div>
-              <label className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-form-label">{t('Department')}</label>
-              <div className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-field">
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Department')}</label>
+              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
                 <FormControl className="select-menu">
                   <NativeSelect
                     name="department"
                     value={formData.department}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.department.isValid}
+                  // isvalid={errorData.department.isValid}
                   >
                     <option value="">HR Department</option>
                     <option value={10}>abc</option>
@@ -654,14 +650,14 @@ class CreateNewRequest extends Component {
               </div>
             </div>
             <div className="form-group row col-form-group">
-              <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t('Request Type')}</label>
-              <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Request Type')}</label>
+              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
                 <FormControl className="select-menu">
                   <NativeSelect
                     name="request"
                     value={formData.request}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.request.isValid}
+                  // isvalid={errorData.request.isValid}
                   >
                     <option value="">Purchase</option>
                     <option value={10}>abc</option>
@@ -673,8 +669,8 @@ class CreateNewRequest extends Component {
               </div>
             </div>
             <div className="form-group row col-form-group">
-              <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{t('Note')}</label>
-              <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-form-field">
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Note')}</label>
+              <div className="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-6 col-form-field">
                 <div className="new-requeust-massge">
                   <textarea name="note" onChange={this.handleStateChange} value={formData.note} />
                   <span className="d-block w-100 text-danger">{errorData.note.message}</span>
@@ -700,7 +696,7 @@ class CreateNewRequest extends Component {
                     variant="contained"
                     className="add-custom-btn"
                     disableElevation
-                    // onClick={this.handleClickMethod}
+                  // onClick={this.handleClickMethod}
                   >
                     Add Custom Item
                   </Button>
@@ -708,7 +704,7 @@ class CreateNewRequest extends Component {
                     variant="contained"
                     className="add-custom-btn"
                     disableElevation
-                    // onClick={this.handleClickMethod}
+                  // onClick={this.handleClickMethod}
                   >
                     <i className="fa fa-plus-circle" aria-hidden="true" />
                     Import Item

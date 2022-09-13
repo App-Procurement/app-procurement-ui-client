@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import 'rc-calendar/assets/index.css';
-import '@y0c/react-datepicker/assets/styles/calendar.scss';
-import CompanyProfile from './CompanyProfile';
-import RollAndPermissions from './RollAndPermissions';
-import ApprovalWorkFlow from './ApprovalWorkFlow';
-import SimpleBar from 'simplebar-react';
+import React, { Component } from "react";
+import "rc-calendar/assets/index.css";
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
+import CompanyProfile from "./CompanyProfile";
+import RollAndPermissions from "./RollAndPermissions";
+import ApprovalWorkFlow from "./ApprovalWorkFlow";
+import SimpleBar from "simplebar-react";
 
 class Setting extends Component {
   settingNav;
@@ -12,27 +12,27 @@ class Setting extends Component {
     super(props);
     this.state = {
       authenticationActivate: true,
-      navKey: 'accountSetting',
+      navKey: "accountSetting",
       mobNav: false,
     };
     this.settingNav = [
       {
-        name: 'Account Setting',
-        id: '101',
-        key: 'accountSetting',
-        component: <CompanyProfile key={1} />,
+        name: "Account Setting",
+        id: "101",
+        key: "accountSetting",
+        component: <CompanyProfile key={"1_accountSetting"} />,
       },
       {
-        name: 'Roles and Permissions',
-        id: '111',
-        key: 'rollAndPermissions',
-        component: <RollAndPermissions key={2} />,
+        name: "Roles and Permissions",
+        id: "111",
+        key: "rollAndPermissions",
+        component: <RollAndPermissions key={"2_accountSetting"} />,
       },
       {
-        name: 'Approval Workflow',
-        id: '109',
-        key: 'approvalWorkflow',
-        component: <ApprovalWorkFlow key={4} />,
+        name: "Approval Workflow",
+        id: "109",
+        key: "approvalWorkflow",
+        component: <ApprovalWorkFlow key={"3_accountSetting"} />,
       },
     ];
   }
@@ -58,9 +58,11 @@ class Setting extends Component {
                   <div className="setting-menu">
                     <ul>
                       <li
-                        onClick={() => this.setState({ navKey: 'accountSetting' })}
+                        onClick={() =>
+                          this.setState({ navKey: "accountSetting" })
+                        }
                         key="0"
-                        className={navKey === 'accountSetting' ? 'active' : ''}
+                        className={navKey === "accountSetting" ? "active" : ""}
                       >
                         <div className="icon">
                           <i className="fas fa-user"></i>
@@ -74,9 +76,13 @@ class Setting extends Component {
                         </div>
                       </li>
                       <li
-                        onClick={() => this.setState({ navKey: 'approvalWorkflow' })}
+                        onClick={() =>
+                          this.setState({ navKey: "approvalWorkflow" })
+                        }
                         key="1"
-                        className={navKey === 'approvalWorkflow' ? 'active' : ''}
+                        className={
+                          navKey === "approvalWorkflow" ? "active" : ""
+                        }
                       >
                         <div className="icon">
                           <i className="fas fa-cog"></i>
@@ -90,9 +96,13 @@ class Setting extends Component {
                         </div>
                       </li>
                       <li
-                        onClick={() => this.setState({ navKey: 'rollAndPermissions' })}
+                        onClick={() =>
+                          this.setState({ navKey: "rollAndPermissions" })
+                        }
                         key="2"
-                        className={navKey === 'rollAndPermissions' ? 'active' : ''}
+                        className={
+                          navKey === "rollAndPermissions" ? "active" : ""
+                        }
                       >
                         <div className="icon">
                           <i className="fas fa-cog"></i>
@@ -157,30 +167,37 @@ class Setting extends Component {
                   </div>
                 </SimpleBar>
                 <div className="setting-menu-mobile">
-                  <button className="btn btn-primary btn-menu" onClick={this.handleClickSettingMenu}>
+                  <button
+                    className="btn btn-primary btn-menu"
+                    onClick={this.handleClickSettingMenu}
+                  >
                     Menu
                   </button>
                   {mobNav ? (
                     <ul className="menu show">
                       <li
-                        onClick={() => this.handleMobNav('accountSetting')}
+                        onClick={() => this.handleMobNav("accountSetting")}
                         key="0"
-                        className={navKey === 'accountSetting' ? 'active' : ''}
+                        className={navKey === "accountSetting" ? "active" : ""}
                       >
                         Account setting
                       </li>
                       <li
-                        onClick={() => this.handleMobNav('approvalWorkflow')}
+                        onClick={() => this.handleMobNav("approvalWorkflow")}
                         key="1"
-                        className={navKey === 'approvalWorkflow' ? 'active' : ''}
+                        className={
+                          navKey === "approvalWorkflow" ? "active" : ""
+                        }
                       >
-                        {' '}
+                        {" "}
                         Approval Flows
                       </li>
                       <li
-                        onClick={() => this.handleMobNav('rollAndPermissions')}
+                        onClick={() => this.handleMobNav("rollAndPermissions")}
                         key="2"
-                        className={navKey === 'rollAndPermissions' ? 'active' : ''}
+                        className={
+                          navKey === "rollAndPermissions" ? "active" : ""
+                        }
                       >
                         Roles and Permissions
                       </li>
@@ -198,7 +215,12 @@ class Setting extends Component {
                   {this.settingNav &&
                     this.settingNav.length > 0 &&
                     this.settingNav.map(
-                      (value, index) => navKey === value.key && <div key={value.id}>{value.component}</div>
+                      (value, index) =>
+                        navKey === value.key && (
+                          <div key={`${value.id}${index}`}>
+                            {value.component}
+                          </div>
+                        )
                     )}
                 </SimpleBar>
                 {/* <CompanyProfile/>

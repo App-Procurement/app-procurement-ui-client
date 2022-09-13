@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "createdAt": null,
+        "updatedAt": null,
+        "createdBy": null,
+        "updatedBy": null,
+        "name": "GENERAL_DIRECTOR",
+        "version": null,
+        "grp": false,
+        "description": null,
+        "permissions": [],
+        "roles": []
+    },
+    {
+        "id": 2,
+        "createdAt": null,
+        "updatedAt": null,
+        "createdBy": null,
+        "updatedBy": null,
+        "name": "PSDS_ADMIN",
+        "version": null,
+        "grp": false,
+        "description": null,
+        "permissions": [],
+        "roles": []
+    },
+    {
+        "id": 5,
+        "createdAt": null,
+        "updatedAt": null,
+        "createdBy": null,
+        "updatedBy": null,
+        "name": "PSDS_ADMIN_GRP",
+        "version": null,
+        "grp": true,
+        "description": null,
+        "permissions": [],
+        "roles": [
+            {
+                "id": 2,
+                "createdAt": null,
+                "updatedAt": null,
+                "createdBy": null,
+                "updatedBy": null,
+                "name": "PSDS_ADMIN",
+                "version": null,
+                "grp": false,
+                "description": null,
+                "permissions": [],
+                "roles": []
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "createdAt": null,
+        "updatedAt": null,
+        "createdBy": null,
+        "updatedBy": null,
+        "name": "GENERAL_DIRECTOR_GRP",
+        "version": null,
+        "grp": true,
+        "description": null,
+        "permissions": [],
+        "roles": [
+            {
+                "id": 1,
+                "createdAt": null,
+                "updatedAt": null,
+                "createdBy": null,
+                "updatedBy": null,
+                "name": "GENERAL_DIRECTOR",
+                "version": null,
+                "grp": false,
+                "description": null,
+                "permissions": [],
+                "roles": []
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "createdAt": null,
+        "updatedAt": null,
+        "createdBy": null,
+        "updatedBy": null,
+        "name": "BUDGET_HOLDER_GRP",
+        "version": null,
+        "grp": true,
+        "description": null,
+        "permissions": [],
+        "roles": []
+    },
+    {
+        "id": 14,
+        "createdAt": null,
+        "updatedAt": null,
+        "createdBy": null,
+        "updatedBy": null,
+        "name": "BUDGET_HOLDER",
+        "version": null,
+        "grp": false,
+        "description": null,
+        "permissions": [],
+        "roles": [
+            {
+                "id": 13,
+                "createdAt": null,
+                "updatedAt": null,
+                "createdBy": null,
+                "updatedBy": null,
+                "name": "BUDGET_HOLDER_GRP",
+                "version": null,
+                "grp": true,
+                "description": null,
+                "permissions": [],
+                "roles": []
+            }
+        ]
+    }
+]

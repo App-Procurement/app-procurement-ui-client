@@ -26,23 +26,27 @@ function addInvoice(data) {
       (response) => {
         const code = response.status;
         if (code === 200) {
-          response.json().then(data => {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                add_invoice_status: status.SUCCESS,
-                addInvoice: data
-              }
-            }));
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  add_invoice_status: status.SUCCESS,
+                  addInvoice: data,
+                },
+              })
+            );
           });
         } else {
-          dispatch(dispatchFunction({
-            type: status.FAILURE,
-            data: {
-              add_invoice_status: status.FAILURE,
-              addInvoice: response
-            }
-          }));
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                add_invoice_status: status.FAILURE,
+                addInvoice: response,
+              },
+            })
+          );
           alert.error(response.message);
         }
       },
@@ -129,23 +133,27 @@ function getInvoice(data) {
       (response) => {
         const code = response.status;
         if (code === 200) {
-          response.json().then(data => {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                get_invoice_status: status.SUCCESS,
-                get_invoice_data: data
-              }
-            }));
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  get_invoice_status: status.SUCCESS,
+                  get_invoice_data: data,
+                },
+              })
+            );
           });
         } else {
-          dispatch(dispatchFunction({
-            type: status.FAILURE,
-            data: {
-              get_invoice_status: status.FAILURE,
-              get_invoice_data: response
-            }
-          }));
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                get_invoice_status: status.FAILURE,
+                get_invoice_data: response,
+              },
+            })
+          );
           alert.error(response.message);
         }
       },
@@ -231,23 +239,27 @@ function searchInvoice(data) {
       (response) => {
         const code = response.status;
         if (code === 200) {
-          response.json().then(data => {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                search_invoice_status: status.SUCCESS,
-                search_invoice_data: data
-              }
-            }));
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  search_invoice_status: status.SUCCESS,
+                  search_invoice_data: data.object,
+                },
+              })
+            );
           });
         } else {
-          dispatch(dispatchFunction({
-            type: status.FAILURE,
-            data: {
-              search_invoice_status: status.FAILURE,
-              search_invoice_data: response
-            }
-          }));
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                search_invoice_status: status.FAILURE,
+                search_invoice_data: response,
+              },
+            })
+          );
           alert.error(response.message);
         }
       },

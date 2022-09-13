@@ -94,5 +94,9 @@ export const apiEndPoint = {
   GROUPSLIST: `${config.apiUrl}/groupslist`,
   // GET USERS LIST FOR SETTING
   USERSLIST: `${config.apiUrl}/userrolesandpermissions`,
-  PREFERENCESLIST:`${config.apiUrl}/getpreferenceslist`
+  PREFERENCESLIST:`${config.apiUrl}/getpreferenceslist`,
+  REQUESTDATA:`${config.apiUrl}/request`,
+  // Get budget data
+  BUDGETDATA:`${config.apiUrl}/budget`,
+  SETTINGGROUPDATA:`${config.apiUrl}/group`
 };

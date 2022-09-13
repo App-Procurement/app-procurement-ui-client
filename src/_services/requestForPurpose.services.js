@@ -35,7 +35,8 @@ function addRequest(data) {
 	formData.append('itemList', data.itemList);
 	formData.append('files', data.files);
 	formData.append('documentId', data.documentId);
-	const requestOptions = commonFunctions.getRequestOptions('POST', extraHeaders, formData);
+let submitData={formData:formData, otherData:JSON.stringify(data)}
+	const requestOptions = commonFunctions.getRequestOptions('POST', extraHeaders,  JSON.stringify(submitData));
 	return fetch(`${apiEndPoint.REQUESTFORPURPOSE}`, requestOptions).then((response) => response.json());
 }
 function removeRequest(data) {

@@ -2,6 +2,7 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { io } from 'socket.io-client';
+import Card from '@material-ui/core/Card';
 import { ChatRoomActions } from '../../_actions';
 import { status } from '../../_constants';
 import Button from '@material-ui/core/Button';
@@ -14,23 +15,12 @@ import IconButton from '@material-ui/core/IconButton';
 import { commonFunctions } from '../../_utilities';
 import SimpleBar from 'simplebar-react';
 import UserInfoImg from '../../assets/images/message/user-info-img.png';
-import MediaImg1 from '../../assets/images/message/media-img1.png';
-import MediaImg2 from '../../assets/images/message/media-img2.png';
-import MediaImg3 from '../../assets/images/message/media-img3.png';
-import MediaImg4 from '../../assets/images/message/media-img4.png';
-import MediaImg5 from '../../assets/images/message/media-img5.png';
-import MediaImg6 from '../../assets/images/message/media-img6.png';
-import MediaImg7 from '../../assets/images/message/media-img7.png';
-import MediaImg8 from '../../assets/images/message/media-img8.png';
-import MediaImg9 from '../../assets/images/message/media-img9.png';
-import MediaImg10 from '../../assets/images/message/media-img10.png';
-import MediaImg11 from '../../assets/images/message/media-img11.png';
-import MediaImg12 from '../../assets/images/message/media-img12.png';
-import MediaImg13 from '../../assets/images/message/media-img13.png';
-import MediaImg14 from '../../assets/images/message/media-img14.png';
-import MediaImg15 from '../../assets/images/message/media-img15.png';
-import ClearIcon from '../../assets/images/message/clear-icon.png';
-import DeleteIcon from '../../assets/images/message/delete-icon.png';
+import UserProfileImg from '../../assets/images/message/user-profile-img.png';
+import SettingIcon from '../../assets/images/message/setting-icon.png';
+import ClearInvoiceImg from '../../assets/images/message/clear-invoice-img.png';
+import SocialMediaImg1 from '../../assets/images/message/social-media-img1.png';
+import SocialMediaImg2 from '../../assets/images/message/social-media-img2.png';
+
 //import PaperclipiIcon from '../../assets/images/message/paperclipi-icon.png';
 
 class Message extends React.Component {
@@ -171,7 +161,7 @@ class Message extends React.Component {
       for (let i = 0; i < attachment.length; i++) {
         const { payload } = attachment[i];
         retData.push(
-          <div className="doc-inner-box" key={`${i}_docs`}>
+          <div className={`doc-inner-box ${attachment.length === 1 ? "one-file" : ""}`} key={`${i}_docs`}>
             <div className="doc-attachment-files">
               <img alt="image" src={payload.url} />
             </div>
@@ -197,11 +187,12 @@ class Message extends React.Component {
               <div className="user-text">
                 <label>{name}</label>
                 <p>{category}</p>
-                <p>office supply team</p>
+                {/* <p>office supply team</p> */}
               </div>
             </div>
             <div className="user-time">
               <span>3.01</span>
+              <div className="noti-symbol">6</div>
             </div>
           </div>
         );
@@ -248,6 +239,8 @@ class Message extends React.Component {
                     {' '}
                     Chats
                   </Button>
+                </div>
+                <div className="user-chat-buttons">
                   <Button variant="contained" className="group-team-btn">
                     {' '}
                     Groups
@@ -311,7 +304,9 @@ class Message extends React.Component {
                               alt="image"
                             />
                           </div>
-                          <div className="doc-images-box">{this.attachmentsLsit(attachment)}</div>
+                          <div className="doc-images-box">
+                            {this.attachmentsLsit(attachment)}
+                          </div>
                         </div>
                       ) : sender_name === userName ? (
                         <div className="user-massage-content" key={`${index}_chat_rooms`}>
@@ -333,18 +328,48 @@ class Message extends React.Component {
                         </div>
                       ) : (
                         <div className="sender-massage-content" key={`${index}_chats`}>
-                          <div className="sender-massage-box">
-                            <div className="sender-massage-text">
-                              <p>{text}</p>
+                          <div className="sender-massage-section">
+                            <div className="sender-massage-box">
+                              <div className="sender-massage-text">
+                                <p>{text}</p>
+                              </div>
+                            </div>
+                            <div className="user-image">
+                              <img
+                                alt="image"
+                                height="35px"
+                                width="35px"
+                                src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
+                              />
                             </div>
                           </div>
-                          <div className="user-image">
-                            <img
-                              alt="image"
-                              height="35px"
-                              width="35px"
-                              src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
-                            />
+                          <div className="attech-download-file">
+                            <ul>
+                              <li>
+                                <div className="file-contant d-flex align-items-center justify-content-center">
+                                  <div className='d-flex align-items-center justify-content-center'>
+                                    <div className="attech-icon"><i className="fas fa-paperclip"></i></div>
+                                    <div className='file-text'>
+                                      <p>file_format_example.zip</p>
+                                      <span>1,2MB</span>
+                                    </div>
+                                  </div>
+                                  <div className="down-icon"><i className="fas fa-arrow-alt-to-bottom"></i></div>
+                                </div>
+                              </li>
+                              <li>
+                                <div className="file-contant d-flex align-items-center justify-content-center">
+                                  <div className='d-flex align-items-center justify-content-center'>
+                                    <div className="attech-icon"><i className="fas fa-paperclip"></i></div>
+                                    <div className='file-text'>
+                                      <p>file_format_example.zip</p>
+                                      <span>1,2MB</span>
+                                    </div>
+                                  </div>
+                                  <div className="down-icon"><i className="fas fa-arrow-alt-to-bottom"></i></div>
+                                </div>
+                              </li>
+                            </ul>
                           </div>
                         </div>
                       )
@@ -373,9 +398,11 @@ class Message extends React.Component {
                       alt="image"
                     />
                   </div>
-                  <span>
-                    <i className="fas fa-smile-o"></i>
-                  </span>
+                  <div className="social-icon">
+                    <i class="fal fa-microphone-alt"></i>
+                    <i class="fal fa-paperclip"></i>
+                    <i class="far fa-smile"></i>
+                  </div>
                   <div className="send-btn" onClick={this.sendMessage}>
                     <Button variant="contained" className="massage-send-btn">
                       <i className="fa fa-paper-plane" aria-hidden="true"></i>
@@ -390,7 +417,7 @@ class Message extends React.Component {
                   <span className='float-left' onClick={this.openUserInfo}><i class="fal fa-times"></i></span>
                   <p>User Info</p>
                 </div>
-                <div className="user-profile">
+                {/* <div className="user-profile">
                   <div className="user-profile-details">
                     <div className="user-profile-content">
                       <img src={UserInfoImg} alt="" />
@@ -398,12 +425,49 @@ class Message extends React.Component {
                       <span>Approver Level 1</span>
                     </div>
                   </div>
+                </div> */}
+                <div className="user-profile-details">
+                  <div className="user-profile-content">
+                    <div className="user-img">
+                      <img src={UserProfileImg} alt="" />
+                    </div>
+                    <div className="user-profile-text">
+                      <label>James Lycus</label>
+                      <span>Approver Level 1</span>
+                    </div>
+                  </div>
+                  <div className="setting-icon"><img src={SettingIcon} alt="" /></div>
+                </div>
+                <div className="social-media-images">
+                  <div className="head-menu">
+                    <ul>
+                      <li className='active'>Media</li>
+                      <li>See all</li>
+                    </ul>
+                  </div>
+                  <div className="media-images">
+                    <ul>
+                      <li>
+                        <div className='image'>
+                          <img src={SocialMediaImg1} alt="" />
+                        </div>
+                      </li>
+                      <li>
+                        <div className='image'>
+                          <img src={SocialMediaImg2} alt="" />
+                        </div>
+                      </li>
+                      <li>
+                        <div className="total-images">&#43;174</div>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
                 <div className="user-information-tabs">
                   <ul>
-                    <li onClick={() => this.handelKey(0)} className={activeKey === 0 ? 'active' : ''}>MEDIA</li>
-                    <li onClick={() => this.handelKey(1)} className={activeKey === 1 ? 'active' : ''}>DOCS</li>
-                    <li onClick={() => this.handelKey(2)} className={activeKey === 2 ? 'active' : ''}>LINKS</li>
+                    <li onClick={() => this.handelKey(0)} className={activeKey === 0 ? 'active' : ''}>file</li>
+                    <li onClick={() => this.handelKey(1)} className={activeKey === 1 ? 'active' : ''}>Links</li>
+                    {/* <li onClick={() => this.handelKey(1)} className={activeKey === 1 ? 'active' : ''}>DOCS</li> */}
                   </ul>
                 </div>
                 {
@@ -411,24 +475,104 @@ class Message extends React.Component {
                   <div className="user-info-tab  active">
                     <div className="media-tab-contant">
                       <ul>
-                        <li><a href=""><img src={MediaImg1} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg2} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg3} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg4} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg5} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg6} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg7} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg8} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg9} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg10} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg11} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg12} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg13} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg14} alt="" /></a></li>
-                        <li><a href=""><img src={MediaImg15} alt="" /></a></li>
+                        <li>
+                          <div className="document-contant">
+                            <span className="blue-color"><i class="fas fa-file-pdf"></i></span>
+                            <div className='document-text'>
+                              <label>Corrigendum update.pdf</label>
+                              <div className="timing-text">
+                                <p >1.2MB</p>
+                                <p>19 July 2022</p>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div className="document-contant">
+                            <span className="dark-violet"><i class="fas fa-file"></i></span>
+                            <div className='document-text'>
+                              <label>Vendor Docs.jpg</label>
+                              <div className="timing-text">
+                                <p >1.2MB</p>
+                                <p>19 July 2022</p>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div className="document-contant">
+                            <span className="dark-orange"><i class="fas fa-microphone"></i></span>
+                            <div className='document-text'>
+                              <label>Voice.Mp4</label>
+                              <div className="timing-text">
+                                <p >1.2MB</p>
+                                <p>19 July 2022</p>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div className="document-contant">
+                            <span className="deep-sky-blue"><i class="fas fa-file-pdf"></i></span>
+                            <div className='document-text'>
+                              <label>Logistics Bills.pdf</label>
+                              <div className="timing-text">
+                                <p >1.2MB</p>
+                                <p>19 July 2022</p>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
                       </ul>
+                      <div className="d-block text-center">
+                        <Button variant="contained" color="primary" className="primary-btn document-btn">
+                          See All
+                        </Button>
+                      </div>
+                      <div className="pinned-message">
+                        <div className="head-menu">
+                          <ul>
+                            <li className='active'>Media</li>
+                            <li>See all</li>
+                          </ul>
+                        </div>
+                        <div className="pinned-message-inner-contant">
+                          <ul>
+                            <li>
+                              <div className="message-box">
+                                <p>Hello Jacob we have a start new bid </p>
+                                <span><i class="fas fa-thumbtack"></i></span>
+                              </div>
+                              <div className="timing-text">
+                                <p >Adriance wayne</p>
+                                <p>22 June 2022</p>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="message-box">
+                                <p>Hello Jacob we have a start new bid </p>
+                                <span><i class="fas fa-thumbtack"></i></span>
+                              </div>
+                              <div className="timing-text">
+                                <p >Adriance wayne</p>
+                                <p>22 June 2022</p>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="message-box">
+                                <p>Hello Jacob we have a start new bid </p>
+                                <span><i class="fas fa-thumbtack"></i></span>
+                              </div>
+                              <div className="timing-text">
+                                <p >Adriance wayne</p>
+                                <p>22 June 2022</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
-                    <div className="user-info-media-buttons">
+                    {/* <div className="user-info-media-buttons">
                       <ul>
                         <li>
                           <Button variant="contained" size="large" className='group-btn clear-btn'><i className="clear-btn far fa-comment-alt-lines"></i>Clear Chat</Button>
@@ -437,95 +581,148 @@ class Message extends React.Component {
                           <Button variant="contained" size="large" className='group-btn delete-btn'><i className="delete-btn far fa-trash-alt"></i>Delete Chat</Button>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                   </div>
                 }
                 {
                   activeKey === 1 &&
-                  <div className="user-info-tab docs active">
-                    <div className="docs-tab-contant">
-                      <ul>
-                        <li>
-                          <div className="attach">
-                            <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                            <p>Approval Document</p>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="attach">
-                            <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                            <p>RFQ</p>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="attach">
-                            <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                            <p>Final Documents</p>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="attach">
-                            <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                            <p>Approval Document</p>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="attach">
-                            <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                            <p>Approval Document</p>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="user-info-media-buttons">
-                      <ul>
-                        <li>
-                          <Button variant="contained" size="large" className='group-btn clear-btn'><i className="clear-btn far fa-comment-alt-lines"></i>Clear Chat</Button>
-                        </li>
-                        <li>
-                          <Button variant="contained" size="large" className='group-btn delete-btn'><i className="delete-btn far fa-trash-alt"></i>Delete Chat</Button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                }
-                {
-                  activeKey === 2 &&
                   <div className="user-info-tab active">
                     <div className="link-tab-contant">
                       <ul>
-                        <li className="link-box">
-                          <Button variant="contained" className='link-icon'><i class="far fa-paperclip"></i></Button>
-                          <div className='link-contant'>
-                            <p>https://www.facebook.com/161593694735196/videos/550427263327196/?sfnsn=mo</p>
-                          </div>
+                        <li>
+                          <Card className="link-card">
+                            <div className="link-box">
+                              <div className="link-image">
+                                <img src={ClearInvoiceImg} alt="" />
+                              </div>
+                              <div className="link-contant">
+                                <label>Clear invoice</label>
+                                <p>Clear all pending invoice of this month</p>
+                                <span>https://www.iconfinder.com</span>
+                              </div>
+                            </div>
+                            <div className="link-card-bottom">
+                              <ul>
+                                <li>
+                                  <a href="#">View Purchase order</a>
+                                  <span><i class="fas fa-angle-right"></i></span>
+                                </li>
+                                <li>
+                                  <a href="#">Track Request</a>
+                                  <span><i class="fas fa-angle-right"></i></span>
+                                </li>
+                              </ul>
+                            </div>
+                          </Card>
                         </li>
-                        <li className="link-box">
-                          <Button variant="contained" className='link-icon'><i class="far fa-paperclip"></i></Button>
-                          <div className='link-contant'>
-                            <p>https://www.facebook.com/161593694735196/videos/550427263327196/?sfnsn=mo</p>
-                          </div>
-                        </li>
-                        <li className="link-box">
-                          <Button variant="contained" className='link-icon'><i class="far fa-paperclip"></i></Button>
-                          <div className='link-contant'>
-                            <p>https://www.facebook.com/161593694735196/videos/550427263327196/?sfnsn=mo</p>
-                          </div>
+                        <li>
+                          <Card className="link-card">
+                            <div className="link-box">
+                              <div className="link-image">
+                                <img src={ClearInvoiceImg} alt="" />
+                              </div>
+                              <div className="link-contant">
+                                <label>Clear invoice</label>
+                                <p>Clear all pending invoice of this month</p>
+                                <span>https://www.iconfinder.com</span>
+                              </div>
+                            </div>
+                            <div className="link-card-bottom">
+                              <ul>
+                                <li>
+                                  <a href="#">View Purchase order</a>
+                                  <span><i class="fas fa-angle-right"></i></span>
+                                </li>
+                                <li>
+                                  <a href="#">Track Request</a>
+                                  <span><i class="fas fa-angle-right"></i></span>
+                                </li>
+                              </ul>
+                            </div>
+                          </Card>
                         </li>
                       </ul>
-                    </div>
-                    <div className="user-info-media-buttons">
-                      <ul>
-                        <li>
-                          <Button variant="contained" size="large" className='group-btn clear-btn'><i className="clear-btn far fa-comment-alt-lines"></i>Clear Chat</Button>
-                        </li>
-                        <li>
-                          <Button variant="contained" size="large" className='group-btn delete-btn'><i className="delete-btn far fa-trash-alt"></i>Delete Chat</Button>
-                        </li>
-                      </ul>
+                      <div className="d-block text-center">
+                        <Button variant="contained" color="primary" className="primary-btn document-btn">
+                          See All
+                        </Button>
+                      </div>
+                      <div className="pinned-message">
+                        <div className="head-menu">
+                          <ul>
+                            <li className='active'>Media</li>
+                            <li>See all</li>
+                          </ul>
+                        </div>
+                        <div className="pinned-message-inner-contant">
+                          <ul>
+                            <li>
+                              <div className="message-box">
+                                <p>Hello Jacob we have a start new bid </p>
+                                <span><i class="fas fa-thumbtack"></i></span>
+                              </div>
+                              <div className="timing-text">
+                                <p >Adriance wayne</p>
+                                <p>22 June 2022</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 }
+
+                {
+                  // activeKey === 2 &&
+                  // <div className="user-info-tab docs active">
+                  //   <div className="docs-tab-contant">
+                  //     <ul>
+                  //       <li>
+                  //         <div className="attach">
+                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
+                  //           <p>Approval Document</p>
+                  //         </div>
+                  //       </li>
+                  //       <li>
+                  //         <div className="attach">
+                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
+                  //           <p>RFQ</p>
+                  //         </div>
+                  //       </li>
+                  //       <li>
+                  //         <div className="attach">
+                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
+                  //           <p>Final Documents</p>
+                  //         </div>
+                  //       </li>
+                  //       <li>
+                  //         <div className="attach">
+                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
+                  //           <p>Approval Document</p>
+                  //         </div>
+                  //       </li>
+                  //       <li>
+                  //         <div className="attach">
+                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
+                  //           <p>Approval Document</p>
+                  //         </div>
+                  //       </li>
+                  //     </ul>
+                  //   </div>
+                  //   <div className="user-info-media-buttons">
+                  //     <ul>
+                  //       <li>
+                  //         <Button variant="contained" size="large" className='group-btn clear-btn'><i className="clear-btn far fa-comment-alt-lines"></i>Clear Chat</Button>
+                  //       </li>
+                  //       <li>
+                  //         <Button variant="contained" size="large" className='group-btn delete-btn'><i className="delete-btn far fa-trash-alt"></i>Delete Chat</Button>
+                  //       </li>
+                  //     </ul>
+                  //   </div>
+                  // </div>
+                }
+
               </div>
             }
           </div>

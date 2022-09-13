@@ -171,7 +171,7 @@ class ViewRequest extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex:this.state.activeIndex===index?-1: index })}
+                    onClick={() => this.setState({ activeIndex: this.state.activeIndex === index ? -1 : index })}
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale" >
@@ -205,7 +205,7 @@ class ViewRequest extends Component {
       '',
       '',
       {
-        onFormSubmitted: (formName) => {},
+        onFormSubmitted: (formName) => { },
         onFormCompleted: (formName, response) => {
           this.setUploadedDocID(response);
         },
@@ -500,12 +500,12 @@ class ViewRequest extends Component {
           <div className="request-purpose">
             <div className="view-request-head">
               <div className="row d-flex align-items-center justify-content-center">
-                <div className="col-lx-6 col-lg-6 col-md-6 col-sm-12">
+                <div className="col-lx-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <div className="view-request-head-left">
                     <h4>{t('View Request')}</h4>
                   </div>
                 </div>
-                <div className="col-lx-6 col-lg-6 col-md-6 col-sm-12">
+                <div className="col-lx-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <div className="view-request-head-right">
                     <ul>
                       <li>
@@ -641,8 +641,8 @@ class ViewRequest extends Component {
             </div>
             <div className="order-line-heading">
               <div className="row col-form-group d-flex align-items-center justify-content-center ">
-                <h4 className="col-sm-12 col-md-4 col-lg-4 col-xl-3 col-form-button">{t('Order Line 04')}</h4>
-                <div className="col-sm-12 col-md-8 col-lg-8 col-xl-9 col-form-button">
+                <h4 className="col-12 col-sm-3 col-md-4 col-lg-4 col-xl-6 col-form-button">{t('Order Line 04')}</h4>
+                <div className="col-12 col-sm-9 col-md-8 col-lg-8 col-xl-6 col-form-button">
                   <div className="order-line-buttons">
                     <Button
                       variant="contained"

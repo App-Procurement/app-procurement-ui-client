@@ -445,12 +445,134 @@
 
 }
 
-
-
-
-@media only screen and (max-width: 767px) {}
-
 .menu-icon {
     position: relative;
     z-index: 1;
+}
+
+@media only screen and (max-width: 1200px) {
+    .request-purpose {
+        .progress-rfp-boxs {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .request-purpose {
+        .requisitions-filter {
+            .form-group {
+                margin-bottom: 0;
+
+                label {
+                    margin-bottom: 15px;
+                }
+
+                .date-picker {
+                    .picker-input__text {
+                        margin-bottom: 15px;
+                    }
+                }
+
+                .select-menu {
+                    margin-bottom: 15px;
+                }
+
+                .new-requeust-massge {
+                    textarea {
+                        width: 300px;
+                    }
+
+                }
+            }
+        }
+    }
+
+}
+
+@media only screen and (max-width: 575px) {
+    .request-purpose {
+        .request-purpose-head {
+            .request-purpose-head-right {
+                float: left;
+                margin-top: 20px;
+            }
+        }
+
+        .view-request-head {
+            .view-request-head-right {
+                text-align: left;
+                margin-top: 20px;
+
+                ul {
+                    li {
+                        &:first-child {
+                            margin-left: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .requisitions-filter {
+            .form-group {
+                margin-bottom: 0;
+
+                label {
+                    margin-bottom: 0;
+                }
+
+                .date-picker {
+                    width: 100%;
+
+                    .picker {
+                        width: 100%;
+
+                        .picker__trigger {
+                            width: 100%;
+
+                            .picker-input {
+                                width: 100%;
+
+                                .picker-input__text {
+                                    width: 100%;
+                                    margin-bottom: 15px;
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                .select-menu {
+                    width: 100%;
+                    margin-bottom: 15px;
+                }
+
+                .new-requeust-massge {
+                    width: 100%;
+
+                    textarea {
+                        width: 100%;
+                    }
+
+                }
+            }
+        }
+
+        .order-line-heading {
+            .order-line-buttons {
+                text-align: left;
+
+                .add-custom-btn {
+                    margin: 15px 10px 0 0;
+                }
+
+                .add-item-btn {
+                    margin: 15px 10px 0 0;
+                }
+            }
+        }
+    }
+
 }

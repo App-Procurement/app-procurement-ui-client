@@ -1,12 +1,19 @@
-import React, { Component } from 'react';
-import { FormControlLabel, Checkbox, Button, Dialog, DialogTitle } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import 'rc-calendar/assets/index.css';
-import '@y0c/react-datepicker/assets/styles/calendar.scss';
-import { settingAction } from '../../_actions';
-import { connect } from 'react-redux';
-import { status } from '../../_constants';
-import SimpleBar from 'simplebar-react';
+import React, { Component } from "react";
+import {
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Dialog,
+  DialogTitle,
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import "rc-calendar/assets/index.css";
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
+import { settingAction } from "../../_actions";
+import { connect } from "react-redux";
+import { status } from "../../_constants";
+import SimpleBar from "simplebar-react";
+import groupData from "./Dummy-data.json";
 class RollAndPermissions extends Component {
   colorClass;
   constructor(props) {
@@ -14,17 +21,24 @@ class RollAndPermissions extends Component {
     this.state = {
       openDialog: false,
       openModalView: false,
-      activeKey: 'roles',
-      activeModalKey: 'users',
-      transionActiveKey: 'permitted',
+      activeKey: "roles",
+      activeModalKey: "users",
+      transionActiveKey: "permitted",
       rolesAndPermissions: [],
       usersList: [],
       groupsList: [],
       dupGroupsList: [],
       dupUsersList: [],
       preferencesList: {},
+      groupUsersData: {},
     };
-    this.colorClass = ['magnolia-btn', 'onahau-btn', 'green-btn', 'magnolia-btn', 'onahau-btn'];
+    this.colorClass = [
+      "magnolia-btn",
+      "onahau-btn",
+      "green-btn",
+      "magnolia-btn",
+      "onahau-btn",
+    ];
   }
   componentDidMount() {
     const { dispatch } = this.props;
@@ -32,6 +46,7 @@ class RollAndPermissions extends Component {
     dispatch(settingAction.getUsers());
     dispatch(settingAction.getGroups());
     dispatch(settingAction.getPreferences());
+    dispatch(settingAction.getAllSettingGroupData());
   }
   componentDidUpdate(prevProps, prevState) {
     const {
@@ -43,20 +58,45 @@ class RollAndPermissions extends Component {
       get_users_data,
       get_Preferences_status,
       get_Preferences_data,
+      get_group_status,
+      group_data,
     } = this.props;
+
     if (
-      get_roles_and_permissios_status !== prevProps.get_roles_and_permissios_status &&
+      get_group_status !== prevProps.get_group_status &&
+      get_group_status === status.SUCCESS
+    ) {
+      if (
+        this.props.group_data &&
+        Object.keys(this.props.group_data).length > 0
+      ) {
+        console.log("group data", this.props.group_data);
+        this.setState({ groupUsersData: { ...this.props.group_data } });
+      }
+    }
+
+    if (
+      get_roles_and_permissios_status !==
+        prevProps.get_roles_and_permissios_status &&
       get_roles_and_permissios_status === status.SUCCESS
     ) {
-      if (get_roles_and_permissios_data && get_roles_and_permissios_data.length > 0) {
-        let data = [...JSON.parse(JSON.stringify(get_roles_and_permissios_data))];
+      if (
+        get_roles_and_permissios_data &&
+        get_roles_and_permissios_data.length > 0
+      ) {
+        let data = [
+          ...JSON.parse(JSON.stringify(get_roles_and_permissios_data)),
+        ];
         for (let i = 0; i < data.length; i++) {
-          data[i]['isChecked'] = false;
+          data[i]["isChecked"] = false;
         }
         this.setState({ rolesAndPermissions: data });
       }
     }
-    if (get_groups_status !== prevProps.get_groups_status && get_groups_status === status.SUCCESS) {
+    if (
+      get_groups_status !== prevProps.get_groups_status &&
+      get_groups_status === status.SUCCESS
+    ) {
       if (get_groups_data && get_groups_data.length > 0) {
         this.setState({
           groupsList: [...JSON.parse(JSON.stringify(get_groups_data))],
@@ -64,25 +104,44 @@ class RollAndPermissions extends Component {
         });
       }
     }
-    if (get_users_status !== prevProps.get_users_status && get_users_status === status.SUCCESS) {
+    if (
+      get_users_status !== prevProps.get_users_status &&
+      get_users_status === status.SUCCESS
+    ) {
       this.setState({
         usersList: [...JSON.parse(JSON.stringify(get_users_data))],
         dupUsersList: [...JSON.parse(JSON.stringify(get_users_data))],
       });
     }
-    if (get_Preferences_status !== prevProps.get_Preferences_status && get_Preferences_status === status.SUCCESS) {
-      if (get_Preferences_data && Object.keys(get_Preferences_data).length > 0) {
+    if (
+      get_Preferences_status !== prevProps.get_Preferences_status &&
+      get_Preferences_status === status.SUCCESS
+    ) {
+      if (
+        get_Preferences_data &&
+        Object.keys(get_Preferences_data).length > 0
+      ) {
         for (let k = 0; k < Object.keys(get_Preferences_data).length; k++) {
           let key = Object.keys(get_Preferences_data)[k];
           for (let i = 0; i < get_Preferences_data[key].length; i++) {
             get_Preferences_data[key][i].isOpen = false;
-            get_Preferences_data[key][i].isCheckedAll = false;
-            for (let j = 0; j < get_Preferences_data[key][i].subList.length; j++) {
-              get_Preferences_data[key][i].subList[j].isChecked = false;
+            get_Preferences_data[key][i].isChecked = false;
+            if (get_Preferences_data[key][i].subList) {
+              for (
+                let j = 0;
+                j < get_Preferences_data[key][i].subList.length;
+                j++
+              ) {
+                get_Preferences_data[key][i].subList[j].isChecked = false;
+              }
             }
           }
         }
-        this.setState({ preferencesList: { ...JSON.parse(JSON.stringify(get_Preferences_data)) } });
+        this.setState({
+          preferencesList: {
+            ...JSON.parse(JSON.stringify(get_Preferences_data)),
+          },
+        });
       }
     }
   }
@@ -94,7 +153,7 @@ class RollAndPermissions extends Component {
   openModulInvite = () => {
     this.setState({
       openModulInvite: !this.state.openModulInvite,
-    })
+    });
   };
   openModalView = () => {
     this.setState({
@@ -113,16 +172,17 @@ class RollAndPermissions extends Component {
   handleChecked = (e, index) => {
     const { activeKey } = this.state;
     const { checked } = e.target;
-    if (activeKey === 'roles') {
+    if (activeKey === "roles") {
       const { rolesAndPermissions } = this.state;
       rolesAndPermissions[index].isChecked = checked;
       this.setState({ rolesAndPermissions });
-    } else if (activeKey === 'groups') {
+    } else if (activeKey === "groups") {
       const { groupsList } = this.state;
 
       groupsList[index].isChecked = checked;
       this.setState({ groupsList });
-    } else if (activeKey === 'users') {
+    } else if (activeKey === "users") {
+      
       const { usersList } = this.state;
       usersList[index].isChecked = checked;
       this.setState({ usersList });
@@ -132,7 +192,8 @@ class RollAndPermissions extends Component {
     let { preferencesList, transionActiveKey } = this.state;
     for (let i = 0; i < preferencesList[transionActiveKey].length; i++) {
       if (i === index) {
-        preferencesList[transionActiveKey][index].isOpen = !preferencesList[transionActiveKey][index].isOpen;
+        preferencesList[transionActiveKey][index].isOpen =
+          !preferencesList[transionActiveKey][index].isOpen;
       } else {
         preferencesList[transionActiveKey][i].isOpen = false;
       }
@@ -143,10 +204,21 @@ class RollAndPermissions extends Component {
   handleCheckAll = (index, e) => {
     const { checked } = e.target;
     let { preferencesList, transionActiveKey } = this.state;
-    preferencesList[transionActiveKey][index].isCheckedAll = checked;
-    for (let i = 0; i < preferencesList[transionActiveKey][index].subList.length; i++) {
-      preferencesList[transionActiveKey][index].subList[i].isChecked = checked;
+    if (preferencesList[transionActiveKey][index].subList) {
+      preferencesList[transionActiveKey][index].isChecked = checked;
+
+      for (
+        let i = 0;
+        i < preferencesList[transionActiveKey][index].subList.length;
+        i++
+      ) {
+        preferencesList[transionActiveKey][index].subList[i].isChecked =
+          checked;
+      }
+    } else {
+      preferencesList[transionActiveKey][index]["isChecked"] = checked;
     }
+
     this.setState({ preferencesList });
   };
   handleSelect = (index, key, e) => {
@@ -154,16 +226,22 @@ class RollAndPermissions extends Component {
     let { preferencesList, transionActiveKey } = this.state;
     let checkedList = 0;
     preferencesList[transionActiveKey][index].subList[key].isChecked = checked;
-    for (let i = 0; i < preferencesList[transionActiveKey][index].subList.length; i++) {
+    for (
+      let i = 0;
+      i < preferencesList[transionActiveKey][index].subList.length;
+      i++
+    ) {
       let checked = preferencesList[transionActiveKey][index].subList[i];
       if (checked.isChecked) {
         checkedList += 1;
       }
     }
-    if (checkedList === preferencesList[transionActiveKey][index].subList.length) {
-      preferencesList[transionActiveKey][index].isCheckedAll = true;
+    if (
+      checkedList === preferencesList[transionActiveKey][index].subList.length
+    ) {
+      preferencesList[transionActiveKey][index].isChecked = true;
     } else {
-      preferencesList[transionActiveKey][index].isCheckedAll = false;
+      preferencesList[transionActiveKey][index].isChecked = false;
     }
 
     this.setState({ preferencesList });
@@ -175,7 +253,9 @@ class RollAndPermissions extends Component {
     if (value) {
       for (let i = 0; i < dupGroupsList.length; i++) {
         let group = dupGroupsList[i];
-        if (group.groupsName.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+        if (
+          group.groupsName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        ) {
           values.push(group);
         }
       }
@@ -200,6 +280,27 @@ class RollAndPermissions extends Component {
     }
     this.setState({ usersList: values });
   };
+  renderGroupList = () => {
+    return groupData.map((data, index) => {
+      if (data.grp === true) {
+        return (
+          <tr key={`${index}${data.name}`}>
+            <td>{data.name}</td>
+            <td>0</td>
+            <td>{data.roles.length}</td>
+            <td>
+              <a href="#" onClick={this.openModalView}>
+                View More
+              </a>
+            </td>
+          </tr>
+        );
+      } else {
+        return null;
+      }
+    });
+  };
+
   render() {
     const {
       openDialog,
@@ -212,7 +313,9 @@ class RollAndPermissions extends Component {
       rolesAndPermissions,
       usersList,
       groupsList,
+      groupUsersData,
     } = this.state;
+    console.log("group Data", groupUsersData);
     return (
       <>
         <div className="setting-right-content active">
@@ -220,26 +323,40 @@ class RollAndPermissions extends Component {
             <div className="heading">Roles and Permissions</div>
             <div className="tabs">
               <ul>
-                <li onClick={() => this.handelKey('roles')} className={activeKey === 'roles' ? 'active' : ''}>
+                <li
+                  onClick={() => this.handelKey("roles")}
+                  className={activeKey === "roles" ? "active" : ""}
+                >
                   Roles
                 </li>
-                <li onClick={() => this.handelKey('groups')} className={activeKey === 'groups' ? 'active' : ''}>
+                <li
+                  onClick={() => this.handelKey("groups")}
+                  className={activeKey === "groups" ? "active" : ""}
+                >
                   Group
                 </li>
-                <li onClick={() => this.handelKey('users')} className={activeKey === 'users' ? 'active' : ''}>
+                <li
+                  onClick={() => this.handelKey("users")}
+                  className={activeKey === "users" ? "active" : ""}
+                >
                   Users
                 </li>
               </ul>
             </div>
-            {activeKey === 'groups' ? (
+
+            {activeKey === "groups" ? (
               <div className="tabs-content active">
                 <div className="d-flex justify-content-end permissions-form">
-                  <Button variant="contained" className="group-btn" onClick={this.openModal}>
+                  <Button
+                    variant="contained"
+                    className="group-btn"
+                    onClick={this.openModal}
+                  >
                     Create New Group
                   </Button>
-                  <Button variant="contained" className="group-btn role-btn">
+                  {/* <Button variant="contained" className="group-btn role-btn">
                     Assign Role
-                  </Button>
+                  </Button> */}
                   <div className="form-group form-group-common">
                     <button className="search-icon">
                       <i className="fas fa-search"></i>
@@ -310,95 +427,29 @@ class RollAndPermissions extends Component {
                         <th>Action</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>Super Admin</td>
-                        <td>45</td>
-                        <td>04</td>
-                        <td><a href="#" onClick={this.openModalView}>View More</a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>System Admin</td>
-                        <td>94</td>
-                        <td>09</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Cost Centre Manager</td>
-                        <td>13</td>
-                        <td>06</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Office Supplies</td>
-                        <td>06</td>
-                        <td>14</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>System Admin</td>
-                        <td>94</td>
-                        <td>09</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Cost Centre Manager</td>
-                        <td>13</td>
-                        <td>06</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Cost Centre Manager</td>
-                        <td>13</td>
-                        <td>06</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Cost Centre Manager</td>
-                        <td>13</td>
-                        <td>06</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Cost Centre Manager</td>
-                        <td>13</td>
-                        <td>06</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Cost Centre Manager</td>
-                        <td>13</td>
-                        <td>06</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Cost Centre Manager</td>
-                        <td>13</td>
-                        <td>06</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                      <tr>
-                        <td>Cost Centre Manager</td>
-                        <td>13</td>
-                        <td>06</td>
-                        <td><a href="#">View More</a></td>
-                      </tr>
-                    </tbody>
+                    <tbody>{this.renderGroupList()}</tbody>
                   </table>
                 </div>
               </div>
             ) : (
               <></>
             )}
-            {activeKey === 'users' ? (
+            {activeKey === "users" ? (
               <div className="tabs-content active">
                 <div className="d-flex justify-content-end permissions-form">
-                  <Button variant="contained" className="group-btn" onClick={this.openModal}>
+                  <Button
+                    variant="contained"
+                    className="group-btn"
+                    onClick={this.openModal}
+                  >
                     Create New Group
                   </Button>
-                  <Button variant="contained" className="group-btn role-btn">
-                    Assign Role
+                  <Button
+                    variant="contained"
+                    className="group-btn role-btn"
+                    onClick={this.openModulInvite}
+                  >
+                    Add User
                   </Button>
                   <div className="form-group form-group-common">
                     <button className="search-icon">
@@ -425,46 +476,60 @@ class RollAndPermissions extends Component {
                     <tbody>
                       {usersList &&
                         usersList.length > 0 &&
-                        usersList.map(({ username, id, email, groups }, index) => {
-                          return (
-                            <tr key={`${index}-user-list`}>
-                              <td>
-                                <div className="form-group form-group-common">
-                                  <FormControlLabel
-                                    control={
-                                      <Checkbox
-                                        name="procurementAdmin"
-                                        onChange={(e) => this.handleChecked(e, index, 'users')}
-                                        color="primary"
-                                      />
-                                    }
-                                    label={username}
-                                  />
-                                </div>
-                              </td>
-                              <td>
-                                <div className="email-text">
-                                  <a href="#">{email}</a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="btn-group">
-                                  {groups &&
-                                    groups.length > 0 &&
-                                    groups.map(({ groupsName, id }, index) => (
-                                      <Button
-                                        key={`${index}-btn`}
-                                        variant="contained"
-                                        className={`group-btn ${this.colorClass[Math.floor(Math.random() * 5)]}`}
-                                      >
-                                        {groupsName}
-                                      </Button>
-                                    ))}
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                        usersList.map(
+                          ({ username, id, email, groups }, index) => {
+                            return (
+                              <tr key={`${index}-user-list`}>
+                                <td>
+                                  <div className="form-group form-group-common">
+                                    <FormControlLabel
+                                      control={
+                                        <Checkbox
+                                          name="procurementAdmin"
+                                          onChange={(e) =>
+                                            this.handleChecked(
+                                              e,
+                                              index,
+                                              "users"
+                                            )
+                                          }
+                                          color="primary"
+                                        />
+                                      }
+                                      label={username}
+                                    />
+                                  </div>
+                                </td>
+                                <td>
+                                  <div className="email-text">
+                                    <a href="#">{email}</a>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div className="btn-group">
+                                    {groups &&
+                                      groups.length > 0 &&
+                                      groups.map(
+                                        ({ groupsName, id }, index) => (
+                                          <Button
+                                            key={`${index}-btn`}
+                                            variant="contained"
+                                            className={`group-btn ${
+                                              this.colorClass[
+                                                Math.floor(Math.random() * 5)
+                                              ]
+                                            }`}
+                                          >
+                                            {groupsName}
+                                          </Button>
+                                        )
+                                      )}
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          }
+                        )}
                     </tbody>
                   </table>
                 </div>
@@ -473,12 +538,12 @@ class RollAndPermissions extends Component {
               <></>
             )}
           </div>
-          {activeKey === 'roles' ? (
+          {activeKey === "roles" ? (
             <>
               <div className="roles-tabs">
                 <div className="tabs-content active">
                   <div className="form-group-contents">
-                    {rolesAndPermissions &&
+                    {/* {rolesAndPermissions &&
                       rolesAndPermissions.length > 0 &&
                       rolesAndPermissions.map((roles, index) => (
                         <div className="form-group form-group-common" key={`${index}-roles`}>
@@ -493,9 +558,34 @@ class RollAndPermissions extends Component {
                             label={roles.rolesName}
                           />
                         </div>
-                      ))}
+                      ))} */}
+                    {groupData.map((data, index) => {
+                      if (data.grp === false) {
+                        return (
+                          <div
+                            className="form-group form-group-common"
+                            key={`${index}-roles`}
+                          >
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="isChecked"
+                                  color="primary"
+                                  onChange={(e) => this.handleChecked(e, index)}
+                                />
+                              }
+                              label={data.name}
+                            />
+                          </div>
+                        );
+                      }
+                    })}
                     <div className="form-group form-group-common create-new-roles">
-                      <Button color="primary" className="roles-btn" onClick={this.openModal}>
+                      <Button
+                        color="primary"
+                        className="roles-btn"
+                        onClick={this.openModal}
+                      >
                         Create New Roles
                       </Button>
                     </div>
@@ -507,20 +597,26 @@ class RollAndPermissions extends Component {
                 <div className="tabs">
                   <ul>
                     <li
-                      onClick={() => this.transionHandelKey('permitted')}
-                      className={transionActiveKey === 'permitted' ? 'active' : ''}
+                      onClick={() => this.transionHandelKey("permitted")}
+                      className={
+                        transionActiveKey === "permitted" ? "active" : ""
+                      }
                     >
                       Permitted
                     </li>
                     <li
-                      onClick={() => this.transionHandelKey('prohibited')}
-                      className={transionActiveKey === 'prohibited' ? 'active' : ''}
+                      onClick={() => this.transionHandelKey("prohibited")}
+                      className={
+                        transionActiveKey === "prohibited" ? "active" : ""
+                      }
                     >
                       Prohibited
                     </li>
                     <li
-                      onClick={() => this.transionHandelKey('exclusiveRoles')}
-                      className={transionActiveKey === 'exclusiveRoles' ? 'active' : ''}
+                      onClick={() => this.transionHandelKey("exclusiveRoles")}
+                      className={
+                        transionActiveKey === "exclusiveRoles" ? "active" : ""
+                      }
                     >
                       Exclusive Roles
                     </li>
@@ -531,44 +627,73 @@ class RollAndPermissions extends Component {
                     {preferencesList &&
                       preferencesList[transionActiveKey] &&
                       preferencesList[transionActiveKey].length > 0 &&
-                      preferencesList[transionActiveKey].map(({ subList, isCheckedAll, name, isOpen }, index) => (
-                        <>
-                          <div className="form-group form-group-common" key={`${index}-preferences-list`}>
-                            <i
-                              className={isOpen ? 'fal fa-minus-square plus-icon' : 'fal fa-plus-square plus-icon'}
-                              onClick={() => this.handleOpenSubList(index)}
-                            ></i>
-                            <FormControlLabel
-                              checked={isCheckedAll}
-                              onChange={(e) => this.handleCheckAll(index, e)}
-                              control={<Checkbox name="purchaseRequisition" color="primary" />}
-                              label={name}
-                            />
-                          </div>
-                          <div
-                            className={
-                              isOpen
-                                ? 'form-group-contents show py-0 pl-5 position-relative'
-                                : ' form-group-contents py-0 pl-5 position-relative '
-                            }
-                          >
-                            {subList && subList.length > 0 && isOpen ? (
-                              subList.map(({ name, isChecked }, key) => (
-                                <div className="form-group form-group-common" key={`${key}-options`}>
-                                  <FormControlLabel
-                                    onChange={(e) => this.handleSelect(index, key, e)}
-                                    control={<Checkbox name="create" color="primary" />}
-                                    checked={isChecked}
-                                    label={name}
+                      preferencesList[transionActiveKey].map(
+                        ({ subList, isChecked, name, isOpen }, index) => (
+                          <>
+                            <div
+                              className="form-group form-group-common"
+                              key={`${index}-preferences-list`}
+                            >
+                              {subList ? (
+                                <i
+                                  className={
+                                    isOpen
+                                      ? "fal fa-minus-square plus-icon"
+                                      : "fal fa-plus-square plus-icon"
+                                  }
+                                  onClick={() => this.handleOpenSubList(index)}
+                                ></i>
+                              ) : (
+                                <></>
+                              )}
+
+                              <FormControlLabel
+                                checked={isChecked}
+                                onChange={(e) => this.handleCheckAll(index, e)}
+                                control={
+                                  <Checkbox
+                                    name="purchaseRequisition"
+                                    color="primary"
                                   />
-                                </div>
-                              ))
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                        </>
-                      ))}
+                                }
+                                label={name}
+                              />
+                            </div>
+                            <div
+                              className={
+                                isOpen
+                                  ? "form-group-contents show py-0 pl-5 position-relative"
+                                  : " form-group-contents py-0 pl-5 position-relative "
+                              }
+                            >
+                              {subList && subList.length > 0 && isOpen ? (
+                                subList.map(({ name, isChecked }, key) => (
+                                  <div
+                                    className="form-group form-group-common"
+                                    key={`${key}-options`}
+                                  >
+                                    <FormControlLabel
+                                      onChange={(e) =>
+                                        this.handleSelect(index, key, e)
+                                      }
+                                      control={
+                                        <Checkbox
+                                          name="create"
+                                          color="primary"
+                                        />
+                                      }
+                                      checked={isChecked}
+                                      label={name}
+                                    />
+                                  </div>
+                                ))
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                          </>
+                        )
+                      )}
                   </div>
                   <div className="roles-buttons">
                     <Button variant="contained" className="submit">
@@ -603,20 +728,26 @@ class RollAndPermissions extends Component {
             <div className="row">
               <div className="col-6">
                 <div className="form-group row form-group">
-                  <label className="col-12 col-form-label">Search User</label>
+                  <label className="col-12 col-form-label">Add User</label>
                   <div className="col-12 col-form-field">
                     <input
                       type="text"
                       name="groupName"
                       placeholder="Peter Hearter"
                       className="form-control"
-                      value={''}
+                      value={""}
                     />
                   </div>
                 </div>
                 <div className="form-group row form-group">
                   <div className="col-12 col-form-field">
-                    <textarea type={'textarea'} name="groupName" className="form-control" value={''} spanRows={3} />
+                    <textarea
+                      type={"textarea"}
+                      name="groupName"
+                      className="form-control"
+                      value={""}
+                      spanRows={3}
+                    />
                   </div>
                 </div>
               </div>
@@ -624,25 +755,55 @@ class RollAndPermissions extends Component {
                 <div className="form-group row form-group">
                   <label className="col-12 col-form-label">Search User</label>
                   <div className="col-12 col-form-field">
-                    <div style={{ background: '#F5F5F5', borderRadius: '10px', padding: '15px' }}>
+                    <div
+                      style={{
+                        background: "#F5F5F5",
+                        borderRadius: "10px",
+                        padding: "15px",
+                      }}
+                    >
                       <FormControlLabel
                         onChange={this.handleStateChange}
-                        control={<Checkbox checked={false} name="authenticationActivate" color="primary" />}
+                        control={
+                          <Checkbox
+                            checked={false}
+                            name="authenticationActivate"
+                            color="primary"
+                          />
+                        }
                         label="Activate 2 - Factor Authentication"
                       />
                       <FormControlLabel
                         onChange={this.handleStateChange}
-                        control={<Checkbox checked={false} name="authenticationActivate" color="primary" />}
+                        control={
+                          <Checkbox
+                            checked={false}
+                            name="authenticationActivate"
+                            color="primary"
+                          />
+                        }
                         label="Activate 2 - Factor Authentication"
                       />
                       <FormControlLabel
                         onChange={this.handleStateChange}
-                        control={<Checkbox checked={false} name="authenticationActivate" color="primary" />}
+                        control={
+                          <Checkbox
+                            checked={false}
+                            name="authenticationActivate"
+                            color="primary"
+                          />
+                        }
                         label="Activate 2 - Factor Authentication"
                       />
                       <FormControlLabel
                         onChange={this.handleStateChange}
-                        control={<Checkbox checked={false} name="authenticationActivate" color="primary" />}
+                        control={
+                          <Checkbox
+                            checked={false}
+                            name="authenticationActivate"
+                            color="primary"
+                          />
+                        }
                         label="Activate 2 - Factor Authentication"
                       />
                     </div>
@@ -663,7 +824,7 @@ class RollAndPermissions extends Component {
           open={openModalView}
           onClose={this.openModalView}
           aria-labelledby="form-dialog-title"
-          className="roles-permissions-custom-dialog create-step-dialog "
+          className="roles-permissions-custom-dialog create-step-dialog"
         >
           <div className="custom-dialog-head">
             <DialogTitle id="form-dialog-title" className="dialog-heading">
@@ -682,11 +843,20 @@ class RollAndPermissions extends Component {
                 <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-xs-12">
                   <div className="search-bar-section">
                     <div className="search-bar">
-                      <input type="text" name="searchChat" className="control-form" placeholder="Search  here" />
+                      <input
+                        type="text"
+                        name="searchChat"
+                        className="control-form"
+                        placeholder="Search  here"
+                      />
                       <i className="fa fa-search" aria-hidden="true" />
                     </div>
                     <div className="fillter-btn">
-                      <Button variant="contained" className="primary-btn fillter-icon" onClick={this.openModulInvite}>
+                      <Button
+                        variant="contained"
+                        className="primary-btn fillter-icon"
+                        onClick={this.openModulInvite}
+                      >
                         invite User
                       </Button>
                     </div>
@@ -703,8 +873,18 @@ class RollAndPermissions extends Component {
                   <div className="user-head-left active">
                     <div className="roles-tabs">
                       <ul>
-                        <li onClick={() => this.handelModalKey('users')} className={activeModalKey === 'users' ? 'active' : ''}>Users</li>
-                        <li onClick={() => this.handelModalKey('roles')} className={activeModalKey === 'roles' ? 'active' : ''}>Roles</li>
+                        <li
+                          onClick={() => this.handelModalKey("users")}
+                          className={activeModalKey === "users" ? "active" : ""}
+                        >
+                          Users
+                        </li>
+                        <li
+                          onClick={() => this.handelModalKey("roles")}
+                          className={activeModalKey === "roles" ? "active" : ""}
+                        >
+                          Roles
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -712,28 +892,48 @@ class RollAndPermissions extends Component {
                 <div className="col-xl-8 col-lg-9 col-md-12 col-sm-12 col-xs-12 md-text-left">
                   <div className="user-head-right">
                     <ul>
-                      <li><Button variant="contained" className="primary-btn fillter-icon">
-                        Move
-                      </Button>
+                      <li>
+                        <Button
+                          variant="contained"
+                          className="primary-btn fillter-icon"
+                          onClick={this.openModulInvite}
+                        >
+                          Move
+                        </Button>
                       </li>
-                      <li><Button variant="contained" className="primary-btn fillter-icon">
-                        Move All
-                      </Button>
+                      <li>
+                        <Button
+                          variant="contained"
+                          className="primary-btn fillter-icon"
+                          onClick={this.openModulInvite}
+                        >
+                          Move All
+                        </Button>
                       </li>
-                      <li><Button variant="contained" className="primary-btn delete-btn">
-                        Delete
-                      </Button>
+                      <li>
+                        <Button
+                          variant="contained"
+                          className="primary-btn delete-btn"
+                          onClick={this.openModulInvite}
+                        >
+                          Delete
+                        </Button>
                       </li>
-                      <li><Button variant="contained" className="primary-btn delete-all-btn">
-                        Delete All
-                      </Button>
+                      <li>
+                        <Button
+                          variant="contained"
+                          className="primary-btn delete-all-btn"
+                          onClick={this.openModulInvite}
+                        >
+                          Delete All
+                        </Button>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
-            {activeModalKey === 'users' ? (
+            {activeModalKey === "users" ? (
               <>
                 <div className="users-tabs">
                   <div className="tabs-content active">
@@ -743,159 +943,24 @@ class RollAndPermissions extends Component {
                           <h5>Avaliable users</h5>
                           <SimpleBar></SimpleBar>
                           <SimpleBar className="users-tabs-inner-content">
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
+                            {groupUsersData?.avaliableUsers ? (
+                              <>
+                                {groupUsersData.avaliableUsers.map((data) => (
+                                  <FormControlLabel
+                                    className="d-block"
+                                    control={
+                                      <Checkbox
+                                        name="checkedB"
+                                        color="primary"
+                                      />
+                                    }
+                                    label={data.availble_user}
+                                  />
+                                ))}
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </SimpleBar>
                         </div>
                       </div>
@@ -903,42 +968,24 @@ class RollAndPermissions extends Component {
                         <div className="users-tabs-content">
                           <h5>Assigned Users</h5>
                           <SimpleBar className="users-tabs-inner-content">
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
-                            <FormControlLabel className="d-block"
-                              control={
-                                <Checkbox
-                                  name="checkedB"
-                                  color="primary"
-                                />
-                              }
-                              label="Terry Calzoni"
-                            />
+                            {groupUsersData?.assignedUsers ? (
+                              <>
+                                {groupUsersData.assignedUsers.map((data) => (
+                                  <FormControlLabel
+                                    className="d-block"
+                                    control={
+                                      <Checkbox
+                                        name="checkedB"
+                                        color="primary"
+                                      />
+                                    }
+                                    label={data.assign_user}
+                                  />
+                                ))}
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </SimpleBar>
                         </div>
                       </div>
@@ -949,7 +996,7 @@ class RollAndPermissions extends Component {
             ) : (
               <></>
             )}
-            {activeModalKey === 'roles' ? (
+            {activeModalKey === "roles" ? (
               <>
                 <div className="users-tabs">
                   <div className="tabs-content active">
@@ -959,39 +1006,36 @@ class RollAndPermissions extends Component {
                           <h5>Avaliable users</h5>
                           <SimpleBar></SimpleBar>
                           <SimpleBar className="users-tabs-inner-content">
-                            <Button variant="contained" className="group-btn green-btn">
-                              Procurement Admin
-                            </Button>
-                            <Button variant="contained" className="group-btn onahau-btn">
-                              Requestor
-                            </Button>
-                            <Button variant="contained" className="group-btn magnolia-btn">
-                              Approver
-                            </Button>
-                            <Button variant="contained" className="group-btn onahau-btn">
-                              Requestor
-                            </Button>
-                            <Button variant="contained" className="group-btn onahau-btn">
-                              Requestor
-                            </Button>
-                            <Button variant="contained" className="group-btn magnolia-btn">
-                              Approver
-                            </Button>
-                            <Button variant="contained" className="group-btn onahau-btn">
-                              Requestor
-                            </Button>
-                            <Button variant="contained" className="group-btn magnolia-btn">
-                              Approver
-                            </Button>
-                            <Button variant="contained" className="group-btn magnolia-btn">
-                              Approver
-                            </Button>
-                            <Button variant="contained" className="group-btn magnolia-btn">
-                              Approver
-                            </Button>
-                            <Button variant="contained" className="group-btn onahau-btn">
-                              Requestor
-                            </Button>
+                            {groupUsersData?.avaliableUsersRoles ? (
+                              <>
+                                {groupUsersData.avaliableUsersRoles.map(
+                                  (data) => (
+                                    <>
+                                      <Button
+                                        variant="contained"
+                                        className="group-btn green-btn"
+                                      >
+                                        {data.procurementAdmin}
+                                      </Button>
+                                      <Button
+                                        variant="contained"
+                                        className="group-btn onahau-btn"
+                                      >
+                                        {data.requester}
+                                      </Button>
+                                      <Button
+                                        variant="contained"
+                                        className="group-btn magnolia-btn"
+                                      >
+                                        {data.approver}
+                                      </Button>
+                                    </>
+                                  )
+                                )}
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </SimpleBar>
                         </div>
                       </div>
@@ -1000,38 +1044,42 @@ class RollAndPermissions extends Component {
                           <h5>Assigned Users</h5>
                           <SimpleBar className="users-tabs-inner-content">
                             <div className="assigned-roles-btn">
-                              <Button variant="contained" className="group-btn green-btn">
-                                Procurement Admin
-                              </Button>
-                              <Button variant="contained" className="group-btn magnolia-btn">
-                                Approver
-                              </Button>
-                              <Button variant="contained" className="group-btn onahau-btn">
-                                Requestor
-                              </Button>
-                              <Button variant="contained" className="group-btn violet-btn">
-                                Basic User
-                              </Button>
-                              <Button variant="contained" className="group-btn blank-btn"></Button>
-                              <Button variant="contained" className="group-btn magnolia-btn">
-                                Approver
-                              </Button>
-                              <Button variant="contained" className="group-btn onahau-btn">
-                                Requestor
-                              </Button>
-                              <Button variant="contained" className="group-btn violet-btn">
-                                Basic User
-                              </Button>
-
-                              <Button variant="contained" className="group-btn green-btn">
-                                Procurement Admin
-                              </Button>
-                              <Button variant="contained" className="group-btn magnolia-btn">
-                                Approver
-                              </Button>
-                              <Button variant="contained" className="group-btn onahau-btn">
-                                Requestor
-                              </Button>
+                              {groupUsersData?.assignedUsersRoles ? (
+                                <>
+                                  {groupUsersData.assignedUsersRoles.map(
+                                    (data) => (
+                                      <>
+                                        <Button
+                                          variant="contained"
+                                          className="group-btn green-btn"
+                                        >
+                                          {data.procurementAdmin}
+                                        </Button>
+                                        <Button
+                                          variant="contained"
+                                          className="group-btn onahau-btn"
+                                        >
+                                          {data.approver}
+                                        </Button>
+                                        <Button
+                                          variant="contained"
+                                          className="group-btn magnolia-btn"
+                                        >
+                                          {data.requester}
+                                        </Button>
+                                        <Button
+                                          variant="contained"
+                                          className="group-btn onahau-btn"
+                                        >
+                                          {data.basicUser}
+                                        </Button>
+                                      </>
+                                    )
+                                  )}
+                                </>
+                              ) : (
+                                <></>
+                              )}
                             </div>
                           </SimpleBar>
                         </div>
@@ -1062,18 +1110,35 @@ class RollAndPermissions extends Component {
           <div className="custom-dialog-content">
             <div className="invite-dialog-form">
               <div className="search-bar form-group">
-                <input type="text" name="searchChat" className="control-form" placeholder="Example@example.com" />
+                <input
+                  type="text"
+                  name="searchChat"
+                  className="control-form"
+                  placeholder="Example@example.com"
+                />
               </div>
               <div className="search-bar form-group">
-                <input type="text" name="searchChat" className="control-form" placeholder="Example@example.com" />
+                <input
+                  type="text"
+                  name="searchChat"
+                  className="control-form"
+                  placeholder="Example@example.com"
+                />
               </div>
               <div className="search-bar form-group">
-                <input type="text" name="searchChat" className="control-form" placeholder="Example@example.com" />
+                <input
+                  type="text"
+                  name="searchChat"
+                  className="control-form"
+                  placeholder="Example@example.com"
+                />
               </div>
             </div>
             <div className="invite-dialog-bottom-content">
               <div className="add-another-text">
-                <span><i class="fa fa-plus" aria-hidden="true"></i></span>
+                <span>
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                </span>
                 <p>Add Another</p>
               </div>
               <Button variant="contained" className="primary-btn">
@@ -1097,6 +1162,8 @@ const mapStateToProps = (state) => {
     get_users_data,
     get_Preferences_status,
     get_Preferences_data,
+    get_group_status,
+    group_data,
   } = state.procurement;
   return {
     get_roles_and_permissios_status,
@@ -1107,6 +1174,8 @@ const mapStateToProps = (state) => {
     get_users_data,
     get_Preferences_status,
     get_Preferences_data,
+    get_group_status,
+    group_data,
   };
 };
 export default connect(mapStateToProps)(RollAndPermissions);

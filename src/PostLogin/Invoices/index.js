@@ -14,6 +14,11 @@ import { invoiceAction } from '../../_actions/invoice.actions';
 import { status } from '../../_constants';
 import { commonFunctions } from '../../_utilities';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import { Link } from "react-router-dom";
+import purchaseOrder from "../../assets/images/dashbord/purchase-order.png";
+import approvedRequisitionIcon from "../../assets/images/dashbord/approved-requisition-icon.png";
+import pendingRequisitionIcon from "../../assets/images/dashbord/pending-requisition-icon.png";
+import rejectedRequisitionIcon from "../../assets/images/dashbord/rejected-requisition-icon.png";
 
 class Invoices extends Component {
   constructor(props) {
@@ -36,71 +41,73 @@ class Invoices extends Component {
             renderCallback: (index) => {
               return (
                 <td>
-                  <span className={'s-no'}>{index + 1} </span>
+                  <span className={'s-no'}>01</span>
                 </td>
               );
             },
           },
           {
-            label: 'ID invoices',
+            label: 'Requester',
             key: 'invoiceNo',
             renderCallback: (value) => {
               return (
                 <td>
-                  <span className={'s-no'}>{value}</span>
+                  <span className={'s-no'}>William James</span>
                 </td>
               );
             },
           },
           {
-            label: 'Due Date',
+            label: 'Location',
             key: 'dueDate',
             renderCallback: (value) => {
               return (
                 <td>
                   <span className={'RequestDate'}>
-                    {' '}
+                    {/* {' '}
                     <div className="graphic"></div>
-                    {commonFunctions.convertDateToString(new Date(value))}
+                    {commonFunctions.convertDateToString(new Date(value))} */}
+                    USA Office
                   </span>
                 </td>
               );
             },
           },
           {
-            label: 'Department',
+            label: 'supplier',
             key: 'RequestDepartment',
             renderCallback: (value) => {
               return (
                 <td>
                   <span className={'department-value'}>
-                    <Button className="mailicon-btn">
+                    {/* <Button className="mailicon-btn">
                       <MailIcon />
                     </Button>
-                    {value}
+                    {value} */}
+                    Ebay
                   </span>
                 </td>
               );
             },
           },
           {
-            label: 'Contact',
+            label: 'Total Amount',
             key: 'Requestor',
             renderCallback: (value) => {
               return (
                 <td>
-                  <span className={'department-value'}>{value}</span>
+                  <span className={'department-value'}>$8,255</span>
                 </td>
               );
             },
           },
           {
-            label: 'Amount',
+            label: 'Creation Date',
             key: 'amount',
             renderCallback: (value) => {
               return (
                 <td>
-                  <span className={'btn details-btn'}>{value}</span>
+                  <span className={'btn details-btn'}>22/04/2022</span>
                 </td>
               );
             },
@@ -114,12 +121,12 @@ class Invoices extends Component {
                   <Button
                     variant="contained"
                     className="invoices-list-btn completed-btn"
-                    onClick={() => this.onClickShowCompletedButton(row.id)}
+                  // onClick={() => this.onClickShowCompletedButton(row.id)}
                   >
                     <CheckIcon className="mr-2 bold" />
                     {value}
                   </Button>
-                  {value === 'Invoices' && (
+                  {/* {value === 'Invoices' && (
                     <Button
                       variant="contained"
                       className="invoices-list-btn invoices-btn"
@@ -148,7 +155,20 @@ class Invoices extends Component {
                       <DoneAllIcon className="mr-2" />
                       {value}
                     </Button>
-                  )}
+                  )} */}
+                </td>
+              );
+            },
+          },
+          {
+            label: 'Edit',
+            key: 'amount',
+            renderCallback: (value) => {
+              return (
+                <td>
+                  <Link to={`#`}>
+                    View More
+                  </Link>
                 </td>
               );
             },
@@ -205,9 +225,9 @@ class Invoices extends Component {
     });
   };
 
-  onClickShowCompletedButton = (id) => {
-    this.props.history.push(`/postlogin/viewinvoice/${id}`);
-  };
+  // onClickShowCompletedButton = (id) => {
+  //   this.props.history.push(`/postlogin/viewinvoice/${id}`);
+  // };
 
   handleStateChange = (e) => {
     const { name, value } = e.target;
@@ -219,21 +239,21 @@ class Invoices extends Component {
   };
 
   render() {
-    const { approvedVendoreTableData } = this.state;
+    const { columns, tableData, approvedVendoreTableData } = this.state;
     return (
       <div className="main-content">
         <div className="invoices-content">
           <div className="invoices-head-section">
             <div className="row d-flex justify-content-center align-items-center ">
-              <div className="col-xl-5 col-lg-4 col-md-12 col-sm-12 col-12">
+              <div className="col-xl-5 col-lg-4 col-md-4 col-sm-6 col-12">
                 <div className="heading">
                   <h4>Invoices List</h4>
-                  <span>Lorem ipsum dolor sit amet</span>
+                  {/* <span>Lorem ipsum dolor sit amet</span> */}
                 </div>
               </div>
-              <div className="col-xl-7 col-lg-8 col-md-12 col-sm-12 col-12">
-                <div className="head-right d-flex justify-content-lg-end align-items-center mt-lg-0 mt-3 flex-wrap">
-                  <div className="search-bar">
+              <div className="col-xl-7 col-lg-8 col-md-8 col-sm-6 col-12">
+                <div className="head-right">
+                  {/* <div className="search-bar">
                     <div className="form-group">
                       <input
                         type="email"
@@ -246,20 +266,74 @@ class Invoices extends Component {
                         <i className="fas fa-search"></i>
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="new-invoices-btn">
                     <Button
                       variant="contained"
                       className="primary-btn invoices-button"
-                      onClick={() => this.props.history.push(`/postlogin/invoices/newinvoice`)}
+                      onClick={() => this.props.history.push(`/postlogin/invoices/createinvoice`)}
                     >
-                      <PersonAddIcon className="user-icon" />
-                      Create NewInvoice
+                      {/* <PersonAddIcon className="user-icon" /> */}
+                      Create Invoice
                     </Button>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+          <div className="progress-rfp-boxs">
+            <div className="row d-flex align-items-center justify-content-center">
+              <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+                <div className="progress-box">
+                  <div className="progress-content">
+                    <div className="title">Settled invoice</div>
+                    <h4>4256</h4>
+                  </div>
+                  <div className="purchased-image">
+                    <img src={purchaseOrder} alt="" />
+                  </div>
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+                <div className="progress-box">
+                  <div className="progress-content">
+                    <div className="title">Ready To Pay</div>
+                    <h4>3215</h4>
+                  </div>
+                  <div className="purchased-image approved">
+                    <img src={approvedRequisitionIcon} alt="" />
+                  </div>
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3 ">
+                <div className="progress-box">
+                  <div className="progress-content">
+                    <div className="title">Outstanding Invoice</div>
+                    <h4>251</h4>
+                  </div>
+                  <div className="purchased-image pending">
+                    <img src={pendingRequisitionIcon} alt="" />
+                  </div>
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+                <div className="progress-box">
+                  <div className="progress-content">
+                    <div className="title">Reject Invoice</div>
+                    <h4>320</h4>
+                  </div>
+                  <div className="purchased-image rejected">
+                    <img src={rejectedRequisitionIcon} alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="search-fillter">
+            <Button variant="outlined" className="fillter-btn">
+              <i className="fa fa-filter" aria-hidden="true"></i>
+              Search By Filters
+            </Button>
           </div>
           <div className="invoices-tabale">
             <Table
@@ -269,7 +343,7 @@ class Invoices extends Component {
               }}
               searchValue={this.state.searchValue}
               perPageLimit={6}
-              visiblecheckboxStatus={true}
+              visiblecheckboxStatus={false}
               isLoading={this.props.search_invoice_status === status.IN_PROGRESS}
               tableClasses={{
                 table: 'ticket-tabel',

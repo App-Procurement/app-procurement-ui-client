@@ -21,6 +21,7 @@ const addNewContact = React.lazy(() => import('../PostLogin/Contact/addNewContac
 const VendorEnroll = React.lazy(() => import('../PostLogin/VendorEnroll'));
 const Invoices = React.lazy(() => import('../PostLogin/Invoices'));
 const ViewInvoice = React.lazy(() => import('../PostLogin/Invoices/ViewInvoice'));
+const CreateInvoice = React.lazy(() => import('../PostLogin/Invoices/CreateInvoice'));
 const Calender = React.lazy(() => import('../PostLogin/Calender'));
 const selectCommitteeMember = React.lazy(() => import('../PostLogin/SetUpCommittee/selectCommitteeMember'));
 const ViewRecievedRfp = React.lazy(() => import('../PostLogin/RecievedRfp/ViewRecievedRfp'));
@@ -30,6 +31,8 @@ const ViewRecievedRfq = React.lazy(() => import('../PostLogin/RecievedRfq/ViewRe
 const AddInvoices = React.lazy(() => import('../PostLogin/Invoices/AddNewInvoice'));
 const PurcahseOrder = React.lazy(() => import('../PostLogin/GeneratePo/purchaseOrder'));
 const ViewPurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/viewPurchaseOrder'));
+const CreatePurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/createPurchaseOrder'));
+const createInvoicePurchaseOrder = React.lazy(() => import('../PostLogin/Invoices/createInvoicePurchaseOrder'));
 const BudgetOverview = React.lazy(() => import('../PostLogin/BudgetOverview'));
 const Reports = React.lazy(() => import('../PostLogin/Reports'));
 const ApprovePurchaseOrder = React.lazy(() => import('../PostLogin/GeneratePo/approvePo'));
@@ -57,8 +60,15 @@ const ActiveSuppliers = React.lazy(() => import('../PostLogin/ManageSupplier/Act
 const ViewSupplierDetail = React.lazy(() => import('../PostLogin/ManageSupplier/ViewSupplierDetail'));
 const AddProduct = React.lazy(() => import('../PostLogin/ManageSupplier/AddProduct'));
 const Setting = React.lazy(() => import('../PostLogin/Setting'));
-const Request = React.lazy(() => import('../PostLogin/Request'));
 const Message = React.lazy(() => import('../PostLogin/Message'));
+const Request = React.lazy(() => import('../PostLogin/Request'));
+const ViewDetails = React.lazy(() => import('../PostLogin/Request/viewDetails'));
+const viewRequest = React.lazy(() => import('../PostLogin/Request/viewRequest'));
+const Budgets = React.lazy(() => import('../PostLogin/Budgets'));
+const Products = React.lazy(() => import('../PostLogin/Products'));
+const AddProducts = React.lazy(() => import('../PostLogin/Products/AddProducts'));
+
+
 const routes = [
 	{
 		path: '/postlogin/dashboard',
@@ -165,6 +175,18 @@ const routes = [
 		component: ViewPurchaseOrder
 	},
 	{
+		path: '/postlogin/GeneratePo/createpurchaseorder',
+		exact: true,
+		name: 'CreatePurchaseOrder',
+		component: CreatePurchaseOrder
+	},
+	{
+		path: '/postlogin/Invoices/createinvoicepurchaseorder',
+		exact: true,
+		name: 'CreateInvoicePurchaseOrder',
+		component: createInvoicePurchaseOrder
+	},
+	{
 		path: '/postlogin/contact',
 		exact: true,
 		name: 'Contact',
@@ -193,6 +215,12 @@ const routes = [
 		exact: true,
 		name: 'Invoices',
 		component: Invoices
+	},
+	{
+		path: '/postlogin/invoices/createinvoice',
+		exact: true,
+		name: 'CreateInvoice',
+		component: CreateInvoice
 	},
 	{
 		path: '/postlogin/viewinvoice/:id',
@@ -386,7 +414,38 @@ const routes = [
 		exact: true,
 		name: 'message',
 		component: Message
-	}
+	},
+	{
+		path: '/postlogin/request/viewdetail/:id',
+		exact: true,
+		name: 'viewDetails',
+		component: ViewDetails
+	},
+	{
+		path: '/postlogin/request/viewrequest/',
+		exact: true,
+		name: 'viewRequest',
+		component: viewRequest
+	},
+	{
+		path: '/postlogin/budgets/',
+		exact: true,
+		name: 'Budgets',
+		component: Budgets
+	},
+	{
+		path: '/postlogin/products/',
+		exact: true,
+		name: 'Products',
+		component: Products
+	},
+	{
+		path: '/postlogin/products/addproducts/',
+		exact: true,
+		name: 'AddProducts',
+		component: AddProducts
+	},
+
 
 ];
 

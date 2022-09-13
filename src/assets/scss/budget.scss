@@ -1,3 +1,19 @@
+.multicolor-bar .bars .bar {
+	float: left;
+	height: 10px;
+}
+
+.multicolor-bar .bars div.bar:first-of-type {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.multicolor-bar .bars div.bar:last-of-type {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
 .budget-section {
     .budget-head-section {
         padding: 0 0 30px 0;

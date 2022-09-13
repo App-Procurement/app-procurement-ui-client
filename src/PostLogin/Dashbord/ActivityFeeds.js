@@ -72,7 +72,7 @@ class ActivityFeeds extends Component {
               if (activity && activity.Activity) {
                 const { userName, time, id, priority, userMail, userProfile } = activity.Activity;
                 return (
-                  <div className="d-flex table-row" key={id}>
+                  <div className="table-row" key={id}>
                     <div className="row d-flex align-items-center justify-content-space-beetween">
                       <div className="col-10">
                         <div className="d-flex">
@@ -95,7 +95,7 @@ class ActivityFeeds extends Component {
                       <div className="col-2">
                         <div className="d-flex justify-content-end flex-wrap rfp-no">
                           <Button variant="contained" className="user-icon-btn">
-                            <Link to ={"/postlogin/dashboard"}>
+                            <Link to={"/postlogin/dashboard"}>
                               <i className="fa fa-angle-right"></i>
                             </Link>
                           </Button>

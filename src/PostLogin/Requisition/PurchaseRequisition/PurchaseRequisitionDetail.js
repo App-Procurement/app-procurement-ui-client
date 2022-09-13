@@ -143,7 +143,7 @@ class PurchaseRequisitionDetail extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex:this.state.activeIndex===index?-1: index })}
+                    onClick={() => this.setState({ activeIndex: this.state.activeIndex === index ? -1 : index })}
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
@@ -360,7 +360,10 @@ class PurchaseRequisitionDetail extends Component {
               <div className="row d-flex align-items-center justify-content-center">
                 <div className="col-sm-12 col-md-7 col-lg-8 col-xl-8 col-form-button">
                   <div className="request-purpose-head-left">
-                    <h3>Purchase Request</h3>
+                    <h3>Purchase Requisition
+                      <i className="fal fa-angle-right"></i>
+                      <span>Purchase Request</span>
+                    </h3>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-5 col-lg-4 col-xl-4 col-form-button">
@@ -397,7 +400,7 @@ class PurchaseRequisitionDetail extends Component {
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
-                    <label>Created Date</label>
+                    <label>Creation Date</label>
                     {approveOrder.createdOn && (
                       <span>{commonFunctions.convertDateToString(new Date(approveOrder.createdOn))}</span>
                     )}
@@ -465,9 +468,9 @@ class PurchaseRequisitionDetail extends Component {
               </div>
             </div>
             <div className="order-line-content purchase-requisition-bottom-content">
-              <div className="order-line-heading">
+              {/* <div className="order-line-heading">
                 <h3>Attach Documents</h3>
-              </div>
+              </div> */}
               <div className="requisition-download-file">
                 <Button variant="contained" className="approval-btn">
                   {/* onClick={()=>this.openUploadPopup('7c5b0f09-4cda-4788-8e73-c655bf74b5cd')}> */}
@@ -475,38 +478,33 @@ class PurchaseRequisitionDetail extends Component {
                   Approval Documents
                 </Button>
               </div>
-              <div className="order-line-heading">
+              {/* <div className="order-line-heading">
                 <h3>Note</h3>
-              </div>
+              </div> */}
               <div className="purchase-inner-content">
-                <div className="row d-flex align-items-end justify-content-space-between">
-                  <div className="col-xl-4 col-lg-6 col-md-7 col-sm-12 col-12">
-                    <textarea name="note" defaultValue ={`Need for Office Setup!`}className="massage-type">
-                      
-                    </textarea>
-                  </div>
-                  <div className="col-xl-4 col-lg-6 col-md-5 col-sm-12 col-12">
+                <div className="row d-flex align-items-end justify-content-end">
+                  <div className="col-xl-4 col-lg-6 col-md-6 col-sm-5 col-12">
                     <div className="approve-content-buttons">
                       <div className="purchase-order">
                         <Button variant="contained" className="purchase-btn">
-                          Approve
+                          Confirm
                         </Button>
                       </div>
                       <div className="purchase-order">
                         <Button variant="contained" className="purchase-btn cancel-btn">
-                          delete
+                          Cancel
                         </Button>
                       </div>
                     </div>
                   </div>
-                  <div className="col-xl-4 col-lg-6 col-md-7 col-sm-12 col-12 mt-md-4">
+                  <div className="col-xl-4 col-lg-6 col-md-6 col-sm-7 col-12 mt-md-4">
                     <Chat user={this.state.user} />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </div >
         {activeIndex >= 0 && (
           <Dialog
             open={openEditDialog}
@@ -627,7 +625,8 @@ class PurchaseRequisitionDetail extends Component {
               </div>
             </div>
           </Dialog>
-        )}
+        )
+        }
       </div>
     );
   }

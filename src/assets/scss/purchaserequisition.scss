@@ -5,7 +5,17 @@
         .request-purpose-head-left {
             h3 {
                 margin: 0;
-                color: #727272;
+                color: $heading-text-color;
+
+                i {
+                    margin: 0 8px;
+                    vertical-align: middle;
+                    color: $buttons-bg;
+                }
+
+                span {
+                    color: $buttons-bg;
+                }
             }
         }
 

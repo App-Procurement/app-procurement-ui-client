@@ -32,6 +32,8 @@
         }
     }
 
+
+
     .custom-dialog-head {
         display: flex;
         align-items: center;
@@ -569,6 +571,792 @@
     }
 }
 
+.add-task-dialog {
+    display: block;
+    width: 100%;
+
+    .top-header {
+        h2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
+            color: $heading-text-color;
+
+            .close-icon {
+                color: $icon-color;
+            }
+        }
+    }
+
+    .add-task-dialog-content {
+        display: block;
+        width: 100%;
+
+        .tast-name-contant {
+            display: block;
+
+            label {
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 500;
+                color: $icon-color;
+            }
+
+            .form-control {
+                width: 50%;
+                height: 45px;
+                border-radius: 8px;
+            }
+        }
+
+        .description-contant {
+            display: block;
+
+            label {
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 500;
+                color: $icon-color;
+            }
+
+            textarea {
+                width: 80%;
+                border-radius: 8px;
+                border: none;
+                height: 110px;
+                background: #f5f5f5;
+                font-size: 14px;
+                line-height: 20px;
+                padding: 15px 20px;
+            }
+        }
+
+        .new-requeust-massge {
+            margin-bottom: 1rem;
+
+            label {
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 500;
+                color: $icon-color;
+            }
+
+            .payment-select-menu {
+                width: 50%;
+                color: #393939;
+                border-radius: 8px;
+                background-color: $requisition-button-bg;
+
+                .MuiNativeSelect-select {
+                    padding: 15px 15px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #393939;
+
+                    &:focus {
+                        border-radius: 8px;
+                    }
+                }
+
+                .MuiInputBase-root {
+                    &::before {
+                        display: none;
+                    }
+
+                    &::after {
+                        display: none;
+                    }
+
+                    .MuiNativeSelect-icon {
+                        margin-right: 8px;
+                    }
+                }
+
+            }
+        }
+
+        .calender-contant {
+            width: 50%;
+
+            label {
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 500;
+                color: $icon-color;
+            }
+
+            .date-picker {
+                display: block;
+                position: relative;
+
+                .picker-input__text {
+                    border: none;
+                    font-size: 14px;
+                    font-weight: 500;
+                    width: 270px;
+                    color: #393939;
+                    padding: 8px 15px;
+                    border-radius: 8px;
+                    background-color: #f5f5f5;
+                    padding: 12px;
+                }
+
+                .calendar-icon {
+                    position: absolute;
+                    top: 10px;
+                    right: 15px;
+                    color: $buttons-bg;
+                }
+            }
+        }
+    }
+
+    .add-module-footer {
+        width: 100%;
+        display: block;
+        padding-bottom: 30px;
+
+        .add-task-btn {
+            height: 40px;
+            background: #6418c3;
+            color: $button-text-color;
+            text-transform: capitalize;
+        }
+    }
+}
+
+.suppliers-list-dialog {
+    width: 100%;
+
+    .MuiDialog-container {
+        .MuiDialog-paperWidthSm {
+            max-width: 100%;
+            width: 65%;
+        }
+    }
+
+    .suppliers-list-dialog-content {
+        display: block;
+        width: 100%;
+        padding: 10px 25px 30px 25px;
+
+        .suppliers-list-inner-contant {
+            width: 100%;
+            display: block;
+
+            .suppliers-list-left {
+                width: 100%;
+                display: block;
+
+                h4 {
+                    font-size: 22px;
+                    line-height: 26px;
+                    font-weight: 500;
+                    color: $heading-text-color;
+                    margin-bottom: 20px;
+                }
+
+                .update-status-contant {
+                    display: flex;
+                    align-items: center;
+                    justify-content: start;
+                    margin-bottom: 20px;
+
+                    p {
+                        font-size: 14px;
+                        line-height: 18px;
+                        color: #a5a5a5;
+                        margin: 0;
+                    }
+
+                    .status-btn {
+                        border-radius: 15px;
+                        font-size: 10px;
+                        padding: 2px 20px;
+                        background: #0F9D58;
+                        border: none;
+                        color: $button-text-color;
+                        text-transform: capitalize;
+                        margin: 0 30px 0 15px;
+                    }
+                }
+
+                .description-text {
+                    margin-bottom: 20px;
+
+                    label {
+                        font-size: 16px;
+                        line-height: 20px;
+                        font-weight: 500;
+                        color: $heading-text-color;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        line-height: 20px;
+                        font-weight: 400;
+                        color: $icon-color;
+                    }
+                }
+
+                .description-Priority {
+                    width: 100%;
+                    display: block;
+                    margin-bottom: 30px;
+
+                    ul {
+                        display: block;
+                        padding: 0;
+                        margin: 0;
+
+                        li {
+                            padding: 0;
+                            list-style: none;
+                            display: inline-block;
+                            margin-right: 20px;
+
+                            p {
+                                font-size: 14px;
+                                line-height: 20px;
+                                font-weight: 500;
+                                color: $icon-color;
+                                margin-bottom: 5px;
+                            }
+
+                            span {
+                                font-size: 14px;
+                                line-height: 20px;
+                                font-weight: 500;
+                                color: $heading-text-color;
+
+                                i {
+                                    margin-right: 5px;
+                                }
+                            }
+
+                            &:last-child {
+                                margin-right: 0;
+
+                                span {
+                                    color: #FFAB2D;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .attechment-files {
+                    width: 100%;
+
+                    .attech-icon {
+                        span {
+                            font-size: 16px;
+                            color: $text-color;
+                        }
+                    }
+
+                    .attechment-contant {
+                        margin-left: 15px;
+
+                        ul {
+                            display: block;
+                            margin: 0;
+                            padding: 0;
+
+                            li {
+                                display: block;
+                                padding: 0;
+                                margin: 0;
+                                list-style: none;
+                                margin-bottom: 15px;
+
+                                p {
+                                    font-size: 14px;
+                                    line-height: 18px;
+                                    font-weight: 500;
+                                    margin: 0;
+                                    color: $heading-text-color;
+
+                                    i {
+                                        margin: 0 10px;
+                                        color: $icon-color;
+                                    }
+                                }
+
+                                span {
+                                    font-size: 14px;
+                                    line-height: 18px;
+                                    font-weight: 500;
+                                    margin: 0;
+                                    color: $icon-color;
+                                }
+
+                                &:last-child {
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .suppliers-list-right {
+                width: 100%;
+                display: block;
+
+                .suppliers-list-head {
+                    width: 100%;
+                    display: block;
+
+                    .top-contant {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        span {
+                            font-size: 14px;
+                            line-height: 18px;
+                            font-weight: 500;
+                            color: $icon-color;
+                        }
+
+                        .new-budget-btn {
+                            height: 40px;
+                            padding: 5px 15px;
+                            border-radius: 10px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background: $buttons-bg;
+
+                            .MuiInputBase-root {
+                                font-size: 12px;
+                                color: $button-text-color;
+
+                                &::before {
+                                    border-bottom: none;
+                                }
+
+                                .MuiSelect-icon {
+                                    color: $button-text-color;
+                                    top: calc(50% - 13px);
+                                    right: -6px;
+                                }
+
+                                .MuiSelect-select {
+                                    &:focus {
+                                        background: transparent;
+                                    }
+                                }
+                            }
+
+                            .MuiInput-underline {
+                                &::after {
+                                    border-bottom: none;
+                                }
+                            }
+
+                        }
+                    }
+
+                    .bottom-contant {
+                        width: 100%;
+                        display: block;
+                        margin-top: 10px;
+
+                        .group-imags {
+                            display: flex;
+                            align-items: center;
+
+                            i {
+                                margin-right: 5px;
+                                font-size: 36px;
+                                color: #a5a5a5;
+                            }
+                        }
+                    }
+                }
+
+                .assignee-progress-contant {
+                    width: 100%;
+                    display: block;
+
+                    .progress-heading {
+                        font-size: 16px;
+                        line-height: 20px;
+                        font-weight: 500;
+                        color: $icon-color;
+                        padding: 10px 10px 0 10px;
+                    }
+
+                    .assignee-progress-inner {
+                        max-height: 350px;
+                        padding: 20px 10px 0 10px;
+
+                        .deliveries-box {
+                            margin-bottom: 20px;
+                            padding: 15px 20px;
+                            border-radius: 10px;
+                            background: #fff;
+                            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+                            .user-details {
+                                display: flex;
+                                align-items: center;
+                                justify-content: start;
+                                margin-bottom: 10px;
+
+                                .user-text {
+                                    margin-left: 10px;
+
+                                    label {
+                                        font-size: 14px;
+                                        line-height: 18px;
+                                        font-weight: 500;
+                                        color: #311b4e;
+                                        margin: 0 0 4px 0;
+                                        display: block;
+                                    }
+
+                                    span {
+                                        font-size: 12px;
+                                        line-height: 16px;
+                                        font-weight: 500;
+                                        color: $icon-color;
+                                        margin: 0;
+                                        display: block;
+
+                                        i {
+                                            margin-right: 8px;
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            .get-proses {
+                                .progress-text {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                    margin-bottom: 8px;
+
+                                    p {
+                                        font-size: 12px;
+                                        line-height: 16px;
+                                        color: $icon-color;
+                                        margin: 0;
+                                    }
+
+                                    span {
+                                        font-size: 12px;
+                                        line-height: 16px;
+                                        color: $icon-color;
+                                    }
+                                }
+
+                                .MuiLinearProgress-colorPrimary {
+                                    height: 10px;
+                                    background: #d3d3d3;
+                                    border-radius: 10px;
+                                }
+
+                                .MuiLinearProgress-barColorPrimary {
+                                    border-radius: 10px;
+                                    background: linear-gradient(174deg, rgba(178, 126, 195, 1) 0%, rgba(100, 24, 195, 1) 100%);
+                                }
+                            }
+
+
+
+                            .order-time {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                margin: 8px 0;
+
+                                span {
+                                    font-size: 10px;
+                                    line-height: 14px;
+                                    color: #a5a5a5;
+                                }
+                            }
+
+                            &:last-child {
+                                margin-bottom: 5px;
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .suppliers-list-bottom-contant {
+            width: 100%;
+            display: block;
+            margin-top: 30px;
+
+            label {
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 500;
+                color: #311B4E;
+
+            }
+
+            .user-profiles-contant {
+                margin-bottom: 30px;
+
+                .user-profile {
+                    display: flex;
+                    align-items: top;
+                    justify-content: start;
+                    margin-top: 20px;
+
+                    .image {
+                        margin-right: 15px;
+                    }
+
+                    .user-contant {
+                        display: block;
+
+                        .user-name {
+                            display: block;
+
+                            label {
+                                font-size: 14px;
+                                line-height: 18px;
+                                font-weight: 500;
+                                margin-right: 20px;
+                                margin-bottom: 5px;
+                                color: $heading-text-color;
+                            }
+
+                            span {
+                                font-size: 14px;
+                                line-height: 18px;
+                                font-weight: 500;
+                                color: $icon-color;
+
+                                i {
+                                    margin-right: 8px;
+                                }
+                            }
+                        }
+
+                        .user-text {
+                            display: block;
+
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                                font-weight: 400;
+                                margin-right: 20px;
+                                color: $text-color;
+                                margin: 0;
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+            .sender-massage {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+
+                .user-image {
+                    display: inline-block;
+                    margin-right: 15px;
+                }
+
+                .massege-box {
+
+                    position: relative;
+                    width: 100%;
+
+                    .control-form {
+                        font-size: 14px;
+                        line-height: 45px;
+                        font-weight: 500;
+                        width: 100%;
+                        color: $icon-color;
+                        height: 45px;
+                        padding: 5px 30px 5px 25px;
+                        border-radius: 8px;
+                        display: inline-block;
+                        background-color: transparent;
+                        border: 1px solid $icon-color;
+
+                    }
+
+                    i {
+                        position: absolute;
+                        top: 15px;
+                        right: 20px;
+                    }
+                }
+
+            }
+
+            .module-btn {
+                margin-top: 20px;
+
+                .cancel-btn {
+                    margin-left: 10px;
+                    color: $buttons-bg !important;
+                    border: 1px solid $buttons-bg !important;
+                    background: transparent !important;
+                }
+            }
+
+        }
+
+    }
+}
+
+.calender-dialog {
+    width: 100%;
+
+    .MuiDialog-container {
+        .MuiDialog-paperWidthSm {
+            width: 800px;
+        }
+    }
+
+    .calender-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #F5F6FA;
+    }
+
+    .calender-dialog-content {
+        padding: 15px 30px;
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            label {
+                font-weight: 600;
+            }
+
+            .form-control {
+                font-size: 14px;
+                font-weight: 500;
+                color: #393939;
+                padding: 8px 15px;
+                border-radius: 8px;
+                background-color: #f5f5f5;
+                border: 1px solid #f5f5f5;
+                width: 100%;
+                height: 50px;
+                line-height: 50px;
+            }
+
+            .event-type {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 30px;
+
+                .redio-btn {
+                    width: 20px;
+                    height: 20px;
+                }
+
+                label {
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 18px;
+                    margin: 0 0 0 10px;
+                }
+            }
+
+            textarea {
+                width: 100%;
+                height: 100px;
+                font-size: 14px;
+                line-height: 18px;
+                padding: 8px 15px;
+                border-radius: 8px;
+                background-color: #f5f5f5;
+                border: 1px solid #f5f5f5;
+            }
+
+            .submit-buttons {
+                .delete-btn {
+                    background: $cancel-buttons-bg !important;
+                }
+            }
+        }
+
+        .custom-event-radio input {
+            width: 100px !important;
+            height: 30px !important;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            outline: none;
+            cursor: pointer;
+            border-radius: 20px;
+            background: #454857;
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 30px;
+
+
+        }
+
+        .meet-radio:checked {
+            background-color: #f6eeff;
+            color: rgba(100, 24, 195, 1) !important;
+        }
+
+        .task-radio:checked {
+            background-color: #d7e5ff;
+            color: #377dff !important;
+        }
+
+        .reminder-radio:checked {
+            background-color: #FFEDCC;
+            color: #FFB326 !important;
+        }
+
+        .meet-radio:before {
+            content: attr(label);
+            display: inline-block;
+            text-align: center;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .task-radio:before {
+            content: attr(label);
+            display: inline-block;
+            text-align: center;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .reminder-radio:before {
+            content: attr(label);
+            display: inline-block;
+            text-align: center;
+            font-weight: bold;
+            width: 100%;
+        }
+
+    }
+}
+
 @media (max-width: 767px) {
     .roles-permissions-custom-dialog {
         .custom-dialog-content {
@@ -614,6 +1402,18 @@
         }
     }
 
+    .custom-dialog {
+        .custom-dialog-content {
+            .search-bar-section {
+                .search-bar {
+                    .control-form {
+                        width: 325px;
+                    }
+                }
+            }
+        }
+    }
+
 
 }
 
@@ -639,6 +1439,26 @@
                 .user-head-right {
                     text-align: left;
                     margin-top: 25px;
+                }
+            }
+        }
+    }
+
+    .custom-dialog {
+        .custom-dialog-content {
+            .search-bar-section {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px;
+
+                .search-bar {
+                    display: block;
+                    width: 100%;
+
+                    .control-form {
+                        width: 100%;
+                    }
                 }
             }
         }

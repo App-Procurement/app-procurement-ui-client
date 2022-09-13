@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import moment from 'moment';
-import DateFormat from './DateFormat';
-import { Line, Bar, Pie } from 'react-chartjs-2';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import ColorizeIcon from '@material-ui/icons/Colorize';
-import IconButton from '@material-ui/core/IconButton';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Box from '@material-ui/core/Box';
-import AmountIcon from '../../assets/images/amount-icon.png';
-import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
-import 'react-circular-progressbar/dist/styles.css';
-import { connect } from 'react-redux';
-import { contactAction, homeAction, invoiceAction } from '../../_actions';
-import { status } from '../../_constants';
-import ActivityFeeds from './ActivityFeeds';
-import TopSellers from './TopSellers';
-import { withTranslation } from 'react-i18next';
+import React, { Component } from "react";
+import moment from "moment";
+import DateFormat from "./DateFormat";
+import { Line, Bar, Pie } from "react-chartjs-2";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import ColorizeIcon from "@material-ui/icons/Colorize";
+import IconButton from "@material-ui/core/IconButton";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Box from "@material-ui/core/Box";
+import AmountIcon from "../../assets/images/amount-icon.png";
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
+import "react-circular-progressbar/dist/styles.css";
+import { connect } from "react-redux";
+import { contactAction, homeAction, invoiceAction } from "../../_actions";
+import { status } from "../../_constants";
+import ActivityFeeds from "./ActivityFeeds";
+import TopSellers from "./TopSellers";
+import { withTranslation } from "react-i18next";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,8 +27,17 @@ import {
   Legend,
   PointElement,
   LineElement,
-} from 'chart.js';
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement);
+} from "chart.js";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement
+);
 
 class Dashbord extends Component {
   constructor(props) {
@@ -43,12 +52,12 @@ class Dashbord extends Component {
       checkedB: true,
       invoices: [],
       lineData: {
-        labels: ['', '', '', '', ''],
+        labels: ["", "", "", "", ""],
         datasets: [
           {
             fill: false,
-            borderColor: '#9b51e0',
-            cubicInterpolationMode: 'monotone',
+            borderColor: "#9b51e0",
+            cubicInterpolationMode: "monotone",
             tension: 0.4,
             pointRadius: 0,
             data: [10, 400, 700, 200, 300, 10],
@@ -91,22 +100,22 @@ class Dashbord extends Component {
       purchaseOrderLine: {
         total: null,
         labels: [
-          'Tech',
-          'operations',
-          'Sanitations',
-          'office supplies',
-          'marketing',
-          'Tech',
-          'operations',
-          'Sanitations',
-          'office supplies',
-          'marketing',
+          "Tech",
+          "operations",
+          "Sanitations",
+          "office supplies",
+          "marketing",
+          "Tech",
+          "operations",
+          "Sanitations",
+          "office supplies",
+          "marketing",
         ],
         datasets: [
           {
             data: [210, 600, 600, 500, 100, 300, 800, 900, 400],
             lineTension: 0.2,
-            backgroundColor: ['#b792d1', '#b792d1', '#4f0a80', '#b792d1'],
+            backgroundColor: ["#b792d1", "#b792d1", "#4f0a80", "#b792d1"],
           },
         ],
       },
@@ -115,7 +124,7 @@ class Dashbord extends Component {
           scales: {
             y: {
               ticks: {
-                fontColor: 'black',
+                fontColor: "black",
                 stepSize: 10,
                 beginAtZero: true,
               },
@@ -125,7 +134,7 @@ class Dashbord extends Component {
             },
             x: {
               ticks: {
-                fontColor: 'black',
+                fontColor: "black",
                 display: false,
                 stepSize: 10,
               },
@@ -141,30 +150,36 @@ class Dashbord extends Component {
         },
       },
       PieChartEmailData: [
-        { COLORS: '#5dbafb', value: 321, title: 'Todays RFP', per: 11 },
-        { COLORS: '#44d7b6', value: 69, title: 'In Progress', per: 22 },
-        { COLORS: '#dd8aff', value: 154, title: 'Completed ', per: 15 },
-        { COLORS: '#ffb833', value: 154, title: 'Completed ', per: 15 },
-        { COLORS: '#6418c3', value: 696, title: 'Approved ', per: 25 },
+        { COLORS: "#5dbafb", value: 321, title: "Todays RFP", per: 11 },
+        { COLORS: "#44d7b6", value: 69, title: "In Progress", per: 22 },
+        { COLORS: "#dd8aff", value: 154, title: "Completed ", per: 15 },
+        { COLORS: "#ffb833", value: 154, title: "Completed ", per: 15 },
+        { COLORS: "#6418c3", value: 696, title: "Approved ", per: 25 },
       ],
       spendAnalysis: {
         total: null,
-        labels: ['Tech', 'operations', 'Sanitations', 'office supplies', 'marketing'],
+        labels: [
+          "Tech",
+          "operations",
+          "Sanitations",
+          "office supplies",
+          "marketing",
+        ],
         datasets: [
           {
             data: [210, 600, 600, 500, 100],
             lineTension: 0.2,
-            backgroundColor: ['#b792d1', '#b792d1', '#4f0a80', '#b792d1'],
+            backgroundColor: ["#b792d1", "#b792d1", "#4f0a80", "#b792d1"],
           },
         ],
       },
       spendAnalysisOptions: {
-        indexAxis: 'y',
+        indexAxis: "y",
         plugins: {
           scales: {
             y: {
               ticks: {
-                fontColor: 'black',
+                fontColor: "black",
                 stepSize: 10,
                 beginAtZero: true,
               },
@@ -174,7 +189,7 @@ class Dashbord extends Component {
             },
             x: {
               ticks: {
-                fontColor: 'black',
+                fontColor: "black",
                 display: false,
                 stepSize: 10,
               },
@@ -190,11 +205,11 @@ class Dashbord extends Component {
         },
       },
       requisitionStatusData: {
-        labels: ['Active RFP', 'Approve RFP', 'Reject RFP'],
+        labels: ["Active RFP", "Approve RFP", "Reject RFP"],
         datasets: [
           {
             data: [103, 27, 22],
-            backgroundColor: ['#4f0a80', '#1fad96', '#f2b40a'],
+            backgroundColor: ["#4f0a80", "#1fad96", "#f2b40a"],
           },
         ],
       },
@@ -203,41 +218,54 @@ class Dashbord extends Component {
           legend: {
             labels: {
               usePointStyle: true,
-              pointStyle: 'circle',
+              pointStyle: "circle",
             },
             display: true,
-            position: 'bottom',
+            position: "bottom",
             responsive: true,
-            align: 'middle',
+            align: "middle",
           },
         },
       },
       purchaseOrder: {
-        labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "April",
+          "May",
+          "June",
+          "July",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ],
         datasets: [
           {
-            label: 'Active',
+            label: "Active",
             fill: false,
-            borderColor: '#4f0f7a',
-            cubicInterpolationMode: 'monotone',
+            borderColor: "#4f0f7a",
+            cubicInterpolationMode: "monotone",
             tension: 0.3,
             pointRadius: 0,
             data: [80, 120, 110, 150, 160, 90, 70, 50, 160, 100, 120, 70],
           },
           {
-            label: 'Approved',
+            label: "Approved",
             fill: false,
-            borderColor: '#0f7a6f',
-            cubicInterpolationMode: 'monotone',
+            borderColor: "#0f7a6f",
+            cubicInterpolationMode: "monotone",
             tension: 0.3,
             pointRadius: 0,
             data: [50, 80, 90, 100, 80, 40, 60, 70, 80, 60, 40, 90],
           },
           {
-            label: 'Settled',
+            label: "Settled",
             fill: false,
-            borderColor: '#ac9dc4',
-            cubicInterpolationMode: 'monotone',
+            borderColor: "#ac9dc4",
+            cubicInterpolationMode: "monotone",
             tension: 0.3,
             pointRadius: 0,
             data: [10, 20, 10, 50, 60, 40, 70, 20, 60, 70, 40, 70],
@@ -247,7 +275,7 @@ class Dashbord extends Component {
       purchaseOrderOptions: {
         responsive: true,
         interaction: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
         },
         stacked: false,
@@ -258,9 +286,9 @@ class Dashbord extends Component {
         },
         scales: {
           y: {
-            type: 'linear',
+            type: "linear",
             display: true,
-            position: 'left',
+            position: "left",
           },
         },
       },
@@ -275,7 +303,8 @@ class Dashbord extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      this.props.get_dashboard_data_status !== prevProps.get_dashboard_data_status &&
+      this.props.get_dashboard_data_status !==
+        prevProps.get_dashboard_data_status &&
       this.props.get_dashboard_data_status === status.SUCCESS
     ) {
       if (this.props.dashboarddata) {
@@ -289,7 +318,10 @@ class Dashbord extends Component {
       prevProps.search_invoice_status !== this.props.search_invoice_status &&
       this.props.search_invoice_status === status.SUCCESS
     ) {
-      if (this.props.search_invoice_data && this.props.search_invoice_data.length > 0) {
+      if (
+        this.props.search_invoice_data &&
+        this.props.search_invoice_data.length > 0
+      ) {
         this.setState({
           invoices: this.props.search_invoice_data,
         });
@@ -304,7 +336,10 @@ class Dashbord extends Component {
       for (let i = 0; i < invoices.length; i++) {
         let element = invoices[i];
         invoiceData.push(
-          <div className="d-flex justify-content-center align-items-center pb-3" key={element.id}>
+          <div
+            className="d-flex justify-content-center align-items-center pb-3"
+            key={element.id}
+          >
             <div className="col-xl-5 col-lg-5 col-md-5 col-5 px-0">
               <div className="payment">
                 <div className="graphic" />
@@ -356,7 +391,7 @@ class Dashbord extends Component {
       for (let i = 0; i < pinnedEmailsData.length; i++) {
         let pin = pinnedEmailsData[i];
         pinData.push(
-          <li key={pin.title}> 
+          <li key={pin.title}>
             <div className="user-id">
               <img src={pin.img} alt="" />
             </div>
@@ -406,7 +441,7 @@ class Dashbord extends Component {
             <div className="row justify-content-center align-items-center">
               <div className="col-xl-8 col-lg-8 col-md-6 col-sm-12 ">
                 <div className="heading">
-                  <h3>{this.props.t('Dashboard')}</h3>
+                  <h3>{this.props.t("Dashboard")}</h3>
                   <span>Hello, James, Welcome to Synectiks</span>
                 </div>
               </div>
@@ -423,12 +458,16 @@ class Dashbord extends Component {
                 <div
                   key={Requisitions.purchase.id}
                   className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2"
-                  onClick={() => this.handleUrls(`/postlogin/purchaserequisition`, '')}
+                  onClick={() =>
+                    this.handleUrls(`/postlogin/purchaserequisition`, "")
+                  }
                 >
                   <div className="progress-box">
                     <div className="progress-content">
                       <div className="title">Purchase Requistion</div>
-                      {Requisitions && Requisitions.purchase && <h4>{Requisitions.purchase.val}</h4>}
+                      {Requisitions && Requisitions.purchase && (
+                        <h4>{Requisitions.purchase.val}</h4>
+                      )}
                       <div className="progres-bar-text">
                         <span className="purchase_requistion-box">&#8605;</span>
                         <p>&#43; 14 &#37; Last Month</p>
@@ -441,9 +480,9 @@ class Dashbord extends Component {
                         strokeWidth={15}
                         styles={buildStyles({
                           strokeLinecap: {},
-                          trailColor: '#E5E7E9',
-                          pathColor: '#38cb89',
-                          textColor: 'black',
+                          trailColor: "#E5E7E9",
+                          pathColor: "#38cb89",
+                          textColor: "black",
                         })}
                       />
                     </div>
@@ -452,12 +491,16 @@ class Dashbord extends Component {
                 <div
                   key={Requisitions.approve.id}
                   className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2"
-                  onClick={() => this.handleUrls(`/postlogin/purchaseorder`, '')}
+                  onClick={() =>
+                    this.handleUrls(`/postlogin/purchaseorder`, "")
+                  }
                 >
                   <div className="progress-box">
                     <div className="progress-content">
                       <div className="title">Purchase Order</div>
-                      {Requisitions && Requisitions.approve && <h4>{Requisitions.approve.val}</h4>}
+                      {Requisitions && Requisitions.approve && (
+                        <h4>{Requisitions.approve.val}</h4>
+                      )}
                       <div className="progres-bar-text">
                         <span className="purchase-order-box">&#8605;</span>
                         <p>&#43; 14 &#37; Last Month</p>
@@ -470,19 +513,24 @@ class Dashbord extends Component {
                         strokeWidth={15}
                         styles={buildStyles({
                           strokeLinecap: {},
-                          trailColor: '#E5E7E9',
-                          pathColor: '#ffa600',
-                          textColor: 'black',
+                          trailColor: "#E5E7E9",
+                          pathColor: "#ffa600",
+                          textColor: "black",
                         })}
                       />
                     </div>
                   </div>
                 </div>
-                <div key={Requisitions.pending.id} className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2">
+                <div
+                  key={Requisitions.pending.id}
+                  className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2"
+                >
                   <div className="progress-box">
                     <div className="progress-content">
                       <div className="title">Budget</div>
-                      {Requisitions && Requisitions.pending && <h4>{Requisitions.pending.val}</h4>}
+                      {Requisitions && Requisitions.pending && (
+                        <h4>{Requisitions.pending.val}</h4>
+                      )}
                       <div className="progres-bar-text">
                         <span className="budget-box">&#8605;</span>
                         <p>&#43; 14 &#37; Last Month</p>
@@ -495,19 +543,24 @@ class Dashbord extends Component {
                         strokeWidth={15}
                         styles={buildStyles({
                           strokeLinecap: {},
-                          trailColor: '#E5E7E9',
-                          pathColor: '#ff5630',
-                          textColor: 'black',
+                          trailColor: "#E5E7E9",
+                          pathColor: "#ff5630",
+                          textColor: "black",
                         })}
                       />
                     </div>
                   </div>
                 </div>
-                <div key={Requisitions.rejected.id} className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2">
+                <div
+                  key={Requisitions.rejected.id}
+                  className="col-xl-3 col-lg-6 col-md-6 col-sm-6 pr-lg-2"
+                >
                   <div className="progress-box">
                     <div className="progress-content">
                       <div className="title">Report</div>
-                      {Requisitions && Requisitions.rejected && <h4>{Requisitions.rejected.val}</h4>}
+                      {Requisitions && Requisitions.rejected && (
+                        <h4>{Requisitions.rejected.val}</h4>
+                      )}
                       <div className="progres-bar-text">
                         <span className="purchase_requistion-box">&#8605;</span>
                         <p>&#43; 39&#8228;69 &#37;</p>
@@ -515,7 +568,12 @@ class Dashbord extends Component {
                     </div>
                     <div className="graph-chart">
                       <div className="invoice">
-                        <Line data={lineData} options={lineOptions} width={100} height={100} />
+                        <Line
+                          data={lineData}
+                          options={lineOptions}
+                          width={100}
+                          height={100}
+                        />
                       </div>
                     </div>
                   </div>
@@ -541,9 +599,16 @@ class Dashbord extends Component {
                       </div>
                     </div>
                   </div>
-                  <SimpleBar style={{ maxHeight: '400px' }} className="user-content">
+                  <SimpleBar
+                    style={{ maxHeight: "400px" }}
+                    className="user-content"
+                  >
                     <div className="chartbar-content">
-                      <Bar data={spendAnalysis} options={spendAnalysisOptions} height={110} />
+                      <Bar
+                        data={spendAnalysis}
+                        options={spendAnalysisOptions}
+                        height={110}
+                      />
                     </div>
                   </SimpleBar>
                 </div>
@@ -563,7 +628,10 @@ class Dashbord extends Component {
                   </div>
                   <div className="chart-content">
                     <div className="chart-box">
-                      <Pie data={requisitionStatusData} options={requisitionStatusOptions} />
+                      <Pie
+                        data={requisitionStatusData}
+                        options={requisitionStatusOptions}
+                      />
                     </div>
                   </div>
                 </div>
@@ -601,7 +669,11 @@ class Dashbord extends Component {
                   </ul>
                 </div>
                 <div className="line-graph-content">
-                  <Line data={purchaseOrder} options={purchaseOrderOptions} height={100} />
+                  <Line
+                    data={purchaseOrder}
+                    options={purchaseOrderOptions}
+                    height={100}
+                  />
                 </div>
               </div>
             </div>
@@ -684,7 +756,7 @@ class Dashbord extends Component {
           </div>
           <div className="top-seller-section">
             <div className="row">
-              <div className="col-xl-7 col-lg-7 col-md-6 col-sm-12">
+              <div className="col-xl-7 col-lg-6 col-md-6 col-sm-12">
                 <div className="statistics-requisitions-chart">
                   <div className="requisitions-chart-header">
                     <h4>Spend Analysis</h4>
@@ -697,14 +769,20 @@ class Dashbord extends Component {
                       </select>
                     </div>
                   </div>
-                  <SimpleBar style={{ maxHeight: '500px' }} className="user-content">
+                  <SimpleBar
+                    style={{ maxHeight: "500px" }}
+                    className="user-content"
+                  >
                     <div className="chartbar-content">
-                      <Bar data={purchaseOrderLine} options={purchaseOrderLineOptions} />
+                      <Bar
+                        data={purchaseOrderLine}
+                        options={purchaseOrderLineOptions}
+                      />
                     </div>
                   </SimpleBar>
                 </div>
               </div>
-              <div className="col-xl-5 col-md-6 col-12">
+              <div className="col-xl-5 col-lg-6 col-md-6 col-sm-12">
                 <TopSellers t={t} />
               </div>
             </div>
@@ -732,5 +810,7 @@ const mapStateToProps = (state) => {
     search_invoice_data,
   };
 };
-const connectedDeshboard = withTranslation()(connect(mapStateToProps)(Dashbord));
+const connectedDeshboard = withTranslation()(
+  connect(mapStateToProps)(Dashbord)
+);
 export default connectedDeshboard;

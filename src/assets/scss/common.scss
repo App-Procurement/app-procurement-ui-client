@@ -270,6 +270,10 @@ select:focus-visible {
     .col-form-button {
         margin-top: 20px;
         margin-bottom: 20px;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
 }
@@ -905,8 +909,10 @@ select:focus-visible {
                 .doc-section {
                     margin-bottom: 25px;
                     width: 100%;
-                    display: flex;
-                    align-items: flex-start;
+                    display: block;
+                    text-align: left;
+                    // display: flex;
+                    // align-items: flex-start;
 
                     .doc-user-img {
                         width: 35px;
@@ -919,24 +925,33 @@ select:focus-visible {
                     }
 
                     .doc-images-box {
-                        max-width: 59.6%;
-                        ;
+                        max-width: 45%;
                         display: inline-block;
                         border-radius: 10px;
                         border: 3px solid #efefef;
+                        // max-width: 37.3%;
+                        // display: inline-block;
+                        // border-radius: 10px;
+                        // border: 3px solid #efefef;
 
                         .doc-inner-box {
+                            width: 50%;
                             display: inline-block;
                             background: #efefef;
 
+                            // display: inline-block;
+                            // background: #efefef;
+                            &.one-file {
+                                width: 100%;
+                            }
 
                             .doc-attachment-files {
-                                display: inline-block;
+                                // display: inline-block;
                                 border: 2px solid #efefef;
 
                                 img {
-                                    width: 83.2px;
-                                    height: 83.2px;
+                                    width: 100%;
+                                    height: 83px;
                                     border-radius: 8px;
                                 }
 
@@ -1039,60 +1054,60 @@ select:focus-visible {
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
-    .sender-bottom-section {
-        .sender-inner-section {
-            .chatroom-inner-content-right {
-                .massage-chat-section {
-                    .doc-section {
-                        .doc-images-box {
-                            max-width: 56.4%;
-                            display: inline-block;
-                            border-radius: 10px;
-                            border: 3px solid #efefef;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // .sender-bottom-section {
+    //     .sender-inner-section {
+    //         .chatroom-inner-content-right {
+    //             .massage-chat-section {
+    //                 .doc-section {
+    //                     .doc-images-box {
+    //                         max-width: 56.4%;
+    //                         display: inline-block;
+    //                         border-radius: 10px;
+    //                         border: 3px solid #efefef;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    .sender-bottom-section {
-        .sender-inner-section {
-            .chatroom-inner-content-right {
-                .massage-chat-section {
-                    .doc-section {
-                        .doc-images-box {
-                            max-width: 46.5%;
-                            display: inline-block;
-                            border-radius: 10px;
-                            border: 3px solid #efefef;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // .sender-bottom-section {
+    //     .sender-inner-section {
+    //         .chatroom-inner-content-right {
+    //             .massage-chat-section {
+    //                 .doc-section {
+    //                     .doc-images-box {
+    //                         max-width: 46.5%;
+    //                         display: inline-block;
+    //                         border-radius: 10px;
+    //                         border: 3px solid #efefef;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 @media only screen and (min-width: 540px) and (max-width: 767px) {
-    .sender-bottom-section {
-        .sender-inner-section {
-            .chatroom-inner-content-right {
-                .massage-chat-section {
-                    .doc-section {
-                        .doc-images-box {
-                            max-width: 37.6%;
-                            display: inline-block;
-                            border-radius: 10px;
-                            border: 3px solid #efefef;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // .sender-bottom-section {
+    //     .sender-inner-section {
+    //         .chatroom-inner-content-right {
+    //             .massage-chat-section {
+    //                 .doc-section {
+    //                     .doc-images-box {
+    //                         max-width: 37.6%;
+    //                         display: inline-block;
+    //                         border-radius: 10px;
+    //                         border: 3px solid #efefef;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 @media (max-width: 767px) {
@@ -1115,20 +1130,20 @@ select:focus-visible {
         }
     }
 
-    .sender-bottom-section {
-        .sender-inner-section {
-            .chatroom-inner-content-right {
-                .massage-chat-section {
-                    .doc-section {
-                        .doc-images-box {
-                            max-width: 60.2%;
-                            display: inline-block;
-                            border-radius: 10px;
-                            border: 3px solid #efefef;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // .sender-bottom-section {
+    //     .sender-inner-section {
+    //         .chatroom-inner-content-right {
+    //             .massage-chat-section {
+    //                 .doc-section {
+    //                     .doc-images-box {
+    //                         max-width: 60.2%;
+    //                         display: inline-block;
+    //                         border-radius: 10px;
+    //                         border: 3px solid #efefef;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }

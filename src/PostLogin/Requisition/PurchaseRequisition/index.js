@@ -42,7 +42,7 @@ class PurchaseRequisition extends Component {
 					key: 'sno',
 					renderCallback: (value, index) => {
 						return (
-							<td key={index+1}>
+							<td key={index + 1}>
 								<span className={'s-no'} >{index + 1}</span>
 							</td>
 						);
@@ -124,7 +124,7 @@ class PurchaseRequisition extends Component {
 					renderCallback: (value) => {
 						return (
 							<td key={value}>
-								<Link to={`/postlogin/purchaserequisition/${value}`}>View Details</Link>
+								<Link to={`/postlogin/purchaserequisition/${value}`}>View More</Link>
 							</td>
 						);
 					}

@@ -11,6 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { Link } from 'react-router-dom';
 import CloseIcon from "@material-ui/icons/Close";
 import { requestForPurposeAction } from "../../_actions";
 class ViewPurchaseOrder extends Component {
@@ -139,7 +140,7 @@ class ViewPurchaseOrder extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex: this.state.activeIndex===index?-1: index })}
+                    onClick={() => this.setState({ activeIndex: this.state.activeIndex === index ? -1 : index })}
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
@@ -152,7 +153,7 @@ class ViewPurchaseOrder extends Component {
                         className="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
-                          this.handleDelete( value, index);
+                          this.handleDelete(value, index);
                         }}
                       ></i>
                     </div>
@@ -185,7 +186,7 @@ class ViewPurchaseOrder extends Component {
     }
     if (
       this.props.supplier_category_list_status !==
-        prevProps.supplier_category_list_status &&
+      prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -342,9 +343,9 @@ class ViewPurchaseOrder extends Component {
   };
 
   handleDelete = (index, id) => {
-const {tableData, activeIndex}=this.state
-let value=tableData[activeIndex];
-    this.props.dispatch(purchaseOrderAction.deletePOListItem({ id: this.oredrId, value:{...value} }));
+    const { tableData, activeIndex } = this.state
+    let value = tableData[activeIndex];
+    this.props.dispatch(purchaseOrderAction.deletePOListItem({ id: this.oredrId, value: { ...value } }));
     this.setState({ activeIndex: -1 });
   };
   handleApprove = (status) => {
@@ -357,6 +358,9 @@ let value=tableData[activeIndex];
     );
     this.props.history.push(`/postlogin/generatepo`);
   };
+  onClickCreatePurchaseOrder = (id) => {
+    this.props.history.push(`/postlogin/GeneratePo/createPurchaseOrder`);
+  }
   render() {
     const {
       approveOrder,
@@ -375,12 +379,12 @@ let value=tableData[activeIndex];
           <div className="purchse-order">
             <div className="purchase-order-head">
               <div className="row d-flex align-items-center justify-content-end">
-                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                   <div className="head-left">
                     <h3>Purchase order #{this.oredrId}</h3>
                   </div>
                 </div>
-                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                   <div className="head-right">
                     <ul>
                       <li>
@@ -581,7 +585,7 @@ let value=tableData[activeIndex];
               </div>
               <div className="payment-and-shiping-content">
                 <div className="row">
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4 mb-md-5">
+                  <div className="col-xl-6 col-lg-8 col-md-6 col-sm-12 col-12 mb-4 mb-md-5">
                     <div className="payment-shiping-text">
                       <label>Payment Terms</label>
                       <FormControl className="payment-select-menu">
@@ -594,7 +598,7 @@ let value=tableData[activeIndex];
                       </FormControl>
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4 mb-md-5">
+                  <div className="col-xl-6 col-lg-8 col-md-6 col-sm-12 col-12 mb-4 mb-md-5">
                     <div className="payment-shiping-text">
                       <label>Shipping Method</label>
                       <FormControl className="payment-select-menu">
@@ -607,7 +611,7 @@ let value=tableData[activeIndex];
                       </FormControl>
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4">
+                  <div className="col-xl-6 col-lg-8 col-md-6 col-sm-12 col-12 mb-4">
                     <div className="payment-shiping-text">
                       <label>Payment With</label>
                       <FormControl className="payment-select-menu">
@@ -620,7 +624,7 @@ let value=tableData[activeIndex];
                       </FormControl>
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4">
+                  <div className="col-xl-6 col-lg-8 col-md-6 col-sm-12 col-12 mb-4">
                     <div className="payment-shiping-text">
                       <label>Shipping Terms</label>
                       <FormControl className="payment-select-menu">
@@ -673,7 +677,9 @@ let value=tableData[activeIndex];
                   <div className="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div className="approve-content-buttons">
                       <div className="purchase-order">
-                        <Button variant="contained" className="purchase-btn">
+
+                        <Button variant="contained" className="purchase-btn"
+                          onClick={this.onClickCreatePurchaseOrder}>
                           Create Purchase Order
                         </Button>
                       </div>

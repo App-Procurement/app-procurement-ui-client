@@ -4148,6 +4148,334 @@
 				}
 			}
 		},
+		"/request/{id}": {
+			"get": {
+				"summary": "request",
+				"operationId": "",
+				"tags": [
+					"List of Request for purpose"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "List of Request for purpose",
+						"headers": {
+							"x-next": {
+								"description": "RequestForPurpose List",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "string",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"object": {
+											"$ref": "#/components/schemas/requestData"
+										}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"summary": "Add Request For Purpose",
+				"operationId": "add RequestForPurpose",
+				"requestBody": {
+					"description": "addStatusRfq add status to frq like approved , wating etc",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"items": {
+									"$ref": "#/components/schemas/addrequest"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"headers": {
+							"x-next": {
+								"description": "",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "integer",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"message": {
+											"type": "string",
+											"default": "Add status Successfully"
+										},
+										"type": {
+											"type": "string",
+											"default": "SUCCESS"
+										},
+										"object": {}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"summary": "detail about deleteDepartment",
+				"operationId": "",
+				"responses": {
+					"200": {
+						"description": "Delete department is use for delete department by id",
+						"headers": {
+							"x-next": {
+								"description": "Delete department ",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "integer",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"message": {
+											"type": "string",
+											"default": "Delete Department Successfully"
+										},
+										"type": {
+											"type": "string",
+											"default": "SUCCESS"
+										},
+										"object": {}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/budget": {
+			"get": {
+				"summary": "request",
+				"operationId": "",
+				"tags": [
+					"List of Budget for purpose"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "List of Budget for purpose",
+						"headers": {
+							"x-next": {
+								"description": "BudgetForPurpose List",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "string",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"object": {
+											"$ref": "#/components/schemas/budgetData"
+										}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"summary": "Add Budget For Purpose",
+				"operationId": "add BudgetForPurpose",
+				"requestBody": {
+					"description": "addStatusRfq add status to frq like approved , wating etc",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"items": {
+									"$ref": "#/components/schemas/addbudget"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"headers": {
+							"x-next": {
+								"description": "",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "integer",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"message": {
+											"type": "string",
+											"default": "Add status Successfully"
+										},
+										"type": {
+											"type": "string",
+											"default": "SUCCESS"
+										},
+										"object": {}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"summary": "detail about deleteDepartment",
+				"operationId": "",
+				"responses": {
+					"200": {
+						"description": "Delete department is use for delete department by id",
+						"headers": {
+							"x-next": {
+								"description": "Delete department ",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "integer",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"message": {
+											"type": "string",
+											"default": "Delete Department Successfully"
+										},
+										"type": {
+											"type": "string",
+											"default": "SUCCESS"
+										},
+										"object": {}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/requestforpurpose/{id}": {
 			"get": {
 				"summary": "List of Request for purpose",
@@ -5068,6 +5396,170 @@
 										"object": {
 											"$ref": "#/components/schemas/supplierDetail"
 										}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/group/{id}": {
+			"get": {
+				"summary": "request",
+				"operationId": "",
+				"tags": [
+					"List of Request for purpose"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "List of Request for purpose",
+						"headers": {
+							"x-next": {
+								"description": "RequestForPurpose List",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "string",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"object": {
+											"$ref": "#/components/schemas/groupUsersData"
+										}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"summary": "Add Request For Purpose",
+				"operationId": "add RequestForPurpose",
+				"requestBody": {
+					"description": "addStatusRfq add status to frq like approved , wating etc",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"items": {
+									"$ref": "#/components/schemas/addrequest"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"headers": {
+							"x-next": {
+								"description": "",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "integer",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"message": {
+											"type": "string",
+											"default": "Add status Successfully"
+										},
+										"type": {
+											"type": "string",
+											"default": "SUCCESS"
+										},
+										"object": {}
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "unexpected error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"summary": "detail about deleteDepartment",
+				"operationId": "",
+				"responses": {
+					"200": {
+						"description": "Delete department is use for delete department by id",
+						"headers": {
+							"x-next": {
+								"description": "Delete department ",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"code": {
+											"type": "integer",
+											"format": "int64",
+											"x-faker": "datatype.number({ \"min\": 200, \"max\": 200 })"
+										},
+										"message": {
+											"type": "string",
+											"default": "Delete Department Successfully"
+										},
+										"type": {
+											"type": "string",
+											"default": "SUCCESS"
+										},
+										"object": {}
 									}
 								}
 							}
@@ -8329,7 +8821,7 @@
 								},
 								"userId": {
 									"type": "intiger",
-									"format":"int64",
+									"format": "int64",
 									"x-faker": "datatype.number({ \"min\": 1, \"max\": 10 })"
 								},
 								"location": {
@@ -8382,7 +8874,7 @@
 								},
 								"userId": {
 									"type": "intiger",
-									"format":"int64",
+									"format": "int64",
 									"x-faker": "datatype.number({ \"min\": 1, \"max\": 10 })"
 								},
 								"location": {
@@ -8435,7 +8927,7 @@
 								},
 								"userId": {
 									"type": "intiger",
-									"format":"int64",
+									"format": "int64",
 									"x-faker": "datatype.number({ \"min\": 1, \"max\": 10})"
 								},
 								"location": {
@@ -8488,7 +8980,7 @@
 								},
 								"userId": {
 									"type": "intiger",
-									"format":"int64",
+									"format": "int64",
 									"x-faker": "datatype.number({ \"min\": 1, \"max\": 10 })"
 								},
 								"location": {
@@ -8658,9 +9150,9 @@
 									"format": "int64",
 									"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
 								},
-								"name":{
-									"type":"string",
-									"x-faker":"{{lorem.word}}"
+								"name": {
+									"type": "string",
+									"x-faker": "{{lorem.word}}"
 								},
 								"subList": {
 									"type": "array",
@@ -8673,9 +9165,9 @@
 												"format": "int64",
 												"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
 											},
-											"name":{
-												"type":"string",
-												"x-faker":"{{lorem.word}}"
+											"name": {
+												"type": "string",
+												"x-faker": "{{lorem.word}}"
 											}
 										}
 									}
@@ -8694,9 +9186,9 @@
 									"format": "int64",
 									"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
 								},
-								"name":{
-									"type":"string",
-									"x-faker":"{{lorem.word}}"
+								"name": {
+									"type": "string",
+									"x-faker": "{{lorem.word}}"
 								},
 								"subList": {
 									"type": "array",
@@ -8709,9 +9201,9 @@
 												"format": "int64",
 												"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
 											},
-											"name":{
-												"type":"string",
-												"x-faker":"{{lorem.word}}"
+											"name": {
+												"type": "string",
+												"x-faker": "{{lorem.word}}"
 											}
 										}
 									}
@@ -8730,26 +9222,454 @@
 									"format": "int64",
 									"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
 								},
-								"name":{
-									"type":"string",
-									"x-faker":"{{lorem.word}}"
+								"name": {
+									"type": "string",
+									"x-faker": "{{lorem.word}}"
+								}
+							}
+						}
+					}
+				}
+			},
+			"requestData": {
+				"type": "object",
+				"properties": {
+					"requestComment": {
+						"$ref": "#/components/schemas/requestComment"
+					},
+					"requestSupplierInfo": {
+						"$ref": "#/components/schemas/requestSupplierInfo"
+					},
+					"requestAttachMents": {
+						"$ref": "#/components/schemas/requestAttachMents"
+					},
+					"requestOverView": {
+						"$ref": "#/components/schemas/requestOverView"
+					},
+					"activityLogs": {
+						"$ref": "#/components/schemas/activityLogs"
+					},
+					"requestTimeline": {
+						"$ref": "#/components/schemas/requestTimeline"
+					},
+					"myRequest": {
+						"$ref": "#/components/schemas/myRequest"
+					}
+				}
+			},
+			"myRequest": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "intiger",
+						"format": "int64",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
+					},
+					"allRequest": {
+						"type": "intiger",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					},
+					"approvedRequest": {
+						"type": "intiger",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					},
+					"pendingRequest": {
+						"type": "intiger",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					},
+					"rejectedRequest": {
+						"type": "intiger",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					}
+				}
+			},
+			"requestComment": {
+				"type": "array",
+				"x-count": "4",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"userName": {
+							"type": "string",
+							"x-faker": "{{name.firstName}} {{name.lastName}}"
+						},
+						"postTime": {
+							"type": "string",
+							"x-faker": "{{date.past}}"
+						},
+						"profilePic": {
+							"type": "string",
+							"x-faker": "{{image.imageUrl}}"
+						},
+						"comment": {
+							"type": "string",
+							"x-faker": "lorem.sentence"
+						}
+					}
+				}
+			},
+			"requestOverView": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "intiger",
+						"format": "int64",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
+					},
+					"requestorName": {
+						"type": "string",
+						"x-faker": "{{internet.email}}"
+					},
+					"location": {
+						"type": "string",
+						"x-faker": "{{address.city}}  {{address.country }}"
+					},
+					"deliveryDate": {
+						"type": "date",
+						"x-faker": "{{date.past}}"
+					},
+					"creationDate": {
+						"type": "date",
+						"x-faker": "{{date.future}}"
+					},
+					"requestType": {
+						"type": "string",
+						"x-faker": "{{lorem.word}}"
+					},
+					"department": {
+						"type": "string",
+						"x-faker": "{{commerce.department }}"
+					},
+					"item": {
+						"type": "string",
+						"x-faker": "{{commerce.productName}}"
+					},
+					"finalApprover": {
+						"type": "string",
+						"x-faker": "{{name.firstName}}"
+					}
+				}
+			},
+			"activityLogs": {
+				"type": "array",
+				"x-count": "7",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
+						},
+						"User": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "intiger",
+									"format": "int64",
+									"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
 								},
-								"subList": {
-									"type": "array",
-									"x-count": "4",
-									"items": {
-										"type": "object",
-										"properties": {
-											"id": {
-												"type": "intiger",
-												"format": "int64",
-												"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
-											},
-											"name":{
-												"type":"string",
-												"x-faker":"{{lorem.word}}"
-											}
-										}
+								"userName": {
+									"type": "string",
+									"x-faker": "{{name.firstName}} {{name.lastName}}"
+								},
+								"profilePic": {
+									"type": "string",
+									"x-faker": "{{image.imageUrl}}"
+								},
+								"description": {
+									"type": "string",
+									"x-faker": "{{lorem.word}}"
+								}
+							}
+						},
+						"Action": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"Type": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"TimeStamp": {
+							"type": "string",
+							"x-faker": "{{date.past}}"
+						}
+					}
+				}
+			},
+			"requestSupplierInfo": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "intiger",
+						"format": "int64",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+					},
+					"supplierName": {
+						"type": "string",
+						"x-faker": "{{lorem.words}}"
+					},
+					"supplierContact": {
+						"type": "string",
+						"x-faker": "{{phone.phoneNumber}}"
+					},
+					"businessCategory": {
+						"type": "string",
+						"x-faker": "{{lorem.words}}"
+					},
+					"telephoneNo": {
+						"type": "string",
+						"x-faker": "{{phone.phoneNumber}}"
+					},
+					"mailingAddress": {
+						"type": "string",
+						"x-faker": "{{address.streetName}} {{address.state}},{{address.zipCodeByState}} {{address.country}}"
+					}
+				}
+			},
+			"requestTimeline": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "intiger",
+						"format": "int64",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+					},
+					"requestInitiate": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "intiger",
+								"format": "int64",
+								"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+							},
+							"date": {
+								"type": "string",
+								"x-faker": "{{date.past}}"
+							}
+						}
+					},
+					"approved": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "intiger",
+								"format": "int64",
+								"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+							},
+							"date": {
+								"type": "string",
+								"x-faker": "{{date.past}}"
+							},
+							"info": {
+								"type": "string",
+								"x-faker": "{{lorem.paragraph}}"
+							}
+						}
+					},
+					"poCreated": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "intiger",
+								"format": "int64",
+								"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+							},
+							"date": {
+								"type": "string",
+								"x-faker": "{{date.past}}"
+							},
+							"info": {
+								"type": "string",
+								"x-faker": "{{lorem.paragraph}}"
+							}
+						}
+					},
+					"outOfDelivery": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "intiger",
+								"format": "int64",
+								"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+							},
+							"date": {
+								"type": "string",
+								"x-faker": "{{date.past}}"
+							}
+						}
+					},
+					"deliverd": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "intiger",
+								"format": "int64",
+								"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+							},
+							"date": {
+								"type": "string",
+								"x-faker": "{{date.past}}"
+							}
+						}
+					}
+				}
+			},
+			"groupUsersData": {
+				"type": "object",
+				"properties": {
+					"avaliableUsers": {
+						"$ref": "#/components/schemas/avaliableUsers"
+					},
+					"assignedUsers": {
+						"$ref": "#/components/schemas/assignedUsers"
+					},
+					"avaliableUsersRoles": {
+						"$ref": "#/components/schemas/avaliableUsersRoles"
+					},
+					"assignedUsersRoles": {
+						"$ref": "#/components/schemas/assignedUsersRoles"
+					}
+				}
+			},
+			"assignedUsersRoles": {
+				"type": "array",
+				"x-count": "10",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"procurementAdmin": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"approver": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"requester": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"basicUser": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						}
+					}
+				}
+			},
+			"avaliableUsersRoles": {
+				"type": "array",
+				"x-count": "10",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"procurementAdmin": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"approver": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"requester": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"basicUser": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						}
+					}
+				}
+			},
+			"avaliableUsers": {
+				"type": "array",
+				"x-count": "10",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"availble_user": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						}
+					}
+				}
+			},
+			"assignedUsers": {
+				"type": "array",
+				"x-count": "6",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"assign_user": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						}
+					}
+				}
+			},
+			"requestAttachMents": {
+				"type": "array",
+				"x-count": "5",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"fileName": {
+							"type": "string",
+							"x-faker": "{{system.fileType}}"
+						},
+						"fileSize": {
+							"type": "string",
+							"x-faker": "{{lorem.word}} "
+						},
+						"dateUploaded": {
+							"type": "date",
+							"x-faker": "{{date.past}}"
+						},
+						"uploadedBy": {
+							"type": "array",
+							"x-count": "1",
+							"items": {
+								"type": "object",
+								"properties": {
+									"userName": {
+										"type": "string",
+										"x-faker": "{{name.firstName}} {{name.lastName}}"
+									},
+									"profilePic": {
+										"type": "string",
+										"x-faker": "{{image.imageUrl}}"
 									}
 								}
 							}
@@ -8770,6 +9690,189 @@
 					},
 					"message": {
 						"type": "string"
+					}
+				}
+			},
+			"budgetData": {
+				"type": "object",
+				"properties": {
+					"budgetHead": {
+						"$ref": "#/components/schemas/budgetHead"
+					},
+					"budgetAllocation": {
+						"$ref": "#/components/schemas/budgetAllocation"
+					},
+					"recentTransaction": {
+						"$ref": "#/components/schemas/recentTransaction"
+					},
+					"departmentSpend": {
+						"$ref": "#/components/schemas/departmentSpend"
+					},
+					"approvalSpend": {
+						"$ref": "#/components/schemas/approvalSpend"
+					},
+					"activeProject": {
+						"$ref": "#/components/schemas/activeProject"
+					}
+				}
+			},
+			"budgetHead": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "intiger",
+						"format": "int64",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
+					},
+					"allRequest": {
+						"type": "intiger",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					},
+					"approvedRequest": {
+						"type": "intiger",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					},
+					"pendingRequest": {
+						"type": "intiger",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					},
+					"rejectedRequest": {
+						"type": "intiger",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					}
+				}
+			},
+			"budgetAllocation": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "intiger",
+						"format": "int64",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 100 })"
+					},
+					"totalBudget": {
+						"type": "number",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 99999 })"
+					},
+					"spend": {
+						"type": "number",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					},
+					"remaining": {
+						"type": "number",
+						"x-faker": "datatype.number({ \"min\": 1, \"max\": 9999 })"
+					}
+				}
+			},
+			"recentTransaction": {
+				"type": "array",
+				"x-count": "5",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"transactBy": {
+							"type": "string",
+							"x-faker": "{{name.firstName}}"
+						},
+						"amount": {
+							"type": "number",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"merchant": {
+							"type": "date",
+							"x-faker": "{{lorem.word}}"
+						}
+					}
+				}
+			},
+			"departmentSpend": {
+				"type": "array",
+				"x-count": "6",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"name": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"amount": {
+							"type": "number",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"date": {
+							"type": "date",
+							"x-faker": "{{date.past}}"
+						}
+					}
+				}
+			},
+			"approvalSpend": {
+				"type": "array",
+				"x-count": "6",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"name": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"amount": {
+							"type": "number",
+							"x-faker": "$ {{datatype.number({ \"min\": 100000, \"max\": 999999 })}}"
+						},
+						"date": {
+							"type": "date",
+							"x-faker": "{{date.past}}"
+						}
+					}
+				}
+			},
+			"activeProject": {
+				"type": "array",
+				"x-count": "4",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "intiger",
+							"format": "int64",
+							"x-faker": "datatype.number({ \"min\": 1, \"max\": 10000 })"
+						},
+						"projectName": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						},
+						"endDate": {
+							"type": "date",
+							"x-faker": "{{date.past}}"
+						},
+						"estimatedDuration": {
+							"type": "date",
+							"x-faker": "{{date.past}}"
+						},
+						"progress": {
+							"type": "integer",
+							"x-faker": "datatype.number({ \"min\": 0, \"max\": 100 })"
+						},
+						"status": {
+							"type": "string",
+							"x-faker": "{{lorem.word}}"
+						}
 					}
 				}
 			}

@@ -71,7 +71,7 @@ class ChatBox extends React.Component {
       for (let i = 0; i < attachment.length; i++) {
         const { payload } = attachment[i];
         retData.push(
-          <div className="doc-inner-box">
+          <div className={`doc-inner-box ${attachment.length === 1 ? "one-file" : ""}`} >
             <div className="doc-attachment-files">
               <img alt="image" src={payload.url} />
             </div>

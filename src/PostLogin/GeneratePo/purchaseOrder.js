@@ -40,7 +40,7 @@ class Purchase extends Component {
         {
           label: 'S No',
           key: 'sno',
-          renderCallback: (value,index) => {
+          renderCallback: (value, index) => {
             return (
               <td key={index}>
                 <span className={'s-no'}>{index + 1}</span>
@@ -122,7 +122,7 @@ class Purchase extends Component {
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <Link to={`/postlogin/purchaseorder/${value}`}>View Details</Link>
+                <Link to={`/postlogin/purchaseorder/${value}`}>View More</Link>
               </td>
             );
           },

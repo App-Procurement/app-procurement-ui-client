@@ -1,0 +1,300 @@
+.products-page-conntent {
+    .request-purpose-head {
+        margin: 30px 0;
+
+        .request-purpose-head-left {
+
+            h4 {
+                margin: 0;
+                color: $buttons-bg;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .request-purpose-head-right {
+            display: flex;
+            align-items: center;
+            justify-content: end;
+
+            .add-Supplier-button {
+                ul {
+                    margin: 0;
+                    padding: 0;
+                    display: inline-block;
+                    margin-right: 20px;
+
+                    li {
+                        display: block;
+                        list-style: none;
+
+                        .head-right-btn {
+                            height: 45px;
+                            width: 45px;
+                            font-size: 16px;
+                            color: #52cdf4;
+                            text-align: center;
+                            border-radius: 10px;
+                            background: #ffffff;
+                            padding: 0;
+                            min-width: 0;
+                        }
+                    }
+                }
+
+                a {
+                    .new-requisition-btn {
+                        border-radius: 5px;
+                        background: $buttons-bg;
+                        color: $button-text-color;
+                        text-transform: capitalize;
+                        height: 40px;
+
+                        i {
+                            margin-right: 8px;
+                            line-height: 17px;
+                        }
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                .new-requisition-btn {
+                    border-radius: 5px;
+                    background: $buttons-bg;
+                    color: $button-text-color;
+                    text-transform: capitalize;
+                    height: 40px;
+
+                    i {
+                        margin-right: 8px;
+                        line-height: 17px;
+                    }
+                }
+            }
+
+            .search-fillter {
+                margin-left: 20px;
+
+                .fillter-btn {
+                    border-color: $buttons-bg;
+                    color: $buttons-bg;
+                    text-transform: capitalize;
+                    background: transparent;
+                    border: 1px solid $buttons-bg;
+
+                    .download-icon {
+                        margin-right: 10px;
+                    }
+                }
+            }
+
+        }
+    }
+
+    .account-holder-details {
+
+        .requisitions-filter {
+            width: 100%;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background: #ffffff;
+            background: $body-box-bg;
+            box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+            .form-group-common {
+                span {
+                    font-size: 14px;
+                    line-height: 20px;
+                    font-weight: 400;
+                    color: #010101;
+                }
+
+                .form-control {
+                    height: 50px;
+                    line-height: 50px;
+                }
+
+                .bidder-box {
+                    flex-direction: row;
+
+                    .MuiFormControlLabel-root {
+                        margin-bottom: 0;
+
+                        .PrivateSwitchBase-root-1 {
+                            padding: 5px;
+                        }
+                    }
+
+                    .MuiRadio-colorSecondary.Mui-checked {
+                        color: #6418c3;
+                    }
+                }
+
+                .new-requeust-massge {
+                    .payment-select-menu {
+                        width: 100%;
+                        color: #393939;
+                        border-radius: 8px;
+                        background-color: $requisition-button-bg;
+
+                        .MuiNativeSelect-select {
+                            padding: 15px 15px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #393939;
+
+                            &:focus {
+                                border-radius: 8px;
+                            }
+                        }
+
+                        .MuiInputBase-root {
+                            &::before {
+                                display: none;
+                            }
+
+                            &::after {
+                                display: none;
+                            }
+
+                            .MuiNativeSelect-icon {
+                                margin-right: 8px;
+                            }
+                        }
+
+                    }
+
+                    textarea {
+                        width: 100%;
+                        height: 180px;
+                    }
+                }
+            }
+        }
+
+        .attach {
+            position: relative;
+            font-size: 14px;
+            font-weight: 500;
+            width: 100%;
+            color: #7924ca;
+            height: 45px;
+            padding: 5px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            background-color: transparent;
+            border: 1px solid #7924ca;
+
+
+
+            .file-content {
+                position: absolute;
+                top: 5px;
+
+                .icon {
+                    display: inline-block;
+                    color: #7924ca;
+                    font-size: 32px;
+                    margin-right: 15px;
+                }
+
+                P {
+                    display: inline-block;
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 23px;
+                    color: $buttons-bg;
+                    margin: 0;
+                }
+
+                span {
+                    font-size: 10px;
+                    line-height: 15px;
+                    font-weight: 500;
+                }
+            }
+
+            input {
+                opacity: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                text-indent: -9999px;
+                z-index: 1;
+            }
+        }
+
+        .create-btn {
+            text-align: center;
+            margin-top: 50px;
+
+            .primary-btn {
+                padding: 8px 35px;
+                border: none;
+            }
+        }
+
+        .item-submit-buttons {
+            .item-delete-buttons {
+                text-align: right;
+
+                .submit-btn {
+                    display: block;
+                    margin-top: 20px;
+
+                    .submit {
+                        width: 230px;
+                        font-size: 18px;
+                        text-transform: capitalize;
+                        padding: 10px;
+                        box-shadow: none;
+                        color: #ffffff;
+                        background: #6418c3;
+                        font-weight: 500;
+
+                        &.delete {
+                            background: #ff3c5f;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .add-product-table {
+        width: 100%;
+        display: block;
+
+        .heading {
+            margin-bottom: 15px;
+
+            h5 {
+                margin: 0;
+                color: #7A7A7B;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .products-page-conntent {
+        .request-purpose-head {
+            .request-purpose-head-right {
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                margin-top: 20px;
+            }
+        }
+    }
+}

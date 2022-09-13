@@ -20,6 +20,14 @@ const _nav = {
     },
     {
       _tag: 'SidebarNavItem',
+      name: 'Budgets',
+      to: '/postlogin/budgets',
+      activeArr: ['/postlogin/budgets'],
+      open: false,
+      icon: <i className="fas fa-calendar-alt"></i>,
+    },
+    {
+      _tag: 'SidebarNavItem',
       name: 'Message',
       to: '/postlogin/message',
       activeArr: ['/postlogin/message'],
@@ -280,7 +288,16 @@ const _nav = {
       open: false,
       icon: <i className="fas fa-envelope" />,
     },
+    {
+      _tag: 'SidebarNavItem',
+      name: 'Products',
+      to: '/postlogin/products',
+      activeArr: ['/postlogin/products'],
+      open: false,
+      icon: <i className="fas fa-envelope" />,
+    },
   ],
+
   supportNav: [
     {
       _tag: 'Setting',

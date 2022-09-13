@@ -184,7 +184,7 @@ class ActiveProductCatalogue extends React.Component {
   }
 
   clearUpdateFields = () => {
-    this.setState({ openProductEditDialog: false, updateProductValue: {}, productActiveIndex:-1 })
+    this.setState({ openProductEditDialog: false, updateProductValue: {}, productActiveIndex: -1 })
   }
 
   componentDidUpdate(prevProps) {
@@ -216,9 +216,9 @@ class ActiveProductCatalogue extends React.Component {
       this.props.dispatch(manageSupplierAction.getProductList());
       this.clearUpdateFields()
     }
-    else if(this.props.delete_suplier_list_status   !== prevProps.delete_suplier_list_status   &&
-      this.props.delete_suplier_list_status   === status.SUCCESS){
-        this.props.dispatch(manageSupplierAction.getProductList());
+    else if (this.props.delete_suplier_list_status !== prevProps.delete_suplier_list_status &&
+      this.props.delete_suplier_list_status === status.SUCCESS) {
+      this.props.dispatch(manageSupplierAction.getProductList());
     }
   }
 
@@ -338,7 +338,7 @@ class ActiveProductCatalogue extends React.Component {
     if (value.id) {
       this.props.dispatch(manageSupplierAction.deleteSupplier({ id: value.id, value }))
     }
-    this.setState({productActiveIndex:-1})
+    this.setState({ productActiveIndex: -1 })
   }
   render() {
     const { productColumn, productList, productActiveIndex, openProductEditDialog, updateProductValue, supplierAndCategoryList, openDialog, openUpdateDialog, isSubmit } = this.state;
@@ -358,7 +358,7 @@ class ActiveProductCatalogue extends React.Component {
                   <div className="add-Supplier-button">
                     <Button
                       variant="contained"
-                      to="/postlogin/addproduct"
+                      href="/postlogin/products/addproducts"
                       disableElevation
                       className="new-requisition-btn"
                     >

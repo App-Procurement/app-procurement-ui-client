@@ -700,13 +700,34 @@
         }
     }
 
+    .purchse-top-heading {
+        width: 100%;
+        display: block;
+        background: #f6eeff;
+        padding: 20px 15px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+
+        p {
+            font-size: 18px;
+            line-height: 22px;
+            font-weight: 500;
+            color: $buttons-bg;
+            margin: 0;
+        }
+    }
+
     .purchase-order-head {
         margin-bottom: 15px;
 
         .head-left {
             h3 {
-                color: #311b4e;
+                color: $heading-text-color;
                 margin: 0;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
@@ -730,6 +751,27 @@
                         background: $button-text-color;
                         padding: 0;
                         min-width: 0;
+                    }
+
+                    .fillter-btn {
+                        box-shadow: none;
+                        border-color: #6418c3;
+                        color: #6418c3;
+                        text-transform: capitalize;
+                        background: transparent;
+                        border: 1px solid #6418c3;
+
+                        .download-icon {
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .new-requisition-btn {
+                        border-radius: 5px;
+                        background: #6418c3;
+                        color: #ffffff;
+                        text-transform: capitalize;
+                        height: 40px;
                     }
 
                     .delete-icon {
@@ -1094,9 +1136,6 @@
     .purchse-order {
         .purchase-order-head {
             .head-right {
-                text-align: left;
-                margin-top: 15px;
-
                 ul {
                     li {
                         margin-left: 0;
