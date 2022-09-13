@@ -19,14 +19,18 @@ function login(data) {
         authServices.login(data)
             .then(
                 response => {
-                    if (response.status) {
+                    console.log("response : ",response);
+                    if (response) {
+                        console.log("response1: ",response);
                         dispatch(dispatchFunction({
                             type: status.SUCCESS,
                             data: {
                                 user_login_status: status.SUCCESS,
-                                user: response.object
+                                user: response
                             }
+                           
                         }));
+                        console.log("response2: ",response);
                     } else {
                         dispatch(dispatchFunction({
                             type: status.FAILURE,

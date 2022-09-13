@@ -9,6 +9,7 @@ import Logo from '../assets/images/logo.png';
 import { status, eventActions, eventCategories } from '../_constants';
 import { commonFunctions, GA } from '../_utilities';
 import { connect } from 'react-redux';
+import { authActions } from '../_actions';
 
 function Copyright() {
   return (
@@ -27,6 +28,9 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
+      rememberMe:'',
+      username:'',
+      active:'',
       email: '',
       password: '',
       isSubmitted: false
@@ -41,8 +45,8 @@ class Login extends Component {
   };
 
   handleSubmit = (event) => {
-    event.preventDefault();
-    this.props.history.push('/postlogin/dashboard')
+    // event.preventDefault();
+    // this.props.history.push('/postlogin/dashboard')
     // this.setState({
     //   isSubmitted: true
     // });
@@ -55,29 +59,48 @@ class Login extends Component {
     //   };
     //   this.props.dispatch(authActions.login(sendData));
     // }
+
+    event.preventDefault();
+   
+    this.setState({
+      isSubmitted: true
+    });
+    const errorData = this.validate(true);
+    if (errorData.isValid) {
+      const { username, password,active } = this.state;
+      const sendData = {
+        active:"true",
+        username,
+        password
+      };
+      this.props.dispatch(authActions.login("?username=" + username + "&password=" + password ));
+    }
+    
+    // this.props.history.push('/postlogin/dashboard')
   };
 
   validate = (isSubmitted) => {
+    const { t } = this.props;
     const validObj = {
       isValid: true,
       message: ""
     };
     let isValid = true;
     const retData = {
-      email: validObj,
+      username: validObj,
       password: validObj,
       isValid
     };
     if (isSubmitted) {
-      const { email, password } = this.state;
-      if (!email) {
-        retData.email = {
+      const { username, password } = this.state;
+      if (!username) {
+        retData.username = {
           isValid: false,
           message: "Email is required"
         };
         isValid = false;
-      } else if (email && !commonFunctions.validateEmail(email)) {
-        retData.email = {
+      } else if (username && !commonFunctions.validateEmail(username)) {
+        retData.username = {
           isValid: false,
           message: "Enter valid email"
         };
@@ -98,21 +121,26 @@ class Login extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.user_login_status !== this.props.user_login_status && this.props.user_login_status === status.SUCCESS) {
       const { user } = this.props;
-      if (user && user.userDetails && !user.userDetails.emailVerified) {
+      console.log("user : ",user);
+      if (user && user.info.user && !user.info.user.username) {
         this.props.history.push(`/prelogin/register/${user.token}`);
       } else {
-        localStorage.setItem("userData", JSON.stringify(this.props.user));
+
+        console.log("user : ",user);
+        localStorage.setItem("userInfo", JSON.stringify(this.props.user));
+        console.log("userInfo   :: ",localStorage.getItem("userInfo"));
         this.props.history.push('/postlogin/dashboard');
-        if (user && user.userDetails) {
-          GA.dispatchGAEvent(eventCategories.USER, eventActions.LOGIN, `organization=${user.userDetails.organizationId.name};id=${user.userDetails._id}`);
+        if (user && user.info.user) {
+          GA.dispatchGAEvent(eventCategories.USER, eventActions.LOGIN, `organization=${user.info.user.organization.id};id=${user.info.user._id}`);
         }
       }
     }
   }
 
   render() {
-    const { email, password } = this.state;
+    const { username, password, isSubmitted } = this.state;
     const { user_login_status } = this.props;
+    const errorData = this.validate(isSubmitted);
     return (
       <div className="login-wrapper">
         <Box mb={6}>
@@ -127,14 +155,17 @@ class Login extends Component {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
+                  id="username"
                   label="Email Address"
-                  name="email"
+                  name="username"
                   autoComplete="email"
                   autoFocus
-                  value={email}
+                  value={username}
                   onChange={this.handleStateChange}
                 />
+                <span className="text-danger">
+                            {errorData.username.message}
+                          </span>
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -148,6 +179,9 @@ class Login extends Component {
                   value={password}
                   onChange={this.handleStateChange}
                 />
+                                <span className="text-danger">
+                            {errorData.password.message}
+                          </span>
                 <Button
                   type="submit"
                   fullWidth
@@ -172,6 +206,7 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log("State : ",state);
   const { user_login_status, user } = state.procurement;
   return {
     user_login_status,
