@@ -380,12 +380,12 @@ class createInvoicePurchaseOrder extends Component {
               </div>
               <div className="purchase-order-head">
                 <div className="row d-flex align-items-center justify-content-end">
-                  <div className="col-xl-6 col-lg-6 col-md-5 col-sm-5 col-12">
+                  <div className="col-xl-6 col-lg-6 col-md-5 col-sm-4 col-12">
                     <div className="head-left">
                       <h3>Purchase order #{this.oredrId}</h3>
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-6 col-md-7 col-sm-7 col-12">
+                  <div className="col-xl-6 col-lg-6 col-md-7 col-sm-8 col-12">
                     <div className="head-right">
                       <ul>
                         <li>
@@ -889,6 +889,9 @@ const mapStateToProps = (state) => {
     update_purchase_status,
     delete_PO_list_item_status
   } = state.procurement;
+
+
+  console.log("pruchase oreder",purchase_order_data)
   return {
     purchase_order_status,
     purchase_order_data,

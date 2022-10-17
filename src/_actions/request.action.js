@@ -18,29 +18,33 @@ function getRequestData(data) {
       })
     );
     requestServices.getRequestData(data).then(
-      response => {
-        const code = response.status ;
+      (response) => {
+        const code = response.status;
         if (code === 200) {
-            response.json().then(data => {
-                dispatch(dispatchFunction({
-                    type: status.SUCCESS,
-                    data: {
-                        get_request_status: status.SUCCESS,
-                        request_data: data.object
-                    }
-                }));
-            });
-        } else {
-            dispatch(dispatchFunction({
-                type: status.FAILURE,
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
                 data: {
-                    get_request_status: status.FAILURE,
-                    request_data: response
-                }
-            }));
-            alert.error(response.message);
+                  get_request_status: status.SUCCESS,
+                  request_data: data.object,
+                },
+              })
+            );
+          });
+        } else {
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                get_request_status: status.FAILURE,
+                request_data: response,
+              },
+            })
+          );
+          alert.error(response.message);
         }
-    },
+      },
       // (response) => {
       //   if (response.code == 200) {
       //     dispatch(
@@ -82,7 +86,6 @@ function getRequestData(data) {
 }
 
 function dispatchFunction(data) {
-
   return {
     type: data.type,
     data: data.data,

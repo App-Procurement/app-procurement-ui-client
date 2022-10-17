@@ -122,24 +122,26 @@ class ChatRoom extends React.Component {
     }
     return retData;
   };
-
   handleChange = (e) => {
     const { value, name } = e.target;
+    console.log(value, "name", name);
     this.setState({ [name]: value });
     let contacts = JSON.parse(JSON.stringify(this.props.get_contacts_data));
-    let searchContacts = [];
-    if (name === "searchChat" && value) {
-      for (let i = 0; i < contacts.length; i++) {
-        if (
-          contacts[i].name.toLowerCase().indexOf(value.toLowerCase()) !== -1
-        ) {
-          searchContacts.push(contacts[i]);
-        }
-      }
-    } else {
-      searchContacts = contacts;
-    }
-    this.setState({ rooms: searchContacts });
+    console.log(contacts);
+    // let searchContacts = [];
+    // if (name === "searchChat" && value) {
+    //   for (let i = 0; i < contacts.length; i++) {
+    //     if (
+    //       contacts[i].name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    //     ) {
+    //       searchContacts.push(contacts[i]);
+    //     }
+    //   }
+    // } else {
+    //   searchContacts = contacts;
+    // }
+    // this.setState({ rooms: searchContacts });
+  
   };
 
   sendMessage = () => {

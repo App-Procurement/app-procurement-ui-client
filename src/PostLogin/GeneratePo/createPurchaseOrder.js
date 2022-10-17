@@ -379,12 +379,12 @@ class CreatePurchaseOrder extends Component {
             </div>
             <div className="purchase-order-head">
               <div className="row d-flex align-items-center justify-content-end">
-                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-5 col-12">
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-4 col-12">
                   <div className="head-left">
                     <h3>Purchase order #{this.oredrId}</h3>
                   </div>
                 </div>
-                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-7 col-12">
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-8 col-12">
                   <div className="head-right">
                     <ul>
                       <li>

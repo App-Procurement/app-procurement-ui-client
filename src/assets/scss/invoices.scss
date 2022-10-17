@@ -9,12 +9,20 @@
             h4 {
                 margin: 0;
                 color: $buttons-bg;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             span {
                 font-size: 16px;
                 line-height: 24px;
                 color: #8f8f8f;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
@@ -346,6 +354,10 @@
                 h3 {
                     color: $heading-text-color;
                     margin: 0;
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             }
 
@@ -1684,8 +1696,8 @@
             }
 
             .head-right {
-                float: left;
-                margin-top: 20px;
+                text-align: end;
+                // margin-top: 20px;
             }
         }
 

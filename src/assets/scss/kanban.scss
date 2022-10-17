@@ -1,3 +1,25 @@
+// .task-menu {
+//         max-width: 125px;
+//         font-size: 14px;
+//         color: #64547a;
+//         font-weight: 600;
+//         background-color: #ffffff;
+//         position: absolute;
+//         right: 0px;
+//         top: 18px;
+//         z-index: 10;
+//     }
+
+//     .task-menu-item {
+//         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+//         padding: 6px 10px;
+
+//         a {
+//             cursor: pointer;
+//         }
+//     }
+
+
 .kanban-contant {
     .kanban-head {
         margin: 0 0 30px 0;
@@ -243,6 +265,45 @@
         .suppliers-head-section {
             margin-bottom: 20px;
 
+            .task-to-do {
+                &:before {
+                    content: "";
+                    width: 10px;
+                    height: 100%;
+                    background: #ffde17;
+                    position: absolute;
+                    top: 0;
+                    left: 15px;
+                    border-radius: 5px 0 0 5px;
+                }
+            }
+
+            .task-in-progress {
+                &:before {
+                    content: "";
+                    width: 10px;
+                    height: 100%;
+                    background: #ffa600;
+                    position: absolute;
+                    top: 0;
+                    left: 15px;
+                    border-radius: 5px 0 0 5px;
+                }
+            }
+
+            .task-complete {
+                &:before {
+                    content: "";
+                    width: 10px;
+                    height: 100%;
+                    background: #6318c3;
+                    position: absolute;
+                    top: 0;
+                    left: 15px;
+                    border-radius: 5px 0 0 5px;
+                }
+            }
+
             .progress-count {
                 width: 100%;
                 height: 60px;
@@ -258,16 +319,16 @@
                     margin: 0;
                 }
 
-                &:before {
-                    content: "";
-                    width: 10px;
-                    height: 100%;
-                    background: #6318c3;
-                    position: absolute;
-                    top: 0;
-                    left: 15px;
-                    border-radius: 5px 0 0 5px;
-                }
+                // &:before {
+                //     content: "";
+                //     width: 10px;
+                //     height: 100%;
+                //     background: #6318c3;
+                //     position: absolute;
+                //     top: 0;
+                //     left: 15px;
+                //     border-radius: 5px 0 0 5px;
+                // }
             }
         }
 
@@ -276,6 +337,7 @@
                 margin-top: 10px;
                 margin-bottom: 20px;
                 padding: 20px;
+                min-height: 280px;
                 border-radius: 5px;
                 cursor: pointer;
                 background-color: #ffffff;
@@ -329,113 +391,179 @@
                             color: #F44336;
                         }
                     }
+
+                    .task-menu {
+                        max-width: 140px;
+                        position: absolute;
+                        top: 30px;
+                        right: -15px;
+                        z-index: 10;
+                        background: $body-box-bg;
+                        box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+                        -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+                        -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+                        ul {
+                            padding: 0;
+                            margin: 0;
+                            display: block;
+
+                            li {
+                                font-size: 12px;
+                                line-height: 16px;
+                                font-weight: 500;
+                                color: $text-color;
+                                display: block;
+                                list-style: none;
+                                padding: 5px 10px;
+                                border-bottom: 1px solid $icon-color;
+
+                                i {
+                                    margin-right: 8px;
+                                    color: $text-color;
+                                }
+
+                                &:last-child {
+                                    border-bottom: none;
+                                }
+                            }
+                        }
+                    }
                 }
 
-                .update-status-contant {
-                    width: 100%;
-                    display: block;
-                    margin-bottom: 10px;
-
-                    p {
-                        font-size: 14px;
-                        line-height: 18px;
-                        color: $icon-color;
-                        margin: 0 15px 0 0;
-                        display: inline-block;
-                    }
-
-                    .status-btn {
-                        border-radius: 15px;
-                        font-size: 10px;
-                        padding: 2px 20px;
-                        background: #0F9D58;
-                        border: none;
-                        color: $button-text-color;
-                        text-transform: capitalize;
-                    }
-                }
-
-                .user-contant {
-                    .department {
-                        font-size: 16px;
-                        font-weight: 500;
-                        line-height: 20px;
-                        color: #000000;
-                        padding-top: 0px;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        margin-bottom: 5px;
-                    }
-
-                    p {
-                        font-size: 12px;
-                        line-height: 16px;
-                        color: $text-color;
+                .suppliers-details {
+                    .update-status-contant {
+                        width: 100%;
+                        display: block;
                         margin-bottom: 10px;
+
+                        p {
+                            font-size: 14px;
+                            line-height: 18px;
+                            color: $icon-color;
+                            margin: 0 15px 0 0;
+                            display: inline-block;
+                        }
+
+                        .status-btn {
+                            border-radius: 15px;
+                            font-size: 10px;
+                            padding: 2px 20px;
+                            background: #0F9D58;
+                            border: none;
+                            color: $button-text-color;
+                            text-transform: capitalize;
+                        }
+
+                        .in-progress-btn {
+                            border-radius: 15px;
+                            font-size: 10px;
+                            padding: 2px 20px;
+                            background: #FFA600;
+                            border: none;
+                            color: $button-text-color;
+                            text-transform: capitalize;
+                        }
+
+                        .complete-btn {
+                            border-radius: 15px;
+                            font-size: 10px;
+                            padding: 2px 20px;
+                            background: rgb(89, 26, 169);
+                            border: none;
+                            color: $button-text-color;
+                            text-transform: capitalize;
+                        }
                     }
-                }
 
-                .get-proses {
-                    padding: 0 0 10px 0;
-
-                    .progress-text {
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        margin-bottom: 8px;
+                    .user-contant {
+                        .department {
+                            font-size: 16px;
+                            font-weight: 500;
+                            line-height: 20px;
+                            color: #000000;
+                            padding-top: 0px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            margin-bottom: 5px;
+                        }
 
                         p {
                             font-size: 12px;
-                            line-height: 16px;
-                            font-weight: 500;
-                            color: $icon-color;
-                            margin: 0;
+                            color: #202020;
+                            margin-bottom: 10px;
+                            line-height: 1.5em;
+                            overflow: hidden;
+                            display: -webkit-box;
+                            max-width: 100%;
+                            -webkit-line-clamp: 3;
+                            -webkit-box-orient: vertical;
+                            text-overflow: ellipsis;
+                        }
+                    }
+
+                    .get-proses {
+                        padding: 0 0 10px 0;
+
+                        .progress-text {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            margin-bottom: 8px;
+
+                            p {
+                                font-size: 12px;
+                                line-height: 16px;
+                                font-weight: 500;
+                                color: $icon-color;
+                                margin: 0;
+                            }
+
+                            span {
+                                font-size: 12px;
+                                line-height: 16px;
+                                font-weight: 500;
+                                color: $icon-color;
+                                margin: 0;
+                            }
+                        }
+
+                        .MuiLinearProgress-barColorPrimary {
+                            background-color: #ffab2e;
+                        }
+
+                        .MuiLinearProgress-root {
+                            height: 7px;
+                            border-radius: 5px;
+                        }
+                    }
+
+                    .user-text {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        .user-images {
+                            display: flex;
+                            align-items: center;
+                            justify-content: start;
+
+                            i {
+                                margin-right: 5px;
+                                font-size: 25px;
+                                color: $icon-color;
+                            }
                         }
 
                         span {
+                            float: right;
                             font-size: 12px;
-                            line-height: 16px;
+                            line-height: 36px;
                             font-weight: 500;
-                            color: $icon-color;
-                            margin: 0;
+                            color: #8f8f8f;
+                            vertical-align: middle;
                         }
-                    }
-
-                    .MuiLinearProgress-barColorPrimary {
-                        background-color: #ffab2e;
-                    }
-
-                    .MuiLinearProgress-root {
-                        height: 7px;
-                        border-radius: 5px;
-                    }
-                }
-
-                .user-text {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-
-                    .user-images {
-                        display: flex;
-                        align-items: center;
-                        justify-content: start;
-
-                        i {
-                            margin-right: 5px;
-                            font-size: 25px;
-                            color: $icon-color;
-                        }
-                    }
-
-                    span {
-                        float: right;
-                        font-size: 12px;
-                        line-height: 36px;
-                        font-weight: 500;
-                        color: #8f8f8f;
-                        vertical-align: middle;
                     }
                 }
             }

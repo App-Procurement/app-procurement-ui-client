@@ -115,7 +115,7 @@ class ManageSupplier extends Component {
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
                     onClick={() =>
-                      this.setState({ supplierActiveIndex:this.state.supplierActiveIndex===index?-1: index })
+                      this.setState({ supplierActiveIndex: this.state.supplierActiveIndex === index ? -1 : index })
                     }
                   ></i>
                   {this.state.supplierActiveIndex === index && (
@@ -259,7 +259,7 @@ class ManageSupplier extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ productActiveIndex:this.state.productActiveIndex===index?-1: index })}
+                    onClick={() => this.setState({ productActiveIndex: this.state.productActiveIndex === index ? -1 : index })}
                   ></i>
                   {this.state.productActiveIndex === index && (
                     <div className="toggale">
@@ -330,7 +330,7 @@ class ManageSupplier extends Component {
     }
     if (
       this.props.supplier_category_list_status !==
-        prevProps.supplier_category_list_status &&
+      prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -343,28 +343,28 @@ class ManageSupplier extends Component {
     }
     if (
       this.props.update_suplier_product_status !==
-        prevProps.update_suplier_product_status &&
+      prevProps.update_suplier_product_status &&
       this.props.update_suplier_product_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getProductList());
     }
     if (
       this.props.update_suplier_list_status !==
-        prevProps.update_suplier_list_status &&
+      prevProps.update_suplier_list_status &&
       this.props.update_suplier_list_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getSupplierList());
     }
     if (
       this.props.delete_suplier_list_status !==
-        prevProps.delete_suplier_list_status &&
+      prevProps.delete_suplier_list_status &&
       this.props.delete_suplier_list_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getSupplierList());
     }
     if (
       this.props.delete_suplier_product_status !==
-        prevProps.delete_suplier_product_status &&
+      prevProps.delete_suplier_product_status &&
       this.props.delete_suplier_product_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getProductList());
@@ -651,26 +651,26 @@ class ManageSupplier extends Component {
             <div className="row d-flex align-items-center justify-content-start">
               <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3">
                 <div className="progress-box">
-                  <div className="progress-content">
-                    <div className="title">
-                      <Link to="/postlogin/managesupplier/activesuppliers">
+                  <Link to="/postlogin/managesupplier/activesuppliers">
+                    <div className="progress-content">
+                      <div className="title">
                         Active Supplier
-                      </Link>
+                      </div>
+                      <h4>30</h4>
                     </div>
-                    <h4>30</h4>
-                  </div>
+                  </Link>
                 </div>
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3">
                 <div className="progress-box">
-                  <div className="progress-content">
-                    <div className="title">
-                      <Link to="/postlogin/managesupplier/activeproductcatalogue">
+                  <Link to="/postlogin/managesupplier/activeproductcatalogue">
+                    <div className="progress-content">
+                      <div className="title">
                         Active Product Catalogue
-                      </Link>
+                      </div>
+                      <h4>105</h4>
                     </div>
-                    <h4>105</h4>
-                  </div>
+                  </Link>
                 </div>
               </div>
             </div>

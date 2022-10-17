@@ -49,9 +49,9 @@
         .modal-close-btn {
             padding: 3px 3px;
             min-width: 0;
-            background: transparent;
+            background: $cancel-buttons-bg;
             border-radius: 50%;
-            color: #999999;
+            color: $body-box-bg;
         }
     }
 
@@ -284,9 +284,9 @@
         .modal-close-btn {
             padding: 3px 3px;
             min-width: 0;
-            background: #FF3B5F;
+            background: $cancel-buttons-bg;
             border-radius: 50%;
-            color: #ffffff;
+            color: $button-text-color;
         }
     }
 
@@ -387,6 +387,7 @@
                         display: inline-block;
                         margin-right: 15px;
                         list-style: none;
+                        border-bottom: none;
 
                         .delete-btn {
                             background: #FF3A3A !important;
@@ -435,6 +436,12 @@
                             border-radius: 10px;
                             margin-right: 25px;
                             margin-bottom: 20px;
+                        }
+
+                        .roleSelected {
+                            color: $button-text-color !important;
+                            background: $buttons-bg !important;
+
                         }
 
                         .green-btn {
@@ -519,9 +526,9 @@
         .modal-close-btn {
             padding: 3px 3px;
             min-width: 0;
-            background: transparent;
+            background: $cancel-buttons-bg;
             border-radius: 50%;
-            color: #999999;
+            color: $body-box-bg;
         }
     }
 
@@ -530,17 +537,31 @@
             margin-top: 20px;
 
             .search-bar {
+                position: relative;
+
                 .control-form {
                     width: 100%;
                     border: none;
                     text-decoration: underline;
                     background: #ffffff;
                     height: 42px;
-                    padding: 12px 25px 12px 25px;
+                    padding: 12px 40px 12px 25px;
                     line-height: 42px;
                     font-size: 16px;
                     border-radius: 8px;
                     box-shadow: rgb(0 0 0 / 11%) 0px 2px 4px, rgb(0 0 0 / 15%) 0px 2px 4px;
+                }
+
+                .delete-btn {
+                    position: absolute;
+                    top: 6.5px;
+                    right: 10px;
+                    color: #FF3A3A;
+                    padding: 8px;
+                    min-width: 0;
+                    background: transparent;
+                    box-shadow: none;
+                    border-radius: 50%;
                 }
             }
         }
@@ -551,20 +572,16 @@
             align-items: center;
             justify-content: space-between;
 
-            .add-another-text {
-                span {
-                    display: inline-block;
-                    margin-right: 10px;
-                    color: #959191;
-                }
+            .add-another-buttons {
+                .add-btn {
+                    color: $icon-color;
+                    box-shadow: none;
+                    text-transform: capitalize;
+                    background: transparent !important;
 
-                p {
-                    font-size: 16px;
-                    line-height: 20px;
-                    font-weight: 500;
-                    color: #959191;
-                    display: inline-block;
-                    margin: 0;
+                    i {
+                        margin-right: 5px;
+                    }
                 }
             }
         }
@@ -584,7 +601,11 @@
             color: $heading-text-color;
 
             .close-icon {
-                color: $icon-color;
+                min-width: 0;
+                border-radius: 50%;
+                padding: 3px 3px;
+                color: $button-text-color;
+                background: $cancel-buttons-bg;
             }
         }
     }
@@ -592,6 +613,8 @@
     .add-task-dialog-content {
         display: block;
         width: 100%;
+        max-height: 100%;
+        overflow-y: initial;
 
         .tast-name-contant {
             display: block;
@@ -736,6 +759,23 @@
         }
     }
 
+    .top-header {
+        width: 100%;
+        display: block;
+
+        h2 {
+            display: block;
+
+            .close-icon {
+                min-width: 0;
+                border-radius: 50%;
+                padding: 3px 3px;
+                color: $button-text-color;
+                background: $cancel-buttons-bg;
+            }
+        }
+    }
+
     .suppliers-list-dialog-content {
         display: block;
         width: 100%;
@@ -815,6 +855,7 @@
                             list-style: none;
                             display: inline-block;
                             margin-right: 20px;
+                            border-bottom: none;
 
                             p {
                                 font-size: 14px;
@@ -870,6 +911,7 @@
                                 margin: 0;
                                 list-style: none;
                                 margin-bottom: 15px;
+                                border-bottom: none;
 
                                 p {
                                     font-size: 14px;
@@ -1234,6 +1276,15 @@
         align-items: center;
         justify-content: space-between;
         background-color: #F5F6FA;
+        padding-right: 24px;
+
+        .modal-close-btn {
+            min-width: 0;
+            border-radius: 50%;
+            padding: 3px 3px;
+            color: $button-text-color;
+            background: $cancel-buttons-bg;
+        }
     }
 
     .calender-dialog-content {
@@ -1262,10 +1313,7 @@
             }
 
             .event-type {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-right: 30px;
+                margin-right: 25px;
 
                 .redio-btn {
                     width: 20px;
@@ -1277,6 +1325,10 @@
                     font-size: 14px;
                     line-height: 18px;
                     margin: 0 0 0 10px;
+                }
+
+                &:last-child {
+                    margin-right: 0;
                 }
             }
 
@@ -1356,6 +1408,447 @@
 
     }
 }
+
+.import-item-dialog {
+    width: 100%;
+
+    .additem-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 35px 15px 24px;
+        z-index: 10;
+        box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+
+        .dialog-heading {
+            display: inline-block;
+            padding: 0;
+            color: $text-color;
+        }
+
+        .modal-close-btn {
+            padding: 3px 3px;
+            min-width: 0;
+            background: $cancel-buttons-bg;
+            border-radius: 50%;
+            color: $button-text-color;
+        }
+    }
+
+    .MuiDialog-container {
+        .MuiDialog-paperWidthSm {
+            max-width: 100%;
+            width: 60%;
+            background-color: $body-box-bg;
+            border-radius: 0 !important;
+            border: 2px solid #000;
+
+            .addNewItemDialogContent {
+                width: 100%;
+
+                .custom-table .data-table-parent {
+                    background: #ffffff;
+                }
+
+                .supplier-inner-content {
+                    padding: 25px;
+                    border-radius: 10px;
+                    background: $body-box-bg;
+
+                    .heading {
+                        h4 {
+                            color: $text-color;
+                            margin-bottom: 20px;
+                        }
+
+                        h5 {
+                            color: $text-color;
+                            margin-bottom: 20px;
+                        }
+                    }
+
+                    .download-btn {
+                        margin: 25px 0;
+
+                        a {
+                            .new-requisition-btn {
+                                width: 280px;
+                                height: 45px;
+                                border-radius: 5px;
+                                background: $buttons-bg;
+                                color: #ffffff;
+                                text-transform: capitalize;
+                            }
+
+                            &:hover {
+                                text-decoration: none;
+                            }
+                        }
+
+                        .new-requisition-btn {
+                            width: 280px;
+                            height: 45px;
+                            border-radius: 5px;
+                            background: $buttons-bg;
+                            color: #ffffff;
+                            text-transform: capitalize;
+                        }
+
+                    }
+
+                    .upload-file-box {
+
+                        .attach {
+                            position: relative;
+                            font-size: 14px;
+                            font-weight: 500;
+                            width: 80%;
+                            padding: 20px;
+                            text-align: center;
+                            // height: 150px;
+                            color: #90898a;
+                            border-radius: 8px;
+                            display: inline-block;
+                            background-color: #f7f9fd;
+                            border: 1px dashed #d1d1d1;
+
+                            .image {
+                                position: relative;
+
+                                .file-inner-content {
+                                    position: absolute;
+                                    margin: 0 auto;
+                                    width: 100%;
+                                    right: 0px;
+                                    bottom: -12px;
+
+                                    P {
+                                        font-size: 20px;
+                                        font-weight: 500;
+                                        line-height: 26px;
+                                        color: $buttons-bg;
+                                        margin: 0 0 10px 0;
+
+                                    }
+                                }
+                            }
+
+                            .select-button {
+                                .new-requisition-btn {
+                                    width: 280px;
+                                    height: 45px;
+                                    margin-top: 30px;
+                                    border-radius: 5px;
+                                    background: $buttons-bg;
+                                    color: #ffffff;
+                                    text-transform: capitalize;
+                                }
+                            }
+
+                            input {
+                                opacity: 0;
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                height: 100%;
+                                cursor: pointer;
+                                text-indent: -9999px;
+                                z-index: 1;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+}
+
+.create-new-role-dialog {
+    &.edit-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                width: 400px;
+            }
+        }
+    }
+
+    &.create-step-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                width: 500px;
+                background-color: #F5F6FA;
+            }
+        }
+    }
+
+    .custom-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background: $body-box-bg;
+
+        .dialog-heading {
+            display: inline-block;
+            padding: 0;
+        }
+
+        .modal-close-btn {
+            padding: 3px 3px;
+            min-width: 0;
+            background: transparent;
+            border-radius: 50%;
+            color: $button-text-color;
+            background: $cancel-buttons-bg;
+        }
+    }
+
+    .custom-dialog-content {
+        padding: 15px 20px;
+
+        .invite-dialog-form {
+            width: 100%;
+            display: block;
+
+            .search-bar {
+                label {
+                    font-size: 14px;
+                    line-height: 18px;
+                    font-weight: 500;
+                    color: #727272;
+                    margin-bottom: 8px;
+                }
+
+                .control-form {
+                    width: 100%;
+                    border: none;
+                    background: #ffffff;
+                    height: 42px;
+                    padding: 12px 15px 12px 15px;
+                    line-height: 42px;
+                    font-size: 16px;
+                    border-radius: 8px;
+                    //box-shadow: rgb(0 0 0 / 11%) 0px 0px 1px, rgb(0 0 0 / 15%) 0px 2px 4px;
+                }
+
+                textarea {
+                    border: none;
+                    border-radius: 8px;
+                    height: 100px;
+                }
+            }
+        }
+
+        .invite-dialog-bottom-content {
+            margin-top: 25px;
+        }
+    }
+}
+
+.invite-supplier-dialog {
+    &.edit-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                width: 400px;
+            }
+        }
+    }
+
+    &.create-step-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                width: 500px;
+                // padding: 15px 20px;
+                background-color: #F5F6FA;
+            }
+        }
+    }
+
+    .custom-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background: $body-box-bg;
+
+        .dialog-heading {
+            display: inline-block;
+            padding: 0;
+            color: #252525;
+        }
+
+        .modal-close-btn {
+            padding: 3px 3px;
+            min-width: 0;
+            background: $cancel-buttons-bg;
+            border-radius: 50%;
+            color: $body-box-bg;
+        }
+    }
+
+    .custom-dialog-content {
+        padding: 20px 20px;
+        background-color: #F5F6FA;
+
+        .invite-dialog-form {
+            .search-bar {
+                position: relative;
+
+                .control-form {
+                    width: 100%;
+                    border: none;
+                    text-decoration: underline;
+                    background: #ffffff;
+                    height: 42px;
+                    padding: 12px 40px 12px 25px;
+                    line-height: 42px;
+                    font-size: 16px;
+                    border-radius: 8px;
+                    box-shadow: rgb(0 0 0 / 11%) 0px 2px 4px, rgb(0 0 0 / 15%) 0px 2px 4px;
+                }
+
+                .delete-btn {
+                    position: absolute;
+                    top: 6.5px;
+                    right: 10px;
+                    color: #FF3A3A;
+                    padding: 8px;
+                    min-width: 0;
+                    background: transparent;
+                    box-shadow: none;
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        .invite-dialog-bottom-content {
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .add-another-buttons {
+                .add-btn {
+                    color: $icon-color;
+                    box-shadow: none;
+                    text-transform: capitalize;
+                    background: transparent !important;
+
+                    i {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.rfq-add-supplier-dialog {
+    width: 100%;
+
+    .MuiDialog-container {
+        .MuiDialog-paperWidthSm {
+            max-width: 100%;
+            width: 50%;
+        }
+    }
+
+    &.create-step-dialog {
+        .MuiDialog-container {
+            .MuiDialog-paperWidthSm {
+                width: 600px;
+                background-color: #F5F6FA;
+            }
+        }
+    }
+
+    .custom-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $body-box-bg;
+        padding: 15px 15px;
+
+        .dialog-heading {
+            display: inline-block;
+            padding: 0;
+        }
+
+        .modal-close-btn {
+            padding: 3px 3px;
+            min-width: 0;
+            background: $cancel-buttons-bg;
+            border-radius: 50%;
+            color: $body-box-bg;
+        }
+    }
+
+    .custom-dialog-content {
+        padding: 20px 30px;
+
+        .search-bar {
+            position: relative;
+
+            .search-supplier {}
+
+            .form-group {
+                .form-control {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #393939;
+                    padding: 8px 40px 8px 15px;
+                    border-radius: 8px;
+                    background-color: #ffffff;
+                    border: 1px solid #f5f5f5;
+                    width: 80%;
+                    height: 50px;
+                    line-height: 50px;
+                }
+            }
+
+            .search-icon {
+                position: absolute;
+                top: 13px;
+                right: 120px;
+                border: none;
+                color: $buttons-bg;
+                background: transparent;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+
+            .col-form-label {
+                padding-top: 0;
+                font-weight: 600;
+            }
+
+            .form-control {
+                font-size: 14px;
+                font-weight: 500;
+                color: #393939;
+                padding: 8px 15px;
+                border-radius: 8px;
+                background-color: $body-box-bg;
+                border: 1px solid #f5f5f5;
+                width: 100%;
+                height: 50px;
+                line-height: 50px;
+
+                &:focus {
+                    border: 3px solid #dfc3f7;
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+}
+
 
 @media (max-width: 767px) {
     .roles-permissions-custom-dialog {

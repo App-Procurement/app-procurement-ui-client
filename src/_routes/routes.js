@@ -67,6 +67,9 @@ const viewRequest = React.lazy(() => import('../PostLogin/Request/viewRequest'))
 const Budgets = React.lazy(() => import('../PostLogin/Budgets'));
 const Products = React.lazy(() => import('../PostLogin/Products'));
 const AddProducts = React.lazy(() => import('../PostLogin/Products/AddProducts'));
+const RequestForQuotation = React.lazy(() => import('../PostLogin/RequestForQuotation'));
+const CreateRfq = React.lazy(() => import('../PostLogin/RequestForQuotation/CreateRfq'));
+const RfqDetails = React.lazy(() => import('../PostLogin/RequestForQuotation/RfqDetails'));
 
 
 const routes = [
@@ -444,6 +447,24 @@ const routes = [
 		exact: true,
 		name: 'AddProducts',
 		component: AddProducts
+	},
+	{
+		path: '/postlogin/requestforquotation/',
+		exact: true,
+		name: 'RequestForQuotation',
+		component: RequestForQuotation
+	},
+	{
+		path: '/postlogin/requestforquotation/createrfq',
+		exact: true,
+		name: 'CreateRfq',
+		component: CreateRfq
+	},
+	{
+		path: '/postlogin/requestforquotation/rfqdetails',
+		exact: true,
+		name: 'RfqDetails',
+		component: RfqDetails
 	},
 
 

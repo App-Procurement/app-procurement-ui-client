@@ -16,11 +16,13 @@ import { t } from "i18next";
 import Chat from "../../_components/ChatBox";
 import Dialog from "@material-ui/core/Dialog";
 // import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
+import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
 import AddItemList from "./AddItemList";
 import { Link } from "react-router-dom";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import AddItemImg from "../../assets/images/request/add-item-img.png";
 
 class ViewRequest extends Component {
   inputOpenFileRef;
@@ -44,8 +46,8 @@ class ViewRequest extends Component {
         accountType: "admin",
       },
       formData: {
-        dueDate: "yyyy-mm-dd",
-        deliveryDate: "yyyy-mm-dd",
+        dueDate: "",
+        deliveryDate: "",
         location: "",
         department: "",
         request: "",
@@ -57,6 +59,7 @@ class ViewRequest extends Component {
       selectedFile: {},
       openDialog: false,
       openEditDialog: false,
+      openImportItemDialog: false,
       itemList: [],
       columns: [
         {
@@ -196,7 +199,7 @@ class ViewRequest extends Component {
       "",
       "",
       {
-        onFormSubmitted: (formName) => {},
+        onFormSubmitted: (formName) => { },
         onFormCompleted: (formName, response) => {
           this.setUploadedDocID(response);
         },
@@ -241,7 +244,7 @@ class ViewRequest extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.props.request_for_purpose_status !==
-        prevProps.request_for_purpose_status &&
+      prevProps.request_for_purpose_status &&
       this.props.request_for_purpose_status === status.SUCCESS
     ) {
       if (
@@ -281,7 +284,7 @@ class ViewRequest extends Component {
     }
     if (
       this.props.supplier_category_list_status !==
-        prevProps.supplier_category_list_status &&
+      prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -301,7 +304,7 @@ class ViewRequest extends Component {
 
   validate = (isSubmitted) => {
     const validObj = {
-      isValid: true,
+      isValid: "",
       message: "",
     };
     let isValid = true;
@@ -582,6 +585,13 @@ class ViewRequest extends Component {
       });
     }
   };
+
+  openImportItemPopup = () => {
+    this.setState({
+      openImportItemDialog: !this.state.openImportItemDialog,
+    });
+  };
+
   render() {
     const {
       formData,
@@ -598,6 +608,7 @@ class ViewRequest extends Component {
       uploadedFileList,
       supplierAndCategoryList,
       update,
+      openImportItemDialog,
     } = this.state;
     const errorData = this.validate(isSubmitted);
     const updateForm = this.validateUpdate(update);
@@ -611,7 +622,7 @@ class ViewRequest extends Component {
               View Request
             </div>
             <div className="requisitions-filter">
-              <div className="form-group row col-form-group">
+              <div className="form-group row col-form-group mb-md-4">
                 <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
                   {t("Due Date")}
                 </label>
@@ -624,6 +635,9 @@ class ViewRequest extends Component {
                     />
                     <CalendarTodayTwoToneIcon className="calendar-icon" />
                   </div>
+                  <span className="d-block w-100 text-danger">
+                    {errorData.dueDate.message}
+                  </span>
                 </div>
                 <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
                   {t("Delivery Date")}
@@ -639,73 +653,82 @@ class ViewRequest extends Component {
                     />
                     <CalendarTodayTwoToneIcon className="calendar-icon" />
                   </div>
+                  <span className="d-block w-100 text-danger">
+                    {errorData.deliveryDate.message}
+                  </span>
                 </div>
               </div>
-              <div className="form-group row col-form-group">
+              <div className="form-group row col-form-group mb-md-4">
                 <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
                   {t("Location")}
                 </label>
                 <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
-                  <FormControl className="select-menu">
-                    <NativeSelect
-                      name="location"
-                      value={formData.location}
-                      onChange={this.handleStateChange}
+                  <div className="new-requeust-massge">
+                    <FormControl className="select-menu">
+                      <NativeSelect
+                        name="location"
+                        value={formData.location}
+                        onChange={this.handleStateChange}
                       // isvalid={errorData.location.isValid}
-                    >
-                      <option value={"Main Office Usa"}>Main Office USA</option>
-                      <option value={"abc"}>abc</option>
-                      <option value={"def"}>def</option>
-                      <option value={"abc"}>abc</option>
-                    </NativeSelect>
-                  </FormControl>
-                  <span className="d-block w-100 text-danger">
-                    {errorData.location.message}
-                  </span>
+                      >
+                        <option value={"Main Office Usa"}>Main Office USA</option>
+                        <option value={"abc"}>abc</option>
+                        <option value={"def"}>def</option>
+                        <option value={"abc"}>abc</option>
+                      </NativeSelect>
+                    </FormControl>
+                    <span className="d-block w-100 text-danger">
+                      {errorData.location.message}
+                    </span>
+                  </div>
                 </div>
                 <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
                   {t("Department")}
                 </label>
                 <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
-                  <FormControl className="select-menu">
-                    <NativeSelect
-                      name="department"
-                      value={formData.department}
-                      onChange={this.handleStateChange}
+                  <div className="new-requeust-massge">
+                    <FormControl className="select-menu">
+                      <NativeSelect
+                        name="department"
+                        value={formData.department}
+                        onChange={this.handleStateChange}
                       // isvalid={errorData.department.isValid}
-                    >
-                      <option value={"HR Department"}>HR Department</option>
-                      <option value={"abc"}>abc</option>
-                      <option value={"def"}>def</option>
-                      <option value={"abc"}>abc</option>
-                    </NativeSelect>
-                  </FormControl>
-                  <span className="d-block w-100 text-danger">
-                    {errorData.department.message}
-                  </span>
+                      >
+                        <option value={"HR Department"}>HR Department</option>
+                        <option value={"abc"}>abc</option>
+                        <option value={"def"}>def</option>
+                        <option value={"abc"}>abc</option>
+                      </NativeSelect>
+                    </FormControl>
+                    <span className="d-block w-100 text-danger">
+                      {errorData.department.message}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div className="form-group row col-form-group">
+              <div className="form-group row col-form-group mb-md-4">
                 <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
                   {t("Request Type")}
                 </label>
                 <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
-                  <FormControl className="select-menu">
-                    <NativeSelect
-                      name="request"
-                      value={formData.request}
-                      onChange={this.handleStateChange}
+                  <div className="new-requeust-massge">
+                    <FormControl className="select-menu">
+                      <NativeSelect
+                        name="request"
+                        value={formData.request}
+                        onChange={this.handleStateChange}
                       // isvalid={errorData.request.isValid}
-                    >
-                      <option value="Purchase">Purchase</option>
-                      <option value={"abc"}>abc</option>
-                      <option value={"def"}>def</option>
-                      <option value={"abc"}>abc</option>
-                    </NativeSelect>
-                  </FormControl>
-                  <span className="d-block w-100 text-danger">
-                    {errorData.request.message}
-                  </span>
+                      >
+                        <option value="Purchase">Purchase</option>
+                        <option value={"abc"}>abc</option>
+                        <option value={"def"}>def</option>
+                        <option value={"abc"}>abc</option>
+                      </NativeSelect>
+                    </FormControl>
+                    <span className="d-block w-100 text-danger">
+                      {errorData.request.message}
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="form-group row col-form-group">
@@ -746,7 +769,7 @@ class ViewRequest extends Component {
                       variant="contained"
                       className="add-custom-btn"
                       disableElevation
-                      // onClick={this.handleClickMethod}
+                    // onClick={this.handleClickMethod}
                     >
                       Add Custom Item
                     </Button>
@@ -755,6 +778,7 @@ class ViewRequest extends Component {
                       className="add-custom-btn"
                       disableElevation
                       // onClick={this.handleClickMethod}
+                      onClick={this.openImportItemPopup}
                     >
                       <i className="fa fa-plus-circle" aria-hidden="true" />
                       Import Item
@@ -841,6 +865,74 @@ class ViewRequest extends Component {
             </div>
           </div>
         </div>
+
+        <Dialog
+          open={openImportItemDialog}
+          onClose={this.openImportItemPopup}
+          aria-labelledby="form-dialog-title"
+          className="import-item-dialog"
+        >
+          <div className="additem-dialog-head">
+            <DialogTitle
+              id="form-dialog-title"
+              className="addNewItemDialogTitle dialog-heading"
+            >
+              Import Item
+            </DialogTitle>
+            <Button
+              onClick={this.openImportItemPopup}
+              className="modal-close-btn"
+            >
+              <CloseIcon />
+            </Button>
+          </div>
+
+          <DialogContent className="dialogSmWidth addNewItemDialogContent">
+            <div className="supplier-inner-content">
+              <div className="heading text-center">
+                <h4>Download Import File Template</h4>
+              </div>
+              <div className="download-btn text-center">
+                <Button
+                  href="/postlogin/viewsupplierdetail"
+                  variant="contained"
+                  className="new-requisition-btn"
+                >
+                  Download
+                </Button>
+              </div>
+              <div className="heading text-center">
+                <h5>Upload the Updated File</h5>
+              </div>
+              <div className="upload-file-box text-center">
+                <div className="attach">
+                  <div className="image">
+                    <img src={AddItemImg} alt="" />
+                    <div className="file-inner-content">
+                      <p>Drag and drop files to Upload</p>
+                      <p>or</p>
+                    </div>
+                  </div>
+                  <input
+                    type="file"
+                    placeholder="Upload files (PDF,DOC,PPT,JPG,PNG)"
+                    accept=" .pdf , .doc , .ppt , .jpg , .png"
+                    name="requisitionFile"
+                    onChange={this.handleFileChange}
+                    multiple
+                  />
+
+                  <div className="select-button">
+                    <Button variant="contained" className="new-requisition-btn">
+                      Select file to upload
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         {
           <AddItemList
             openDialog={openDialog}

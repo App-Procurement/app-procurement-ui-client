@@ -13,6 +13,7 @@ export const settingAction = {
   getUsers,
   getPreferences,
   getAllSettingGroupData,
+  updateSuperAdminUsers,
 };
 
 function getWorkflow() {
@@ -223,6 +224,60 @@ function updateWorkFlow(data) {
             data: {
               update_approval_workflow_status: status.FAILURE,
               update_approval_workflow_data: error.message,
+            },
+          })
+        );
+        alert.error(error.message);
+      }
+    );
+  };
+}
+function updateSuperAdminUsers(data) {
+  return (dispatch) => {
+    dispatch(
+      dispatchFunction({
+        type: status.IN_PROGRESS,
+        data: {
+          update_super_admin_users_status: status.IN_PROGRESS,
+          update_super_admin_users_data: null,
+        },
+      })
+    );
+    settingServices.updateSuperAdminUsers(data).then(
+      (response) => {
+        const code = response.status;
+        if (code === 200) {
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  update_super_admin_users_status: status.SUCCESS,
+                  update_super_admin_users_data: data.object,
+                },
+              })
+            );
+          });
+        } else {
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                update_super_admin_users_status: status.FAILURE,
+                update_super_admin_users_data: response,
+              },
+            })
+          );
+          alert.error(response.message);
+        }
+      },
+      (error) => {
+        dispatch(
+          dispatchFunction({
+            type: status.FAILURE,
+            data: {
+              update_super_admin_users_status: status.FAILURE,
+              update_super_admin_users_data: error.message,
             },
           })
         );

@@ -1,5 +1,6 @@
 import React from "react";
 import UserImg4 from "../../../assets/images/request/user-img4.png";
+import { commonFunctions } from "../../../_utilities/commonFunctions";
 
 const Comments = ({ requestData }) => {
   return (
@@ -8,24 +9,27 @@ const Comments = ({ requestData }) => {
         <h4>Comments</h4>
       </div>
       <div className="user-comments-section">
-        {requestData.map((data) => (
-          <ul>
-            <li>
-              <div className="user-comments-image">
-                <img className="profilePic" src={data.profilePic} alt="" />
-              </div>
-              <div className="user-details">
-                <div className="user-name">
-                  <label>{data.userName}</label>
-                  <span>{data.postTime}</span>
+        {requestData.map((data) => {
+          return (
+            <ul>
+              <li>
+                <div className="user-comments-image">
+                  <img className="profilePic" src={data.profilePic} alt="" />
                 </div>
-                <div className="user-designation">
-                  <p>{data.comment}</p>
+                <div className="user-details">
+                  <div className="user-name">
+                    <label>{data.userName}</label>
+                    <span>{commonFunctions.timeDifference(data.postTime)}</span>
+                    {/* <span>{data.postTime}</span> */}
+                  </div>
+                  <div className="user-designation">
+                    <p>{data.comment}</p>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
-        ))}
+              </li>
+            </ul>
+          );
+        })}
 
         <div className="comment-reply-bottom-content">
           <span>

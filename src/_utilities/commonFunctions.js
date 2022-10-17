@@ -9,9 +9,54 @@ export const commonFunctions = {
   getAccessToken,
   getFileName,
   timeStampFormat,
- timeStampMonthAndYear,
- estimatedMonth,
- dateTimeAndYear}
+  timeStampMonthAndYear,
+  estimatedMonth,
+  dateTimeAndYear,
+  timeDifference,
+};
+
+function timeDifference(date) {
+  if (typeof date !== "object") {
+    date = new Date(date);
+  }
+
+  var seconds = Math.floor(Math.abs((new Date() - date) / 1000));
+  var intervalType;
+
+  var interval = Math.floor(seconds / 31536000);
+  if (interval >= 1) {
+    intervalType = "year";
+  } else {
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) {
+      intervalType = "month";
+    } else {
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) {
+        intervalType = "day";
+      } else {
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+          intervalType = "hour";
+        } else {
+          interval = Math.floor(seconds / 60);
+          if (interval >= 1) {
+            intervalType = "minute";
+          } else {
+            interval = seconds;
+            intervalType = "second";
+          }
+        }
+      }
+    }
+  }
+
+  if (interval > 1 || interval === 0) {
+    intervalType += "s";
+  }
+
+  return interval + " " + intervalType;
+}
 
 function getRequestOptions(type, extraHeaders, body, bNoToken) {
   let authHeader = {};
@@ -131,7 +176,8 @@ function timeStampFormat(receivedDate) {
   }
 
   const date = d.getDate();
-  const month = months[d.getMonth()];
+  const month = d.getMonth() + 1;
+  // const month = months[d.getMonth()];
   const year = d.getFullYear();
 
   const formatedDate =
@@ -140,9 +186,7 @@ function timeStampFormat(receivedDate) {
   return formatedDate;
 }
 
-
-function timeStampMonthAndYear(received)
-{
+function timeStampMonthAndYear(received) {
   const months = [
     "Jan",
     "Feb",
@@ -176,14 +220,11 @@ function timeStampMonthAndYear(received)
   const month = months[d.getMonth()];
   const year = d.getFullYear();
 
-  const formated =
-    month + " " + year 
+  const formated = month + " " + year;
   return formated;
 }
 
-
-function estimatedMonth(received)
-{
+function estimatedMonth(received) {
   const months = [
     "Jan",
     "Feb",
@@ -214,19 +255,13 @@ function estimatedMonth(received)
   }
 
   // const date = d.getDate();
-   const month = d.getMonth() + 1;
+  const month = d.getMonth() + 1;
   // const year = d.getFullYear();
 
-  const formated =
-    month + " months" 
-    // console.log(formated)
+  const formated = month + " months";
 
   return formated;
 }
-
-
-
-
 
 function dateTimeAndYear(receivedDate) {
   const months = [
@@ -262,8 +297,7 @@ function dateTimeAndYear(receivedDate) {
   const month = months[d.getMonth()];
   const year = d.getFullYear();
 
-  const formatedDate =
-   "end date "+ date + " " + month + " " + year + " " ;
+  const formatedDate = "" + date + " " + month + " " + year + " ";
 
   return formatedDate;
 }

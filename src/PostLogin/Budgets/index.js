@@ -137,6 +137,7 @@ class Budgets extends Component {
                       <MenuItem value={30}>Import Budget </MenuItem>
                     </Select>
                   </FormControl>
+
                 </div>
               </div>
             </div>
@@ -222,18 +223,18 @@ class Budgets extends Component {
                     <div className="row d-flex justify-content-center align-items-center">
                       <div className="col-7">
                         {budgetData?.budgetAllocation?.totalBudget &&
-                        budgetData?.budgetAllocation?.spend ? (
+                          budgetData?.budgetAllocation?.spend ? (
                           <div className="budget-progress-bar">
                             <CircularProgressbar
                               value={this.budgetPercentage(
                                 budgetData.budgetAllocation.totalBudget,
                                 budgetData.budgetAllocation.totalBudget -
-                                  budgetData.budgetAllocation.spend
+                                budgetData.budgetAllocation.spend
                               )}
                               text={`${this.budgetPercentage(
                                 budgetData.budgetAllocation.totalBudget,
                                 budgetData.budgetAllocation.totalBudget -
-                                  budgetData.budgetAllocation.spend
+                                budgetData.budgetAllocation.spend
                               )} %`}
                               strokeWidth={15}
                               styles={buildStyles({
@@ -442,7 +443,7 @@ class Budgets extends Component {
                           </td>
                           <td>
                             <span>
-                              { <LinearProgress
+                              {<LinearProgress
                                 variant="determinate"
                                 value={data.progress}
                               />

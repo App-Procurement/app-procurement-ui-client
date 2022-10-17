@@ -20,7 +20,7 @@ class BudgetAllocate extends Component {
         {
           label: 'S No',
           key: 'sno',
-          renderCallback: (index) => {
+          renderCallback: (value,index) => {
             return (
               <td>
                 <span className={'s-no'}>{index + 1}</span>

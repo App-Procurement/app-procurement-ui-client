@@ -263,6 +263,14 @@ const _nav = {
     },
     {
       _tag: 'SidebarNavItem',
+      name: 'Request For Quotation',
+      to: '/postlogin/requestforquotation',
+      activeArr: ['/postlogin/requestforquotation'],
+      open: false,
+      icon: <i className="fab fa-first-order" />,
+    },
+    {
+      _tag: 'SidebarNavItem',
       name: 'Purchase Order',
       to: '/postlogin/purchaseorder',
       activeArr: ['/postlogin/purchaseorder'],
@@ -282,7 +290,7 @@ const _nav = {
   supplierManagementNav: [
     {
       _tag: 'SidebarNavItem',
-      name: ' Manage Supplier',
+      name: 'Supplier',
       to: '/postlogin/managesupplier',
       activeArr: ['/postlogin/managesupplier'],
       open: false,

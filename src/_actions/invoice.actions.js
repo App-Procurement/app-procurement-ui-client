@@ -3,15 +3,94 @@ import { invoiceServices } from "../_services";
 import { alert } from "../_utilities";
 
 export const invoiceAction = {
-  addInvoice,
+  addRequest,
   deleteInvoice,
   getInvoice,
   searchInvoice,
   updateInvoice,
   getNewInvoice,
+  invoicesData,
 };
 
-function addInvoice(data) {
+function invoicesData(data) {
+  return (dispatch) => {
+    dispatch(
+      dispatchFunction({
+        type: status.IN_PROGRESS,
+        data: {
+          get_invoicedata_status: status.IN_PROGRESS,
+          invoice_data: null,
+        },
+      })
+    );
+    invoiceServices.invoicesData(data).then(
+      (response) => {
+        const code = response.status;
+        if (code === 200) {
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  get_invoicedata_status: status.SUCCESS,
+                  invoice_data: data.object,
+                },
+              })
+            );
+          });
+        } else {
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                get_invoicedata_status: status.FAILURE,
+                invoice_data: response,
+              },
+            })
+          );
+          alert.error(response.message);
+        }
+      },
+      //   if (response.code == 200) {
+      //     dispatch(
+      //       dispatchFunction({
+      //         type: status.SUCCESS,
+      //         data: {
+      //           get_request_status: status.SUCCESS,
+      //           request_data: response.object,
+      //         },
+      //       })
+      //     );
+      //   } else {
+      //     dispatch(
+      //       dispatchFunction({
+      //         type: status.FAILURE,
+      //         data: {
+      //           department_status: status.FAILURE,
+      //           request_data: response,
+      //         },
+      //       })
+      //     );
+      //     alert.error(response.message);
+      //   }
+      // },
+      (error) => {
+        dispatch(
+          dispatchFunction({
+            type: status.FAILURE,
+            data: {
+              get_invoicedata_status: status.FAILURE,
+              invoice_data: error.message,
+            },
+          })
+        );
+        alert.error(error.message);
+      }
+    );
+  };
+}
+
+function addRequest(data) {
   return (dispatch) => {
     dispatch(
       dispatchFunction({
@@ -22,7 +101,7 @@ function addInvoice(data) {
         },
       })
     );
-    invoiceServices.addInvoice(data).then(
+    invoiceServices.addRequest(data).then(
       (response) => {
         const code = response.status;
         if (code === 200) {

@@ -48,38 +48,7 @@ class Calender extends Component {
       eventDescriptionError: "",
       eventDeleteButton: false,
       currentEditEventId: "",
-      events: [
-        {
-          id: 1,
-          title: "event 1",
-          start: "2022-09-06T09:00",
-          end: "2022-09-06T11:00",
-          type: "meet",
-          place: "newyork",
-          description: "an event at newyork",
-          className: "meet",
-        },
-        {
-          id: 2,
-          title: "event 2",
-          start: "2022-09-08T12:00",
-          end: "2022-09-08T14:00",
-          type: "task",
-          place: "brooklyn",
-          description: "an event at brooklyn",
-          className: "task",
-        },
-        {
-          id: 3,
-          title: "event 3",
-          start: "2022-09-10T12:00",
-          end: "2022-09-10T14:00",
-          type: "reminder",
-          place: "san diego",
-          description: "an event at san diego",
-          className: "reminder",
-        },
-      ],
+      events: [],
       eventColor: "red",
       invoiceDetails: [
         {
@@ -137,6 +106,28 @@ class Calender extends Component {
           pendiing: "INVOICE SENT",
           pendiingColor: "#43e265",
         },
+        {
+          invoiceNo: "INV-0001234",
+          invoiceName: "jean Graphic Inc.",
+          shortName: "KG",
+          shortNameIcon: "fa fa-chevron-down",
+          shortNameColor: "#84da91",
+          invoicePrice: "6,50,000",
+          invoiceLable: "2m ago",
+          pendiing: "Pending",
+          pendiingColor: "#43e265",
+        },
+        {
+          invoiceNo: "INV-0001234",
+          invoiceName: "Jean Graphic Inc.",
+          shortNameColor: "#c5bef4",
+          shortName: "KG",
+          shortNameIcon: "fa fa-bolt",
+          invoicePrice: "6,50,000",
+          invoiceLable: "2m ago",
+          pendiing: "COMPLETED",
+          pendiingColor: "#48bfee",
+        },
       ],
     };
   }
@@ -154,20 +145,22 @@ class Calender extends Component {
             onClick={() => this.setState({ activeIndex: i })}
           >
             <div className="d-flex w-100 justify-content-between align-items-start">
-              <div
-                className="graphic"
-                style={{ backgroundColor: `${row.shortNameColor}` }}
-              >
-                {row.shortNameIcon ? (
-                  <i className={row.shortNameIcon}></i>
-                ) : (
-                  <>{row.shortName}</>
-                )}
-              </div>
-              <div className="payment-content">
-                <a href="#foo">{row.invoiceNo}</a>
-                <p>{row.invoiceName}</p>
-                <span>{row.invoicePrice}</span>
+              <div className="payment-details">
+                <div
+                  className="graphic"
+                  style={{ backgroundColor: `${row.shortNameColor}` }}
+                >
+                  {row.shortNameIcon ? (
+                    <i className={row.shortNameIcon}></i>
+                  ) : (
+                    <>{row.shortName}</>
+                  )}
+                </div>
+                <div className="payment-content">
+                  <a href="#foo">{row.invoiceNo}</a>
+                  <p>{row.invoiceName}</p>
+                  <span>{row.invoicePrice}</span>
+                </div>
               </div>
               <IconButton className="p-2 menu-btn">
                 <MoreVertIcon />
@@ -250,15 +243,12 @@ class Calender extends Component {
         valid = false;
       } else {
         this.setState({ eventTitleError: "" });
-        valid = true;
       }
 
       if (!eventDate) {
         this.setState({ eventDateError: "Date is required!" });
-        valid = false;
       } else {
         this.setState({ eventDateError: "" });
-        valid = true;
       }
 
       if (!eventType) {
@@ -266,7 +256,6 @@ class Calender extends Component {
         valid = false;
       } else {
         this.setState({ eventTypeError: "" });
-        valid = true;
       }
 
       if (!eventPlace) {
@@ -274,7 +263,6 @@ class Calender extends Component {
         valid = false;
       } else {
         this.setState({ eventPlaceError: "" });
-        valid = true;
       }
 
       if (!eventDescription) {
@@ -284,7 +272,18 @@ class Calender extends Component {
         valid = false;
       } else {
         this.setState({ eventDescriptionError: "" });
+      }
+
+      if (
+        eventTitle &&
+        eventType &&
+        eventDate &&
+        eventPlace &&
+        eventDescription
+      ) {
         valid = true;
+      } else {
+        valid = false;
       }
 
       return valid;
@@ -407,7 +406,7 @@ class Calender extends Component {
       <div className="main-content">
         <div className="calender-content">
           <div className="row">
-            <div className="col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div className="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="calender-content-left">
                 <div className="row justify-content-center align-items-center">
                   <div className="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -482,13 +481,13 @@ class Calender extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div className="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 ">
               <div className="calender-content-right">
                 <div className="d-block mb-3 heading">
                   <h5 className="mb-1">Invoice Details</h5>
                   <span>Thursday October 10th, 2020</span>
                 </div>
-                <SimpleBar style={{ height: 598 }}>
+                <SimpleBar style={{ height: 595 }}>
                   <div className="invoices-details">
                     <ul>{this.displayInvoiceDetails()}</ul>
                   </div>
@@ -532,8 +531,8 @@ class Calender extends Component {
             </div>
             <div className="form-group row form-group">
               <label className="col-3 col-form-label">Type</label>
-              <div className="col-9 col-form-field d-flex custom-event-radio">
-                <div className="event-type">
+              <div className="col-9 col-form-field d-block custom-event-radio">
+                <div className="d-inline-block event-type">
                   <input
                     type="radio"
                     name="eventType"
@@ -544,7 +543,7 @@ class Calender extends Component {
                     checked={eventType === "meet"}
                   />
                 </div>
-                <div className="event-type">
+                <div className="d-inline-block event-type">
                   <input
                     type="radio"
                     name="eventType"
@@ -555,7 +554,7 @@ class Calender extends Component {
                     checked={eventType === "reminder"}
                   />
                 </div>
-                <div className="event-type">
+                <div className="d-inline-block event-type">
                   <input
                     type="radio"
                     name="eventType"

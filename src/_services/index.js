@@ -22,3 +22,4 @@ export * from "./sellers.services";
 export * from "./setting.services";
 export * from "./request.services"
 export * from './budget.services'
+export * from './requestForQuotation.services'

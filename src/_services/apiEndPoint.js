@@ -1,8 +1,6 @@
 import config from "../config";
 export const apiEndPoint = {
-  // LOGIN: `${config.apiUrl}/auth/login`,
-
-  LOGIN: `${config.apiSecurityUrl}/security/public/login`,
+  LOGIN: `${config.apiUrl}/auth/login`,
 
   // *Buyer Api Url
   BUYER: `${config.apiUrl}/buyer`,
@@ -44,7 +42,7 @@ export const apiEndPoint = {
 
   //*generate po api url
 
-  PURCHASEORDERS: `${config.apiUrl}/purchaseorders`,
+  PURCHASEORDERS: `${config.devAPI}/purchase_order`,
 
   //recievedefq api url
 
@@ -83,22 +81,24 @@ export const apiEndPoint = {
   CREATECHATROOM: `${config.apiUrl}/contactlist`,
   SUPPLIER: `${config.apiUrl}/supplierlist`,
   ACTIVESUPPLIERS: `${config.apiUrl}/activesupplierlist`,
-  SUPPLIERPRODUCT: `${config.apiUrl}/supplierproductlist`,
+  SUPPLIERPRODUCT: `${config.devAPI}/product`,
   SELLER: `${config.apiUrl}/sellerslist`,
   SUPPLIERANDCATEGORY: `${config.apiUrl}/supplierandcategorylist`,
   // GET REQUEST FOR SETTING WORKFLOW
-  WORKFLOW:`${config.apiUrl}/workflow`,
+  WORKFLOW: `${config.apiUrl}/workflow`,
   // CREATE COMAPNY PROFILE
-  COMPANYPROFILE:`${config.apiUrl}/companyprofile`,
+  COMPANYPROFILE: `${config.apiUrl}/companyprofile`,
   // GET ROLE SAND PERMISSIONS
-  ROLESANDPERMISSIONS:`${config.apiUrl}/rolesandpermissions`,
+  ROLESANDPERMISSIONS: `${config.apiUrl}/rolesandpermissions`,
   // GET GROUPS LIST FOR SETTING
   GROUPSLIST: `${config.apiUrl}/groupslist`,
   // GET USERS LIST FOR SETTING
   USERSLIST: `${config.apiUrl}/userrolesandpermissions`,
-  PREFERENCESLIST:`${config.apiUrl}/getpreferenceslist`,
-  REQUESTDATA:`${config.apiUrl}/request`,
+  PREFERENCESLIST: `${config.apiUrl}/getpreferenceslist`,
+  REQUESTDATA: `${config.apiUrl}/request`,
   // Get budget data
-  BUDGETDATA:`${config.apiUrl}/budget`,
-  SETTINGGROUPDATA:`${config.apiUrl}/group`
+  BUDGETDATA: `${config.apiUrl}/budget`,
+  SETTINGGROUPDATA: `${config.apiUrl}/group`,
+  INVOICES: `${config.devAPI}/invoice`,
+  REQUESTFORQUOTATION: `${config.apiUrl}/requestForQuotation`,
 };

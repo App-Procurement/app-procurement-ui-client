@@ -186,7 +186,7 @@ class ActiveSupplier extends React.Component {
     }
     if (
       this.props.supplier_category_list_status !==
-        prevProps.supplier_category_list_status &&
+      prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -200,7 +200,7 @@ class ActiveSupplier extends React.Component {
     if (
       update_active_supplier_list_status &&
       update_active_supplier_list_status !==
-        prevProps.update_active_supplier_list_status &&
+      prevProps.update_active_supplier_list_status &&
       update_active_supplier_list_status === status.SUCCESS
     ) {
       dispatch(manageSupplierAction.getActiveSupplierList());
@@ -208,7 +208,7 @@ class ActiveSupplier extends React.Component {
     if (
       delete_active_supplier_status &&
       delete_active_supplier_status !==
-        prevProps.delete_active_supplier_status &&
+      prevProps.delete_active_supplier_status &&
       delete_active_supplier_status === status.SUCCESS
     ) {
       dispatch(manageSupplierAction.getActiveSupplierList());
@@ -346,16 +346,16 @@ class ActiveSupplier extends React.Component {
         <div className="manage-supplier-conntent">
           <div className="request-purpose-head">
             <div className="row d-flex align-items-center justify-content-spacebetween">
-              <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+              <div className="col-xl-4 col-lg-3 col-md-4 col-sm-12 col-12">
                 <div className="request-purpose-head-left">
                   <h4>Active Suppliers</h4>
                 </div>
               </div>
-              <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+              <div className="col-xl-8 col-lg-9 col-md-8 col-sm-12 col-12">
                 <div className="request-purpose-head-right">
                   <div className="add-Supplier-button">
                     <Button
-                      href="/postlogin/managesupplier/addsupplier"
+                      // href="/postlogin/managesupplier/addsupplier"
                       variant="contained"
                       className="new-requisition-btn"
                     >
@@ -378,7 +378,7 @@ class ActiveSupplier extends React.Component {
                     <Button
                       className="fillter-btn"
                       variant="outlined"
-                      onClick={this.openUpdateProductPopup}
+                    // onClick={this.openUpdateProductPopup}
                     >
                       Update Supplier{" "}
                     </Button>

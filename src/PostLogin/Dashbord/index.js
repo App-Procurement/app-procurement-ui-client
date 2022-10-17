@@ -304,7 +304,7 @@ class Dashbord extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.props.get_dashboard_data_status !==
-        prevProps.get_dashboard_data_status &&
+      prevProps.get_dashboard_data_status &&
       this.props.get_dashboard_data_status === status.SUCCESS
     ) {
       if (this.props.dashboarddata) {
@@ -439,13 +439,13 @@ class Dashbord extends Component {
         <div className="dashbord-content">
           <div className="dashbord-top-section">
             <div className="row justify-content-center align-items-center">
-              <div className="col-xl-8 col-lg-8 col-md-6 col-sm-12 ">
+              <div className="col-xl-8 col-lg-7 col-md-6 col-sm-6 col-xs-12">
                 <div className="heading">
                   <h3>{this.props.t("Dashboard")}</h3>
                   <span>Hello, James, Welcome to Synectiks</span>
                 </div>
               </div>
-              <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+              <div className="col-xl-4 col-lg-5 col-md-6 col-sm-6 col-xs-12">
                 <div className="calender">
                   <DateFormat className="d-block" />
                 </div>

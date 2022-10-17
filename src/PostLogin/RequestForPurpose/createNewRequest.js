@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import Button from '@material-ui/core/Button';
-import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
-import { DatePicker } from '@y0c/react-datepicker';
-import 'rc-calendar/assets/index.css';
-import '@y0c/react-datepicker/assets/styles/calendar.scss';
-import Table from '../../Table/Table';
-import { connect } from 'react-redux';
-import { requestForPurposeAction } from '../../_actions';
-import { status } from '../../_constants';
-import { commonFunctions, alert } from '../../_utilities';
-import { withTranslation } from 'react-i18next';
-import { t } from 'i18next';
-import Chat from '../../_components/ChatBox';
-import Dialog from '@material-ui/core/Dialog';
+import React, { Component } from "react";
+import FormControl from "@material-ui/core/FormControl";
+import NativeSelect from "@material-ui/core/NativeSelect";
+import Button from "@material-ui/core/Button";
+import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import { DatePicker } from "@y0c/react-datepicker";
+import "rc-calendar/assets/index.css";
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
+import Table from "../../Table/Table";
+import { connect } from "react-redux";
+import { requestForPurposeAction } from "../../_actions";
+import { status } from "../../_constants";
+import { commonFunctions, alert } from "../../_utilities";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
+import Chat from "../../_components/ChatBox";
+import Dialog from "@material-ui/core/Dialog";
 // import DialogActions from '@material-ui/core/DialogActions';
 // import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
-import AddItemList from './AddItemList';
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CloseIcon from "@material-ui/icons/Close";
+import AddItemList from "./AddItemList";
 
 class CreateNewRequest extends Component {
   inputOpenFileRef;
@@ -29,26 +29,26 @@ class CreateNewRequest extends Component {
     this.state = {
       activeIndex: -1,
       requiData: {
-        status: '',
-        reqno: '',
-        depart: '',
+        status: "",
+        reqno: "",
+        depart: "",
         ViewDetail: false,
         selectBuyer: false,
         isEdit: false,
       },
       updateValue: {},
       user: {
-        name: 'himanshu',
+        name: "himanshu",
         id: 101,
-        accountType: 'admin',
+        accountType: "admin",
       },
       formData: {
-        dueDate: 'yyyy-mm-dd',
-        deliveryDate: 'yyyy-mm-dd',
-        location: '',
-        department: '',
-        request: '',
-        note: '',
+        dueDate: "",
+        deliveryDate: "",
+        location: "",
+        department: "",
+        request: "",
+        note: "",
       },
       supplierAndCategoryList: {},
       uploadedFileList: [],
@@ -58,60 +58,59 @@ class CreateNewRequest extends Component {
       itemList: [],
       columns: [
         {
-          label: 'S.no',
-          key: 'sno',
+          label: "S.no",
+          key: "sno",
           renderCallback: (value, index) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>{index + 1}</td>)
+            return <td key={`${Math.random()}_${value}`}>{index + 1}</td>;
           },
         },
         {
-          label: 'Name',
-          key: 'name',
+          label: "Name",
+          key: "name",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'requisitions-no'}>{value}</span>
+                <span className={"requisitions-no"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Category',
-          key: 'category',
+          label: "Category",
+          key: "category",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Supplier',
-          key: 'supplier',
+          label: "Supplier",
+          key: "supplier",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Quantity',
-          key: 'quantity',
+          label: "Quantity",
+          key: "quantity",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'requestor'}>{value}</span>
+                <span className={"requestor"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Unit',
-          key: 'unit',
+          label: "Unit",
+          key: "unit",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -121,8 +120,8 @@ class CreateNewRequest extends Component {
           },
         },
         {
-          label: 'Price',
-          key: 'price',
+          label: "Price",
+          key: "price",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -132,8 +131,8 @@ class CreateNewRequest extends Component {
           },
         },
         {
-          label: 'Total Cost',
-          key: 'totalCost',
+          label: "Total Cost",
+          key: "totalCost",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -143,8 +142,8 @@ class CreateNewRequest extends Component {
           },
         },
         {
-          label: 'Status',
-          key: 'status',
+          label: "Status",
+          key: "status",
           renderCallback: (value, row) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -154,8 +153,8 @@ class CreateNewRequest extends Component {
           },
         },
         {
-          label: '',
-          key: 'sno',
+          label: "",
+          key: "sno",
           renderCallback: (value, index) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -167,7 +166,11 @@ class CreateNewRequest extends Component {
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
-                      <i className="fa fa-pencil edit" aria-hidden="true" onClick={this.openEditModal}></i>
+                      <i
+                        className="fa fa-pencil edit"
+                        aria-hidden="true"
+                        onClick={this.openEditModal}
+                      ></i>
                       <i
                         className="fa fa-trash delete"
                         aria-hidden="true"
@@ -200,9 +203,9 @@ class CreateNewRequest extends Component {
     };
     this.inputOpenFileRef = React.createRef();
     this.formkiqClient = new window.exports.FormkiqClient(
-      'https://0f46r83d5a.execute-api.us-east-1.amazonaws.com',
-      '',
-      '',
+      "https://0f46r83d5a.execute-api.us-east-1.amazonaws.com",
+      "",
+      "",
       {
         onFormSubmitted: (formName) => { },
         onFormCompleted: (formName, response) => {
@@ -210,7 +213,7 @@ class CreateNewRequest extends Component {
         },
       }
     );
-    this.formkiqClient.login('papubhat@gmail.com', 'microsoft');
+    this.formkiqClient.login("papubhat@gmail.com", "microsoft");
   }
   setUploadedDocID = (res) => {
     const { uploadedFileList } = this.state;
@@ -248,13 +251,18 @@ class CreateNewRequest extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      this.props.request_for_purpose_status !== prevProps.request_for_purpose_status &&
+      this.props.request_for_purpose_status !==
+      prevProps.request_for_purpose_status &&
       this.props.request_for_purpose_status === status.SUCCESS
     ) {
-      if (this.props.request_for_purpose_list && this.props.request_for_purpose_list.length > 0) {
+      if (
+        this.props.request_for_purpose_list &&
+        this.props.request_for_purpose_list.length > 0
+      ) {
         for (let i = 0; i < this.props.request_for_purpose_list.length; i++) {
           this.props.request_for_purpose_list[i].totalCost =
-            this.props.request_for_purpose_list[i].price * this.props.request_for_purpose_list[i].quantity;
+            this.props.request_for_purpose_list[i].price *
+            this.props.request_for_purpose_list[i].quantity;
         }
         this.setState({ tableData: this.props.request_for_purpose_list });
       }
@@ -264,13 +272,17 @@ class CreateNewRequest extends Component {
       this.props.update_document_status === status.SUCCESS
     ) {
       if (this.props.add_request_response) {
-        this.props.history.push('/postlogin/requestforpurpose');
+        this.props.history.push("/postlogin/requestforpurpose");
       }
     }
-    if (this.props.item_list_status !== prevProps.item_list_status && this.props.item_list_status === status.SUCCESS) {
+    if (
+      this.props.item_list_status !== prevProps.item_list_status &&
+      this.props.item_list_status === status.SUCCESS
+    ) {
       if (this.props.item_list && this.props.item_list.length > 0) {
         for (let i = 0; i < this.props.item_list.length; i++) {
-          this.props.item_list[i].totalCost = this.props.item_list[i].price * this.props.item_list[i].quantity;
+          this.props.item_list[i].totalCost =
+            this.props.item_list[i].price * this.props.item_list[i].quantity;
         }
         this.setState({
           itemList: this.props.item_list,
@@ -278,11 +290,16 @@ class CreateNewRequest extends Component {
       }
     }
     if (
-      this.props.supplier_category_list_status !== prevProps.supplier_category_list_status &&
+      this.props.supplier_category_list_status !==
+      prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
-        this.setState({ supplierAndCategoryList: { ...this.props.supplier_category_list_data } });
+        this.setState({
+          supplierAndCategoryList: {
+            ...this.props.supplier_category_list_data,
+          },
+        });
       }
     }
   }
@@ -295,7 +312,7 @@ class CreateNewRequest extends Component {
   validate = (isSubmitted) => {
     const validObj = {
       isValid: true,
-      message: '',
+      message: "",
     };
     let isValid = true;
     const retData = {
@@ -312,42 +329,42 @@ class CreateNewRequest extends Component {
       if (!formData.dueDate) {
         retData.dueDate = {
           isValid: false,
-          message: 'Due date is required',
+          message: "Due date is required",
         };
         isValid = false;
       }
       if (!formData.deliveryDate) {
         retData.deliveryDate = {
           isValid: false,
-          message: 'Delivery date is required',
+          message: "Delivery date is required",
         };
         isValid = false;
       }
       if (!formData.location) {
         retData.location = {
           isValid: false,
-          message: 'Location is required',
+          message: "Location is required",
         };
         isValid = false;
       }
       if (!formData.department) {
         retData.department = {
           isValid: false,
-          message: 'Department is required',
+          message: "Department is required",
         };
         isValid = false;
       }
       if (!formData.request) {
         retData.request = {
           isValid: false,
-          message: 'Purchase product name is required',
+          message: "Purchase product name is required",
         };
         isValid = false;
       }
       if (!formData.note) {
         retData.note = {
           isValid: false,
-          message: 'Note for requester is required',
+          message: "Note for requester is required",
         };
         isValid = false;
       }
@@ -358,7 +375,7 @@ class CreateNewRequest extends Component {
   validateUpdate = (update) => {
     const validObj = {
       isValid: true,
-      message: '',
+      message: "",
     };
     const { updateValue } = this.state;
     let isValid = true;
@@ -375,54 +392,60 @@ class CreateNewRequest extends Component {
       if (!updateValue.name) {
         retData.name = {
           isValid: false,
-          message: 'Name is required',
+          message: "Name is required",
         };
         isValid = false;
       }
       if (!updateValue.category) {
         retData.category = {
           isValid: false,
-          message: 'category is required',
+          message: "category is required",
         };
         isValid = false;
       }
       if (!updateValue.supplier) {
         retData.supplier = {
           isValid: false,
-          message: 'supplier is required',
+          message: "supplier is required",
         };
         isValid = false;
       }
       if (!updateValue.quantity) {
         retData.quantity = {
           isValid: false,
-          message: 'quantity is required',
+          message: "quantity is required",
         };
         isValid = false;
-      } else if (updateValue.quantity && !commonFunctions.validateNumeric(updateValue.quantity)) {
+      } else if (
+        updateValue.quantity &&
+        !commonFunctions.validateNumeric(updateValue.quantity)
+      ) {
         retData.quantity = {
           isValid: false,
-          message: 'quantity must be in digits',
+          message: "quantity must be in digits",
         };
         isValid = false;
       }
       if (!updateValue.unit) {
         retData.unit = {
           isValid: false,
-          message: 'unit is required',
+          message: "unit is required",
         };
         isValid = false;
       }
       if (!updateValue.price) {
         retData.price = {
           isValid: false,
-          message: 'price is required',
+          message: "price is required",
         };
         isValid = false;
-      } else if (updateValue.price && !commonFunctions.validateNumeric(updateValue.price)) {
+      } else if (
+        updateValue.price &&
+        !commonFunctions.validateNumeric(updateValue.price)
+      ) {
         retData.price = {
           isValid: false,
-          message: 'price must be in digits',
+          message: "price must be in digits",
         };
         isValid = false;
       }
@@ -442,7 +465,7 @@ class CreateNewRequest extends Component {
         this.setState({
           selectedFile: e.target.files[i],
         });
-        let data = document.getElementById('upload_document');
+        let data = document.getElementById("upload_document");
         this.formkiqClient.webFormsHandler.submitFormkiqForm(data);
         // this.props.dispatch(requestForPurposeAction.UploadFile(e.target.files[i].name));
       }
@@ -451,7 +474,7 @@ class CreateNewRequest extends Component {
 
   getUploadedDocument = (docId) => {
     this.formkiqClient.documentsApi.getDocumentUrl(docId).then((response) => {
-      window.open(response.url, '_blank', '570', '520');
+      window.open(response.url, "_blank", "570", "520");
     });
   };
 
@@ -490,7 +513,8 @@ class CreateNewRequest extends Component {
       }
       if (index >= 0) {
         selectedItemList[index].quantity += value.quantity;
-        selectedItemList[index].totalCost = selectedItemList[index].quantity * selectedItemList[index].price;
+        selectedItemList[index].totalCost =
+          selectedItemList[index].quantity * selectedItemList[index].price;
       } else {
         selectedItemList = [...selectedItemList, value];
       }
@@ -504,7 +528,8 @@ class CreateNewRequest extends Component {
 
   createRequest = (event) => {
     event.preventDefault();
-    const { formData, selectedItemList, selectedFile, uploadedFileList } = this.state;
+    const { formData, selectedItemList, selectedFile, uploadedFileList } =
+      this.state;
     this.setState({
       isSubmitted: true,
     });
@@ -519,7 +544,7 @@ class CreateNewRequest extends Component {
         };
         this.props.dispatch(requestForPurposeAction.addRequest(sendData));
       } else {
-        alert.error('Add Request item list');
+        alert.error("Add Request item list");
       }
     }
   };
@@ -560,7 +585,10 @@ class CreateNewRequest extends Component {
     if (updateForm.isValid) {
       updateValue.totalCost = updateValue.price * updateValue.quantity;
       selectedItemList[activeIndex] = updateValue;
-      this.setState({ selectedItemList, openEditDialog: !this.state.openEditDialog });
+      this.setState({
+        selectedItemList,
+        openEditDialog: !this.state.openEditDialog,
+      });
     }
   };
   render() {
@@ -586,101 +614,139 @@ class CreateNewRequest extends Component {
       <div className="main-content">
         <div className="request-purpose">
           <div className="new-request-heading">
-            <h4>{t('Create New Request')}</h4>
+            <h4>{t("Create New Request")}</h4>
           </div>
           <div className="requisitions-filter">
-            <div className="form-group row col-form-group">
-              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Due Date')}</label>
+            <div className="form-group row col-form-group mb-md-4">
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
+                {t("Due Date")}
+              </label>
               <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
                 <div className="d-flex align-items-center date-picker">
                   <DatePicker
                     selected={dueDate}
-                    placeholder={'YYYY-MM-DD'}
-                    onChange={(date) => this.handleDates(date, 'dueDate')}
+                    placeholder={"YYYY-MM-DD"}
+                    onChange={(date) => this.handleDates(date, "dueDate")}
                   />
                   <CalendarTodayTwoToneIcon className="calendar-icon" />
                 </div>
+                <span className="d-block w-100 text-danger">
+                  {errorData.deliveryDate.message}
+                </span>
               </div>
-              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Delivery Date')}</label>
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
+                {t("Delivery Date")}
+              </label>
               <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
                 <div className="d-flex align-items-center date-picker">
                   <DatePicker
                     selected={deliverDate}
-                    placeholder={'YYYY-MM-DD'}
-                    onChange={(date) => this.handleDates(date, 'deliveryDate')}
+                    placeholder={"YYYY-MM-DD"}
+                    onChange={(date) => this.handleDates(date, "deliveryDate")}
                   />
                   <CalendarTodayTwoToneIcon className="calendar-icon" />
+                </div>
+                <span className="d-block w-100 text-danger">
+                  {errorData.deliveryDate.message}
+                </span>
+              </div>
+            </div>
+            <div className="form-group row col-form-group mb-md-4">
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
+                {t("Location")}
+              </label>
+              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
+                <div className="new-requeust-massge">
+                  <FormControl className="select-menu">
+                    <NativeSelect
+                      name="location"
+                      value={formData.location}
+                      onChange={this.handleStateChange}
+                    // isvalid={errorData.location.isValid}
+                    >
+                      <option value="">Main Office USA</option>
+                      <option value={10}>abc</option>
+                      <option value={20}>def</option>
+                      <option value={30}>abc</option>
+                    </NativeSelect>
+                  </FormControl>
+                  <span className="d-block w-100 text-danger">
+                    {errorData.location.message}
+                  </span>
+                </div>
+              </div>
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
+                {t("Department")}
+              </label>
+              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
+                <div className="new-requeust-massge">
+                  <FormControl className="select-menu">
+                    <NativeSelect
+                      name="department"
+                      value={formData.department}
+                      onChange={this.handleStateChange}
+                    // isvalid={errorData.department.isValid}
+                    >
+                      <option value="">HR Department</option>
+                      <option value={10}>abc</option>
+                      <option value={20}>def</option>
+                      <option value={30}>abc</option>
+                    </NativeSelect>
+                  </FormControl>
+                  <span className="d-block w-100 text-danger">
+                    {errorData.department.message}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="form-group row col-form-group mb-md-4">
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
+                {t("Request Type")}
+              </label>
+              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
+                <div className="new-requeust-massge">
+                  <FormControl className="select-menu">
+                    <NativeSelect
+                      name="request"
+                      value={formData.request}
+                      onChange={this.handleStateChange}
+                    // isvalid={errorData.request.isValid}
+                    >
+                      <option value="">Purchase</option>
+                      <option value={10}>abc</option>
+                      <option value={20}>def</option>
+                      <option value={30}>abc</option>
+                    </NativeSelect>
+                  </FormControl>
+                  <span className="d-block w-100 text-danger">
+                    {errorData.request.message}
+                  </span>
                 </div>
               </div>
             </div>
             <div className="form-group row col-form-group">
-              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Location')}</label>
-              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
-                <FormControl className="select-menu">
-                  <NativeSelect
-                    name="location"
-                    value={formData.location}
-                    onChange={this.handleStateChange}
-                  // isvalid={errorData.location.isValid}
-                  >
-                    <option value="">Main Office USA</option>
-                    <option value={10}>abc</option>
-                    <option value={20}>def</option>
-                    <option value={30}>abc</option>
-                  </NativeSelect>
-                </FormControl>
-                <span className="d-block w-100 text-danger">{errorData.location.message}</span>
-              </div>
-              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Department')}</label>
-              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
-                <FormControl className="select-menu">
-                  <NativeSelect
-                    name="department"
-                    value={formData.department}
-                    onChange={this.handleStateChange}
-                  // isvalid={errorData.department.isValid}
-                  >
-                    <option value="">HR Department</option>
-                    <option value={10}>abc</option>
-                    <option value={20}>def</option>
-                    <option value={30}>abc</option>
-                  </NativeSelect>
-                </FormControl>
-                <span className="d-block w-100 text-danger">{errorData.department.message}</span>
-              </div>
-            </div>
-            <div className="form-group row col-form-group">
-              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Request Type')}</label>
-              <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
-                <FormControl className="select-menu">
-                  <NativeSelect
-                    name="request"
-                    value={formData.request}
-                    onChange={this.handleStateChange}
-                  // isvalid={errorData.request.isValid}
-                  >
-                    <option value="">Purchase</option>
-                    <option value={10}>abc</option>
-                    <option value={20}>def</option>
-                    <option value={30}>abc</option>
-                  </NativeSelect>
-                </FormControl>
-                <span className="d-block w-100 text-danger">{errorData.request.message}</span>
-              </div>
-            </div>
-            <div className="form-group row col-form-group">
-              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">{t('Note')}</label>
+              <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
+                {t("Note")}
+              </label>
               <div className="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-6 col-form-field">
                 <div className="new-requeust-massge">
-                  <textarea name="note" onChange={this.handleStateChange} value={formData.note} />
-                  <span className="d-block w-100 text-danger">{errorData.note.message}</span>
+                  <textarea
+                    name="note"
+                    onChange={this.handleStateChange}
+                    value={formData.note}
+                  />
+                  <span className="d-block w-100 text-danger">
+                    {errorData.note.message}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
           <div className="order-line-heading">
             <div className="row col-form-group d-flex align-items-center justify-content-center ">
-              <h4 className="col-sm-12 col-md-4 col-lg-4 col-xl-3 col-form-button">{t('Order Line 04')}</h4>
+              <h4 className="col-sm-12 col-md-4 col-lg-4 col-xl-3 col-form-button">
+                {t("Order Line 04")}
+              </h4>
               <div className="col-sm-12 col-md-8 col-lg-8 col-xl-9 col-form-button">
                 <div className="order-line-buttons">
                   <Button
@@ -720,9 +786,9 @@ class CreateNewRequest extends Component {
               visiblecheckboxStatus={false}
               isLoading={this.props.recieved_rfp_status === status.IN_PROGRESS}
               tableClasses={{
-                table: 'ticket-tabel',
-                tableParent: 'tickets-tabel',
-                parentClass: 'all-support-ticket-tabel',
+                table: "ticket-tabel",
+                tableParent: "tickets-tabel",
+                parentClass: "all-support-ticket-tabel",
               }}
               showingLine="Showing %start% to %end% of %total% "
             />
@@ -738,7 +804,11 @@ class CreateNewRequest extends Component {
               </Button>
             )}
             <form id="upload_document">
-              <Button variant="contained" className="primary-btn" onClick={this.openUploadPopup}>
+              <Button
+                variant="contained"
+                className="primary-btn"
+                onClick={this.openUploadPopup}
+              >
                 <input
                   type="file"
                   id="file"
@@ -746,7 +816,7 @@ class CreateNewRequest extends Component {
                   name="upload_doc"
                   ref={this.inputOpenFileRef}
                   onChange={this.handleClickUploadDocument}
-                  style={{ display: 'none' }}
+                  style={{ display: "none" }}
                 />
                 <i className="fa fa-plus-circle" aria-hidden="true" />
                 Attach Documents
@@ -755,12 +825,16 @@ class CreateNewRequest extends Component {
 
             <React.Fragment>
               <div className="item-submit-buttons">
-                <div className="row col-form-group d-flex align-items-end justify-content-end">
-                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-form-button">
+                <div className="row d-flex align-items-end justify-content-end">
+                  <div className="col-xl-7 col-lg-7 col-md-6 col-sm-12 col-form-button">
                     {selectedItemList && selectedItemList.length > 0 && (
                       <div className="item-delete-buttons">
                         <div className="submit-btn">
-                          <Button variant="contained" className="submit" onClick={this.createRequest}>
+                          <Button
+                            variant="contained"
+                            className="submit"
+                            onClick={this.createRequest}
+                          >
                             Submit
                           </Button>
                         </div>
@@ -772,7 +846,7 @@ class CreateNewRequest extends Component {
                       </div>
                     )}
                   </div>
-                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-form-button">
+                  <div className="col-xl-5 col-lg-5 col-md-6 col-sm-12 col-form-button">
                     <Chat user={this.state.user} />
                   </div>
                 </div>
@@ -816,15 +890,21 @@ class CreateNewRequest extends Component {
                     onChange={this.handleUpdate}
                     value={updateValue.name}
                   />
-                  <span className="d-block w-100 text-danger">{updateForm.name.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {updateForm.name.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row form-group">
                 <label className="col-3 col-form-label">Category</label>
                 <div className="col-9 col-form-field">
                   <FormControl className="select-menu">
-                    <NativeSelect name="category" onChange={this.handleUpdate} value={updateValue.category}>
-                      <option value={''}>Category</option>
+                    <NativeSelect
+                      name="category"
+                      onChange={this.handleUpdate}
+                      value={updateValue.category}
+                    >
+                      <option value={""}>Category</option>
                       {supplierAndCategoryList &&
                         supplierAndCategoryList.category &&
                         supplierAndCategoryList.category.length > 0 &&
@@ -834,7 +914,9 @@ class CreateNewRequest extends Component {
                           </option>
                         ))}
                     </NativeSelect>
-                    <span className="d-block w-100 text-danger">{updateForm.category.message}</span>
+                    <span className="d-block w-100 text-danger">
+                      {updateForm.category.message}
+                    </span>
                   </FormControl>
                 </div>
               </div>
@@ -842,18 +924,26 @@ class CreateNewRequest extends Component {
                 <label className="col-3 col-form-label">Supplier</label>
                 <div className="col-9 col-form-field">
                   <FormControl className="select-menu">
-                    <NativeSelect name="supplier" onChange={this.handleUpdate} value={updateValue.supplier}>
-                      <option value={''}>Supplier</option>
+                    <NativeSelect
+                      name="supplier"
+                      onChange={this.handleUpdate}
+                      value={updateValue.supplier}
+                    >
+                      <option value={""}>Supplier</option>
                       {supplierAndCategoryList &&
                         supplierAndCategoryList.supplierDetails &&
                         supplierAndCategoryList.supplierDetails.length > 0 &&
-                        supplierAndCategoryList.supplierDetails.map((val, index) => (
-                          <option value={val.supplierName} name="supplier">
-                            {val.supplierName}
-                          </option>
-                        ))}
+                        supplierAndCategoryList.supplierDetails.map(
+                          (val, index) => (
+                            <option value={val.supplierName} name="supplier">
+                              {val.supplierName}
+                            </option>
+                          )
+                        )}
                     </NativeSelect>
-                    <span className="d-block w-100 text-danger">{updateForm.supplier.message}</span>
+                    <span className="d-block w-100 text-danger">
+                      {updateForm.supplier.message}
+                    </span>
                   </FormControl>
                 </div>
               </div>
@@ -868,7 +958,9 @@ class CreateNewRequest extends Component {
                     onChange={this.handleUpdate}
                     value={updateValue.quantity}
                   />
-                  <span className="d-block w-100 text-danger">{updateForm.quantity.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {updateForm.quantity.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row form-group">
@@ -882,7 +974,9 @@ class CreateNewRequest extends Component {
                     onChange={this.handleUpdate}
                     value={updateValue.unit}
                   />
-                  <span className="d-block w-100 text-danger">{updateForm.unit.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {updateForm.unit.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row form-group">
@@ -896,13 +990,19 @@ class CreateNewRequest extends Component {
                     onChange={this.handleUpdate}
                     value={updateValue.price}
                   />
-                  <span className="d-block w-100 text-danger">{updateForm.price.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {updateForm.price.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row form-group">
                 <label className="col-3 col-form-label"></label>
                 <div className="col-9 col-form-field">
-                  <Button variant="contained" className="submit" onClick={this.updateDataValues}>
+                  <Button
+                    variant="contained"
+                    className="submit"
+                    onClick={this.updateDataValues}
+                  >
                     Submit
                   </Button>
                 </div>
@@ -928,6 +1028,8 @@ const mapStateToProps = (state) => {
     supplier_category_list_status,
     supplier_category_list_data,
   } = state.procurement;
+
+  console.log("request for", request_for_purpose_list);
   return {
     request_for_purpose_status,
     request_for_purpose_list,
@@ -942,5 +1044,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const connectedCreateNewRequest = withTranslation()(connect(mapStateToProps)(CreateNewRequest));
+const connectedCreateNewRequest = withTranslation()(
+  connect(mapStateToProps)(CreateNewRequest)
+);
 export default connectedCreateNewRequest;

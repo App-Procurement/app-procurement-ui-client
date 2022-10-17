@@ -23,6 +23,7 @@ function getSupplierList(data) {
 			dispatchFunction({
 				type: status.IN_PROGRESS,
 				data: {
+					
 					suplier_list_status: status.IN_PROGRESS,
 					supplier_list: null
 				}

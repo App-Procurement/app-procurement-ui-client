@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
-import Button from '@material-ui/core/Button';
-import Table from '../../Table/Table';
-import { t } from 'i18next';
+import React, { Component } from "react";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CloseIcon from "@material-ui/icons/Close";
+import Button from "@material-ui/core/Button";
+import Table from "../../Table/Table";
+import { t } from "i18next";
 
 class AddItemList extends Component {
   constructor(props) {
@@ -13,8 +13,8 @@ class AddItemList extends Component {
     this.state = {
       columns: [
         {
-          label: '',
-          key: 'image',
+          label: "",
+          key: "image",
           renderCallback: (value, index) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -24,63 +24,52 @@ class AddItemList extends Component {
           },
         },
         {
-          label: 'Name',
-          key: 'name',
+          label: "Name",
+          key: "name",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'requisitions-no'}>{value}</span>
+                <span className={"requisitions-no"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Category',
-          key: 'category',
+          label: "Category",
+          key: "category",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Item Type',
-          key: 'type',
+          label: "Item Type",
+          key: "type",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Quantity',
-          key: 'quantity',
+          label: "Quantity",
+          key: "quantity",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'requestor'}>{value}</span>
+                <span className={"requestor"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Unit',
-          key: 'unit',
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{value}</span>
-              </td>
-            );
-          },
-        },
-        {
-          label: 'Price',
-          key: 'price',
+          label: "Unit",
+          key: "unit",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -90,12 +79,26 @@ class AddItemList extends Component {
           },
         },
         {
-          label: 'Action',
-          key: 'id',
+          label: "Price",
+          key: "price",
+          renderCallback: (value) => {
+            return (
+              <td key={`${Math.random()}_${value}`}>
+                <span className="department-value">{value}</span>
+              </td>
+            );
+          },
+        },
+        {
+          label: "Action",
+          key: "id",
           renderCallback: (value, row) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <Button className="primary-btn" onClick={() => this.props.setSelectedItemList(row)}>
+                <Button
+                  className="primary-btn"
+                  onClick={() => this.props.setSelectedItemList(row)}
+                >
                   Add
                 </Button>
               </td>
@@ -103,13 +106,46 @@ class AddItemList extends Component {
           },
         },
       ],
+      itemListData: [],
+      duplicateItemList: [],
     };
   }
-  componentDidMount;
+
+  componentDidMount() {
+    if (this.props.itemList && this.props.itemList.length > 0) {
+      this.setState({
+        itemList: this.props.itemList,
+        duplicateItemList: this.props.itemList,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.itemList && this.props.itemList !== prevProps.itemList) {
+      this.setState({
+        itemList: this.props.itemList,
+        duplicateItemList: this.props.itemList,
+      });
+    }
+  }
+  handleSearch = (event) => {
+    const { value } = event.target;
+    let { itemList, duplicateItemList } = this.state;
+    let cloneItemList = JSON.parse(JSON.stringify(duplicateItemList));
+    if (value) {
+      itemList = cloneItemList.filter(({ name }) =>
+        name.toLowerCase().includes(value.toLowerCase())
+      );
+    } else {
+      itemList = JSON.parse(JSON.stringify(duplicateItemList));
+    }
+
+    this.setState({ itemList });
+  };
 
   render() {
-    const { openDialog, itemList, openAddNewItemPopup } = this.props;
-    const { columns } = this.state;
+    const { openDialog, openAddNewItemPopup } = this.props;
+    const { columns, itemList } = this.state;
 
     return (
       <>
@@ -122,7 +158,7 @@ class AddItemList extends Component {
           >
             <div className="custom-dialog-head">
               <DialogTitle id="form-dialog-title" className="dialog-heading">
-                {t('Items')}
+                {t("Items")}
               </DialogTitle>
               <Button onClick={openAddNewItemPopup} className="modal-close-btn">
                 <CloseIcon />
@@ -131,16 +167,24 @@ class AddItemList extends Component {
             <div className="custom-dialog-content">
               <div className="row d-flex align-items-center justify-content-center">
                 <div className="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                  <h5>{t('Add Item from catalog')}</h5>
+                  <h5>{t("Add Item from catalog")}</h5>
                 </div>
                 <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12">
                   <div className="search-bar-section">
                     <div className="search-bar">
-                      <input type="text" name="searchChat" className="control-form" placeholder="Search" />
+                      <input
+                        type="text"
+                        className="control-form"
+                        placeholder="Search "
+                        onChange={this.handleSearch}
+                      />
                       <i className="fa fa-search" aria-hidden="true" />
                     </div>
                     <div className="fillter-btn">
-                      <Button variant="contained" className="primary-btn fillter-icon">
+                      <Button
+                        variant="contained"
+                        className="primary-btn fillter-icon"
+                      >
                         Add Item
                       </Button>
                     </div>
@@ -158,9 +202,9 @@ class AddItemList extends Component {
                 perPageLimit={6}
                 visiblecheckboxStatus={false}
                 tableClasses={{
-                  table: 'ticket-tabel',
-                  tableParent: 'tickets-tabel',
-                  parentClass: 'all-support-ticket-tabel',
+                  table: "ticket-tabel",
+                  tableParent: "tickets-tabel",
+                  parentClass: "all-support-ticket-tabel",
                 }}
                 showingLine="Showing %start% to %end% of %total% "
               />

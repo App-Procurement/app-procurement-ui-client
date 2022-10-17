@@ -49,12 +49,12 @@ class ViewSupplierDetail extends React.Component {
           </div>
           <div className="request-purpose-head">
             <div className="row d-flex align-items-center justify-content-center">
-              <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+              <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-4">
                 <div className="request-purpose-head-left">
                   <h3>Add Supplier</h3>
                 </div>
               </div>
-              <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+              <div className="col-xl-8 col-lg-8 col-md-8 col-sm-6 col-8">
                 <div className="request-purpose-head-right">
                   <div className="add-Supplier-button">
                     <ul>

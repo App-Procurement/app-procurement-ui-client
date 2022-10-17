@@ -32,7 +32,20 @@ const RequestTimeline = ({ requestData }) => {
                 if (dataKeys[key]) {
                   return (
                     <li>
-                      <p className="green">{dataKeys[key]}</p>
+                      {dataKeys[key] === "Request Initiate" ? (
+                        <p className="grey">{dataKeys[key]}</p>
+                      ) : dataKeys[key] === "Approved" ? (
+                        <p className="green">{dataKeys[key]}</p>
+                      ) : dataKeys[key] === "PO Created" ? (
+                        <p className="green">{dataKeys[key]}</p>
+                      ) : dataKeys[key] === "Out for delivery" ? (
+                        <p style={{ color: `#ffab2e` }}>{dataKeys[key]}</p>
+                      ) : dataKeys[key] === "Delivered" ? (
+                        <p style={{ color: `#6418C3` }}>{dataKeys[key]}</p>
+                      ) : (
+                        <></>
+                      )}
+                      {/* <p className="green">{dataKeys[key]}</p> */}
                       <span>
                         {commonFunctions.timeStampFormat(requestData[key].date)}
                       </span>

@@ -1,18 +1,18 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import Button from "@material-ui/core/Button";
 // import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { status } from '../../_constants';
-import { manageSupplierAction } from '../../_actions';
-import Table from '../../Table/Table';
+import { connect } from "react-redux";
+import { status } from "../../_constants";
+import { manageSupplierAction } from "../../_actions";
+import Table from "../../Table/Table";
 // import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { requestForPurposeAction } from "../../_actions";
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import CloseIcon from '@material-ui/icons/Close';
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import CloseIcon from "@material-ui/icons/Close";
 import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
 
@@ -22,19 +22,19 @@ class Products extends React.Component {
     this.state = {
       productColumn: [
         {
-          label: 'S No',
-          key: 'sno',
+          label: "S No",
+          key: "sno",
           renderCallback: (value, index) => {
             return (
               <td>
-                <span className={'s-no'}>{index + 1}</span>
+                <span className={"s-no"}>{index + 1}</span>
               </td>
             );
           },
         },
         {
-          label: 'Picture',
-          key: 'productImgUrl',
+          label: "Picture",
+          key: "productImgUrl",
           renderCallback: (value) => {
             return (
               <td>
@@ -44,63 +44,63 @@ class Products extends React.Component {
           },
         },
         {
-          label: 'Item Name',
-          key: 'productName',
+          label: "Item Name",
+          key: "productName",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'requisitions-no'}>{value}</span>
+                <span className={"requisitions-no"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Item Type',
-          key: 'itemType',
+          label: "Item Type",
+          key: "itemType",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Unit',
-          key: 'unit',
+          label: "Unit",
+          key: "unit",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'requestor'}>{value}</span>
+                <span className={"requestor"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Supplier',
-          key: 'supplier',
+          label: "Supplier",
+          key: "supplier",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'requestor'}>{value}</span>
+                <span className={"requestor"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Price',
-          key: 'price',
+          label: "Price",
+          key: "price",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'requestor'}>${value}</span>
+                <span className={"requestor"}>${value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Stock',
-          key: 'stock',
+          label: "Stock",
+          key: "stock",
           renderCallback: (value) => {
             return (
               <td>
@@ -110,12 +110,15 @@ class Products extends React.Component {
           },
         },
         {
-          label: 'Status',
-          key: 'status',
+          label: "Status",
+          key: "status",
           renderCallback: (value) => {
             return (
               <td>
-                <Button variant="outlined" className="department-value active-btn ">
+                <Button
+                  variant="outlined"
+                  className="department-value active-btn "
+                >
                   {value}
                 </Button>
               </td>
@@ -132,7 +135,12 @@ class Products extends React.Component {
                   <i
                     class="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ productActiveIndex: this.state.productActiveIndex === index ? -1 : index })}
+                    onClick={() =>
+                      this.setState({
+                        productActiveIndex:
+                          this.state.productActiveIndex === index ? -1 : index,
+                      })
+                    }
                   ></i>
                   {this.state.productActiveIndex === index && (
                     <div className="toggale">
@@ -174,7 +182,19 @@ class Products extends React.Component {
       openUpdateDialog: false,
       productActiveIndex: -1,
       openProductEditDialog: false,
-      updateProductValue: {}
+      itemName: "",
+      itemNameError: "",
+      itemPrice: "",
+      itemPriceError: "",
+      itemUnit: "",
+      itemUnitError: "",
+      itemType: "",
+      itemTypeError: "",
+      itemSupplier: "",
+      itemSupplierError: "",
+      itemFile: [],
+      itemFileError: "",
+      updateProductValue: {},
     };
   }
 
@@ -184,21 +204,28 @@ class Products extends React.Component {
   }
 
   clearUpdateFields = () => {
-    this.setState({ openProductEditDialog: false, updateProductValue: {}, productActiveIndex: -1 })
-  }
+    this.setState({
+      openProductEditDialog: false,
+      updateProductValue: {},
+      productActiveIndex: -1,
+    });
+  };
 
   componentDidUpdate(prevProps) {
     if (
       this.props.suplier_product_status !== prevProps.suplier_product_status &&
       this.props.suplier_product_status === status.SUCCESS
     ) {
-      if (this.props.supplier_product_list && this.props.supplier_product_list.length > 0) {
+      if (
+        this.props.supplier_product_list &&
+        this.props.supplier_product_list.length > 0
+      ) {
         this.setState({ productList: this.props.supplier_product_list });
       }
     }
     if (
       this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
+        prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -210,14 +237,17 @@ class Products extends React.Component {
       }
     }
     if (
-      this.props.update_suplier_product_status !== prevProps.update_suplier_product_status &&
+      this.props.update_suplier_product_status !==
+        prevProps.update_suplier_product_status &&
       this.props.update_suplier_product_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getProductList());
-      this.clearUpdateFields()
-    }
-    else if (this.props.delete_suplier_list_status !== prevProps.delete_suplier_list_status &&
-      this.props.delete_suplier_list_status === status.SUCCESS) {
+      this.clearUpdateFields();
+    } else if (
+      this.props.delete_suplier_list_status !==
+        prevProps.delete_suplier_list_status &&
+      this.props.delete_suplier_list_status === status.SUCCESS
+    ) {
       this.props.dispatch(manageSupplierAction.getProductList());
     }
   }
@@ -233,6 +263,7 @@ class Products extends React.Component {
       openUpdateDialog: !this.state.openUpdateDialog,
     });
   };
+
   toggleEditModal = () => {
     const { productActiveIndex, productList } = this.state;
     if (productActiveIndex >= 0) {
@@ -307,14 +338,87 @@ class Products extends React.Component {
     retData.isValid = isValid;
     return retData;
   };
+
+  taskValid = () => {
+    let valid = true;
+
+    const { itemName, itemUnit, itemPrice, itemType, itemSupplier, itemFile } =
+      this.state;
+
+    if (!itemName) {
+      this.setState({ itemNameError: "Item  Name Is Required" });
+      valid = false;
+    } else {
+      this.setState({ itemNameError: "" });
+    }
+    if (!itemFile) {
+      this.setState({ itemFileError: "Item file is  Required" });
+      valid = false;
+    } else {
+      this.setState({ itemFileError: "" });
+    }
+
+    if (!itemPrice) {
+      this.setState({ itemPriceError: "Item  Price Is Required" });
+      valid = false;
+    } else {
+      this.setState({ itemPriceError: "" });
+    }
+
+    if (!itemUnit) {
+      this.setState({ itemUnitError: "Item Unit Is  required" });
+      valid = false;
+    } else {
+      this.setState({ itemUnitError: "" });
+    }
+
+    if (!itemType) {
+      this.setState({ itemTypeError: "Item type is Required" });
+      valid = false;
+    } else {
+      this.setState({ itemTypeError: "" });
+    }
+
+    if (!itemSupplier) {
+      this.setState({ itemSupplierError: "item Supplier is required" });
+      valid = false;
+    } else {
+      this.setState({ itemSupplierError: "" });
+    }
+
+    if (
+      itemName &&
+      itemType &&
+      itemPrice &&
+      itemUnit &&
+      itemSupplier &&
+      itemFile
+    ) {
+      valid = true;
+    }
+
+    return valid;
+  };
+
+  handleStateChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
+  handleUploadFile = (e) => {
+    let { itemFile } = this.state;
+    const { name, files } = e.target;
+    if (files[0]) {
+      itemFile.push(files[0]);
+    }
+    this.setState({ itemFile });
+  };
+
   updateDataValues = (type) => {
     const { updateProductValue } = this.state;
-
     let updateForm = this.validateProductUpdate(true);
     this.setState({ isSubmit: true });
     if (updateForm.isValid) {
-      // updateProductValue.totalCost = updateProductValue.price * updateProductValue.quantity;
-      // requestData.detailsList[productActiveIndex] = updateProductValue updateSupplierList
       this.props.dispatch(
         manageSupplierAction.updateProductList({
           id: updateProductValue.id,
@@ -326,23 +430,66 @@ class Products extends React.Component {
       });
     }
   };
+
   handleUpdate = (e, type) => {
     const { updateProductValue } = this.state;
     const { name, value } = e.target;
     updateProductValue[name] = value;
     this.setState({ updateProductValue });
   };
+
   removeProduct = (index) => {
     const { productList } = this.state;
-    let value = productList[index]
+    let value = productList[index];
     if (value.id) {
-      this.props.dispatch(manageSupplierAction.deleteSupplier({ id: value.id, value }))
+      this.props.dispatch(
+        manageSupplierAction.deleteSupplier({ id: value.id, value })
+      );
     }
-    this.setState({ productActiveIndex: -1 })
-  }
+    this.setState({ productActiveIndex: -1 });
+  };
+
+  handleSubmit = (e) => {
+    if (this.taskValid()) {
+      const { itemName, itemPrice, itemUnit, itemType, itemSupplier } =
+        this.state;
+
+      this.setState({
+        itemName: "",
+        itemNameError: "",
+        itemPrice: "",
+        itemPriceError: "",
+        itemUnit: "",
+        itemUnitError: "",
+        itemType: "",
+        itemTypeError: "",
+        itemSupplier: "",
+        itemSupplierError: "",
+      });
+    }
+  };
+
   render() {
-    const { productColumn, productList, productActiveIndex, openProductEditDialog, updateProductValue, supplierAndCategoryList, openDialog, openUpdateDialog, isSubmit } = this.state;
-    const productValidation = this.validateProductUpdate(isSubmit)
+    const {
+      productColumn,
+      productList,
+      productActiveIndex,
+      openProductEditDialog,
+      updateProductValue,
+      supplierAndCategoryList,
+      openDialog,
+      openUpdateDialog,
+      isSubmit,
+      handleSubmit,
+      itemFile,
+      itemNameError,
+      itemPriceError,
+      itemSupplierError,
+      itemTypeError,
+      itemUnitError,
+      itemFileError,
+    } = this.state;
+    const productValidation = this.validateProductUpdate(isSubmit);
     return (
       <div className="main-content">
         <div className="products-page-conntent">
@@ -355,125 +502,142 @@ class Products extends React.Component {
               </div>
             </div>
           </div>
-          <div className="account-holder-details mb-4">
-            <div className="requisitions-filter">
-              <div className="row">
-                <div className="col-12 col-sm-12 col-md-4">
-                  <div className="form-group form-group-common">
-                    <label className="d-block">Item Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      className="form-control"
-                      placeholder="Hp Printer"
-                      onChange={(e) => this.handleStateChange(e, 'bank')}
-                    // value={bankDetail.name}
-                    />
-                    {/* <span className="d-block w-100 text-danger">{errorData.bankHolderName.message}</span> */}
+          <form onSubmit={handleSubmit}>
+            <div className="account-holder-details mb-4">
+              <div className="requisitions-filter">
+                <div className="row">
+                  <div className="col-12 col-sm-12 col-md-4">
+                    <div className="form-group form-group-common">
+                      <label className="d-block">Item Name</label>
+                      <input
+                        type="text"
+                        name="itemName"
+                        className="form-control"
+                        placeholder="Hp Printer"
+                        onChange={this.handleStateChange}
+                      />
+                      <span className="d-block w-100 text-danger">
+                        {itemNameError}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="col-12 col-sm-12 col-md-4">
-                  <div className="form-group form-group-common">
-                    <label className="d-block">Price</label>
-                    <input
-                      type="text"
-                      name="acNo"
-                      className="form-control"
-                      placeholder="$625"
-                      onChange={(e) => this.handleStateChange(e, 'bank')}
-                    // value={bankDetail.acNo}
-                    />
-                    {/* <span className="d-block w-100 text-danger">{errorData.acNo.message}</span> */}
+                  <div className="col-12 col-sm-12 col-md-4">
+                    <div className="form-group form-group-common">
+                      <label className="d-block">Price</label>
+                      <input
+                        type="text"
+                        name="itemPrice"
+                        className="form-control"
+                        placeholder="$625"
+                        onChange={this.handleStateChange}
+                      />
+                      <span className="d-block w-100 text-danger">
+                        {itemPriceError}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="col-12 col-sm-12 col-md-4">
-                  <div className="form-group form-group-common">
-                    <label className="d-block">Unit</label>
-                    <input
-                      type="text"
-                      name="bankCode"
-                      className="form-control"
-                      placeholder="Each"
-                      onChange={(e) => this.handleStateChange(e, 'bank')}
-                    // value={bankDetail.bankCode}
-                    />
-                    {/* <span className="d-block w-100 text-danger">{errorData.bankCode.message}</span> */}
+                  <div className="col-12 col-sm-12 col-md-4">
+                    <div className="form-group form-group-common">
+                      <label className="d-block">Unit</label>
+                      <input
+                        type="text"
+                        name="itemUnit"
+                        className="form-control"
+                        placeholder="Each"
+                        onChange={this.handleStateChange}
+                      />
+                      <span className="d-block w-100 text-danger">
+                        {itemUnitError}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="col-12 col-sm-12 col-md-4">
-                  <div className="form-group form-group-common">
-                    <label className="d-block">Item Type</label>
-                    <input
-                      type="taxId"
-                      name="taxId"
-                      className="form-control"
-                      placeholder="Product"
-                      onChange={(e) => this.handleStateChange(e, 'bank')}
-                    // value={bankDetail.taxId}
-                    />
-                    {/* <span className="d-block w-100 text-danger">{errorData.taxId.message}</span> */}
+                  <div className="col-12 col-sm-12 col-md-4">
+                    <div className="form-group form-group-common">
+                      <label className="d-block">Item Type</label>
+                      <input
+                        type="text"
+                        name="itemType"
+                        // value={item.itemType}
+                        className="form-control"
+                        placeholder="Product"
+                        onChange={this.handleStateChange}
+                      />
+                      <span className="d-block w-100 text-danger">
+                        {itemTypeError}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="col-12 col-sm-12 col-md-4">
-                  <div className="form-group form-group-common">
-                    <label className="d-block">Supplier</label>
-                    <div className="new-requeust-massge">
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect
-                          name="bankName"
-                          // value={companyDetail.bankName}
-                          onChange={(e) => this.handleStateChange(e, 'bank')}
-                        >
-                          <option value="">Main Office USA</option>
-                          <option value={10}>abc</option>
-                          <option value={20}>def</option>
-                          <option value={30}>abc</option>
-                        </NativeSelect>
-                      </FormControl>
-                      {/* <span className="d-block w-100 text-danger">{errorData.bankName.message}</span> */}
+                  <div className="col-12 col-sm-12 col-md-4">
+                    <div className="form-group form-group-common">
+                      <label className="d-block">Supplier</label>
+                      <div className="new-requeust-massge">
+                        <FormControl className="payment-select-menu">
+                          <NativeSelect
+                            name="itemSupplier"
+                            onChange={this.handleStateChange}
+                          >
+                            <option value="">Main Office USA</option>
+                            <option value="amazon">Amazon</option>
+                            <option value="flipkart">Flipkart</option>
+                            <option value="ebay">Ebay</option>
+                          </NativeSelect>
+                        </FormControl>
+                        <span className="d-block w-100 text-danger">
+                          {itemSupplierError}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12 col-sm-12 col-md-4">
+                    <div className="form-group form-group-common">
+                      <label className="d-block">Image</label>
+                      <div className="attach">
+                        <input
+                          type="file"
+                          placeholder="Upload files (PDF,DOC,PPT,JPG,PNG)"
+                          accept=" .pdf , .doc , .ppt , .jpg , .png"
+                          name="itemFile"
+                          onChange={(e) => this.handleUploadFile(e)}
+                          multiple
+                        />
+
+                        <div className="file-content d-flex justify-content-center align-items-center">
+                          <CloudUploadIcon className="icon" />
+                          <p>Upload file</p>
+                        </div>
+                      </div>
+                      <span className="d-block w-100 text-danger">
+                        {itemFileError}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <div className="col-12 col-sm-12 col-md-4">
-                  <div className="form-group form-group-common">
-                    <label className="d-block">Image</label>
-                    <div className="attach">
-                      <input
-                        type="file"
-                        placeholder="Upload files (PDF,DOC,PPT,JPG,PNG)"
-                        accept=" .pdf , .doc , .ppt , .jpg , .png"
-                        name="requisitionFile"
-                        onChange={this.handleUploadFile}
-                        multiple
-                      />
-                      <div className="file-content d-flex justify-content-center align-items-center">
-                        <CloudUploadIcon className="icon" />
-                        <p>Upload file</p>
+              </div>
+              <div className="item-submit-buttons">
+                <div className="row col-form-group ">
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-form-button">
+                    <div className="item-delete-buttons">
+                      <div className="submit-btn">
+                        <Button
+                          variant="contained"
+                          className="submit"
+                          onClick={this.handleSubmit}
+                        >
+                          Save
+                        </Button>
+                      </div>
+                      <div className="submit-btn">
+                        <Button variant="contained" className="submit delete">
+                          Cancel
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="item-submit-buttons">
-              <div className="row col-form-group ">
-                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-form-button">
-                  <div className="item-delete-buttons">
-                    <div className="submit-btn">
-                      <Button variant="contained" className="submit">
-                        Save
-                      </Button>
-                    </div>
-                    <div className="submit-btn">
-                      <Button variant="contained" className="submit delete">
-                        Cancel
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </form>
+
           <div className="add-product-table">
             <div className="heading">
               <h5>Recent Added Product</h5>
@@ -483,11 +647,13 @@ class Products extends React.Component {
                 valueFromData={{ columns: productColumn, data: productList }}
                 perPageLimit={6}
                 visiblecheckboxStatus={false}
-                isLoading={this.props.suplier_list_status === status.IN_PROGRESS}
+                isLoading={
+                  this.props.suplier_list_status === status.IN_PROGRESS
+                }
                 tableClasses={{
-                  table: 'ticket-tabel',
-                  tableParent: 'tickets-tabel',
-                  parentClass: 'all-support-ticket-tabel',
+                  table: "ticket-tabel",
+                  tableParent: "tickets-tabel",
+                  parentClass: "all-support-ticket-tabel",
                 }}
                 showingLine="Showing %start% to %end% of %total% "
               />
@@ -501,10 +667,16 @@ class Products extends React.Component {
           className="update-supplier-dialog"
         >
           <div className="additem-dialog-head">
-            <DialogTitle id="form-dialog-title" className="addNewItemDialogTitle dialog-heading">
+            <DialogTitle
+              id="form-dialog-title"
+              className="addNewItemDialogTitle dialog-heading"
+            >
               Import Product
             </DialogTitle>
-            <Button onClick={this.openImportProductPopup} className="modal-close-btn">
+            <Button
+              onClick={this.openImportProductPopup}
+              className="modal-close-btn"
+            >
               <CloseIcon />
             </Button>
           </div>
@@ -518,7 +690,11 @@ class Products extends React.Component {
                 <p>click on the download file and add the supplier</p>
               </div>
               <div className="download-btn text-center">
-                <Button href="/postlogin/viewsupplierdetail" variant="contained" className="new-requisition-btn">
+                <Button
+                  href="/postlogin/viewsupplierdetail"
+                  variant="contained"
+                  className="new-requisition-btn"
+                >
                   Download
                 </Button>
               </div>
@@ -558,10 +734,16 @@ class Products extends React.Component {
           className="update-supplier-dialog"
         >
           <div className="additem-dialog-head">
-            <DialogTitle id="form-dialog-title" className="addNewItemDialogTitle dialog-heading">
+            <DialogTitle
+              id="form-dialog-title"
+              className="addNewItemDialogTitle dialog-heading"
+            >
               Update Supplier
             </DialogTitle>
-            <Button onClick={this.openUpdateProductPopup} className="modal-close-btn">
+            <Button
+              onClick={this.openUpdateProductPopup}
+              className="modal-close-btn"
+            >
               <CloseIcon />
             </Button>
           </div>
@@ -575,7 +757,11 @@ class Products extends React.Component {
                 <p>click on the download file and add the supplier</p>
               </div>
               <div className="download-btn text-center">
-                <Button href="/postlogin/viewsupplierdetail" variant="contained" className="new-requisition-btn">
+                <Button
+                  href="/postlogin/viewsupplierdetail"
+                  variant="contained"
+                  className="new-requisition-btn"
+                >
                   Download
                 </Button>
               </div>
@@ -617,10 +803,7 @@ class Products extends React.Component {
             className="custom-dialog edit-dialog"
           >
             <div className="custom-dialog-head">
-              <DialogTitle
-                id="form-dialog-title"
-                className="dialog-heading"
-              >
+              <DialogTitle id="form-dialog-title" className="dialog-heading">
                 Edit
               </DialogTitle>
               <Button
@@ -675,7 +858,7 @@ class Products extends React.Component {
                     value={updateProductValue.unit}
                   />
                   <span className="d-block w-100 text-danger">
-                    {productValidation.unit.message}
+                    {/* {productValidation.unit.message} */}
                   </span>
                 </div>
               </div>
@@ -701,7 +884,7 @@ class Products extends React.Component {
                         )}
                     </NativeSelect>
                     <span className="d-block w-100 text-danger">
-                      {productValidation.supplier.message}
+                      {/* {productValidation.supplier.message} */}
                     </span>
                   </FormControl>
                 </div>
@@ -718,7 +901,7 @@ class Products extends React.Component {
                     value={updateProductValue.price}
                   />
                   <span className="d-block w-100 text-danger">
-                    {productValidation.price.message}
+                    {/* {productValidation.price.message} */}
                   </span>
                 </div>
               </div>
@@ -734,7 +917,7 @@ class Products extends React.Component {
                     value={updateProductValue.stock}
                   />
                   <span className="d-block w-100 text-danger">
-                    {productValidation.stock.message}
+                    {/* {productValidation.stock.message} */}
                   </span>
                 </div>
               </div>
@@ -758,13 +941,15 @@ class Products extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  const { supplier_product_list,
+  const {
+    supplier_product_list,
     suplier_product_status,
     supplier_category_list_status,
     supplier_category_list_data,
     update_suplier_product_status,
     update_supplier_product_list,
-    delete_suplier_list_status, } = state.procurement;
+    delete_suplier_list_status,
+  } = state.procurement;
   return {
     supplier_product_list,
     suplier_product_status,

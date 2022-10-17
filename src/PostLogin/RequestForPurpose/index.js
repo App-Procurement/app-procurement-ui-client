@@ -10,10 +10,16 @@ import { withTranslation } from 'react-i18next';
 import { t } from 'i18next';
 import { Link } from 'react-router-dom';
 import { commonFunctions } from '../../_utilities/commonFunctions'
-import purchasedRequisitionIcon from '../../assets/images/dashbord/purchased-requisition-icon.png';
+import purchaseOrder from '../../assets/images/dashbord/purchase-order.png';
 import approvedRequisitionIcon from '../../assets/images/dashbord/approved-requisition-icon.png';
 import pendingRequisitionIcon from '../../assets/images/dashbord/pending-requisition-icon.png';
 import rejectedRequisitionIcon from '../../assets/images/dashbord/rejected-requisition-icon.png';
+import FilterIcon from '../../assets/images/filter-icon.png';
+import FormControl from "@material-ui/core/FormControl";
+import NativeSelect from "@material-ui/core/NativeSelect";
+import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import { DatePicker } from "@y0c/react-datepicker";
+import "rc-calendar/assets/index.css";
 
 
 class RequestForPurpose extends Component {
@@ -21,6 +27,7 @@ class RequestForPurpose extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			status: false,
 			activeindex: 0,
 			requiData: {
 				status: '',
@@ -175,8 +182,20 @@ class RequestForPurpose extends Component {
 		this.props.history.push(`/postlogin/requestforpurpose/newrequest`);
 	};
 
+	handleToggle = () => {
+		this.setState({
+			status: !this.state.status,
+		});
+	};
+
+	handleDates = (date, name) => {
+		let { formData } = this.state;
+		formData[name] = date;
+		this.setState({ formData });
+	};
+
 	render() {
-		const { columns, tableData } = this.state;
+		const { columns, tableData, status } = this.state;
 		return (
 			<div className="main-content">
 				<div className="request-purpose">
@@ -211,7 +230,7 @@ class RequestForPurpose extends Component {
 										<h4>4256</h4>
 									</div>
 									<div className="purchased-image">
-										<img src={purchasedRequisitionIcon} alt="" />
+										<img src={purchaseOrder} alt="" />
 									</div>
 								</div>
 							</div>
@@ -250,17 +269,111 @@ class RequestForPurpose extends Component {
 							</div>
 						</div>
 					</div>
-					<div className="search-fillter">
-						<Button variant="outlined" className="fillter-btn">
-							<i className="fa fa-filter" aria-hidden="true"></i>
-							Search By Filters
-						</Button>
+					<div className="search-fillter-button">
+						{status === false ? (
+							<Button variant="outlined" onClick={this.handleToggle} className="fillter-btn">
+								<span>
+									<img src={FilterIcon} alt=" " />
+								</span>
+								Search By Filters
+							</Button>
+						) : (
+							<></>
+						)}
+						{status && (
+							<div className="search-fillter-inner">
+								<div className="fillter-icon">
+									<span>
+										<img src={FilterIcon} alt=" " />
+									</span>
+									{status ? (
+										<p
+											onClick={() =>
+												this.setState({
+													status: !this.state.status,
+												})
+											}
+										>
+											Hide Filters
+										</p>
+									) : (
+										<></>
+									)}
+								</div>
+								<div className="row">
+									<div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div className="form-group form-group-common">
+											<label className="d-block">RFQ No.</label>
+											<input
+												type="text"
+												name="rfqNo"
+												// value={item.itemType}
+												className="form-control"
+												placeholder="Product"
+												onChange={this.handleStateChange}
+											/>
+										</div>
+									</div>
+									<div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div className="form-group form-group-common">
+											<label className="d-block">RFQ Type</label>
+											<div className="new-requeust-massge">
+												<FormControl className="payment-select-menu">
+													<NativeSelect
+														name="rfqType"
+														onChange={this.handleStateChange}
+													>
+														<option value="">Main Office USA</option>
+														<option value="amazon">Amazon</option>
+														<option value="flipkart">Flipkart</option>
+														<option value="ebay">Ebay</option>
+													</NativeSelect>
+												</FormControl>
+											</div>
+										</div>
+									</div>
+									<div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+										<label className="d-block">{t("Quotation Deadline")}</label>
+										<div className="d-flex align-items-center date-picker form-group">
+											<DatePicker
+												// selected={formData.openDate}
+												placeholder={"YYYY-MM-DD"}
+												onChange={(date) => this.handleDates(date, "quotationDeadLine")}
+											/>
+											<CalendarTodayTwoToneIcon className="calendar-icon" />
+										</div>
+									</div>
+									<div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div className="form-group form-group-common">
+											<label className="d-block">Status</label>
+											<div className="new-requeust-massge">
+												<FormControl className="payment-select-menu">
+													<NativeSelect
+														name="itemSupplier"
+														onChange={this.handleStateChange}
+													>
+														<option value="">Main Office USA</option>
+														<option value="amazon">Amazon</option>
+														<option value="flipkart">Flipkart</option>
+														<option value="ebay">Ebay</option>
+													</NativeSelect>
+												</FormControl>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="filtter-search-btn text-center mt-2">
+									<Button className="primary-btn">Search</Button>
+								</div>
+							</div>
+						)}
+
 					</div>
 					<Table
 						valueFromData={{ columns: columns, data: tableData }}
 						perPageLimit={6}
 						visiblecheckboxStatus={false}
-						isLoading={this.props.recieved_rfp_status === status.IN_PROGRESS}
+						isLoading={this.props.request_for_purpose_status === status.IN_PROGRESS}
 						tableClasses={{
 							table: 'ticket-tabel',
 							tableParent: 'tickets-tabel',

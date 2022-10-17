@@ -1,0 +1,609 @@
+.request-page-content {
+    .request-purpose-head {
+        margin-bottom: 30px;
+
+        .request-purpose-head-left {
+            h4 {
+                margin: 0;
+                color: $heading-text-color;
+            }
+        }
+
+        .request-purpose-head-right {
+            float: right;
+
+            .new-budget-btn {
+                width: 145px;
+                height: 50px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: $buttons-bg;
+
+                .MuiPaper-root {
+                    width: 150px;
+                    top: 98px;
+                }
+
+                .MuiInputBase-root {
+                    color: $button-text-color;
+                    width: 100%;
+                    padding: 0 12px;
+
+                    &::before {
+                        border-bottom: none;
+                    }
+
+                    .MuiSelect-icon {
+                        color: $button-text-color;
+                        right: 5px;
+                    }
+
+                    .MuiSelect-select {
+                        &:focus {
+                            background: transparent;
+                        }
+                    }
+                }
+
+                .MuiInput-underline {
+                    &::after {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .progress-rfp-boxs {
+        margin-bottom: 30px;
+
+        .progress-box {
+            padding: 20px 15px;
+            height: 120px;
+            border-radius: 15px;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+            -webkit-box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.3);
+
+            .progress-content {
+                max-width: 140px;
+                display: inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                .title {
+                    font-size: 14px;
+                    line-height: 20px;
+                    color: #a5a5a5;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    margin-bottom: 15px;
+                }
+
+                h4 {
+                    margin: 0;
+                    line-height: 26px;
+                    font-weight: 700;
+                }
+            }
+
+            .purchased-image {
+                width: 65px;
+                height: 65px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                background-color: #377ffc;
+
+                &.approved {
+                    background-color: #d3ede0;
+                }
+
+                &.pending {
+                    background-color: #ffe9da;
+                }
+
+                &.rejected {
+                    background-color: #cfeeff;
+                }
+            }
+        }
+    }
+
+    .create-rfq-contant {
+        .new-request-heading {
+            font-size: 20px;
+            line-height: 24px;
+            font-weight: 500;
+            color: #6418c3;
+            margin-bottom: 20px;
+
+            a {
+                text-decoration: none;
+                color: #727272;
+            }
+
+            i {
+                margin: 0 5px;
+                vertical-align: bottom;
+            }
+        }
+
+        .requisitions-filter {
+            width: 100%;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background: #ffffff;
+            background: $body-box-bg;
+            box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -webkit-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.30);
+
+            label {
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 500;
+                color: $icon-color;
+            }
+
+            .date-picker {
+                display: block;
+                width: 100%;
+                position: relative;
+
+                .picker {
+                    display: block;
+                    width: 100%;
+
+                    .picker__trigger {
+                        display: block;
+                        width: 100%;
+
+                        .picker-input {
+                            display: block;
+                            width: 100%;
+
+                            .picker-input__text {
+                                border: none;
+                                font-size: 14px;
+                                font-weight: 500;
+                                width: 100%;
+                                height: 45px;
+                                color: #393939;
+                                padding: 8px 15px;
+                                border-radius: 8px;
+                                background-color: #f5f5f5;
+                                padding: 12px;
+                            }
+                        }
+                    }
+                }
+
+                .calendar-icon {
+                    position: absolute;
+                    top: 10px;
+                    right: 8px;
+                }
+            }
+
+            .new-requeust-massge {
+                display: block;
+
+                .payment-select-menu {
+                    width: 100%;
+                    color: #393939;
+                    border-radius: 8px;
+                    background-color: $requisition-button-bg;
+
+                    .MuiNativeSelect-select {
+                        padding: 14px 15px;
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: #393939;
+
+                        &:focus {
+                            border-radius: 8px;
+                        }
+                    }
+
+                    .MuiInputBase-root {
+                        &::before {
+                            display: none;
+                        }
+
+                        &::after {
+                            display: none;
+                        }
+
+                        .MuiNativeSelect-icon {
+                            margin-right: 8px;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    .rfq-details-contant {
+        .new-request-heading {
+            font-size: 20px;
+            line-height: 24px;
+            font-weight: 500;
+            color: #6418c3;
+            margin-bottom: 20px;
+
+            a {
+                text-decoration: none;
+                color: #727272;
+            }
+
+            i {
+                margin: 0 5px;
+                vertical-align: bottom;
+            }
+        }
+
+        .new-request-bottom-head {
+            margin-bottom: 15px;
+
+            .bottom-head-left {
+                p {
+                    font-size: 20px;
+                    line-height: 26px;
+                    font-weight: 500;
+                    color: $heading-text-color;
+
+                    span {
+                        color: $text-color;
+                    }
+
+                }
+            }
+
+            .bottom-head-right {
+                .save-btn {
+                    color: $button-text-color;
+                    background: #39B29A;
+                    border-radius: 8px;
+                    text-transform: none;
+                    margin-bottom: 0px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    min-width: 80px;
+                    margin-right: 25px;
+                }
+            }
+        }
+
+        .requisitions-filter {
+            width: 100%;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background: #ffffff;
+            background: #ffffff;
+            box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+            -webkit-box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.3);
+
+            .date-picker {
+                width: 100%;
+                display: block;
+
+                .picker {
+                    width: 100%;
+                    display: block;
+
+                    .picker__trigger {
+                        width: 100%;
+                        display: block;
+
+                        .picker-input {
+                            width: 100%;
+                            display: block;
+
+                            .picker-input__text {
+                                width: 100%;
+                                height: 45px;
+                            }
+                        }
+                    }
+                }
+
+                .calendar-icon {
+                    position: absolute;
+                    top: 10px;
+                    right: 8px;
+                }
+            }
+
+            .select-menu {
+                width: 100%;
+                height: 45px;
+                color: #393939;
+                border-radius: 8px;
+                background-color: #f5f5f5;
+                width: 100%;
+
+                .MuiInput-root {
+                    position: relative;
+                    height: 45px;
+
+                    .MuiNativeSelect-select {
+                        padding: 0 10px;
+                        font-size: 14px;
+                        height: 45px;
+                        font-weight: 500;
+                        color: #727272;
+                    }
+                }
+
+                .MuiSvgIcon-root {
+                    color: #727272;
+                    margin-right: 10px;
+                    background: transparent;
+                    width: 1em;
+                    height: 1em;
+                    top: calc(50% - 12px);
+                }
+
+            }
+        }
+
+        .item-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            .item-head-left {
+                h3 {
+                    margin: 0;
+                    color: $heading-text-color;
+                }
+            }
+
+            .item-head-right {
+                .add-custom-btn {
+                    border-radius: 8px;
+                    color: $buttons-bg;
+                    text-transform: capitalize;
+                    border-color: $buttons-bg;
+                }
+            }
+        }
+
+        .rfq-group-table {
+            // margin-top: 20px;
+            display: block;
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+            background-color: #ffffff;
+            overflow-x: auto;
+
+            table {
+                white-space: nowrap;
+                width: 100%;
+                border-collapse: collapse;
+
+                thead {
+                    tr {
+                        th {
+                            padding-left: 15px;
+                            padding-right: 15px;
+                            padding-top: 10px;
+                            padding-bottom: 10px;
+                            font-weight: 600;
+                            color: #727272;
+                            margin-bottom: 8px;
+                            text-align: center;
+                            border-bottom: 10px solid #f5f5f5;
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        td {
+                            padding-left: 15px;
+                            padding-right: 15px;
+                            padding-top: 8px;
+                            padding-bottom: 8px;
+                            font-weight: 600;
+                            text-align: center;
+                            color: #311B4E;
+                            border-bottom: 1px solid #CFCDCD;
+
+                            .description {
+                                display: block;
+                                width: 100%;
+
+                                .iteam-name {
+                                    background: #f5f5f5;
+                                    border: none;
+                                    color: #311B4E;
+                                    font-weight: 600;
+                                    padding: 8px 15px;
+                                    border-radius: 5px;
+                                    text-align: left;
+
+                                    &.category {
+                                        text-align: center;
+
+                                    }
+
+                                    &.number {
+                                        .control-form {
+                                            text-align: center;
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            .table-dropdown-menu {
+                                .approved-dropdown {
+                                    border: none;
+                                    padding: 8px 15px;
+                                    background: #f5f5f5;
+                                    border-radius: 5px;
+                                    font-weight: 600;
+                                    color: #311B4E;
+                                }
+                            }
+
+                            .list-btn {
+                                min-width: 30px;
+                                border-radius: 50%;
+                                height: 30px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+
+                            }
+
+                            .sent-btn {
+                                width: 100%;
+                                font-size: 15px;
+                                font-weight: 600;
+                                height: 40px;
+                                display: flex;
+                                border: none;
+                                line-height: 40px;
+                                border-radius: 8px;
+                                text-transform: capitalize;
+                                color: #E9E9E9;
+                                background: #A8A8A8;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .payments-shipping {
+            width: 100%;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background: #ffffff;
+            background: #ffffff;
+            box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+            -webkit-box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 30%);
+            -moz-box-shadow: 1px 2px 6px -2px rgba(0, 0, 0, 0.3);
+
+            .date-picker {
+                width: 100%;
+                display: block;
+
+                .picker {
+                    width: 100%;
+                    display: block;
+
+                    .picker__trigger {
+                        width: 100%;
+                        display: block;
+
+                        .picker-input {
+                            width: 100%;
+                            display: block;
+
+                            .picker-input__text {
+                                width: 100%;
+                                height: 45px;
+                            }
+                        }
+                    }
+                }
+
+                .calendar-icon {
+                    position: absolute;
+                    top: 10px;
+                    right: 8px;
+                }
+            }
+
+            .select-menu {
+                width: 100%;
+                height: 45px;
+                color: #393939;
+                border-radius: 8px;
+                background-color: #f5f5f5;
+                width: 100%;
+
+                .MuiInput-root {
+                    position: relative;
+                    height: 45px;
+
+                    .MuiNativeSelect-select {
+                        padding: 0 10px;
+                        font-size: 14px;
+                        height: 45px;
+                        font-weight: 500;
+                        color: #727272;
+                    }
+                }
+
+                .MuiSvgIcon-root {
+                    color: #727272;
+                    margin-right: 10px;
+                    background: transparent;
+                    width: 1em;
+                    height: 1em;
+                    top: calc(50% - 12px);
+                }
+
+            }
+
+            .form-control {
+                font-size: 14px;
+                font-weight: 500;
+                color: #393939;
+                padding: 8px 15px;
+                border-radius: 8px;
+                background-color: #f5f5f5;
+                border: 1px solid #f5f5f5;
+                width: 100%;
+                height: 45px;
+                line-height: 45px;
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .request-page-content {
+        .progress-rfp-boxs {
+            margin-bottom: 0;
+        }
+    }
+
+    .new-requeust-massge {
+        textarea {
+            width: 100%;
+        }
+    }
+
+}
+
+@media only screen and (max-width: 767px) {
+    .request-page-content {
+        .rfq-details-contant {
+            .item-heading {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                margin: 20px 0;
+            }
+        }
+    }
+}
