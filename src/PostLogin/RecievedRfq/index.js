@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import { FormControl, NativeSelect, Button } from "@mui/material";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import { RangeDatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
@@ -13,11 +11,12 @@ import { connect } from "react-redux";
 import { commonFunctions } from "../../_utilities";
 import { t } from "i18next";
 import { withTranslation } from "react-i18next";
-
+import Loader from "react-js-loader";
 class RecievedRfq extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
       requiData: {},
       ViewDetail: false,
       indx: 0,
@@ -152,7 +151,7 @@ class RecievedRfq extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.props.fetch_recieved_rfq_status !==
-      prevProps.fetch_recieved_rfq_status &&
+        prevProps.fetch_recieved_rfq_status &&
       this.props.fetch_recieved_rfq_status === status.SUCCESS
     ) {
       if (
@@ -160,6 +159,7 @@ class RecievedRfq extends Component {
         this.props.recieved_rfq_list.length > 0
       ) {
         this.setState({
+          loadingStatus: !this.state.loadingStatus,
           tableData: this.props.recieved_rfq_list,
         });
       }
@@ -180,7 +180,6 @@ class RecievedRfq extends Component {
   };
 
   handleClickMethod = (event) => {
-    // const { requiData } = this.state;
     event.preventDefault();
     this.setState({
       isSubmitted: true,
@@ -213,7 +212,6 @@ class RecievedRfq extends Component {
                     <option value={30}>abc</option>
                   </NativeSelect>
                 </FormControl>
-                {/* <span className="d-block w-100 text-danger">{errorData.status.message}</span> */}
               </div>
             </div>
             <div className="form-group row col-form-group">
@@ -226,7 +224,7 @@ class RecievedRfq extends Component {
                     startPlaceholder="2021-06-01"
                     endPlaceholder="2021-06-10"
                   />
-                  <CalendarTodayTwoToneIcon className="calendar-icon" />
+                  <CalendarTodayOutlinedIcon className="calendar-icon" />
                 </div>
               </div>
             </div>
@@ -247,20 +245,29 @@ class RecievedRfq extends Component {
               </div>
             </div>
           </div>
-          <Table
-            valueFromData={{ columns: columns, data: tableData, indx: indx }}
-            perPageLimit={6}
-            visiblecheckboxStatus={false}
-            isLoading={
-              this.props.fetch_recieved_rfq_status === status.IN_PROGRESS
-            }
-            tableClasses={{
-              table: "ticket-tabel",
-              tableParent: "tickets-tabel",
-              parentClass: "all-support-ticket-tabel",
-            }}
-            showingLine="Showing %start% to %end% of %total% Tickets"
-          />
+          {this.state.loadingStatus ? (
+            <Table
+              valueFromData={{ columns: columns, data: tableData, indx: indx }}
+              perPageLimit={6}
+              visiblecheckboxStatus={false}
+              isLoading={
+                this.props.fetch_recieved_rfq_status === status.IN_PROGRESS
+              }
+              tableClasses={{
+                table: "ticket-tabel",
+                tableParent: "tickets-tabel",
+                parentClass: "all-support-ticket-tabel",
+              }}
+              showingLine="Showing %start% to %end% of %total% Tickets"
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
+            />
+          )}
         </div>
       </div>
     );
@@ -275,5 +282,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const connectedRecievedRfq = withTranslation()(connect(mapStateToProps)(RecievedRfq));
+const connectedRecievedRfq = withTranslation()(
+  connect(mapStateToProps)(RecievedRfq)
+);
 export default connectedRecievedRfq;

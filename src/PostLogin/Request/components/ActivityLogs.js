@@ -1,6 +1,6 @@
 import { commonFunctions } from "../../../_utilities/commonFunctions";
 
-const ActivityLogs = ({ requestData }) => {
+const ActivityLogs = ({ fakerData }) => {
   return (
     <div className="activity-logs-tabs active">
       <div className="order-item-head">
@@ -17,7 +17,7 @@ const ActivityLogs = ({ requestData }) => {
             </tr>
           </thead>
           <tbody>
-            {requestData.map((data) => {
+            {fakerData.map((data) => {
               return (
                 <tr>
                   <td>

@@ -1,18 +1,12 @@
 import React, { Component } from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
-import Table from "../../Table/Table";
-import { t } from "i18next";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-
-// import Autocomplete from "@mui/material/Autocomplete";
-// import Stack from "@mui/material/Stack";
-// import TextField from "@mui/material/TextField";
-
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  TextField,
+  Dialog,
+  DialogTitle,
+  Button,
+  Autocomplete,
+} from "@mui/material";
 export class AddSupplierContent extends Component {
   constructor(props) {
     super(props);
@@ -52,23 +46,14 @@ export class AddSupplierContent extends Component {
   };
 
   handleSubmit = () => {
-    const { formData, value } = this.state;
-    this.props.parentCallback(
-      // [
-      // ...this.state.selectedData,
-      value,
-      // ]
-    );
+    const { value } = this.state;
+    this.props.parentCallback(value);
   };
 
   render() {
     const { formData, value } = this.state;
 
-    const {
-      openModulRfqAddSupplier,
-      openAddNewItemPopupSupplier,
-      requestDetailsData,
-    } = this.props;
+    const { openModulRfqAddSupplier, openAddNewItemPopupSupplier } = this.props;
 
     return (
       <Dialog
@@ -93,7 +78,8 @@ export class AddSupplierContent extends Component {
         <div className="custom-dialog-content">
           <div className="search-bar">
             <div className="form-group">
-              <Autocomplete className="p-0"
+              <Autocomplete
+                className="p-0"
                 freeSolo
                 value={value}
                 onChange={(event, newValue) => {
@@ -101,16 +87,17 @@ export class AddSupplierContent extends Component {
                     value: newValue,
                     selectedData: [...this.state.selectedData, newValue],
                   });
-
                 }}
                 id="free-solo-2-demo"
                 style={{ width: "100%" }}
                 disableClearable
-                options={this.state.supplier.map((option) => option.Email)}
+                options={this.props.searchSupplierListData.map(
+                  (option) => option.details.email
+                )}
                 renderInput={(params) => (
-                  <TextField className="search-supplier"
+                  <TextField
+                    className="search-supplier"
                     {...params}
-                    // label="Search input"
                     margin="normal"
                     variant="outlined"
                     placeholder="Search"
@@ -118,10 +105,6 @@ export class AddSupplierContent extends Component {
                   />
                 )}
               />
-
-              {/* <button className="search-icon">
-                <i className="fas fa-search"></i>
-              </button> */}
             </div>
           </div>
           <div className="row">

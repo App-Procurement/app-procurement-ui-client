@@ -1,122 +1,103 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-// import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { status } from '../../_constants';
-import { manageSupplierAction } from '../../_actions';
-import Table from '../../Table/Table';
-// import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { requestForPurposeAction } from "../../_actions";
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import CloseIcon from '@material-ui/icons/Close';
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
+import React from "react";
 
+import { connect } from "react-redux";
+import { status } from "../../_constants";
+import { manageSupplierAction } from "../../_actions";
+import Table from "../../Table/Table";
+import Loader from "react-js-loader";
+import { requestForPurposeAction, productActions } from "../../_actions";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
 class ActiveProductCatalogue extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
+      importProductFile: null,
+      updateProductFile: null,
+      productListData: [],
+      selectedFile: null,
+      cols: [],
+      rows: [],
+      dragActive: false,
       productColumn: [
         {
-          label: 'S No',
-          key: 'sno',
+          label: "S No",
+          key: "sno",
           renderCallback: (value, index) => {
             return (
-              <td>
-                <span className={'s-no'}>{index + 1}</span>
+              <td key={`${Math.random()}_${value}`}>
+                <span className={"s-no"}>{index + 1}</span>
               </td>
             );
           },
         },
         {
-          label: 'Picture',
-          key: 'productImgUrl',
+          label: "Picture",
+          key: "imgUrl",
+          renderCallback: (value) => {
+            return <img src={value} height="40px" width="40px" />;
+          },
+        },
+        {
+          label: "Item Name",
+          key: "itemName",
+        },
+        {
+          label: "Item Type",
+          key: "itemType",
+        },
+        {
+          label: "Unit",
+          key: "unit",
+        },
+        {
+          label: "Supplier",
+          key: "supplier",
           renderCallback: (value) => {
             return (
-              <td>
-                <img src={value} width="50px" height="50px" />
+              <td key={`${Math.random()}_${value.name}`}>
+                <span className={"requestor"}>{value.name}</span>
               </td>
             );
           },
         },
         {
-          label: 'Item Name',
-          key: 'productName',
-          renderCallback: (value) => {
+          label: "Price",
+          key: "price",
+        },
+        {
+          label: "Stock",
+          key: "supplier",
+          renderCallback: (index, value) => {
             return (
-              <td>
-                <span className={'requisitions-no'}>{value}</span>
+              <td key={`${Math.random()}_${value.stock}`}>
+                <span className="department-value">{value.stock}</span>
               </td>
             );
           },
         },
         {
-          label: 'Item Type',
-          key: 'itemType',
+          label: "Status",
+          key: "supplier",
           renderCallback: (value) => {
             return (
-              <td>
-                <span className={'department-value'}>{value}</span>
-              </td>
-            );
-          },
-        },
-        {
-          label: 'Unit',
-          key: 'unit',
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={'requestor'}>{value}</span>
-              </td>
-            );
-          },
-        },
-        {
-          label: 'Supplier',
-          key: 'supplier',
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={'requestor'}>{value}</span>
-              </td>
-            );
-          },
-        },
-        {
-          label: 'Price',
-          key: 'price',
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={'requestor'}>${value}</span>
-              </td>
-            );
-          },
-        },
-        {
-          label: 'Stock',
-          key: 'stock',
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className="department-value">{value}</span>
-              </td>
-            );
-          },
-        },
-        {
-          label: 'Status',
-          key: 'status',
-          renderCallback: (value) => {
-            return (
-              <td>
-                <Button variant="outlined" className="department-value active-btn ">
-                  {value}
+              <td key={`${Math.random()}_${value.status}`}>
+                <Button
+                  variant="outlined"
+                  className="department-value active-btn "
+                >
+                  {value.status}
                 </Button>
               </td>
             );
@@ -127,25 +108,30 @@ class ActiveProductCatalogue extends React.Component {
           key: "sno",
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <div className="d-block position-relative edit-delete-modal">
                   <i
-                    class="fa fa-ellipsis-h"
+                    className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ productActiveIndex: this.state.productActiveIndex === index ? -1 : index })}
+                    onClick={() =>
+                      this.setState({
+                        productActiveIndex:
+                          this.state.productActiveIndex === index ? -1 : index,
+                      })
+                    }
                   ></i>
                   {this.state.productActiveIndex === index && (
                     <div className="toggale">
                       <i
-                        class="fa fa-pencil edit"
+                        className="fa fa-pencil edit"
                         aria-hidden="true"
-                        onClick={this.toggleEditModal}
+                        onClick={this.openEditModal}
                       ></i>
                       <i
-                        class="fa fa-trash delete"
+                        className="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
-                          this.removeProduct(index);
+                          this.handleDelete(index, "product");
                         }}
                       ></i>
                     </div>
@@ -155,17 +141,6 @@ class ActiveProductCatalogue extends React.Component {
             );
           },
         },
-        // {
-        //   label: 'Edit',
-        //   key: 'id',
-        //   renderCallback: () => {
-        //     return (
-        //       <td>
-        //         <MoreHorizIcon />
-        //       </td>
-        //     );
-        //   },
-        // },
       ],
       productList: [],
       supplierAndCategoryList: [],
@@ -174,31 +149,63 @@ class ActiveProductCatalogue extends React.Component {
       openUpdateDialog: false,
       productActiveIndex: -1,
       openProductEditDialog: false,
-      updateProductValue: {}
+      updateProductValue: {},
     };
   }
 
   componentDidMount() {
-    this.props.dispatch(manageSupplierAction.getProductList());
+    this.props.dispatch(productActions.searchProductList());
     this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
   }
 
   clearUpdateFields = () => {
-    this.setState({ openProductEditDialog: false, updateProductValue: {}, productActiveIndex: -1 })
-  }
+    this.setState({
+      openProductEditDialog: false,
+      updateProductValue: {},
+      productActiveIndex: -1,
+    });
+  };
 
   componentDidUpdate(prevProps) {
+    if (
+      this.props.search_product_list_status !==
+        prevProps.search_product_list_status &&
+      this.props.search_product_list_status === status.SUCCESS
+    ) {
+      let { productListData } = this.state;
+      if (
+        this.props.search_product_list &&
+        this.props.search_product_list.length > 0
+      ) {
+        this.props.search_product_list.map((item) => {
+          let itemData = item.details;
+
+          productListData.push({
+            ...itemData,
+            id: item.id,
+          });
+          this.setState({
+            loadingStatus: !this.state.loadingStatus,
+            productListData,
+          });
+        });
+      }
+    }
+
     if (
       this.props.suplier_product_status !== prevProps.suplier_product_status &&
       this.props.suplier_product_status === status.SUCCESS
     ) {
-      if (this.props.supplier_product_list && this.props.supplier_product_list.length > 0) {
+      if (
+        this.props.supplier_product_list &&
+        this.props.supplier_product_list.length > 0
+      ) {
         this.setState({ productList: this.props.supplier_product_list });
       }
     }
     if (
       this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
+        prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -210,14 +217,17 @@ class ActiveProductCatalogue extends React.Component {
       }
     }
     if (
-      this.props.update_suplier_product_status !== prevProps.update_suplier_product_status &&
+      this.props.update_suplier_product_status !==
+        prevProps.update_suplier_product_status &&
       this.props.update_suplier_product_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getProductList());
-      this.clearUpdateFields()
-    }
-    else if (this.props.delete_suplier_list_status !== prevProps.delete_suplier_list_status &&
-      this.props.delete_suplier_list_status === status.SUCCESS) {
+      this.clearUpdateFields();
+    } else if (
+      this.props.delete_suplier_list_status !==
+        prevProps.delete_suplier_list_status &&
+      this.props.delete_suplier_list_status === status.SUCCESS
+    ) {
       this.props.dispatch(manageSupplierAction.getProductList());
     }
   }
@@ -233,6 +243,7 @@ class ActiveProductCatalogue extends React.Component {
       openUpdateDialog: !this.state.openUpdateDialog,
     });
   };
+
   toggleEditModal = () => {
     const { productActiveIndex, productList } = this.state;
     if (productActiveIndex >= 0) {
@@ -307,14 +318,13 @@ class ActiveProductCatalogue extends React.Component {
     retData.isValid = isValid;
     return retData;
   };
+
   updateDataValues = (type) => {
     const { updateProductValue } = this.state;
 
     let updateForm = this.validateProductUpdate(true);
     this.setState({ isSubmit: true });
     if (updateForm.isValid) {
-      // updateProductValue.totalCost = updateProductValue.price * updateProductValue.quantity;
-      // requestData.detailsList[productActiveIndex] = updateProductValue updateSupplierList
       this.props.dispatch(
         manageSupplierAction.updateProductList({
           id: updateProductValue.id,
@@ -326,23 +336,50 @@ class ActiveProductCatalogue extends React.Component {
       });
     }
   };
+
   handleUpdate = (e, type) => {
     const { updateProductValue } = this.state;
     const { name, value } = e.target;
     updateProductValue[name] = value;
     this.setState({ updateProductValue });
   };
+
   removeProduct = (index) => {
     const { productList } = this.state;
-    let value = productList[index]
+    let value = productList[index];
     if (value.id) {
-      this.props.dispatch(manageSupplierAction.deleteSupplier({ id: value.id, value }))
+      this.props.dispatch(
+        manageSupplierAction.deleteSupplier({ id: value.id, value })
+      );
     }
-    this.setState({ productActiveIndex: -1 })
-  }
+    this.setState({ productActiveIndex: -1 });
+  };
+
+  handleFileChange = (event) => {
+    const { name, files } = event.target;
+    let fileObj = event.target.files[0];
+    if (fileObj.size > 0 && fileObj.name.split(".").pop() === "xls") {
+      this.setState({
+        [name]: files,
+      });
+    }
+  };
+
   render() {
-    const { productColumn, productList, productActiveIndex, openProductEditDialog, updateProductValue, supplierAndCategoryList, openDialog, openUpdateDialog, isSubmit } = this.state;
-    const productValidation = this.validateProductUpdate(isSubmit)
+    const {
+      productColumn,
+      productListData,
+      productActiveIndex,
+      openProductEditDialog,
+      updateProductValue,
+      supplierAndCategoryList,
+      openDialog,
+      openUpdateDialog,
+      isSubmit,
+    } = this.state;
+
+    const productValidation = this.validateProductUpdate(isSubmit);
+
     return (
       <div className="main-content">
         <div className="manage-supplier-conntent">
@@ -356,14 +393,15 @@ class ActiveProductCatalogue extends React.Component {
               <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
                 <div className="request-purpose-head-right">
                   <div className="add-Supplier-button">
-                    <Button
-                      variant="contained"
-                      href="/postlogin/products/addproducts"
-                      disableElevation
-                      className="new-requisition-btn"
-                    >
-                      Add Product
-                    </Button>
+                    <Link to="/postlogin/products/addproducts">
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        className="new-requisition-btn"
+                      >
+                        Add Product
+                      </Button>
+                    </Link>
                   </div>
                   <div className="search-fillter">
                     <Button
@@ -392,18 +430,25 @@ class ActiveProductCatalogue extends React.Component {
               </div>
             </div>
           </div>
-          {productList && productList.length > 0 && (
+          {this.state.loadingStatus ? (
             <Table
-              valueFromData={{ columns: productColumn, data: productList }}
-              perPageLimit={6}
+              valueFromData={{ columns: productColumn, data: productListData }}
+              perPageLimit={productListData.length}
               visiblecheckboxStatus={false}
-              isLoading={this.props.suplier_list_status === status.IN_PROGRESS}
+              isLoading={this.props.fetch_product_list === status.IN_PROGRESS}
               tableClasses={{
-                table: 'ticket-tabel',
-                tableParent: 'tickets-tabel',
-                parentClass: 'all-support-ticket-tabel',
+                table: "ticket-tabel",
+                tableParent: "tickets-tabel",
+                parentClass: "all-support-ticket-tabel",
               }}
               showingLine="Showing %start% to %end% of %total% "
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
             />
           )}
         </div>
@@ -414,10 +459,16 @@ class ActiveProductCatalogue extends React.Component {
           className="update-supplier-dialog"
         >
           <div className="additem-dialog-head">
-            <DialogTitle id="form-dialog-title" className="addNewItemDialogTitle dialog-heading">
+            <DialogTitle
+              id="form-dialog-title"
+              className="addNewItemDialogTitle dialog-heading"
+            >
               Import Product
             </DialogTitle>
-            <Button onClick={this.openImportProductPopup} className="modal-close-btn">
+            <Button
+              onClick={this.openImportProductPopup}
+              className="modal-close-btn"
+            >
               <CloseIcon />
             </Button>
           </div>
@@ -431,7 +482,7 @@ class ActiveProductCatalogue extends React.Component {
                 <p>click on the download file and add the supplier</p>
               </div>
               <div className="download-btn text-center">
-                <Button href="/postlogin/viewsupplierdetail" variant="contained" className="new-requisition-btn">
+                <Button variant="contained" className="new-requisition-btn">
                   Download
                 </Button>
               </div>
@@ -445,16 +496,16 @@ class ActiveProductCatalogue extends React.Component {
                   <input
                     type="file"
                     placeholder="Upload files (PDF,DOC,PPT,JPG,PNG)"
-                    accept=" .pdf , .doc , .ppt , .jpg , .png"
-                    name="requisitionFile"
+                    accept=".xls"
+                    name="importProductFile"
                     onChange={this.handleFileChange}
                     multiple
                   />
 
-                  <div className="file-content">
+                  <div className="file-content" onDragEnter={this.handleDrag}>
                     <div className="file-inner-content">
                       <CloudUploadIcon className="icon" />
-                      <p>
+                      <p className={this.state.dragActive ? "drag-active" : ""}>
                         Drag & drop your file or <span>Browse</span>
                       </p>
                     </div>
@@ -471,10 +522,16 @@ class ActiveProductCatalogue extends React.Component {
           className="update-supplier-dialog"
         >
           <div className="additem-dialog-head">
-            <DialogTitle id="form-dialog-title" className="addNewItemDialogTitle dialog-heading">
+            <DialogTitle
+              id="form-dialog-title"
+              className="addNewItemDialogTitle dialog-heading"
+            >
               Update Supplier
             </DialogTitle>
-            <Button onClick={this.openUpdateProductPopup} className="modal-close-btn">
+            <Button
+              onClick={this.openUpdateProductPopup}
+              className="modal-close-btn"
+            >
               <CloseIcon />
             </Button>
           </div>
@@ -488,7 +545,11 @@ class ActiveProductCatalogue extends React.Component {
                 <p>click on the download file and add the supplier</p>
               </div>
               <div className="download-btn text-center">
-                <Button href="/postlogin/viewsupplierdetail" variant="contained" className="new-requisition-btn">
+                <Button
+                  href="/postlogin/viewsupplierdetail"
+                  variant="contained"
+                  className="new-requisition-btn"
+                >
                   Download
                 </Button>
               </div>
@@ -503,7 +564,7 @@ class ActiveProductCatalogue extends React.Component {
                     type="file"
                     placeholder="Upload files (PDF,DOC,PPT,JPG,PNG)"
                     accept=" .pdf , .doc , .ppt , .jpg , .png"
-                    name="requisitionFile"
+                    name="updateProductFile"
                     onChange={this.handleFileChange}
                     multiple
                   />
@@ -530,10 +591,7 @@ class ActiveProductCatalogue extends React.Component {
             className="custom-dialog edit-dialog"
           >
             <div className="custom-dialog-head">
-              <DialogTitle
-                id="form-dialog-title"
-                className="dialog-heading"
-              >
+              <DialogTitle id="form-dialog-title" className="dialog-heading">
                 Edit
               </DialogTitle>
               <Button
@@ -670,15 +728,22 @@ class ActiveProductCatalogue extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
-  const { supplier_product_list,
+  const {
+    search_product_list_status,
+    search_product_list,
+    supplier_product_list,
     suplier_product_status,
     supplier_category_list_status,
     supplier_category_list_data,
     update_suplier_product_status,
     update_supplier_product_list,
-    delete_suplier_list_status, } = state.procurement;
+    delete_suplier_list_status,
+  } = state.procurement;
   return {
+    search_product_list_status,
+    search_product_list,
     supplier_product_list,
     suplier_product_status,
     supplier_category_list_status,
@@ -688,4 +753,5 @@ const mapStateToProps = (state) => {
     delete_suplier_list_status,
   };
 };
+
 export default connect(mapStateToProps)(ActiveProductCatalogue);

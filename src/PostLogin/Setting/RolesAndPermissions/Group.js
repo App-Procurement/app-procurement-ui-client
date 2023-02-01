@@ -5,9 +5,9 @@ import {
   DialogTitle,
   FormControlLabel,
   Checkbox,
-} from "@material-ui/core";
+} from "@mui/material";
 import groupData from "./../Dummy-data.json";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from '@mui/icons-material/Close';
 import SuperAdminUsers from "./SuperAdminUsers";
 import SuperAdminRoles from "./SuperAdminRoles";
 

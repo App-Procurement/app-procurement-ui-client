@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
+import { DialogContent, Dialog, DialogTitle, Button } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import Table from "../../Table/Table";
 import { t } from "i18next";
 
@@ -16,10 +13,10 @@ class AddItemList extends Component {
         {
           label: "",
           key: "image",
-          renderCallback: (value, index) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <img src={value} height="50px" width="50px" />
+                <img src={value.details.imgUrl} height="50px" width="50px" />
               </td>
             );
           },
@@ -27,10 +24,12 @@ class AddItemList extends Component {
         {
           label: "Name",
           key: "name",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"requisitions-no"}>{value}</span>
+                <span className={"requisitions-no"}>
+                  {value.details.itemName}
+                </span>
               </td>
             );
           },
@@ -38,10 +37,12 @@ class AddItemList extends Component {
         {
           label: "Category",
           key: "category",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+                <span className={"department-value"}>
+                  {value.details.category}
+                </span>
               </td>
             );
           },
@@ -49,10 +50,12 @@ class AddItemList extends Component {
         {
           label: "Item Type",
           key: "type",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+                <span className={"department-value"}>
+                  {value.details.itemType}
+                </span>
               </td>
             );
           },
@@ -60,10 +63,11 @@ class AddItemList extends Component {
         {
           label: "Quantity",
           key: "quantity",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
+            value.quantity = 1;
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>{value}</span>
+                <span className={"requestor"}>{value.quantity}</span>
               </td>
             );
           },
@@ -71,10 +75,10 @@ class AddItemList extends Component {
         {
           label: "Unit",
           key: "unit",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{value}</span>
+                <span className="department-value">{value.details.unit}</span>
               </td>
             );
           },
@@ -82,10 +86,10 @@ class AddItemList extends Component {
         {
           label: "Price",
           key: "price",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{value}</span>
+                <span className="department-value">{value.details.price}</span>
               </td>
             );
           },
@@ -110,32 +114,38 @@ class AddItemList extends Component {
       duplicateItemList: [],
     };
   }
+
   componentDidMount() {
-    if (this.props.itemList && this.props.itemList.length > 0) {
+    if (this.props.productsList && this.props.productsList.length > 0) {
       this.setState({
-        itemList: this.props.itemList,
-        duplicateItemList: this.props.itemList,
+        itemList: this.props.productsList,
+        duplicateItemList: this.props.productsList,
       });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.itemList && this.props.itemList !== prevProps.itemList) {
+    if (
+      this.props.productsList &&
+      this.props.productsList !== prevProps.productsList
+    ) {
       this.setState({
-        itemList: this.props.itemList,
-        duplicateItemList: this.props.itemList,
+        itemList: this.props.productsList,
+        duplicateItemList: this.props.productsList,
       });
     }
   }
 
-  filterItemsData = (event) => {
+  filterItemsBySearch = (event) => {
     const { value } = event.target;
     let { itemList, duplicateItemList } = this.state;
     let cloneItemList = JSON.parse(JSON.stringify(duplicateItemList));
     if (value) {
-      itemList = cloneItemList.filter(({ name }) =>
-        name.toLowerCase().includes(value.toLowerCase())
-      );
+      itemList = cloneItemList.filter((item) => {
+        return item.details.itemName
+          .toLowerCase()
+          .includes(value.toLowerCase());
+      });
     } else {
       itemList = JSON.parse(JSON.stringify(duplicateItemList));
     }
@@ -173,7 +183,7 @@ class AddItemList extends Component {
                     <div className="search-bar">
                       <input
                         type="text"
-                        onChange={this.filterItemsData}
+                        onChange={this.filterItemsBySearch}
                         className="control-form"
                         placeholder="Search"
                       />

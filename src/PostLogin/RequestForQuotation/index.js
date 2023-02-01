@@ -1,29 +1,28 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import {
+  Button,
+  FormControl,
+  NativeSelect,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import Loader from "react-js-loader";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
 import { connect } from "react-redux";
-// import { requestForPurposeAction, requestAction ,requestForQuotationAction} from "../../_actions";
 import { status } from "../../_constants";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
-import { commonFunctions } from "../../_utilities/commonFunctions";
-//import purchasedRequisitionIcon from '../../assets/images/dashbord/purchased-requisition-icon.png';
 import purchaseOrder from "../../assets/images/dashbord/purchase-order.png";
 import approvedRequisitionIcon from "../../assets/images/dashbord/approved-requisition-icon.png";
 import pendingRequisitionIcon from "../../assets/images/dashbord/pending-requisition-icon.png";
 import rejectedRequisitionIcon from "../../assets/images/dashbord/rejected-requisition-icon.png";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-// import { requestForPurposeAction, requestAction ,} from "../../_actions";
 import { requestForQuotationAction } from "../../_actions";
-import NativeSelect from "@material-ui/core/NativeSelect";
 import { DatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import FilterIcon from "../../assets/images/filter-icon.png";
 
 class RequestForQuotation extends Component {
@@ -31,7 +30,8 @@ class RequestForQuotation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      requestData: {},
+      loadingStatus: false,
+      quotationData: [],
       requiData: {
         budgetType: 10,
         status: "",
@@ -49,18 +49,10 @@ class RequestForQuotation extends Component {
         quotationDeadline: "",
         status: "",
       },
-
       columns: [
         {
           label: "RFQ No.",
-          key: "sno",
-          renderCallback: (value, index) => {
-            return (
-              <td key={`${Math.random()}_${index}`}>
-                <span className={"s-no"}>{index + 1}</span>
-              </td>
-            );
-          },
+          key: "id",
         },
         {
           label: "Requester",
@@ -76,10 +68,12 @@ class RequestForQuotation extends Component {
         {
           label: "Location",
           key: "Location",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+              <td key={`${Math.random()}_${index}`}>
+                <span className={"department-value"}>
+                  {value.details.location}
+                </span>
               </td>
             );
           },
@@ -98,10 +92,19 @@ class RequestForQuotation extends Component {
         {
           label: "Total Amount",
           key: "Total Amount",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
+            const products = value.details.products;
+            let itemsTotal = 0;
+            products?.map((item) => {
+              if (item.item) {
+                itemsTotal += item.item.details?.price * item.quantity;
+              } else if (item.price) {
+                itemsTotal += item.price * item.quantity;
+              }
+            });
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>${value}</span>
+              <td key={`${Math.random()}_${index}`}>
+                <span className={"requestor"}>${itemsTotal}</span>
               </td>
             );
           },
@@ -109,10 +112,12 @@ class RequestForQuotation extends Component {
         {
           label: "Quote Deadline",
           key: "Quote Deadline",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>${value}</span>
+              <td key={`${Math.random()}_${index}`}>
+                <span className={"requestor"}>
+                  {value.details.requiredDeliveryDate}
+                </span>
               </td>
             );
           },
@@ -120,14 +125,20 @@ class RequestForQuotation extends Component {
         {
           label: "Status",
           key: "status",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
+              <td key={`${Math.random()}_${value.details.status}`}>
                 <Button
                   variant="outlined"
-                  className="department-value status-btn"
+                  className={
+                    value.details.status === "approved"
+                      ? "department-value green-btn"
+                      : value.details.status === "pending"
+                      ? "department-value status-btn"
+                      : "department-value onahau-btn"
+                  }
                 >
-                  {value}
+                  {value.details.status}
                 </Button>
               </td>
             );
@@ -139,11 +150,9 @@ class RequestForQuotation extends Component {
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                {/* <Link to={`${value}`}> */}
                 <Button variant="outlined" className="primary-btn">
                   View Response
                 </Button>
-                {/* </Link> */}
               </td>
             );
           },
@@ -153,85 +162,12 @@ class RequestForQuotation extends Component {
       uploadedFileList: [],
       selectedFile: {},
       status: false,
+      approvedPurchaseOrderCount: 0,
+      pendingPurchaseOrderCount: 0,
+      rejectedPurchaseOrderCount: 0,
     };
     this.inputOpenFileRef = React.createRef();
-  };
-
-  // validate = (isSubmitted) => {
-  //   const validObj = {
-  //     isValid: true,
-  //     message: "",
-  //   };
-  //   let isValid = true;
-  //   const retData = {
-  //     rfqNo: validObj,
-  //     rfqType: validObj,
-  //     quotationDeadline: validObj,
-  //     status: validObj,
-  //     isValid,
-  //   };
-
-  //   if (isSubmitted) {
-  //     const { formData } = this.state;
-
-  //     if (!formData.rfqNo) {
-  //       retData.rfqNo = {
-  //         isValid: false,
-  //         message: "Rfq No. is required",
-  //       };
-  //       isValid = false;
-  //     }
-  //     if (!formData.rfqType) {
-  //       retData.rfqType = {
-  //         isValid: false,
-  //         message: "Rfq Type is required",
-  //       };
-  //       isValid = false;
-  //     }
-  //     if (!formData.quotationDeadline) {
-  //       retData.quotationDeadline = {
-  //         isValid: false,
-  //         message: "Quotation Deadline is required",
-  //       };
-  //       isValid = false;
-  //     }
-  //     if (!formData.status) {
-  //       retData.status = {
-  //         isValid: false,
-  //         message: "Status is required",
-  //       };
-  //       isValid = false;
-  //     }
-
-  //   }
-
-  //   retData.isValid = isValid;
-  //   return retData;
-  // };
-
-  // onSubmitSearch = (event) => {
-  //   event.preventDefault();
-  //   const { formData } = this.state;
-
-  //   this.setState({
-  //     isSubmitted: true,
-  //   });
-  //   const errorData = this.validate(true);
-  //   const { history } = this.props;
-
-
-  //   if (errorData.isValid) {
-  //   }
-  // };
-
-  // handleStateChange = (e) => {
-  //   const { name, value } = e.target;
-  //   const { requiData } = this.state;
-  //   requiData[name] = value;
-  //   this.setState({
-  //     requiData,
-  //   });
-  // };
+  }
 
   handleStateChange = (e) => {
     const { name, value } = e.target;
@@ -249,39 +185,51 @@ class RequestForQuotation extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatch(requestForQuotationAction.getRequestQuotationData());
+    this.props.dispatch(requestForQuotationAction.searchRequestQuotationData());
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { get_request_status, request_data, requiData } = this.props;
-
+    let {
+      approvedPurchaseOrderCount,
+      pendingPurchaseOrderCount,
+      rejectedPurchaseOrderCount,
+    } = this.state;
     if (
       this.props.get_request_status &&
       this.props.get_request_status !== prevProps.get_request_status &&
       this.props.get_request_status === status.SUCCESS
     ) {
       if (this.props.request_data) {
-        this.setState({ requestData: { ...this.props.request_data } });
-        if (
-          this.props.request_data.RQFlistData &&
-          this.props.request_data.RQFlistData.length > 0
-        ) {
-          this.setState({
-            tableData: this.props.request_data.RQFlistData,
-          });
-        }
+        this.props.request_data.map((item) => {
+          if (item.details.status === "approved") {
+            approvedPurchaseOrderCount++;
+          } else if (item.details.status === "pending") {
+            pendingPurchaseOrderCount++;
+          } else if (item.details.status === "rejected") {
+            rejectedPurchaseOrderCount++;
+          }
+        });
+        this.setState({ quotationData: [...this.props.request_data] });
+        this.setState({
+          tableData: [...this.props.request_data],
+          loadingStatus: !this.state.loadingStatus,
+          approvedPurchaseOrderCount,
+          pendingPurchaseOrderCount,
+          rejectedPurchaseOrderCount,
+        });
       }
     }
   }
+
   handleToggle = () => {
     this.setState({
       status: !this.state.status,
     });
   };
+
   render() {
-    const { columns, tableData, requestData, requiData, status, dueDate, isSubmitted } =
-      this.state;
-    // const errorData = this.validate(isSubmitted);
+    const { columns, tableData, quotationData, requiData, status } = this.state;
+
     return (
       <div className="main-content">
         <div className="request-page-content">
@@ -304,7 +252,7 @@ class RequestForQuotation extends Component {
                       <MenuItem value={10}>New RFQ</MenuItem>
                       <MenuItem value={20}>
                         <Link to={`/postlogin/requestforquotation/createrfq`}>
-                          Create New RFQ{" "}
+                          Create New RFQ
                         </Link>
                       </MenuItem>
                       <MenuItem value={30}>Import Budget </MenuItem>
@@ -320,9 +268,9 @@ class RequestForQuotation extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">All Request</div>
-                    {requestData?.RFQ?.allRequest ? (
+                    {quotationData ? (
                       <>
-                        <h4>{requestData.RFQ.allRequest}</h4>
+                        <h4>{quotationData.length}</h4>
                       </>
                     ) : (
                       <></>
@@ -337,13 +285,7 @@ class RequestForQuotation extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Approved Request</div>
-                    {requestData?.RFQ?.approvedRequest ? (
-                      <>
-                        <h4>{requestData.RFQ.approvedRequest}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    {<h4>{this.state.approvedPurchaseOrderCount}</h4>}
                   </div>
                   <div className="purchased-image approved">
                     <img src={approvedRequisitionIcon} alt="" />
@@ -354,13 +296,7 @@ class RequestForQuotation extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Pending Request</div>
-                    {requestData?.RFQ?.pendingRequest ? (
-                      <>
-                        <h4>{requestData.RFQ.pendingRequest}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    {<h4>{this.state.pendingPurchaseOrderCount}</h4>}
                   </div>
                   <div className="purchased-image pending">
                     <img src={pendingRequisitionIcon} alt="" />
@@ -371,13 +307,7 @@ class RequestForQuotation extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Rejected Request</div>
-                    {requestData?.RFQ?.rejectedRequest ? (
-                      <>
-                        <h4>{requestData.RFQ.rejectedRequest}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    {<h4>{this.state.rejectedPurchaseOrderCount}</h4>}
                   </div>
                   <div className="purchased-image rejected">
                     <img src={rejectedRequisitionIcon} alt="" />
@@ -434,9 +364,6 @@ class RequestForQuotation extends Component {
                         placeholder="Product"
                         onChange={this.handleStateChange}
                       />
-                      {/* <span className="d-block w-100 text-danger">
-                        {errorData.rfqNo.message}
-                      </span> */}
                     </div>
                   </div>
                   <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -454,9 +381,6 @@ class RequestForQuotation extends Component {
                             <option value="ebay">Ebay</option>
                           </NativeSelect>
                         </FormControl>
-                        {/* <span className="d-block w-100 text-danger">
-                          {errorData.rfqType.message}
-                        </span> */}
                       </div>
                     </div>
                   </div>
@@ -465,15 +389,13 @@ class RequestForQuotation extends Component {
                     <div className="d-block">
                       <div className="d-flex align-items-center date-picker">
                         <DatePicker
-                          // selected={formData.openDate}
                           placeholder={"YYYY-MM-DD"}
-                          onChange={(date) => this.handleDates(date, "quotationDeadLine")}
+                          onChange={(date) =>
+                            this.handleDates(date, "quotationDeadLine")
+                          }
                         />
-                        <CalendarTodayTwoToneIcon className="calendar-icon" />
+                        <CalendarTodayIcon className="calendar-icon" />
                       </div>
-                      {/* <span className="d-block w-100 text-danger">
-                        {errorData.quotationDeadline.message}
-                      </span> */}
                     </div>
                   </div>
                   <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -491,32 +413,39 @@ class RequestForQuotation extends Component {
                             <option value="ebay">Ebay</option>
                           </NativeSelect>
                         </FormControl>
-                        {/* <span className="d-block w-100 text-danger">
-                          {errorData.status.message}
-                        </span> */}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="filtter-search-btn text-center mt-2">
                   <Button className="primary-btn" onClick={this.onSubmitSearch}>
-                    Search</Button>
+                    Search
+                  </Button>
                 </div>
               </div>
             )}
           </div>
-          <Table
-            valueFromData={{ columns: columns, data: tableData }}
-            perPageLimit={6}
-            visiblecheckboxStatus={false}
-            isLoading={this.props.get_request_status === status.IN_PROGRESS}
-            tableClasses={{
-              table: "ticket-tabel",
-              tableParent: "tickets-tabel",
-              parentClass: "all-support-ticket-tabel",
-            }}
-            showingLine="Showing %start% to %end% of %total% "
-          />
+          {this.state.loadingStatus ? (
+            <Table
+              valueFromData={{ columns: columns, data: tableData }}
+              perPageLimit={6}
+              visiblecheckboxStatus={false}
+              isLoading={this.props.get_request_status === status.IN_PROGRESS}
+              tableClasses={{
+                table: "ticket-tabel",
+                tableParent: "tickets-tabel",
+                parentClass: "all-support-ticket-tabel",
+              }}
+              showingLine="Showing %start% to %end% of %total% "
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
+            />
+          )}
         </div>
       </div>
     );
@@ -535,4 +464,5 @@ const mapStateToProps = (state) => {
 const requestComponent = withTranslation()(
   connect(mapStateToProps)(RequestForQuotation)
 );
+
 export default requestComponent;

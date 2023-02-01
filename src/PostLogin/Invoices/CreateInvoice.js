@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import { Button, FormControl, NativeSelect } from "@mui/material";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import "simplebar/dist/simplebar.min.css";
@@ -7,37 +7,19 @@ import { DatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import { t } from "i18next";
 import { withTranslation } from "react-i18next";
-// import ViewInvoiceComponent from "./AddPurchaseOrderList";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import { Link } from "react-router-dom";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import Table from "../../Table/Table";
-import CheckIcon from "@material-ui/icons/Check";
 import { status } from "../../_constants";
 import { invoiceAction, purchaseOrderAction } from "../../_actions";
-// import AddPurchaseOrderList from "./AddPurchaseOrderList";
-// import AddInvoiceList from "./AddInvoiceList";
-// import ViewRequestComponet from "./AddPurchaseOrderList";
-// import DoneAllIcon from '@material-ui/icons/DoneAll';
-// import IconButton from '@material-ui/core/IconButton';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
-// import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-// import SaveAltIcon from '@material-ui/icons/SaveAlt';
-// import PrintIcon from '@material-ui/icons/Print';
-// import Logo from '../../assets/images/logo.png';
-// import HuntImg from '../../assets/images/hunt-img.png';
 import { connect } from "react-redux";
 import AddNewPurchaseOrderList from "./AddNewPurchaseOrderList";
 import { commonFunctions } from "../../_utilities";
-// import { invoiceAction } from '../../_actions/invoice.actions';
-// import { status } from '../../_constants';
-//  import { commonFunctions } from '../../_utilities';
 
 class CreateInvoice extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isDisabled: false,
       approvedData: {},
       formData: {
         invoiceIssueDate: "",
@@ -48,6 +30,7 @@ class CreateInvoice extends Component {
         currency: "",
         tax: "",
       },
+      allSelectedItemData: [],
       columns: [
         {
           label: "S no",
@@ -62,54 +45,19 @@ class CreateInvoice extends Component {
         },
         {
           label: "Purchase Order No.",
-          key: "purchaseOrderNo",
-          renderCallback: (value) => {
-            return (
-              // <td>
-              //   <span className={"s-no"}>William James</span>
-              // </td>
-
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
+          key: "id",
         },
         {
           label: "PO Date",
-          key: "poDate",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>
-                  {commonFunctions.dateTimeAndYear(value)}
-                </span>
-                {/* <span className={"department-value"}>{value}</span> */}
-              </td>
-            );
-          },
+          key: "toDate",
         },
         {
           label: "Department",
           key: "department",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Total Amount",
           key: "totalAmount",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Status",
@@ -135,7 +83,7 @@ class CreateInvoice extends Component {
               <td key={`${Math.random()}_${index}`}>
                 <Button
                   className="primary-btn"
-                  onClick={() => this.handleDelete(index)}
+                  onClick={() => this.handlePurchaseOrderDelete(index)}
                 >
                   delete
                 </Button>
@@ -149,10 +97,11 @@ class CreateInvoice extends Component {
       openDialog: false,
       selectedItemList: [],
       purchaseData: [],
+      invoiceData: [],
     };
   }
 
-  validate = (isSubmitted) => {
+  validateNewInvoice = (isSubmitted) => {
     const validObj = {
       isValid: true,
       message: "",
@@ -229,7 +178,7 @@ class CreateInvoice extends Component {
     return retData;
   };
 
-  handleDelete(index) {
+  handlePurchaseOrderDelete(index) {
     const { selectedItemList } = this.state;
     const listAfterDelete = selectedItemList.filter(
       (item, ind) => ind !== index
@@ -241,24 +190,6 @@ class CreateInvoice extends Component {
 
     return listAfterDelete;
   }
-  handleAmountChange = (event) => {
-    const { value } = event.target;
-    let { formData } = this.state;
-    formData[value] = event;
-    this.setState({
-      formData,
-    });
-  };
-
-  handleTaxChange = (event) => {
-    const { value } = event.target;
-    let { formData } = this.state;
-    formData[value] = value;
-    this.setState({
-      formData,
-    });
-    console.log("tax value ", value);
-  };
 
   handleInvoiceDueDate = (date) => {
     let { formData } = this.state;
@@ -266,7 +197,6 @@ class CreateInvoice extends Component {
       new Date(date.$d)
     );
     this.setState({ formData });
-    console.log(this.state.formData.invoiceDueDate);
   };
 
   handleInvoiceIssueDate = (date) => {
@@ -278,17 +208,9 @@ class CreateInvoice extends Component {
     this.setState({ formData });
   };
 
-  handleDates = (date, name) => {
-    let { formData } = this.state;
-    formData[name] = date;
-
-    // formData[name] = formData.date;
-    this.setState({ formData });
-  };
-
-  handleStateChange = (e) => {
+  handleNewInvoiceInputs = (e) => {
     const { name, value } = e.target;
-    const { formData } = this.state;
+    const { formData, currency } = this.state;
     formData[name] = value;
     this.setState({
       formData,
@@ -297,46 +219,57 @@ class CreateInvoice extends Component {
 
   onSubmitCreateInvoice = (event) => {
     event.preventDefault();
-    const { formData, selectedItemList } = this.state;
+    const errorData = this.validateNewInvoice(true);
+    const { formData, selectedItemList, itemList } = this.state;
+    let selected = this.state.selectedItemList;
+
+    let details;
+
+    if (errorData.isValid) {
+      details = {
+        url: "http://invoice-location.com",
+        issueDate: formData["invoiceIssueDate"],
+        invoiceDueDate: formData["invoiceDueDate"],
+        amount: formData["invoiceAmount"],
+        tax: formData["tax"],
+        currency:
+          this.props.currency_list_data.object[formData.currency].details,
+        purchaseOrder: this.state.itemList[0],
+      };
+      details.currency.name =
+        this.props.currency_list_data.object[formData.currency].details.name;
+    }
 
     this.setState({
       isSubmitted: true,
     });
-    const errorData = this.validate(true);
 
     if (errorData.isValid) {
       if (selectedItemList && selectedItemList.length > 0) {
-        let sendData = {
-          formData,
-          itemList: selectedItemList,
-        };
-        this.props.dispatch(invoiceAction.addRequest(sendData));
+        this.props.dispatch(invoiceAction.addRequest(details));
       }
     }
-
-    // this.setState({
-    //   formData: {
-    //     invoiceDueDate: "",
-    //     invoiceIssueDate: "",
-    //     supplier: "",
-    //     department: "",
-    //     invoiceAmount: "",
-    //     currency: "",
-    //     tax: "",
-    //   },
-    // });
   };
 
-  setSelectedItemList = (data) => {
+  addSelectedPurchaseOrderToList = (data) => {
     let value = JSON.parse(JSON.stringify(data));
 
     if (value) {
+      this.props.purchase_data.map((item) => {
+        if (item && item.id === data.id) {
+          this.setState({
+            allSelectedItemData: { ...this.state.allSelectedItemData, item },
+          });
+        }
+      });
+
       this.setState({
         selectedItemList: [...this.state.selectedItemList, value],
       });
     }
   };
-  openAddNewItemPopup = () => {
+
+  handlePurchaseOrdersPopup = () => {
     this.setState({
       openDialog: !this.state.openDialog,
     });
@@ -344,45 +277,28 @@ class CreateInvoice extends Component {
 
   componentDidMount() {
     this.props.dispatch(purchaseOrderAction.searchApprovePurchaseOrder());
+    this.setState({
+      invoiceData: this.props.invoice_data,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if (
-    //   prevProps.approvepo_status !== this.props.approvepo_status &&
-    //   this.props.approvepo_status === status.SUCCESS
-    // ) {
-    //   if (
-    //     this.props.approvepo_data &&
-    //     this.props.approvepo_data.requisitionList
-    //   ) {
-    //     this.setState({
-    //       itemList: this.props.approvepo_data.requisitionList,
-    //     });
-    //   }
-    // }
-
     if (
-      prevProps.approvepo_status !== this.props.approvepo_status &&
-      this.props.approvepo_status === status.SUCCESS
+      prevProps.purchase_status !== this.props.purchase_status &&
+      this.props.purchase_status === status.SUCCESS
     ) {
-      if (this.props.approvepo_data) {
+      if (this.props.purchase_data && this.props.purchase_data.length > 0) {
         this.setState({
-          purchaseData: this.props.approvepo_data,
+          purchaseData: this.props.purchase_data,
         });
 
-        let invoiceData = this.state.purchaseData;
-        let resultantData = {};
         const { itemList } = this.state;
 
-        this.props.approvepo_data.map((item) => {
-          let itemData = item.details;
-          console.log("item", itemData.totalAmount);
-          resultantData.totalAmount = itemData.totalAmount;
-          resultantData.purchaseOrderNo = itemData.totalNumberOfProduct;
-          resultantData.poDate = itemData.toDate;
-          resultantData.status = itemData.status;
-          resultantData.department = itemData.shippingTerms;
-          itemList.push(resultantData);
+        this.props.purchase_data.map((item) => {
+          itemList.push({
+            ...item.details,
+            id: item.id,
+          });
           this.setState({
             itemList,
           });
@@ -400,11 +316,9 @@ class CreateInvoice extends Component {
       openDialog,
       selectedItemList,
     } = this.state;
-    console.log("aprpo data", this.props.approvepo_data);
-    console.log("list data", itemList);
-    const errorData = this.validate(isSubmitted);
+    const { currency_list_data, currency_status } = this.props;
+    const errorData = this.validateNewInvoice(isSubmitted);
     return (
-      // <ViewRequestComponet/>
       <div className="main-content">
         <div className="invoices-content">
           <div className="invoices-head-section">
@@ -427,20 +341,22 @@ class CreateInvoice extends Component {
                         reque
                         name="invoiceIssueDate"
                         value={formData.invoiceIssueDate}
-                        // selected={formData.invoiceIssueDate}
                         placeholder={"YYYY-MM-DD"}
                         onChange={(date) => this.handleInvoiceIssueDate(date)}
                       />
-
                       {
                         <AddNewPurchaseOrderList
                           openDialog={openDialog}
-                          setSelectedItemList={this.setSelectedItemList}
-                          openAddNewItemPopup={this.openAddNewItemPopup}
+                          addSelectedPurchaseOrderToList={
+                            this.addSelectedPurchaseOrderToList
+                          }
+                          handlePurchaseOrdersPopup={
+                            this.handlePurchaseOrdersPopup
+                          }
                           itemList={itemList.length > 0 ? itemList : null}
                         />
                       }
-                      <CalendarTodayTwoToneIcon className="calendar-icon" />
+                      <CalendarTodayIcon className="calendar-icon" />
                     </div>
                     <span className="d-block w-100 text-danger">
                       {errorData.invoiceIssueDate.message}
@@ -454,12 +370,10 @@ class CreateInvoice extends Component {
                       <DatePicker
                         name="invoiceIssueDate"
                         value={formData.invoiceDueDate}
-                        // selected={formData.invoiceIssueDate}
                         placeholder={"YYYY-MM-DD"}
                         onChange={(date) => this.handleInvoiceDueDate(date)}
                       />
-
-                      <CalendarTodayTwoToneIcon className="calendar-icon" />
+                      <CalendarTodayIcon className="calendar-icon" />
                     </div>
                     <span className="d-block w-100 text-danger">
                       {errorData.invoiceDueDate.message}
@@ -474,7 +388,7 @@ class CreateInvoice extends Component {
                         <NativeSelect
                           name="supplier"
                           value={formData.supplier}
-                          onChange={this.handleStateChange}
+                          onChange={this.handleNewInvoiceInputs}
                         >
                           <option value={"Main Office Usa"}>
                             Main Office USA
@@ -499,7 +413,7 @@ class CreateInvoice extends Component {
                         <NativeSelect
                           name="department"
                           value={formData.department}
-                          onChange={this.handleStateChange}
+                          onChange={this.handleNewInvoiceInputs}
                         >
                           <option value="">Main Office USA</option>
                           <option value={10}>abc</option>
@@ -522,7 +436,7 @@ class CreateInvoice extends Component {
                       className="form-control"
                       placeholder="Enter Amount"
                       value={formData.invoiceAmount}
-                      onChange={this.handleStateChange}
+                      onChange={this.handleNewInvoiceInputs}
                     />
                     <span className="d-block w-100 text-danger">
                       {errorData.invoiceAmount.message}
@@ -536,14 +450,20 @@ class CreateInvoice extends Component {
                       <FormControl className="payment-select-menu">
                         <NativeSelect
                           name="currency"
-                          value={formData.currency}
-                          onChange={this.handleStateChange}
-                          // onChange={(e) => this.handleStateChange(e, 'company')}
+                          value={
+                            formData.currency &&
+                            currency_list_data[formData.currency]
+                              ? currency_list_data[formData.currency].name
+                              : null
+                          }
+                          onChange={this.handleNewInvoiceInputs}
                         >
-                          <option value="">Main Office USA</option>
-                          <option value={"abc"}>abc</option>
-                          <option value={"def"}>def</option>
-                          <option value={"abd"}>abd</option>
+                          <option value={""}>Currency</option>
+                          {currency_status === 1 &&
+                            currency_list_data.object?.length &&
+                            currency_list_data.object.map((item, index) => (
+                              <option value={index}>{item.details.name}</option>
+                            ))}
                         </NativeSelect>
                       </FormControl>
                       <span className="d-block w-100 text-danger">
@@ -562,9 +482,7 @@ class CreateInvoice extends Component {
                       className="form-control"
                       placeholder="Tax"
                       value={formData.tax}
-                      // value={companyDetail.postalcode}
-                      onChange={this.handleStateChange}
-                      // onChange={(e) => this.handleStateChange(e, 'company')}
+                      onChange={this.handleNewInvoiceInputs}
                     />
                     <span className="d-block w-100 text-danger">
                       {errorData.tax.message}
@@ -586,12 +504,7 @@ class CreateInvoice extends Component {
                       <Button
                         variant="contained"
                         className="primary-btn invoices-button"
-                        onClick={this.openAddNewItemPopup}
-                        // onClick={() =>
-                        //   this.props.history.push(
-                        //     `/postlogin/invoices/createinvoicepurchaseorder`
-                        //   )
-                        // }
+                        onClick={this.handlePurchaseOrdersPopup}
                       >
                         <i class="fas fa-plus-circle"></i>
                         Add Purchase Order
@@ -628,6 +541,7 @@ class CreateInvoice extends Component {
                   variant="contained"
                   className="primary-btn invoices-button"
                   onClick={this.onSubmitCreateInvoice}
+                  disabled={this.props.add_invoice_status === 0 ? true : false}
                 >
                   Create
                 </Button>
@@ -641,15 +555,31 @@ class CreateInvoice extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { approvepo_status, approvepo_data } = state.procurement;
-  console.log("data", approvepo_data);
-  return {
+  const {
+    purchase_status,
+    purchase_data,
+    add_invoice_status,
     approvepo_status,
     approvepo_data,
+    invoice_data,
+    currency_status,
+    currency_list_data,
+  } = state.procurement;
+
+  return {
+    purchase_status,
+    purchase_data,
+    add_invoice_status,
+    approvepo_status,
+    approvepo_data,
+    invoice_data,
+    currency_status,
+    currency_list_data,
   };
 };
 
 const ViewInvoiceComponent = withTranslation()(
   connect(mapStateToProps)(CreateInvoice)
 );
+
 export default ViewInvoiceComponent;

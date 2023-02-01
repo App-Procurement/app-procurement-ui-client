@@ -1,18 +1,18 @@
-import React from 'react';
-import { io } from 'socket.io-client';
-import { ChatRoomActions } from '../_actions';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import Button from '@material-ui/core/Button';
-import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
+import React from "react";
+import { io } from "socket.io-client";
+import { ChatRoomActions } from "../_actions";
+import { connect } from "react-redux";
+import { withTranslation } from "react-i18next";
+import { Button } from "@mui/material";
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
 class ChatBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       chatToggle: false,
-      message: '',
-      userName: 'Michel Slatter',
+      message: "",
+      userName: "Michel Slatter",
       prevChats: [],
       attachments: [],
     };
@@ -22,8 +22,8 @@ class ChatBox extends React.Component {
     if (user) {
       this.props.dispatch(ChatRoomActions.getChats());
       const { prevChats } = this.state;
-      this.socket = io.connect('http://localhost:5001');
-      this.socket.on('hello from server', (arg) => {
+      this.socket = io.connect("http://localhost:5001");
+      this.socket.on("hello from server", (arg) => {
         // let data= JSON.parse(arg)
         if (arg) {
           if (JSON.stringify(prevChats) !== arg) {
@@ -33,7 +33,7 @@ class ChatBox extends React.Component {
       });
       setInterval(() => {
         if (!this.socket.connected === true && !this.socket.id) {
-          this.socket = io.connect('http://localhost:5001');
+          this.socket = io.connect("http://localhost:5001");
         }
       }, 5000);
     }
@@ -52,18 +52,18 @@ class ChatBox extends React.Component {
     if (attachment && attachment.length > 0) {
       Data = { attachment: attachment };
     }
-    if (this.state.message !== '' || null) {
+    if (this.state.message !== "" || null) {
       Data = {
-        type: 'text',
+        type: "text",
         text: this.state.message,
-        from: 'jid_1109',
-        sender_name: 'Michel Slatter',
-        to: 'jid_1111',
+        from: "jid_1109",
+        sender_name: "Michel Slatter",
+        to: "jid_1111",
       };
-      this.socket.emit('hello from client', JSON.stringify(Data));
+      this.socket.emit("hello from client", JSON.stringify(Data));
       this.state.prevChats.push(Data);
     }
-    this.setState({ message: '' });
+    this.setState({ message: "" });
   };
   attachmentsLsit = (attachment) => {
     let retData = [];
@@ -71,7 +71,11 @@ class ChatBox extends React.Component {
       for (let i = 0; i < attachment.length; i++) {
         const { payload } = attachment[i];
         retData.push(
-          <div className={`doc-inner-box ${attachment.length === 1 ? "one-file" : ""}`} >
+          <div
+            className={`doc-inner-box ${
+              attachment.length === 1 ? "one-file" : ""
+            }`}
+          >
             <div className="doc-attachment-files">
               <img alt="image" src={payload.url} />
             </div>
@@ -92,7 +96,13 @@ class ChatBox extends React.Component {
     }
   };
   render() {
-    const { chatToggle, prevChats, userName, message, attachments } = this.state;
+    const {
+      chatToggle,
+      prevChats,
+      userName,
+      message,
+      attachments,
+    } = this.state;
 
     return (
       <>
@@ -106,7 +116,11 @@ class ChatBox extends React.Component {
                       src="http://c.files.bbci.co.uk/C870/production/_112921315_gettyimages-876284806.jpg"
                       alt="image"
                     />
-                    {!chatToggle ? <span> chatroom</span> : <span>Peter Shawn Admin</span>}
+                    {!chatToggle ? (
+                      <span> chatroom</span>
+                    ) : (
+                      <span>Peter Shawn Admin</span>
+                    )}
                   </div>
                   <div className="menu-icons">
                     <span className="menu-icon">
@@ -116,11 +130,17 @@ class ChatBox extends React.Component {
                       <i className="fas fa-edit"></i>
                     </span>
                     {chatToggle ? (
-                      <span className="uparrow-icon" onClick={() => this.setState({ chatToggle: false })}>
+                      <span
+                        className="uparrow-icon"
+                        onClick={() => this.setState({ chatToggle: false })}
+                      >
                         <i className="fas fa-angle-down"></i>
                       </span>
                     ) : (
-                      <span className="uparrow-icon" onClick={() => this.setState({ chatToggle: true })}>
+                      <span
+                        className="uparrow-icon"
+                        onClick={() => this.setState({ chatToggle: true })}
+                      >
                         <i className="fas fa-angle-up"></i>
                       </span>
                     )}
@@ -128,62 +148,68 @@ class ChatBox extends React.Component {
                 </div>
                 {chatToggle && (
                   <div className="chatroom-inner-content-right">
-                    <SimpleBar style={{ maxHeight: 285 }} className="massage-chat-section">
+                    <SimpleBar
+                      style={{ maxHeight: 285 }}
+                      className="massage-chat-section"
+                    >
                       {prevChats && prevChats.length > 0 ? (
-                        prevChats.map(({ sender_name, text, attachment }, index) =>
-                          attachment && attachment.length > 0 ? (
-                            // doc section
-                            <div className="doc-section">
-                              <div className="doc-user-img" key={index}>
-                                <img
-                                  src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
-                                  width={35}
-                                  height={35}
-                                  alt="image"
-                                />
+                        prevChats.map(
+                          ({ sender_name, text, attachment }, index) =>
+                            attachment && attachment.length > 0 ? (
+                              // doc section
+                              <div className="doc-section">
+                                <div className="doc-user-img" key={index}>
+                                  <img
+                                    src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
+                                    width={35}
+                                    height={35}
+                                    alt="image"
+                                  />
+                                </div>
+                                <div className="doc-images-box">
+                                  {this.attachmentsLsit(attachment)}
+                                </div>
                               </div>
-                              <div className="doc-images-box">{this.attachmentsLsit(attachment)}</div>
-                            </div>
-                          ) : sender_name === userName ? (
-                            // user messages
+                            ) : sender_name === userName ? (
+                              // user messages
 
-                            <div className="user-massage-content">
-                              <div className="user-image" key={index}>
-                                <img
-                                  alt="image"
-                                  height="35px"
-                                  width="35px"
-                                  src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
-                                />
+                              <div className="user-massage-content">
+                                <div className="user-image" key={index}>
+                                  <img
+                                    alt="image"
+                                    height="35px"
+                                    width="35px"
+                                    src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
+                                  />
+                                </div>
+
+                                {
+                                  <div className="user-massage-box">
+                                    <div className="user-massage-text">
+                                      <p>{text}</p>
+                                    </div>
+                                  </div>
+                                }
                               </div>
+                            ) : (
+                              //sender messages
 
-                              {
-                                <div className="user-massage-box">
-                                  <div className="user-massage-text">
+                              <div className="sender-massage-content">
+                                <div className="sender-massage-box">
+                                  <div className="sender-massage-text">
                                     <p>{text}</p>
                                   </div>
                                 </div>
-                              }
-                            </div>
-                          ) : (
-                            //sender messages
-
-                            <div className="sender-massage-content">
-                              <div className="sender-massage-box">
-                                <div className="sender-massage-text">
-                                  <p>{text}</p>
+                                <div className="user-image">
+                                  <img
+                                    alt="image"
+                                    height="35px"
+                                    width="35px"
+                                    src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
+                                  />
                                 </div>
                               </div>
-                              <div className="user-image">
-                                <img
-                                  alt="image"
-                                  height="35px"
-                                  width="35px"
-                                  src="https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/11/free-Whatsapp-Dp-Boys-Stylish-Girls-Cute-Images-pics.jpg"
-                                />
-                              </div>
-                            </div>
-                          )
+                            )
                         )
                       ) : (
                         <>loading</>
@@ -212,9 +238,18 @@ class ChatBox extends React.Component {
                             <span>
                               <i className="fas fa-smile-o"></i>
                             </span>
-                            <div className="send-btn" onClick={this.sendMessage}>
-                              <Button variant="contained" className="massage-send-btn">
-                                <i className="fa fa-paper-plane" aria-hidden="true"></i>
+                            <div
+                              className="send-btn"
+                              onClick={this.sendMessage}
+                            >
+                              <Button
+                                variant="contained"
+                                className="massage-send-btn"
+                              >
+                                <i
+                                  className="fa fa-paper-plane"
+                                  aria-hidden="true"
+                                ></i>
                               </Button>
                             </div>
                           </div>

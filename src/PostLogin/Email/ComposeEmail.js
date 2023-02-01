@@ -1,70 +1,52 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import SaveIcon from '@material-ui/icons/Save';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import ReplyIcon from '@material-ui/icons/Reply';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import { Multiselect } from 'multiselect-react-dropdown';
-import { IconButton } from '@material-ui/core';
-import TagFacesIcon from '@material-ui/icons/TagFaces';
-import CancelIcon from '@material-ui/icons/Cancel';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import { emailActions } from '../../_actions/email.actions';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
-import { t } from 'i18next';
+import React, { Component } from "react";
+import { Button, FormControl, NativeSelect, IconButton } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import SaveIcon from "@mui/icons-material/Save";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import ReplyIcon from "@mui/icons-material/Reply";
+import { Multiselect } from "multiselect-react-dropdown";
+import TagFacesIcon from "@mui/icons-material/TagFaces";
+import CancelIcon from "@mui/icons-material/Cancel";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { emailActions } from "../../_actions/email.actions";
+import { connect } from "react-redux";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 
 class ComposeEmail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       sendEmailData: {
-        subject: '',
-        emailDetail: '',
+        subject: "",
+        emailDetail: "",
         to: [],
         bcc: [],
-        senderId: '2',
+        senderId: "2",
         attechment: [],
       },
-      isSubmitted: '',
+      isSubmitted: "",
       options: [
-        { name: 'Olivia Johnson', email: 'oliviaJohnson@mail.com', id: 1 },
-        { name: 'Marteens', email: 'marteen404@mail.com', id: 2 },
-        { name: 'evanernest', email: 'evanernest@mail.com', id: 3 },
-        { name: 'ddd', email: 'ddd@a.com', id: 4 },
-        { name: 'efg', email: 'efg@a.com', id: 5 },
+        { name: "Jasmin", email: "jasmakasana@gmail.com", id: 1 },
+        { name: "evanernest", email: "evanernest@mail.com", id: 2 },
+        { name: "ddd", email: "ddd@a.com", id: 3 },
+        { name: "efg", email: "efg@a.com", id: 4 },
       ],
 
       contacts: [
-        { name: 'evanernest', email: 'evanernest@mail.com', id: 1 },
-        { name: 'evanernest2', email: 'evanernest2@mail.com', id: 2 },
-        { name: 'evanernest3', email: 'evanernest3@mail.com', id: 3 },
-        { name: 'ddd', email: 'ddd@a.com', id: 4 },
-        { name: 'efg', email: 'efg@a.com', id: 5 },
+        { name: "evanernest", email: "evanernest@mail.com", id: 1 },
+        { name: "evanernest2", email: "evanernest2@mail.com", id: 2 },
+        { name: "evanernest3", email: "evanernest3@mail.com", id: 3 },
+        { name: "ddd", email: "ddd@a.com", id: 4 },
+        { name: "efg", email: "efg@a.com", id: 5 },
       ],
       preselectValue: [
-        { name: 'Olivia Johnson', email: 'oliviaJohnson@mail.com', id: 1 },
-        { name: 'Marteens', email: 'marteen404@mail.com', id: 2 },
+        { name: "Olivia Johnson", email: "oliviaJohnson@mail.com", id: 1 },
+        { name: "Marteens", email: "marteen404@mail.com", id: 2 },
       ],
     };
   }
-  sendEmail = () => {
-    const { sendEmailData } = this.state;
-    this.setState({ isSubmitted: true });
-    const errorData = this.validate(true);
-    let sendData = {
-      subject: sendEmailData.subject,
-      emailDetail: sendEmailData.emailDetail,
-      to: sendEmailData.to,
-      bcc: sendEmailData.bcc,
-      senderId: '2',
-    };
-    if (errorData.isValid === true) {
-      this.props.dispatch(emailActions.sendEmail({ obj: sendData, attechment: sendEmailData.attechment }));
-    }
-  };
+
   handleStateChange = (e) => {
     let { sendEmailData } = this.state;
     const { name, value } = e.target;
@@ -73,6 +55,7 @@ class ComposeEmail extends Component {
       sendEmailData,
     });
   };
+
   setSelectedEmailUser = (val, type) => {
     let { sendEmailData } = this.state;
     sendEmailData[type] = val;
@@ -80,6 +63,7 @@ class ComposeEmail extends Component {
       sendEmailData,
     });
   };
+
   handleFile = (e) => {
     const { files } = e.target;
     let { sendEmailData } = this.state;
@@ -99,10 +83,11 @@ class ComposeEmail extends Component {
     sendEmailData.attechment.splice(indx, 1);
     this.setState({ sendEmailData });
   };
+
   validate = (isSubmitted) => {
     const validObj = {
       isValid: true,
-      message: '',
+      message: "",
     };
     let isValid = true;
     const retData = {
@@ -115,14 +100,14 @@ class ComposeEmail extends Component {
       if (!sendEmailData.emailDetail) {
         retData.emailDetail = {
           isValid: false,
-          message: 'Email Details is Required',
+          message: "Email Details is Required",
         };
         isValid = false;
       }
       if (sendEmailData.to && sendEmailData.to.length <= 0) {
         retData.to = {
           isValid: false,
-          message: 'To is Required',
+          message: "To is Required",
         };
         isValid = false;
       }
@@ -131,8 +116,42 @@ class ComposeEmail extends Component {
     return retData;
   };
 
+  sendEmail = () => {
+    const { sendEmailData } = this.state;
+    this.setState({ isSubmitted: true });
+    const errorData = this.validate(true);
+    let details = {
+      from: "market.reader.infonium@gmail.com",
+      subject: sendEmailData.subject,
+      content: sendEmailData.emailDetail,
+      to: sendEmailData.to,
+      // bcc: sendEmailData.bcc,
+      // senderId: "2",
+    };
+    if (errorData.isValid === true) {
+      let mailArray = [];
+      sendEmailData.to.map((item) => {
+        mailArray.push(item.email);
+      });
+      this.props.dispatch(
+        emailActions.sendEmail({
+          from: "market.reader.infonium@gmail.com",
+          subject: sendEmailData.subject,
+          content: sendEmailData.emailDetail,
+          to: mailArray,
+        })
+      );
+    }
+  };
+
   render() {
-    const { options, contacts, preselectValue, sendEmailData, isSubmitted } = this.state;
+    const {
+      options,
+      contacts,
+      preselectValue,
+      sendEmailData,
+      isSubmitted,
+    } = this.state;
     const errorData = this.validate(isSubmitted);
     return (
       <div>
@@ -144,7 +163,7 @@ class ComposeEmail extends Component {
                   <span onClick={this.props.onClickShowCompos}>
                     <KeyboardBackspaceIcon />
                   </span>
-                  <h4>{t('Compose Email')}</h4>
+                  <h4>{t("Compose Email")}</h4>
                 </div>
               </div>
               <div className="col-xl-8 col-lg-7 col-md-7 col-sm-7 col-12">
@@ -153,13 +172,17 @@ class ComposeEmail extends Component {
                     <span>
                       <SaveIcon className="btn-icon" />
                     </span>
-                    {t('Save to Draft')}
+                    {t("Save to Draft")}
                   </Button>
-                  <Button variant="outlined" className="delete-btn" onClick={this.props.onClickShowCompos}>
+                  <Button
+                    variant="outlined"
+                    className="delete-btn"
+                    onClick={this.props.onClickShowCompos}
+                  >
                     <span>
                       <DeleteForeverIcon className="btn-icon" />
                     </span>
-                    {t('Delete')}
+                    {t("Delete")}
                   </Button>
                 </div>
               </div>
@@ -173,8 +196,8 @@ class ComposeEmail extends Component {
                 selectedValues={preselectValue}
                 displayValue="email"
                 placeholder=""
-                onSelect={(val) => this.setSelectedEmailUser(val, 'to')}
-                onRemove={(value) => this.setSelectedEmailUser(value, 'to')}
+                onSelect={(val) => this.setSelectedEmailUser(val, "to")}
+                onRemove={(value) => this.setSelectedEmailUser(value, "to")}
               />
               <span className="text-danger">{errorData.to.message}</span>
             </div>
@@ -184,39 +207,55 @@ class ComposeEmail extends Component {
                 options={contacts}
                 displayValue="email"
                 placeholder=""
-                onSelect={(val) => this.setSelectedEmailUser(val, 'bcc')}
+                onSelect={(val) => this.setSelectedEmailUser(val, "bcc")}
               />
             </div>
             <div className="email-subject">
               <div className="d-inline-block heading">subject</div>
               <div className="content">
-                <span>{t('Follow Up Progress From Order')} &#35;0001241251</span>
-                <input type="text" name="subject" onChange={this.handleStateChange} value={sendEmailData.subject} />
+                <span>
+                  {t("Follow Up Progress From Order")} &#35;0001241251
+                </span>
+                <input
+                  type="text"
+                  name="subject"
+                  onChange={this.handleStateChange}
+                  value={sendEmailData.subject}
+                />
               </div>
             </div>
             <div className="email-massage">
-              <div className="d-inline-block heading">{t('message')}</div>
+              <div className="d-inline-block heading">{t("message")}</div>
               <div className="content">
                 <textarea
                   placeholder="Hello guys Lorem ipsum dolor sit amet ,consectetur adipiscing elit, 
                         sed do eiusmod temod tempor incidiunt ut labore et dolore magna aliqua."
                   name="emailDetail"
-                  value={sendEmailData.emailDetail || ''}
+                  value={sendEmailData.emailDetail || ""}
                   onChange={this.handleStateChange}
                 ></textarea>
-                <span className="text-danger">{errorData.emailDetail.message}</span>
+                <span className="text-danger">
+                  {errorData.emailDetail.message}
+                </span>
               </div>
               <div className="col-4 pr-0">
                 {sendEmailData.attechment.map((file, indx) => (
                   <span>
                     <div className="upload-screenshort">
-                      <a href={URL.createObjectURL(file)} target="_blank" rel="noreferrer">
+                      <a
+                        href={URL.createObjectURL(file)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         <div className="file-name" aria-label={file.name}>
-                          {' '}
+                          {" "}
                           {file.name}
                         </div>
                       </a>
-                      <IconButton className="CancelIcon" onClick={() => this.handleRemoveFile(indx, file)}>
+                      <IconButton
+                        className="CancelIcon"
+                        onClick={() => this.handleRemoveFile(indx, file)}
+                      >
                         <CancelIcon />
                       </IconButton>
                     </div>
@@ -227,12 +266,21 @@ class ComposeEmail extends Component {
           </div>
           <div className="footer-bottom">
             <div className="footer-section-inner">
-              <Button variant="contained" className="send-email-btn" onClick={this.sendEmail}>
+              <Button
+                variant="contained"
+                className="send-email-btn"
+                onClick={this.sendEmail}
+              >
                 <i className="fas fa-paper-plane"></i>
-                {t('send email')}
+                {t("send email")}
               </Button>
               <IconButton className="attache-icon">
-                <input type="file" accept="image/png, image/jpeg" onChange={this.handleFile} multiple />
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={this.handleFile}
+                  multiple
+                />
                 <AttachFileIcon />
               </IconButton>
               <IconButton className="reply-icon">
@@ -242,7 +290,7 @@ class ComposeEmail extends Component {
               <div className="opensens-dropdown">
                 <FormControl className="opensens-content">
                   <NativeSelect>
-                    <option value="">{t('Open Sans')}</option>
+                    <option value="">{t("Open Sans")}</option>
                     <option value={10}>Ten</option>
                     <option value={20}>Twenty</option>
                     <option value={30}>Thirty</option>

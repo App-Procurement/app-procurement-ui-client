@@ -14,7 +14,120 @@ export const settingAction = {
   getPreferences,
   getAllSettingGroupData,
   updateSuperAdminUsers,
+  updateCompanyProfile,
+  searchCompanyProfile,
 };
+
+function updateCompanyProfile(data) {
+  return (dispatch) => {
+    dispatch(
+      dispatchFunction({
+        type: status.IN_PROGRESS,
+        data: {
+          update_company_profile_status: status.IN_PROGRESS,
+          update_company_profile_data: null,
+        },
+      })
+    );
+    settingServices.updateCompanyProfile(data).then(
+      (response) => {
+        const code = response.status;
+        if (code === 200) {
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  update_company_profile_status: status.SUCCESS,
+                  update_company_profile_data: data.object,
+                },
+              })
+            );
+          });
+          alert.success("Successfully updated");
+        } else {
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                update_company_profile_status: status.FAILURE,
+                update_company_profile_data: response,
+              },
+            })
+          );
+          alert.error(response.message);
+        }
+      },
+      (error) => {
+        dispatch(
+          dispatchFunction({
+            type: status.FAILURE,
+            data: {
+              update_company_profile_status: status.FAILURE,
+              update_company_profile_data: error.message,
+            },
+          })
+        );
+        alert.error(error.message);
+      }
+    );
+  };
+}
+
+function searchCompanyProfile() {
+  return (dispatch) => {
+    dispatch(
+      dispatchFunction({
+        type: status.IN_PROGRESS,
+        data: {
+          search_company_profile_status: status.IN_PROGRESS,
+          search_company_profile_data: null,
+        },
+      })
+    );
+    settingServices.searchCompanyProfile().then(
+      (response) => {
+        const code = response.status;
+        if (code === 200) {
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  search_company_profile_status: status.SUCCESS,
+                  search_company_profile_data: data.object,
+                },
+              })
+            );
+          });
+        } else {
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                search_company_profile_status: status.FAILURE,
+                search_company_profile_data: response,
+              },
+            })
+          );
+          alert.error(response.message);
+        }
+      },
+      (error) => {
+        dispatch(
+          dispatchFunction({
+            type: status.FAILURE,
+            data: {
+              search_company_profile_status: status.FAILURE,
+              search_company_profile_data: error.message,
+            },
+          })
+        );
+        alert.error(error.message);
+      }
+    );
+  };
+}
 
 function getWorkflow() {
   return (dispatch) => {
@@ -96,6 +209,7 @@ function createCompanyProfile(data) {
               })
             );
           });
+          alert.success("Company Profile added Successfully ");
         } else {
           dispatch(
             dispatchFunction({

@@ -202,7 +202,7 @@
 
             .date-picker {
                 display: block;
-                position: relative;
+                position: absolute;
 
                 .picker-input__text {
                     border: none;
@@ -1533,7 +1533,7 @@
                                 .picker-input {
                                     display: block;
                                     width: 100%;
-
+                                
                                     .picker-input__text {
                                         display: block;
                                         width: 100%;

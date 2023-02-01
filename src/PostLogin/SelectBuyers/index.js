@@ -1,23 +1,20 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import { Button, Card, IconButton, Checkbox } from "@mui/material";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import "simplebar/dist/simplebar.min.css";
-import Card from "@material-ui/core/Card";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import CallIcon from "@material-ui/icons/Call";
-import MailIcon from "@material-ui/icons/Mail";
-import Checkbox from "@material-ui/core/Checkbox";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import SearchIcon from "@material-ui/icons/Search";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CallIcon from "@mui/icons-material/Call";
+import MailIcon from "@mui/icons-material/Mail";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import SearchIcon from "@mui/icons-material/Search";
 import { connect } from "react-redux";
 import { buyerAction, requistionAction } from "../../_actions";
 import { status } from "../../_constants";
 import { alert } from "../../_utilities";
 import Loader from "../../_components/commonLoader";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 
 class SelectBuyers extends Component {
   constructor(props) {
@@ -36,8 +33,15 @@ class SelectBuyers extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.get_buyer_status !== this.props.get_buyer_status && this.props.get_buyer_status === status.SUCCESS) {
-      if (this.props.selected_buyer_list && this.props.selected_buyer_list.approvedMemberList && this.props.selected_buyer_list.approvedMemberList.length > 0) {
+    if (
+      prevProps.get_buyer_status !== this.props.get_buyer_status &&
+      this.props.get_buyer_status === status.SUCCESS
+    ) {
+      if (
+        this.props.selected_buyer_list &&
+        this.props.selected_buyer_list.approvedMemberList &&
+        this.props.selected_buyer_list.approvedMemberList.length > 0
+      ) {
         if (this.props.selected_buyer_list.id === this.props.match.params.id) {
           this.setState({
             approvedMemberList: this.props.selected_buyer_list
@@ -74,13 +78,9 @@ class SelectBuyers extends Component {
     this.setState({ displayOption: !this.state.displayOption });
   };
 
-  editContact = (id) => {
-    //this.props.history.push(`/postlogin/newcontact/${id}`);
-  };
+  editContact = (id) => {};
 
-  removeContact = (id, index) => {
-    //this.props.dispatch(requistionAction.deleteContact({ id: id }));
-  };
+  removeContact = (id, index) => {};
 
   displayApprovedMemberList = () => {
     const { approvedMemberList, activeindex, displayOption } = this.state;
@@ -93,8 +93,12 @@ class SelectBuyers extends Component {
           key={row.firstName}
         >
           <div className="member-boxs">
-            <Card className={activeindex === i ? "members-box active" : "members-box"}
-              onClick={() => this.setState({ activeindex: i })}>
+            <Card
+              className={
+                activeindex === i ? "members-box active" : "members-box"
+              }
+              onClick={() => this.setState({ activeindex: i })}
+            >
               <div className="d-flex justify-content-center align-items-center user-img">
                 <div className="d-flex justify-content-center align-items-center image">
                   <img src={row.profile} alt="" />
@@ -216,7 +220,6 @@ class SelectBuyers extends Component {
             row["firstName"].indexOf(value) !== -1
           ) {
             queryResult.push(duplicateData[i]);
-            // break;
           }
         }
       } else {
@@ -263,8 +266,6 @@ class SelectBuyers extends Component {
                       </div>
                       <div className="social-buttom">
                         <ul>
-                          {/* <li><Button variant="contained" className="plus-btn list-icon"><ReorderIcon /></Button></li> */}
-                          {/* <li><Button variant="contained" className="plus-btn"><ViewModuleIcon /></Button></li> */}
                           <li className="last">
                             <Button
                               variant="contained"
@@ -294,7 +295,12 @@ class SelectBuyers extends Component {
 }
 
 function mapStateToProps(state) {
-  const { selected_buyer_list, selected_buyer_status, get_buyer_status, getBuyer } = state.procurement;
+  const {
+    selected_buyer_list,
+    selected_buyer_status,
+    get_buyer_status,
+    getBuyer,
+  } = state.procurement;
   return {
     get_buyer_status,
     getBuyer,
@@ -304,4 +310,5 @@ function mapStateToProps(state) {
 }
 
 const connectedSelectBuyers = connect(mapStateToProps)(SelectBuyers);
+
 export default connectedSelectBuyers;

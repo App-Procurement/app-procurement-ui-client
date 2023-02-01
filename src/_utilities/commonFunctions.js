@@ -4,6 +4,7 @@ export const commonFunctions = {
   convertDateToString,
   validateEmail,
   validateNumeric,
+  validateFloat,
   getJsonFromUrl,
   onLogout,
   getAccessToken,
@@ -107,7 +108,10 @@ function validateEmail(email) {
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
-
+function validateFloat(number)
+{
+  return /^[+-]?\d+(\.\d+)?$/(number);
+}
 function validateNumeric(number) {
   return /^\d+$/.test(number);
 }

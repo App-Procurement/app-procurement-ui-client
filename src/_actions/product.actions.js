@@ -1,105 +1,42 @@
 import { status } from "../_constants";
-import { committeeServices } from "../_services";
+import { ProductServices } from "../_services";
 import { alert } from "../_utilities";
 
-export const committeeAction = {
-  addCommittee,
-
-  getCommitteeType,
-  searchCommittee,
-
-  addSelectedMember,
+export const productActions = {
+  searchProductList,
+  addProduct,
+  deleteProduct,
 };
-
-function addCommittee(data) {
+function searchProductList(data) {
   return (dispatch) => {
     dispatch(
       dispatchFunction({
         type: status.IN_PROGRESS,
         data: {
-          add_committee_status: status.IN_PROGRESS,
-          addCommittee: null,
+          search_product_list_status: status.IN_PROGRESS,
+          search_product_list: null,
         },
       })
     );
-    committeeServices.addCommittee(data).then(
+    ProductServices.searchProductList(data).then(
       (response) => {
-        const code = response.status;
-        if (code === 200) {
-          alert.success("Send Invitation Successfully");
-          response.json().then((data) => {
-            dispatch(
-              dispatchFunction({
-                type: status.SUCCESS,
-                data: {
-                  add_committee_status: status.SUCCESS,
-                  addCommittee: data,
-                },
-              })
-            );
-          });
-        } else {
+        if (response.code === 200) {
           dispatch(
             dispatchFunction({
-              type: status.FAILURE,
+              type: status.SUCCESS,
               data: {
-                add_committee_status: status.FAILURE,
-                addCommittee: response,
+                search_product_list_status: status.SUCCESS,
+                search_product_list: response.object,
               },
             })
           );
-          alert.error(response.message);
-        }
-      },
-      (error) => {
-        dispatch(
-          dispatchFunction({
-            type: status.SUCCESS,
-            data: {
-              add_committee_status: status.FAILURE,
-              addCommittee: error.message,
-            },
-          })
-        );
-        alert.error(error.message);
-      }
-    );
-  };
-}
-
-function searchCommittee(data) {
-  return (dispatch) => {
-    dispatch(
-      dispatchFunction({
-        type: status.IN_PROGRESS,
-        data: {
-          search_committee_status: status.IN_PROGRESS,
-          searchCommittee: null,
-        },
-      })
-    );
-    committeeServices.searchCommittee(data).then(
-      (response) => {
-        const code = response.status;
-        if (code === 200) {
-          response.json().then((data) => {
-            dispatch(
-              dispatchFunction({
-                type: status.SUCCESS,
-                data: {
-                  search_committee_status: status.SUCCESS,
-                  searchCommittee: data,
-                },
-              })
-            );
-          });
         } else {
           dispatch(
             dispatchFunction({
               type: status.FAILURE,
               data: {
-                search_committee_status: status.FAILURE,
-                searchCommittee: response,
+                search_product_list_status: status.FAILURE,
+                search_product_list: response,
               },
             })
           );
@@ -111,8 +48,8 @@ function searchCommittee(data) {
           dispatchFunction({
             type: status.FAILURE,
             data: {
-              search_committee_status: status.FAILURE,
-              searchCommittee: error.message,
+              search_product_list_status: status.FAILURE,
+              search_product_list: error.message,
             },
           })
         );
@@ -122,18 +59,18 @@ function searchCommittee(data) {
   };
 }
 
-function getCommitteeType(data) {
+function deleteProduct(data) {
   return (dispatch) => {
     dispatch(
       dispatchFunction({
         type: status.IN_PROGRESS,
         data: {
-          get_committee_type_status: status.IN_PROGRESS,
-          getCommitteeType: null,
+          delete_product_status: status.IN_PROGRESS,
+          delete_product: null,
         },
       })
     );
-    committeeServices.getCommitteeType(data).then(
+    ProductServices.deleteProduct(data).then(
       (response) => {
         const code = response.status;
         if (code === 200) {
@@ -142,19 +79,20 @@ function getCommitteeType(data) {
               dispatchFunction({
                 type: status.SUCCESS,
                 data: {
-                  get_committee_type_status: status.SUCCESS,
-                  getCommitteeType: data,
+                  delete_product_status: status.SUCCESS,
+                  delete_product: data,
                 },
               })
             );
+            alert.success("Product delete successfully");
           });
         } else {
           dispatch(
             dispatchFunction({
               type: status.FAILURE,
               data: {
-                get_committee_type_status: status.FAILURE,
-                getCommitteeType: response,
+                delete_product_status: status.FAILURE,
+                delete_product: response,
               },
             })
           );
@@ -166,8 +104,8 @@ function getCommitteeType(data) {
           dispatchFunction({
             type: status.FAILURE,
             data: {
-              get_committee_type_status: status.FAILURE,
-              getCommitteeType: error.message,
+              delete_product_status: status.FAILURE,
+              delete_product: error.message,
             },
           })
         );
@@ -177,16 +115,58 @@ function getCommitteeType(data) {
   };
 }
 
-function addSelectedMember(data) {
+function addProduct(data) {
   return (dispatch) => {
     dispatch(
       dispatchFunction({
-        type: status.SUCCESS,
+        type: status.IN_PROGRESS,
         data: {
-          selected_committee_status: status.SUCCESS,
-          selected_member_list: data,
+          add_product_status: status.IN_PROGRESS,
+          add_product: null,
         },
       })
+    );
+    ProductServices.addProduct(data).then(
+      (response) => {
+        const code = response.status;
+        if (code === 200) {
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  add_product_status: status.SUCCESS,
+                  add_product: data,
+                },
+              })
+            );
+            alert.success("Product Added successfully");
+          });
+        } else {
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                add_product_status: status.FAILURE,
+                add_product: response,
+              },
+            })
+          );
+          alert.error(response.message);
+        }
+      },
+      (error) => {
+        dispatch(
+          dispatchFunction({
+            type: status.FAILURE,
+            data: {
+              add_product_status: status.FAILURE,
+              add_product: error.message,
+            },
+          })
+        );
+        alert.error(error.message);
+      }
     );
   };
 }

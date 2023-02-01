@@ -10,6 +10,7 @@
     }
 
     .pagination-section {
+
         .btn-left {
             vertical-align: middle;
             margin-right: 10px;
@@ -19,6 +20,12 @@
                 text-align: center;
                 border-radius: 8px;
                 border: 1px solid #8f8f8f;
+                
+                svg {
+                    height: 18px;
+                    width: 18px;
+                    color: #6317c1;
+                }
 
                 span {
                     line-height: 20px;
@@ -43,6 +50,7 @@
 
                 li {
                     display: inline-block;
+                    padding: 0px;
 
                     a {
                         font-size: 16px;
@@ -78,6 +86,12 @@
                 text-align: center;
                 border-radius: 8px;
                 border: 1px solid #8f8f8f;
+
+                svg {
+                    height: 18px;
+                    width: 18px;
+                    color: #6317c1;
+                }
 
                 span {
                     line-height: 20px;

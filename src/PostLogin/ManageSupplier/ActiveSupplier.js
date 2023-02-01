@@ -1,32 +1,35 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { status } from "../../_constants";
 import { manageSupplierAction } from "../../_actions";
 import Table from "../../Table/Table";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import CloseIcon from "@material-ui/icons/Close";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import { requestForPurposeAction } from "../../_actions";
-
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CloseIcon from "@mui/icons-material/Close";
+import Loader from "react-js-loader";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
 class ActiveSupplier extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
+      importProductFile: null,
       supplierList: [],
       columns: [
         {
-          label: "S No",
+          label: "S.no",
           key: "sno",
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <span className={"s-no"}>{index + 1}</span>
               </td>
             );
@@ -34,22 +37,17 @@ class ActiveSupplier extends React.Component {
         },
         {
           label: "Supplier",
-          key: "supplier",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"requisitions-no"}>{value}</span>
-              </td>
-            );
-          },
+          key: "name",
         },
         {
-          label: "AccountHolderName",
-          key: "accountHolderName",
+          label: "Account Holder Name",
+          key: "bankDetails",
           renderCallback: (value) => {
             return (
-              <td>
-                <span className={"department-value"}>{value}</span>
+              <td key={`${Math.random()}_${value.accountHolderName}`}>
+                <span className={"department-value"}>
+                  {value.accountHolderName}
+                </span>
               </td>
             );
           },
@@ -57,61 +55,35 @@ class ActiveSupplier extends React.Component {
         {
           label: "Email",
           key: "email",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Currencies",
-          key: "currency",
+          key: "bankDetails",
           renderCallback: (value) => {
             return (
-              <td>
-                <span className={"requestor"}>{value}</span>
+              <td key={`${Math.random()}_${value.currency.code}`}>
+                <span className={"requestor"}>{value.currency.code}</span>
               </td>
             );
           },
         },
         {
-          label: "PaymentTerms",
+          label: "Payment Term",
           key: "paymentTerms",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className="department-value">{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Status",
           key: "status",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <Button
-                  variant="outlined"
-                  className="department-value active-btn "
-                >
-                  {value}
-                </Button>
-              </td>
-            );
-          },
         },
         {
           label: "Edit",
           key: "sno",
           renderCallback: (value, index) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value}`}>
                 <div className="d-block position-relative edit-delete-modal">
                   <i
-                    class="fa fa-ellipsis-h"
+                    className="fa fa-ellipsis-h"
                     aria-hidden="true"
                     onClick={() =>
                       this.setState({
@@ -123,15 +95,15 @@ class ActiveSupplier extends React.Component {
                   {this.state.supplierActiveIndex === index && (
                     <div className="toggale">
                       <i
-                        class="fa fa-pencil edit"
+                        className="fa fa-pencil edit"
                         aria-hidden="true"
-                        onClick={this.toggleEditModal}
+                        onClick={this.openSupplierEditModal}
                       ></i>
                       <i
-                        class="fa fa-trash delete"
+                        className="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
-                          this.removeProduct(index);
+                          this.handleDelete(index, "supplier");
                         }}
                       ></i>
                     </div>
@@ -141,17 +113,6 @@ class ActiveSupplier extends React.Component {
             );
           },
         },
-        // {
-        //   label: '',
-        //   key: 'id',
-        //   renderCallback: () => {
-        //     return (
-        //       <td>
-        //         <i class="fa fa-ellipsis-h" aria-hidden="true" />
-        //       </td>
-        //     );
-        //   },
-        // },
       ],
       openDialog: false,
       openUpdateDialog: false,
@@ -159,59 +120,42 @@ class ActiveSupplier extends React.Component {
       openSupplierEditDialog: false,
       updateSupplierValue: {},
       supplierAndCategoryList: [],
+      selectedFile: null,
     };
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(manageSupplierAction.getActiveSupplierList());
-    dispatch(requestForPurposeAction.SupplierAndCategoryList());
+    this.props.dispatch(manageSupplierAction.searchSupplierList());
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {
-      active_supplier_list_status,
-      active_supplier_list_data,
-      update_active_supplier_list_status,
-      delete_active_supplier_status,
-      dispatch,
-    } = this.props;
     if (
-      active_supplier_list_status !== prevProps.active_supplier_list_status &&
-      active_supplier_list_status === status.SUCCESS
+      this.props.search_suplier_list_status !==
+        prevProps.search_suplier_list_status &&
+      this.props.search_suplier_list_status === status.SUCCESS
     ) {
-      if (active_supplier_list_data && active_supplier_list_data.length > 0) {
-        this.setState({ supplierList: active_supplier_list_data });
-      }
-    }
-    if (
-      this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
-      this.props.supplier_category_list_status === status.SUCCESS
-    ) {
-      if (this.props.supplier_category_list_data) {
-        this.setState({
-          supplierAndCategoryList: {
-            ...this.props.supplier_category_list_data,
-          },
+      let { supplierList } = this.state;
+      if (
+        this.props.search_supplier_list &&
+        this.props.search_supplier_list.length > 0
+      ) {
+        this.props.search_supplier_list.map((item) => {
+          let itemData = item.details;
+
+          supplierList.push({
+            ...itemData,
+            id: item.id,
+          });
+          this.setState({
+            loadingStatus: !this.state.loadingStatus,
+            supplierList,
+          });
         });
       }
-    }
-    if (
-      update_active_supplier_list_status &&
-      update_active_supplier_list_status !==
-      prevProps.update_active_supplier_list_status &&
-      update_active_supplier_list_status === status.SUCCESS
-    ) {
-      dispatch(manageSupplierAction.getActiveSupplierList());
-    }
-    if (
-      delete_active_supplier_status &&
-      delete_active_supplier_status !==
-      prevProps.delete_active_supplier_status &&
-      delete_active_supplier_status === status.SUCCESS
-    ) {
-      dispatch(manageSupplierAction.getActiveSupplierList());
+      const reversed = [...supplierList].reverse();
+      this.setState({
+        supplierList: reversed,
+      });
     }
   }
 
@@ -227,6 +171,7 @@ class ActiveSupplier extends React.Component {
       openSupplierEditDialog: !this.state.openSupplierEditDialog,
     });
   };
+
   openImportProductPopup = () => {
     this.setState({
       openDialog: !this.state.openDialog,
@@ -238,6 +183,7 @@ class ActiveSupplier extends React.Component {
       openUpdateDialog: !this.state.openUpdateDialog,
     });
   };
+
   validateSupplierUpdate = (update) => {
     const validObj = {
       isValid: true,
@@ -293,20 +239,20 @@ class ActiveSupplier extends React.Component {
     retData.isValid = isValid;
     return retData;
   };
+
   handleUpdate = (e, type) => {
     const { updateSupplierValue } = this.state;
     const { name, value } = e.target;
     updateSupplierValue[name] = value;
     this.setState({ updateSupplierValue });
   };
+
   updateDataValues = (type) => {
     const { updateSupplierValue } = this.state;
 
     let updateForm = this.validateSupplierUpdate(true);
     this.setState({ isSubmit: true });
     if (updateForm.isValid) {
-      // updateSupplierValue.totalCost = updateSupplierValue.price * updateSupplierValue.quantity;
-      // requestData.detailsList[productActiveIndex] = updateSupplierValue updateSupplierList
       this.props.dispatch(
         manageSupplierAction.updateActiveSupplierList({
           id: updateSupplierValue.id,
@@ -318,6 +264,7 @@ class ActiveSupplier extends React.Component {
       });
     }
   };
+
   removeProduct = (index) => {
     const { supplierList } = this.state;
     let value = supplierList[index];
@@ -328,6 +275,19 @@ class ActiveSupplier extends React.Component {
     }
     this.setState({ supplierActiveIndex: -1 });
   };
+
+  handleClickUploadDocument = (event) => {
+    const { name, files } = event.target;
+
+    let fileObj = event.target.files[0];
+
+    if (fileObj.size > 0 && fileObj.name.split(".").pop() === "xls") {
+      this.setState({
+        [name]: files,
+      });
+    }
+  };
+
   render() {
     const {
       supplierList,
@@ -340,7 +300,9 @@ class ActiveSupplier extends React.Component {
       openDialog,
       openUpdateDialog,
     } = this.state;
+
     let supplierValidation = this.validateSupplierUpdate(isSubmit);
+
     return (
       <div className="main-content">
         <div className="manage-supplier-conntent">
@@ -354,11 +316,7 @@ class ActiveSupplier extends React.Component {
               <div className="col-xl-8 col-lg-9 col-md-8 col-sm-12 col-12">
                 <div className="request-purpose-head-right">
                   <div className="add-Supplier-button">
-                    <Button
-                      // href="/postlogin/managesupplier/addsupplier"
-                      variant="contained"
-                      className="new-requisition-btn"
-                    >
+                    <Button variant="contained" className="new-requisition-btn">
                       Add Supplier
                     </Button>
                   </div>
@@ -375,30 +333,33 @@ class ActiveSupplier extends React.Component {
                     </Button>
                   </div>
                   <div className="search-fillter">
-                    <Button
-                      className="fillter-btn"
-                      variant="outlined"
-                    // onClick={this.openUpdateProductPopup}
-                    >
-                      Update Supplier{" "}
+                    <Button className="fillter-btn" variant="outlined">
+                      Update Supplier
                     </Button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          {supplierList && supplierList.length > 0 && (
+          {this.state.loadingStatus ? (
             <Table
               valueFromData={{ columns: columns, data: supplierList }}
               perPageLimit={6}
               visiblecheckboxStatus={false}
-              isLoading={this.props.recieved_rfp_status === status.IN_PROGRESS}
+              isLoading={this.props.suplier_list_status === status.IN_PROGRESS}
               tableClasses={{
                 table: "ticket-tabel",
                 tableParent: "tickets-tabel",
                 parentClass: "all-support-ticket-tabel",
               }}
               showingLine="Showing %start% to %end% of %total% "
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
             />
           )}
         </div>
@@ -450,12 +411,11 @@ class ActiveSupplier extends React.Component {
                   <input
                     type="file"
                     placeholder="Upload files (PDF,DOC,PPT,JPG,PNG)"
-                    accept=" .pdf , .doc , .ppt , .jpg , .png"
-                    name="requisitionFile"
-                    onChange={this.handleFileChange}
+                    accept=".xls"
+                    name="importProductFile"
+                    onChange={this.handleClickUploadDocument}
                     multiple
                   />
-
                   <div className="file-content">
                     <div className="file-inner-content">
                       <CloudUploadIcon className="icon" />
@@ -663,8 +623,11 @@ class ActiveSupplier extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const {
+    search_supplier_list,
+    search_suplier_list_status,
     active_supplier_list_status,
     active_supplier_list_data,
     supplier_category_list_status,
@@ -673,6 +636,8 @@ const mapStateToProps = (state) => {
     delete_active_supplier_status,
   } = state.procurement;
   return {
+    search_supplier_list,
+    search_suplier_list_status,
     active_supplier_list_status,
     active_supplier_list_data,
     supplier_category_list_status,
@@ -681,4 +646,5 @@ const mapStateToProps = (state) => {
     delete_active_supplier_status,
   };
 };
+
 export default connect(mapStateToProps)(ActiveSupplier);

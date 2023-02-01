@@ -1,22 +1,31 @@
-import React, { Component } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import CreateIcon from '@material-ui/icons/Create';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import RoomIcon from '@material-ui/icons/Room';
-import EmailIcon from '@material-ui/icons/Email';
-import CallIcon from '@material-ui/icons/Call';
-import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import CancelIcon from '@material-ui/icons/Cancel';
-import Button from '@material-ui/core/Button';
-import AllInboxIcon from '@material-ui/icons/AllInbox';
-import bigWindIcon from '../../assets/images/big-wind-icon.png';
-import { connect } from 'react-redux';
-import { invoiceAction } from '../../_actions';
-import { status } from '../../_constants';
+import React, { Component } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Radio,
+  Button,
+  FormControl,
+  IconButton,
+  RadioGroup,
+  NativeSelect,
+} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CreateIcon from "@mui/icons-material/Create";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import RoomIcon from "@mui/icons-material/Room";
+import EmailIcon from "@mui/icons-material/Email";
+import CallIcon from "@mui/icons-material/Call";
+import InsertInvitationIcon from "@mui/icons-material/InsertInvitation";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import CancelIcon from "@mui/icons-material/Cancel";
+import AllInboxIcon from "@mui/icons-material/AllInbox";
+import bigWindIcon from "../../assets/images/big-wind-icon.png";
+import { connect } from "react-redux";
+import { invoiceAction } from "../../_actions";
+import { status } from "../../_constants";
 
 class AddInvoices extends Component {
   constructor(props) {
@@ -24,8 +33,8 @@ class AddInvoices extends Component {
     this.state = {
       invoiceData: {},
       invoiceFile: {},
-      amount: '',
-      description: '',
+      amount: "",
+      description: "",
       toggleDropown: false,
       index: 0,
     };
@@ -34,6 +43,7 @@ class AddInvoices extends Component {
   componentDidMount() {
     this.props.dispatch(invoiceAction.getNewInvoice());
   }
+
   componentDidUpdate(prevProps) {
     if (
       this.props.get_new_invoice_status !== prevProps.get_new_invoice_status &&
@@ -65,19 +75,22 @@ class AddInvoices extends Component {
     }
     return table;
   };
+
   handleFileChange = (e) => {
     const { files } = e.target;
     this.setState({ invoiceFile: files });
   };
+
   handleFileRemove = () => {
     this.setState({
       invoiceFile: {},
     });
   };
+
   handleChange = (e) => {
     let { description, amount } = this.state;
     const { value, name } = e.target;
-    if (name === 'description') {
+    if (name === "description") {
       description = value;
     } else {
       amount = value;
@@ -103,7 +116,11 @@ class AddInvoices extends Component {
               <div className="col-11">
                 <div className="d-flex justify-content-start align-items-center">
                   <IconButton className="head-icon">
-                    <ArrowBackIcon onClick={() => this.props.history.push(`/postlogin/invoices`)} />
+                    <ArrowBackIcon
+                      onClick={() =>
+                        this.props.history.push(`/postlogin/invoices`)
+                      }
+                    />
                   </IconButton>
                   <h4 className="d-inline-block mb-0">New Invoices</h4>
                 </div>
@@ -129,12 +146,20 @@ class AddInvoices extends Component {
                       <img src={bigWindIcon} alt="" />
                     </div>
                     <div className="d-flex flex-wrap text">
-                      {invoiceData && invoiceData.CompanyDesription && invoiceData.CompanyDesription.length > 0 && (
-                        <strong>{invoiceData.CompanyDesription[index].ComapanyName}</strong>
-                      )}
-                      {invoiceData && invoiceData.CompanyDesription && invoiceData.CompanyDesription.length > 0 && (
-                        <p>{invoiceData.CompanyDesription[index].ComapanyType}</p>
-                      )}
+                      {invoiceData &&
+                        invoiceData.CompanyDesription &&
+                        invoiceData.CompanyDesription.length > 0 && (
+                          <strong>
+                            {invoiceData.CompanyDesription[index].ComapanyName}
+                          </strong>
+                        )}
+                      {invoiceData &&
+                        invoiceData.CompanyDesription &&
+                        invoiceData.CompanyDesription.length > 0 && (
+                          <p>
+                            {invoiceData.CompanyDesription[index].ComapanyType}
+                          </p>
+                        )}
                     </div>
                     <div className="d-flex buttons">
                       <IconButton className="CreateIcon">
@@ -142,8 +167,11 @@ class AddInvoices extends Component {
                       </IconButton>
                       <IconButton className="ExpandMoreIcon">
                         <div>
-                          {' '}
-                          <ExpandMoreIcon onClick={() => this.setState({ toggleDropown: !toggleDropown })} />
+                          <ExpandMoreIcon
+                            onClick={() =>
+                              this.setState({ toggleDropown: !toggleDropown })
+                            }
+                          />
                         </div>
                       </IconButton>
                     </div>
@@ -151,13 +179,16 @@ class AddInvoices extends Component {
                   {toggleDropown ? (
                     <div className="big-wind-dropdown">
                       {invoiceData.CompanyDesription.map((value, index) => (
-                        <option value={index} onClick={() => this.handleCompany(index)}>
+                        <option
+                          value={index}
+                          onClick={() => this.handleCompany(index)}
+                        >
                           {value.ComapanyName}
                         </option>
                       ))}
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   <div className="d-flex justify-content-start align-items-center flex-wrap w-100 client-contant">
                     <div className="d-flex justify-content-start align-items-start w-100 contant">
@@ -166,7 +197,9 @@ class AddInvoices extends Component {
                       </div>
                       <div className="d-flex flex-wrap text">
                         <strong>Address</strong>
-                        {invoiceData && invoiceData.Address && <p>{invoiceData.Address}</p>}
+                        {invoiceData && invoiceData.Address && (
+                          <p>{invoiceData.Address}</p>
+                        )}
                       </div>
                     </div>
                     <div className="d-flex justify-content-start align-items-start w-100 contant">
@@ -175,7 +208,9 @@ class AddInvoices extends Component {
                       </div>
                       <div className="d-flex flex-wrap text">
                         <strong>Email</strong>
-                        {invoiceData && invoiceData.Email && <p>{invoiceData.Email}</p>}
+                        {invoiceData && invoiceData.Email && (
+                          <p>{invoiceData.Email}</p>
+                        )}
                       </div>
                     </div>
                     <div className="d-flex justify-content-start align-items-start w-100 contant">
@@ -184,7 +219,9 @@ class AddInvoices extends Component {
                       </div>
                       <div className="d-flex flex-wrap text">
                         <strong>Telephone</strong>
-                        {invoiceData && invoiceData.ContactNumber && <p>{invoiceData.ContactNumber}</p>}
+                        {invoiceData && invoiceData.ContactNumber && (
+                          <p>{invoiceData.ContactNumber}</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -213,7 +250,12 @@ class AddInvoices extends Component {
                           <h5>Invoice No</h5>
                         </div>
                         <div className="d-flex w-100 invoiceno-control">
-                          <input type="text" className="form-control" value="#INV-0001234" disabled />
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="#INV-0001234"
+                            disabled
+                          />
                         </div>
                       </div>
                     </div>
@@ -247,7 +289,9 @@ class AddInvoices extends Component {
                           <th>Amount</th>
                         </tr>
                       </thead>
-                      <tbody>{this.handleItemDescription(invoiceData.ItemDesription)}</tbody>
+                      <tbody>
+                        {this.handleItemDescription(invoiceData.ItemDesription)}
+                      </tbody>
                     </table>
                   </div>
                   <div className="d-block w-100 type-desription">
@@ -287,7 +331,9 @@ class AddInvoices extends Component {
                               <span>{invoiceFile[0].size}</span>
                             </div>
                             <div className="CancelIcon">
-                              <CancelIcon onClick={() => this.handleFileRemove()} />
+                              <CancelIcon
+                                onClick={() => this.handleFileRemove()}
+                              />
                             </div>
                           </li>
                         </ul>
@@ -316,4 +362,5 @@ const mapStateToProps = (state) => {
   const { get_new_invoice_status, new_invoice_data } = state.procurement;
   return { get_new_invoice_status, new_invoice_data };
 };
+
 export default connect(mapStateToProps)(AddInvoices);

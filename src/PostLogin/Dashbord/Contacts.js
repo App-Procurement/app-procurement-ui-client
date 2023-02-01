@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import AddIcon from '@material-ui/icons/Add';
-import EmailIcon from '@material-ui/icons/Email';
-import AngelaImg from '../../assets/images/dashbord/angela-img.png';
-import AndylawImg from '../../assets/images/dashbord/andylaw-img.png';
-import BennykennImg from '../../assets/images/dashbord/bennykenn-img.png';
-import ChynthiaImg from '../../assets/images/dashbord/chynthia-img.png';
-import DellaImg from '../../assets/images/dashbord/della-img.png';
-import EvansjohnImg from '../../assets/images/dashbord/evansjohn-img.png';
-import { t } from 'i18next';
+import React, { Component } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import EmailIcon from '@mui/icons-material/Email';
+import AngelaImg from "../../assets/images/dashbord/angela-img.png";
+import AndylawImg from "../../assets/images/dashbord/andylaw-img.png";
+import BennykennImg from "../../assets/images/dashbord/bennykenn-img.png";
+import ChynthiaImg from "../../assets/images/dashbord/chynthia-img.png";
+import DellaImg from "../../assets/images/dashbord/della-img.png";
+import EvansjohnImg from "../../assets/images/dashbord/evansjohn-img.png";
+import { t } from "i18next";
 
 class Contacts extends Component {
   constructor(props) {
@@ -15,33 +15,33 @@ class Contacts extends Component {
     this.state = {
       contactsData: [
         {
-          contactName: 'Angela Moss',
-          contactDes: 'department head',
+          contactName: "Angela Moss",
+          contactDes: "department head",
           contactImg: AngelaImg,
         },
         {
-          contactName: 'Andy Law',
-          contactDes: 'department head',
+          contactName: "Andy Law",
+          contactDes: "department head",
           contactImg: BennykennImg,
         },
         {
-          contactName: 'Benny Kenn',
-          contactDes: 'Supplier',
+          contactName: "Benny Kenn",
+          contactDes: "Supplier",
           contactImg: ChynthiaImg,
         },
         {
-          contactName: 'Chynthia Lawra',
-          contactDes: 'department head',
+          contactName: "Chynthia Lawra",
+          contactDes: "department head",
           contactImg: DellaImg,
         },
         {
-          contactName: 'Della Samantha',
-          contactDes: 'Supplier',
+          contactName: "Della Samantha",
+          contactDes: "Supplier",
           contactImg: AndylawImg,
         },
         {
-          contactName: 'Evans John',
-          contactDes: 'Accounts Head',
+          contactName: "Evans John",
+          contactDes: "Accounts Head",
           contactImg: EvansjohnImg,
         },
       ],
@@ -55,7 +55,7 @@ class Contacts extends Component {
         <div className="row justify-content-center align-items-center">
           <div className="col-lg-9">
             <div className="heading">
-              <h4>{t('Contacts')}</h4>
+              <h4>{t("Contacts")}</h4>
               <span>
                 You have <strong>{contactsData.length}</strong> contacts
               </span>
@@ -86,7 +86,7 @@ class Contacts extends Component {
           </div>
           <div className="view-btn">
             <button type="button" className="btn btn-secondary">
-              {t('View More')}
+              {t("View More")}
             </button>
           </div>
         </div>

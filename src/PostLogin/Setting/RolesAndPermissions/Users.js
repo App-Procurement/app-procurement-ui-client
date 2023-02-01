@@ -5,11 +5,11 @@ import {
   Button,
   Dialog,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import { settingAction } from "../../../_actions";
 import { status } from "../../../_constants";
 import { connect } from "react-redux";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "@mui/icons-material/Close";
 
 class Users extends Component {
   colorClass;
@@ -517,4 +517,5 @@ const mapStateToProps = (state) => {
     get_users_data,
   };
 };
+
 export default connect(mapStateToProps)(Users);

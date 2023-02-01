@@ -6,8 +6,8 @@ import {
   Button,
   Dialog,
   DialogTitle,
-} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { settingAction } from "../../../_actions";
 import { connect } from "react-redux";
 import { status } from "../../../_constants";
@@ -430,4 +430,5 @@ const mapStateToProps = (state) => {
     get_Preferences_data,
   };
 };
+
 export default connect(mapStateToProps)(Roles);

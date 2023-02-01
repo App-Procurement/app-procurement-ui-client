@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import SimpleBar from 'simplebar-react';
-import { connect } from 'react-redux';
-import 'simplebar/dist/simplebar.min.css';
-import { recievedrfpAction } from '../../_actions';
-import { status } from '../../_constants';
+import React, { Component } from "react";
+import SimpleBar from "simplebar-react";
+import { connect } from "react-redux";
+import "simplebar/dist/simplebar.min.css";
+import { recievedrfpAction } from "../../_actions";
+import { status } from "../../_constants";
 
 class RecentActivity extends Component {
   constructor(props) {
@@ -12,24 +12,30 @@ class RecentActivity extends Component {
       recentActivity: [],
     };
   }
+
   componentDidMount() {
     this.props.dispatch(recievedrfpAction.searchRecievedRFP());
   }
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.recieved_rfp_status !== this.props.recieved_rfp_status &&
       this.props.recieved_rfp_status === status.SUCCESS
     ) {
-      if (this.props.recieved_rfp_list && this.props.recieved_rfp_list.length > 0) {
+      if (
+        this.props.recieved_rfp_list &&
+        this.props.recieved_rfp_list.length > 0
+      ) {
         this.setState({ recentActivity: this.props.recieved_rfp_list });
       }
     }
   }
+
   render() {
     const { recentActivity } = this.state;
     return (
       <div className="recent-activity">
-        <div className="heading">{this.props.t('Recent Activity')}</div>
+        <div className="heading">{this.props.t("Recent Activity")}</div>
         <SimpleBar className="recent-activity-table">
           {recentActivity &&
             recentActivity.length > 0 &&
@@ -42,11 +48,18 @@ class RecentActivity extends Component {
                     <div className="col-5">
                       <div className="d-flex">
                         <div className="image">
-                          <img src={activity.profilePic} width={50} height={50} alt="" />
+                          <img
+                            src={activity.profilePic}
+                            width={50}
+                            height={50}
+                            alt=""
+                          />
                         </div>
                         <div className="d-flex flex-wrap name">
                           <span>Apporoved by:</span>
-                          {activity.createdBy && <strong>{activity.createdBy}</strong>}
+                          {activity.createdBy && (
+                            <strong>{activity.createdBy}</strong>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -71,6 +84,7 @@ class RecentActivity extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   const { recieved_rfp_status, recieved_rfp_list } = state.procurement;
   return {
@@ -78,4 +92,5 @@ function mapStateToProps(state) {
     recieved_rfp_list,
   };
 }
+
 export default connect(mapStateToProps)(RecentActivity);

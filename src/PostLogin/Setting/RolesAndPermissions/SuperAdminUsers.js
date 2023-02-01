@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SimpleBar from "simplebar-react";
-import { FormControlLabel, Checkbox } from "@material-ui/core";
+import { FormControlLabel, Checkbox } from "@mui/material";
 import groupData from "./../Dummy-data.json";
 import { settingAction } from "../../../_actions";
 import { status } from "../../../_constants";

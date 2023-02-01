@@ -1,22 +1,20 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import { Button, IconButton, Card } from "@mui/material";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
-import SaveIcon from "@material-ui/icons/Save";
+import SaveIcon from "@mui/icons-material/Save";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-import IconButton from "@material-ui/core/IconButton";
 import "simplebar/dist/simplebar.min.css";
-import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { connect } from "react-redux";
 import { contactAction } from "../../_actions";
 import { status } from "../../_constants";
 import { commonFunctions } from "../../_utilities/commonFunctions";
-import Card from "@material-ui/core/Card";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
 
@@ -66,7 +64,7 @@ class addNewContact extends Component {
     }
     if (
       prevProps.get_edit_contact_status !==
-      this.props.get_edit_contact_status &&
+        this.props.get_edit_contact_status &&
       this.props.get_edit_contact_status === status.SUCCESS
     ) {
       if (this.props.contactData) {
@@ -117,8 +115,14 @@ class addNewContact extends Component {
     };
 
     if (isSubmitted) {
-      const { email, contactNo, firstName, lastName, title, company } =
-        this.state;
+      const {
+        email,
+        contactNo,
+        firstName,
+        lastName,
+        title,
+        company,
+      } = this.state;
       if (!firstName) {
         retData.firstName = {
           isValid: false,
@@ -292,7 +296,10 @@ class addNewContact extends Component {
                           className="d-inline-block menu-icon"
                           style={{ display: "flex" }}
                         >
-                          <IconButton aria-label="settings" onClick={this.toggleDisplayOptions}>
+                          <IconButton
+                            aria-label="settings"
+                            onClick={this.toggleDisplayOptions}
+                          >
                             <MoreVertIcon />
                           </IconButton>
                           <div className="settings-toggle">
@@ -308,7 +315,8 @@ class addNewContact extends Component {
                                 <span
                                   onClick={() => this.deleteEmailContact(index)}
                                 >
-                                  <HighlightOffIcon />Delete
+                                  <HighlightOffIcon />
+                                  Delete
                                 </span>
                               </>
                             )}
@@ -359,7 +367,9 @@ class addNewContact extends Component {
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6">
                             <div className="form-group form-group-common">
-                              <label className="d-block">{t("First Name")}</label>
+                              <label className="d-block">
+                                {t("First Name")}
+                              </label>
                               <input
                                 type="text"
                                 value={firstName}
@@ -375,7 +385,9 @@ class addNewContact extends Component {
                           </div>
                           <div className="col-12 col-sm-12 col-md-6">
                             <div className="form-group form-group-common">
-                              <label className="d-block">{t("Last Name")}</label>
+                              <label className="d-block">
+                                {t("Last Name")}
+                              </label>
                               <input
                                 type="text"
                                 name="lastName"
@@ -430,7 +442,9 @@ class addNewContact extends Component {
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6">
                             <div className="form-group form-group-common">
-                              <label className="d-block">{t("Email Address")}</label>
+                              <label className="d-block">
+                                {t("Email Address")}
+                              </label>
                               <input
                                 type="text"
                                 name="email"
@@ -529,9 +543,8 @@ function mapStateToProps(state) {
   };
 }
 
-// const connectedNewContact = connect(mapStateToProps)(addNewContact);
-// export default connectedNewContact;
+const connectedNewContact = withTranslation()(
+  connect(mapStateToProps)(addNewContact)
+);
 
-
-const connectedNewContact = withTranslation()(connect(mapStateToProps)(addNewContact));
 export default connectedNewContact;

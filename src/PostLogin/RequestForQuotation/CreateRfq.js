@@ -1,18 +1,14 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { DatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import { connect } from "react-redux";
 import { requestForQuotationAction } from "../../_actions";
-import { commonFunctions, alert } from "../../_utilities";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
-
+import { Button, FormControl, NativeSelect } from "@mui/material";
 class CreateRfq extends Component {
   inputOpenFileRef;
   formkiqClient;
@@ -20,12 +16,18 @@ class CreateRfq extends Component {
     super(props);
     this.state = {
       formData: {
-        openDate: "",
-        closingDate: "",
-        requiredDeliveryDate: "",
-        rfqType: "",
-        location: "",
         note: "",
+        rfqType: "",
+        document: [],
+        location: "",
+        openDate: "",
+        products: [],
+        incoterms: "ABCD",
+        closingDate: "",
+        paymentMode: "ABCD",
+        paymentTerms: "Terms",
+        modeOfDelivery: "",
+        requiredDeliveryDate: "",
       },
       activeIndex: -1,
     };
@@ -35,7 +37,7 @@ class CreateRfq extends Component {
       "",
       "",
       {
-        onFormSubmitted: (formName) => { },
+        onFormSubmitted: (formName) => {},
         onFormCompleted: (formName, response) => {
           this.setUploadedDocID(response);
         },
@@ -55,10 +57,9 @@ class CreateRfq extends Component {
 
   handleDates = (date, name) => {
     let { formData } = this.state;
-    formData[name] = date;
+    formData[name] = `${date.$D}-${date.$M + 1}-${date.$y}`;
     this.setState({ formData });
   };
-
 
   validate = (isSubmitted) => {
     const validObj = {
@@ -139,7 +140,6 @@ class CreateRfq extends Component {
     const errorData = this.validate(true);
     const { history } = this.props;
 
-
     if (errorData.isValid) {
       this.props.dispatch(requestForQuotationAction.createRfq(formData));
       history.push("/postlogin/requestforquotation/rfqdetails");
@@ -147,10 +147,7 @@ class CreateRfq extends Component {
   };
 
   render() {
-    const {
-      formData,
-      isSubmitted,
-    } = this.state;
+    const { formData, isSubmitted } = this.state;
     const errorData = this.validate(isSubmitted);
     return (
       <div className="main-content">
@@ -171,7 +168,7 @@ class CreateRfq extends Component {
                       placeholder={"YYYY-MM-DD"}
                       onChange={(date) => this.handleDates(date, "openDate")}
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                   <span className="d-block w-100 text-danger">
                     {errorData.openDate.message}
@@ -185,7 +182,7 @@ class CreateRfq extends Component {
                       placeholder={"YYYY-MM-DD"}
                       onChange={(date) => this.handleDates(date, "closingDate")}
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                   <span className="d-block w-100 text-danger">
                     {errorData.closingDate.message}
@@ -203,7 +200,7 @@ class CreateRfq extends Component {
                         this.handleDates(date, "requiredDeliveryDate")
                       }
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                   <span className="d-block w-100 text-danger">
                     {errorData.requiredDeliveryDate.message}
@@ -217,7 +214,6 @@ class CreateRfq extends Component {
                         name="rfqType"
                         value={formData.rfqType}
                         onChange={this.handleStateChange}
-                      // isvalid={errorData.location.isValid}
                       >
                         <option value={"Main Office Usa"}>Non-Bid</option>
                         <option value={"abc"}>abc</option>
@@ -238,9 +234,10 @@ class CreateRfq extends Component {
                         name="location"
                         value={formData.location}
                         onChange={this.handleStateChange}
-                      // isvalid={errorData.location.isValid}
                       >
-                        <option value={"Main Office Usa"}>Main Office USA</option>
+                        <option value={"Main Office Usa"}>
+                          Main Office USA
+                        </option>
                         <option value={"abc"}>abc</option>
                         <option value={"def"}>def</option>
                         <option value={"abc"}>abc</option>
@@ -267,10 +264,12 @@ class CreateRfq extends Component {
               </div>
             </div>
             <div className="create-button text-center mt-5">
-              <Button className="primary-btn" onClick={this.onSubmitCreateRfq}>
-                {/* <Link to={`/postlogin/requestforquotation/rfqdetails`}> */}
+              <Button
+                className="primary-btn"
+                onClick={this.onSubmitCreateRfq}
+                disabled={this.props.create_rfq_status === 0 ? true : false}
+              >
                 Create
-                {/* </Link> */}
               </Button>
             </div>
           </div>
@@ -308,10 +307,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const CreateRfqComponet = withTranslation()(
-//   connect(mapStateToProps)(CreateRfq)
-// );
-// export default CreateRfqComponet;
-
 const CreateComponet = withTranslation()(connect(mapStateToProps)(CreateRfq));
+
 export default CreateComponet;

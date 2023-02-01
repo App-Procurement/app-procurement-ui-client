@@ -1,20 +1,23 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { purchaseOrderAction } from '../../../_actions/';
-import { requestForPurposeAction } from '../../../_actions';
-import { status } from '../../../_constants';
-import { commonFunctions } from '../../../_utilities/commonFunctions';
-import Button from '@material-ui/core/Button';
-import 'rc-calendar/assets/index.css';
-import '@y0c/react-datepicker/assets/styles/calendar.scss';
-import { Link } from 'react-router-dom';
-import Table from '../../../Table/Table';
-import Chat from './../../../_components/ChatBox';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
+import React, { Component } from "react";
+import {
+  NativeSelect,
+  FormControl,
+  DialogContent,
+  Dialog,
+  DialogTitle,
+  Button,
+} from "@mui/material";
+import { connect } from "react-redux";
+import { purchaseOrderAction } from "../../../_actions/";
+import { requestForPurposeAction } from "../../../_actions";
+import { status } from "../../../_constants";
+import { commonFunctions } from "../../../_utilities/commonFunctions";
+import "rc-calendar/assets/index.css";
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
+import { Link } from "react-router-dom";
+import Table from "../../../Table/Table";
+import Chat from "./../../../_components/ChatBox";
+import CloseIcon from "@mui/icons-material/Close";
 class PurchaseRequisitionDetail extends Component {
   requestId;
   constructor(props) {
@@ -27,69 +30,69 @@ class PurchaseRequisitionDetail extends Component {
       updateValue: {},
       update: false,
       user: {
-        name: 'himanshu',
+        name: "himanshu",
         id: 101,
-        accountType: 'admin',
+        accountType: "admin",
       },
       columns: [
         {
-          label: 'S No',
-          key: 'sno',
+          label: "S No",
+          key: "sno",
           renderCallback: (value, index) => {
             return (
               <td key={index}>
-                <span className={'s-no'}>{index + 1}</span>
+                <span className={"s-no"}>{index + 1}</span>
               </td>
             );
           },
         },
         {
-          label: 'Name',
-          key: 'name',
+          label: "Name",
+          key: "name",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'requisitions-no'}>{value}</span>
+                <span className={"requisitions-no"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Category',
-          key: 'category',
+          label: "Category",
+          key: "category",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Supplier',
-          key: 'supplier',
+          label: "Supplier",
+          key: "supplier",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Quantity',
-          key: 'orderQuantity',
+          label: "Quantity",
+          key: "orderQuantity",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'requestor'}>{value}</span>
+                <span className={"requestor"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Unit',
-          key: 'unit',
+          label: "Unit",
+          key: "unit",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -99,8 +102,8 @@ class PurchaseRequisitionDetail extends Component {
           },
         },
         {
-          label: 'Price',
-          key: 'ratePerItem',
+          label: "Price",
+          key: "ratePerItem",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -110,8 +113,8 @@ class PurchaseRequisitionDetail extends Component {
           },
         },
         {
-          label: 'Total Cost',
-          key: 'totalcost',
+          label: "Total Cost",
+          key: "totalcost",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -121,12 +124,15 @@ class PurchaseRequisitionDetail extends Component {
           },
         },
         {
-          label: 'Status',
-          key: 'status',
+          label: "Status",
+          key: "status",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <Button variant="outlined" className="department-value status-btn ">
+                <Button
+                  variant="outlined"
+                  className="department-value status-btn "
+                >
                   {value}
                 </Button>
               </td>
@@ -134,8 +140,8 @@ class PurchaseRequisitionDetail extends Component {
           },
         },
         {
-          label: '',
-          key: 'sno',
+          label: "",
+          key: "sno",
           renderCallback: (value, index) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -143,11 +149,20 @@ class PurchaseRequisitionDetail extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex: this.state.activeIndex === index ? -1 : index })}
+                    onClick={() =>
+                      this.setState({
+                        activeIndex:
+                          this.state.activeIndex === index ? -1 : index,
+                      })
+                    }
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
-                      <i className="fa fa-pencil edit" aria-hidden="true" onClick={this.openEditModal}></i>
+                      <i
+                        className="fa fa-pencil edit"
+                        aria-hidden="true"
+                        onClick={this.openEditModal}
+                      ></i>
                       <i
                         className="fa fa-trash delete"
                         aria-hidden="true"
@@ -167,13 +182,11 @@ class PurchaseRequisitionDetail extends Component {
     };
     this.requestId = this.props.match.params.id;
   }
-  // RemoveRequistionItem=(index)=>{
-  // 	let removeValId=index.id;
-  // 	let id=this.requestId;
-  // 	this.props.dispatch(purchaseOrderAction.deletePOListItem({id, removeValId}))
-  // }
+
   componentDidMount() {
-    this.props.dispatch(purchaseOrderAction.getPurchaseOrder({ id: this.requestId }));
+    this.props.dispatch(
+      purchaseOrderAction.getPurchaseOrder({ id: this.requestId })
+    );
     this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
   }
 
@@ -188,24 +201,34 @@ class PurchaseRequisitionDetail extends Component {
       });
     }
     if (
-      this.props.supplier_category_list_status !== prevProps.supplier_category_list_status &&
+      this.props.supplier_category_list_status !==
+        prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
-        this.setState({ supplierAndCategoryList: { ...this.props.supplier_category_list_data } });
+        this.setState({
+          supplierAndCategoryList: {
+            ...this.props.supplier_category_list_data,
+          },
+        });
       }
     }
     if (
-      this.props.delete_PO_list_item_status !== prevProps.delete_PO_list_item_status &&
+      this.props.delete_PO_list_item_status !==
+        prevProps.delete_PO_list_item_status &&
       this.props.delete_PO_list_item_status === status.SUCCESS
     ) {
-      this.props.dispatch(purchaseOrderAction.getPurchaseOrder({ id: this.requestId }));
+      this.props.dispatch(
+        purchaseOrderAction.getPurchaseOrder({ id: this.requestId })
+      );
     }
     if (
       this.props.update_purchase_status !== prevProps.update_purchase_status &&
       this.props.update_purchase_status === status.SUCCESS
     ) {
-      this.props.dispatch(purchaseOrderAction.getPurchaseOrder({ id: this.requestId }));
+      this.props.dispatch(
+        purchaseOrderAction.getPurchaseOrder({ id: this.requestId })
+      );
     }
   }
 
@@ -233,13 +256,23 @@ class PurchaseRequisitionDetail extends Component {
       updateValue.totalCost = updateValue.price * updateValue.quantity;
       // requestData.detailsList[activeIndex] = updateValue
       this.setState({ openEditDialog: !this.state.openEditDialog });
-      this.props.dispatch(purchaseOrderAction.updatePurcahseOrder({ id: this.requestId, value: updateValue }));
+      this.props.dispatch(
+        purchaseOrderAction.updatePurcahseOrder({
+          id: this.requestId,
+          value: updateValue,
+        })
+      );
     }
   };
 
   handleDelete = (index, id) => {
     const { tableData, activeIndex } = this.state;
-    this.props.dispatch(purchaseOrderAction.deletePOListItem({ id: this.requestId, value: tableData[activeIndex] }));
+    this.props.dispatch(
+      purchaseOrderAction.deletePOListItem({
+        id: this.requestId,
+        value: tableData[activeIndex],
+      })
+    );
     this.setState({ activeIndex: -1 });
   };
   handleStateChange = (e) => {
@@ -268,7 +301,7 @@ class PurchaseRequisitionDetail extends Component {
   validateUpdate = (update) => {
     const validObj = {
       isValid: true,
-      message: '',
+      message: "",
     };
     const { updateValue } = this.state;
     let isValid = true;
@@ -285,54 +318,60 @@ class PurchaseRequisitionDetail extends Component {
       if (!updateValue.name) {
         retData.name = {
           isValid: false,
-          message: 'Name is required',
+          message: "Name is required",
         };
         isValid = false;
       }
       if (!updateValue.category) {
         retData.category = {
           isValid: false,
-          message: 'category is required',
+          message: "category is required",
         };
         isValid = false;
       }
       if (!updateValue.supplier) {
         retData.supplier = {
           isValid: false,
-          message: 'supplier is required',
+          message: "supplier is required",
         };
         isValid = false;
       }
       if (!updateValue.orderQuantity) {
         retData.orderQuantity = {
           isValid: false,
-          message: 'quantity is required',
+          message: "quantity is required",
         };
         isValid = false;
-      } else if (updateValue.orderQuantity && !commonFunctions.validateNumeric(updateValue.orderQuantity)) {
+      } else if (
+        updateValue.orderQuantity &&
+        !commonFunctions.validateNumeric(updateValue.orderQuantity)
+      ) {
         retData.orderQuantity = {
           isValid: false,
-          message: 'quantity must be in digits',
+          message: "quantity must be in digits",
         };
         isValid = false;
       }
       if (!updateValue.unit) {
         retData.unit = {
           isValid: false,
-          message: 'unit is required',
+          message: "unit is required",
         };
         isValid = false;
       }
       if (!updateValue.price) {
         retData.price = {
           isValid: false,
-          message: 'price is required',
+          message: "price is required",
         };
         isValid = false;
-      } else if (updateValue.price && !commonFunctions.validateNumeric(updateValue.price)) {
+      } else if (
+        updateValue.price &&
+        !commonFunctions.validateNumeric(updateValue.price)
+      ) {
         retData.price = {
           isValid: false,
-          message: 'price must be in digits',
+          message: "price must be in digits",
         };
         isValid = false;
       }
@@ -360,7 +399,8 @@ class PurchaseRequisitionDetail extends Component {
               <div className="row d-flex align-items-center justify-content-center">
                 <div className="col-sm-12 col-md-7 col-lg-8 col-xl-8 col-form-button">
                   <div className="request-purpose-head-left">
-                    <h3>Purchase Requisition
+                    <h3>
+                      Purchase Requisition
                       <i className="fal fa-angle-right"></i>
                       <span>Purchase Request</span>
                     </h3>
@@ -389,7 +429,9 @@ class PurchaseRequisitionDetail extends Component {
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Requisitioner Name</label>
-                    {approveOrder.createdBy && <span>{approveOrder.createdBy}</span>}
+                    {approveOrder.createdBy && (
+                      <span>{approveOrder.createdBy}</span>
+                    )}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
@@ -402,46 +444,64 @@ class PurchaseRequisitionDetail extends Component {
                   <div className="requisitioner-text">
                     <label>Creation Date</label>
                     {approveOrder.createdOn && (
-                      <span>{commonFunctions.convertDateToString(new Date(approveOrder.createdOn))}</span>
+                      <span>
+                        {commonFunctions.convertDateToString(
+                          new Date(approveOrder.createdOn)
+                        )}
+                      </span>
                     )}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Department</label>
-                    {approveOrder.department && <span>{approveOrder.department.name}</span>}
+                    {approveOrder.department && (
+                      <span>{approveOrder.department.name}</span>
+                    )}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Location</label>
-                    {approveOrder.location && <span>{approveOrder.location}</span>}
+                    {approveOrder.location && (
+                      <span>{approveOrder.location}</span>
+                    )}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Delivery Date</label>
                     {approveOrder.deliveryDate && (
-                      <span>{commonFunctions.convertDateToString(new Date(approveOrder.deliveryDate))}</span>
+                      <span>
+                        {commonFunctions.convertDateToString(
+                          new Date(approveOrder.deliveryDate)
+                        )}
+                      </span>
                     )}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Request Type</label>
-                    {approveOrder.requisitionType && <span>{approveOrder.requisitionType}</span>}
+                    {approveOrder.requisitionType && (
+                      <span>{approveOrder.requisitionType}</span>
+                    )}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Total</label>
-                    {approveOrder.totalPrice && <span>${approveOrder.totalPrice}</span>}
+                    {approveOrder.totalPrice && (
+                      <span>${approveOrder.totalPrice}</span>
+                    )}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Final Approver</label>
-                    {approveOrder.approvedVendor && <span>{approveOrder.approvedVendor}</span>}
+                    {approveOrder.approvedVendor && (
+                      <span>{approveOrder.approvedVendor}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -456,11 +516,13 @@ class PurchaseRequisitionDetail extends Component {
                     valueFromData={{ columns: columns, data: tableData }}
                     perPageLimit={6}
                     visiblecheckboxStatus={false}
-                    isLoading={this.props.recieved_rfp_status === status.IN_PROGRESS}
+                    isLoading={
+                      this.props.recieved_rfp_status === status.IN_PROGRESS
+                    }
                     tableClasses={{
-                      table: 'ticket-tabel',
-                      tableParent: 'tickets-tabel',
-                      parentClass: 'all-support-ticket-tabel',
+                      table: "ticket-tabel",
+                      tableParent: "tickets-tabel",
+                      parentClass: "all-support-ticket-tabel",
                     }}
                     showingLine="Showing %start% to %end% of %total% "
                   />
@@ -491,7 +553,10 @@ class PurchaseRequisitionDetail extends Component {
                         </Button>
                       </div>
                       <div className="purchase-order">
-                        <Button variant="contained" className="purchase-btn cancel-btn">
+                        <Button
+                          variant="contained"
+                          className="purchase-btn cancel-btn"
+                        >
                           Cancel
                         </Button>
                       </div>
@@ -504,7 +569,7 @@ class PurchaseRequisitionDetail extends Component {
               </div>
             </div>
           </div>
-        </div >
+        </div>
         {activeIndex >= 0 && (
           <Dialog
             open={openEditDialog}
@@ -532,15 +597,21 @@ class PurchaseRequisitionDetail extends Component {
                     onChange={this.handleUpdate}
                     value={updateValue.name}
                   />
-                  <span className="d-block w-100 text-danger">{updateForm.name.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {updateForm.name.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row form-group">
                 <label className="col-3 col-form-label">Category</label>
                 <div className="col-9 col-form-field">
                   <FormControl className="select-menu">
-                    <NativeSelect name="category" onChange={this.handleUpdate} value={updateValue.category}>
-                      <option value={''}>Category</option>
+                    <NativeSelect
+                      name="category"
+                      onChange={this.handleUpdate}
+                      value={updateValue.category}
+                    >
+                      <option value={""}>Category</option>
                       {supplierAndCategoryList &&
                         supplierAndCategoryList.category &&
                         supplierAndCategoryList.category.length > 0 &&
@@ -550,7 +621,9 @@ class PurchaseRequisitionDetail extends Component {
                           </option>
                         ))}
                     </NativeSelect>
-                    <span className="d-block w-100 text-danger">{updateForm.category.message}</span>
+                    <span className="d-block w-100 text-danger">
+                      {updateForm.category.message}
+                    </span>
                   </FormControl>
                 </div>
               </div>
@@ -558,18 +631,26 @@ class PurchaseRequisitionDetail extends Component {
                 <label className="col-3 col-form-label">Supplier</label>
                 <div className="col-9 col-form-field">
                   <FormControl className="select-menu">
-                    <NativeSelect name="supplier" onChange={this.handleUpdate} value={updateValue.supplier}>
-                      <option value={''}>Supplier</option>
+                    <NativeSelect
+                      name="supplier"
+                      onChange={this.handleUpdate}
+                      value={updateValue.supplier}
+                    >
+                      <option value={""}>Supplier</option>
                       {supplierAndCategoryList &&
                         supplierAndCategoryList.supplierDetails &&
                         supplierAndCategoryList.supplierDetails.length > 0 &&
-                        supplierAndCategoryList.supplierDetails.map((val, index) => (
-                          <option value={val.supplierName} name="supplier">
-                            {val.supplierName}
-                          </option>
-                        ))}
+                        supplierAndCategoryList.supplierDetails.map(
+                          (val, index) => (
+                            <option value={val.supplierName} name="supplier">
+                              {val.supplierName}
+                            </option>
+                          )
+                        )}
                     </NativeSelect>
-                    <span className="d-block w-100 text-danger">{updateForm.supplier.message}</span>
+                    <span className="d-block w-100 text-danger">
+                      {updateForm.supplier.message}
+                    </span>
                   </FormControl>
                 </div>
               </div>
@@ -584,7 +665,9 @@ class PurchaseRequisitionDetail extends Component {
                     onChange={this.handleUpdate}
                     value={updateValue.orderQuantity}
                   />
-                  <span className="d-block w-100 text-danger">{updateForm.orderQuantity.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {updateForm.orderQuantity.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row form-group">
@@ -598,7 +681,9 @@ class PurchaseRequisitionDetail extends Component {
                     onChange={this.handleUpdate}
                     value={updateValue.unit}
                   />
-                  <span className="d-block w-100 text-danger">{updateForm.unit.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {updateForm.unit.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row form-group">
@@ -612,21 +697,26 @@ class PurchaseRequisitionDetail extends Component {
                     onChange={this.handleUpdate}
                     value={updateValue.price}
                   />
-                  <span className="d-block w-100 text-danger">{updateForm.price.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {updateForm.price.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row form-group">
                 <label className="col-3 col-form-label"></label>
                 <div className="col-9 col-form-field">
-                  <Button variant="contained" className="submit" onClick={this.updateDataValues}>
+                  <Button
+                    variant="contained"
+                    className="submit"
+                    onClick={this.updateDataValues}
+                  >
                     Submit
                   </Button>
                 </div>
               </div>
             </div>
           </Dialog>
-        )
-        }
+        )}
       </div>
     );
   }

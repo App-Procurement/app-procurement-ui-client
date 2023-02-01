@@ -1,23 +1,27 @@
 import React, { Component } from "react";
+import Loader from "react-js-loader";
+import {
+  Dialog,
+  DialogTitle,
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
 import { connect } from "react-redux";
 import { purchaseOrderAction } from "../../_actions";
 import { status } from "../../_constants";
 import { commonFunctions } from "../../_utilities/commonFunctions";
-import Button from "@material-ui/core/Button";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "@mui/icons-material/Close";
 import { requestForPurposeAction } from "../../_actions";
 class ApprovePurchaseOrder extends Component {
   oredrId;
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
       approveOrder: {},
       activeIndex: -1,
       updateValue: {},
@@ -152,7 +156,7 @@ class ApprovePurchaseOrder extends Component {
                         class="fa fa-trash delete"
                         aria-hidden="true"
                         onClick={() => {
-                          this.handleDelete( value, index);
+                          this.handleDelete(value, index);
                         }}
                       ></i>
                     </div>
@@ -167,18 +171,21 @@ class ApprovePurchaseOrder extends Component {
     };
     this.oredrId = this.props.match.params.id;
   }
+
   componentDidMount() {
     this.props.dispatch(
       purchaseOrderAction.getPurchaseOrder({ id: this.oredrId })
     );
     this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
   }
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.purchase_order_status !== this.props.purchase_order_status &&
       this.props.purchase_order_status === status.SUCCESS
     ) {
       this.setState({
+        loadingStatus: !this.state.loadingStatus,
         approveOrder: this.props.purchase_order_data,
         tableData: this.props.purchase_order_data.requistionItem,
       });
@@ -205,7 +212,8 @@ class ApprovePurchaseOrder extends Component {
       );
     }
     if (
-      this.props.delete_PO_list_item_status !== prevProps.delete_PO_list_item_status &&
+      this.props.delete_PO_list_item_status !==
+        prevProps.delete_PO_list_item_status &&
       this.props.delete_PO_list_item_status === status.SUCCESS
     ) {
       this.props.dispatch(
@@ -213,6 +221,7 @@ class ApprovePurchaseOrder extends Component {
       );
     }
   }
+
   openEditModal = () => {
     const { activeIndex, tableData } = this.state;
     if (activeIndex >= 0) {
@@ -223,11 +232,13 @@ class ApprovePurchaseOrder extends Component {
       openEditDialog: !this.state.openEditDialog,
     });
   };
+
   closeEditModal = () => {
     this.setState({
       openEditDialog: !this.state.openEditDialog,
     });
   };
+
   validateUpdate = (update) => {
     const validObj = {
       isValid: true,
@@ -318,19 +329,20 @@ class ApprovePurchaseOrder extends Component {
     retData.isValid = isValid;
     return retData;
   };
+
   handleUpdate = (e) => {
     const { updateValue } = this.state;
     const { name, value } = e.target;
     updateValue[name] = value;
     this.setState({ updateValue });
   };
+
   updateDataValues = () => {
     const { updateValue } = this.state;
     let updateForm = this.validateUpdate(true);
     this.setState({ update: true });
     if (updateForm.isValid) {
       updateValue.totalCost = updateValue.price * updateValue.quantity;
-      // tableData.detailsList[activeIndex] = updateValue
       this.setState({ openEditDialog: !this.state.openEditDialog });
       this.props.dispatch(
         purchaseOrderAction.updatePurcahseOrder({
@@ -342,11 +354,17 @@ class ApprovePurchaseOrder extends Component {
   };
 
   handleDelete = (index, id) => {
-const {tableData, activeIndex}=this.state
-let value=tableData[activeIndex];
-    this.props.dispatch(purchaseOrderAction.deletePOListItem({ id: this.oredrId, value:{...value} }));
+    const { tableData, activeIndex } = this.state;
+    let value = tableData[activeIndex];
+    this.props.dispatch(
+      purchaseOrderAction.deletePOListItem({
+        id: this.oredrId,
+        value: { ...value },
+      })
+    );
     this.setState({ activeIndex: -1 });
   };
+
   handleApprove = (status) => {
     const { approveOrder } = this.state;
     this.props.dispatch(
@@ -357,6 +375,7 @@ let value=tableData[activeIndex];
     );
     this.props.history.push(`/postlogin/generatepo`);
   };
+
   render() {
     const {
       approveOrder,
@@ -368,7 +387,9 @@ let value=tableData[activeIndex];
       columns,
       tableData,
     } = this.state;
+
     let updateForm = this.validateUpdate(update);
+
     return (
       <div>
         <div className="main-content">
@@ -640,7 +661,7 @@ let value=tableData[activeIndex];
               <div className="heading">
                 <h4>Order Line Items 5</h4>
               </div>
-              {tableData && tableData.length > 0 && (
+              {this.state.loadingStatus ? (
                 <Table
                   valueFromData={{ columns: columns, data: tableData }}
                   perPageLimit={6}
@@ -654,6 +675,13 @@ let value=tableData[activeIndex];
                     parentClass: "all-support-ticket-tabel",
                   }}
                   showingLine="Showing %start% to %end% of %total% "
+                />
+              ) : (
+                <Loader
+                  type="spinner-default"
+                  bgColor={"#3244a8"}
+                  color={"#3244a8"}
+                  size={60}
                 />
               )}
             </div>
@@ -700,10 +728,7 @@ let value=tableData[activeIndex];
             className="custom-dialog edit-dialog"
           >
             <div className="custom-dialog-head">
-              <DialogTitle
-                id="form-dialog-title"
-                className="dialog-heading"
-              >
+              <DialogTitle id="form-dialog-title" className="dialog-heading">
                 Edit
               </DialogTitle>
               <Button onClick={this.closeEditModal} className="modal-close-btn">
@@ -846,6 +871,7 @@ let value=tableData[activeIndex];
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const {
     purchase_order_status,
@@ -853,7 +879,7 @@ const mapStateToProps = (state) => {
     supplier_category_list_status,
     supplier_category_list_data,
     update_purchase_status,
-    delete_PO_list_item_status
+    delete_PO_list_item_status,
   } = state.procurement;
   return {
     purchase_order_status,
@@ -861,7 +887,7 @@ const mapStateToProps = (state) => {
     supplier_category_list_status,
     supplier_category_list_data,
     update_purchase_status,
-    delete_PO_list_item_status
+    delete_PO_list_item_status,
   };
 };
 

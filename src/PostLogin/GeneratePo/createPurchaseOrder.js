@@ -1,24 +1,30 @@
 import React, { Component } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
 import { connect } from "react-redux";
 import { purchaseOrderAction } from "../../_actions";
 import { status } from "../../_constants";
 import { commonFunctions } from "../../_utilities/commonFunctions";
-import Button from "@material-ui/core/Button";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import CloseIcon from "@mui/icons-material/Close";
+import Loader from "react-js-loader";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { requestForPurposeAction } from "../../_actions";
 class CreatePurchaseOrder extends Component {
   oredrId;
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
+      purchaseOrderData: [],
+      orderLineItems: [],
       approveOrder: {},
       activeIndex: -1,
       updateValue: {},
@@ -39,22 +45,15 @@ class CreatePurchaseOrder extends Component {
         },
         {
           label: "Name",
-          key: "name",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requisitions-no"}>{value}</span>
-              </td>
-            );
-          },
+          key: "createdBy",
         },
         {
           label: "Category",
-          key: "category",
+          key: "purchaseOrderProducts",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+              <td key={`${Math.random()}_${value[0].item.category}`}>
+                <span className={"requestor"}>{value[0].item.category}</span>
               </td>
             );
           },
@@ -65,74 +64,55 @@ class CreatePurchaseOrder extends Component {
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+                <span className={"department-value"}>{value.city}</span>
               </td>
             );
           },
         },
         {
           label: "Quantity",
-          key: "orderQuantity",
+          key: "purchaseOrderProducts",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>{value}</span>
+              <td key={`${Math.random()}_${value[0].item.quantity}`}>
+                <span className={"requestor"}>{value[0].quantity}</span>
               </td>
             );
           },
         },
         {
           label: "Unit",
-          key: "unit",
+          key: "purchaseOrderProducts",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{value}</span>
+              <td key={`${Math.random()}_${value[0].item.unit}`}>
+                <span className={"requestor"}>{value[0].item.unit}</span>
               </td>
             );
           },
         },
         {
           label: "Price",
-          key: "ratePerItem",
+          key: "purchaseOrderProducts",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value"> ${value}</span>
+              <td key={`${Math.random()}_${value[0].item.price}`}>
+                <span className={"requestor"}>{value[0].item.price}</span>
               </td>
             );
           },
         },
         {
           label: "Total Cost",
-          key: "totalcost",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">${value}</span>
-              </td>
-            );
-          },
+          key: "totalAmount",
         },
         {
           label: "Status",
           key: "status",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <Button
-                  variant="outlined"
-                  className="department-value status-btn "
-                >
-                  {value}
-                </Button>
-              </td>
-            );
-          },
         },
         {
           label: "",
-          key: "sno",
+          key: "id",
           renderCallback: (value, index) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -140,7 +120,12 @@ class CreatePurchaseOrder extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex: this.state.activeIndex === index ? -1 : index })}
+                    onClick={() =>
+                      this.setState({
+                        activeIndex:
+                          this.state.activeIndex === index ? -1 : index,
+                      })
+                    }
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
@@ -169,6 +154,23 @@ class CreatePurchaseOrder extends Component {
     this.oredrId = this.props.match.params.id;
   }
   componentDidMount() {
+    if (this.props.approvepo_data && this.props.approvepo_data.length > 0) {
+      let { orderLineItems } = this.state;
+      this.props.approvepo_data.map((item) => {
+        if (item.id == this.props.match.params.id) {
+          orderLineItems.push({
+            ...item.details,
+            id: item.id,
+          });
+          this.setState({
+            loadingStatus: !this.state.loadingStatus,
+            orderLineItems,
+            purchaseOrderData: this.state.orderLineItems,
+          });
+        }
+      });
+    }
+
     this.props.dispatch(
       purchaseOrderAction.getPurchaseOrder({ id: this.oredrId })
     );
@@ -186,7 +188,7 @@ class CreatePurchaseOrder extends Component {
     }
     if (
       this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
+        prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -206,7 +208,8 @@ class CreatePurchaseOrder extends Component {
       );
     }
     if (
-      this.props.delete_PO_list_item_status !== prevProps.delete_PO_list_item_status &&
+      this.props.delete_PO_list_item_status !==
+        prevProps.delete_PO_list_item_status &&
       this.props.delete_PO_list_item_status === status.SUCCESS
     ) {
       this.props.dispatch(
@@ -331,7 +334,6 @@ class CreatePurchaseOrder extends Component {
     this.setState({ update: true });
     if (updateForm.isValid) {
       updateValue.totalCost = updateValue.price * updateValue.quantity;
-      // tableData.detailsList[activeIndex] = updateValue
       this.setState({ openEditDialog: !this.state.openEditDialog });
       this.props.dispatch(
         purchaseOrderAction.updatePurcahseOrder({
@@ -343,9 +345,14 @@ class CreatePurchaseOrder extends Component {
   };
 
   handleDelete = (index, id) => {
-    const { tableData, activeIndex } = this.state
+    const { tableData, activeIndex } = this.state;
     let value = tableData[activeIndex];
-    this.props.dispatch(purchaseOrderAction.deletePOListItem({ id: this.oredrId, value: { ...value } }));
+    this.props.dispatch(
+      purchaseOrderAction.deletePOListItem({
+        id: this.oredrId,
+        value: { ...value },
+      })
+    );
     this.setState({ activeIndex: -1 });
   };
   handleApprove = (status) => {
@@ -361,14 +368,15 @@ class CreatePurchaseOrder extends Component {
   render() {
     const {
       approveOrder,
+      purchaseOrderData,
       activeIndex,
       supplierAndCategoryList,
       openEditDialog,
       update,
       updateValue,
       columns,
-      tableData,
     } = this.state;
+
     let updateForm = this.validateUpdate(update);
     return (
       <div>
@@ -396,7 +404,10 @@ class CreatePurchaseOrder extends Component {
                         </Button>
                       </li>
                       <li>
-                        <Button variant="contained" className="new-requisition-btn">
+                        <Button
+                          variant="contained"
+                          className="new-requisition-btn"
+                        >
                           Send to vendor
                         </Button>
                       </li>
@@ -443,79 +454,119 @@ class CreatePurchaseOrder extends Component {
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Requestor Name</label>
-                    {approveOrder.createdBy && (
-                      <span>{approveOrder.createdBy}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.createdBy}</span>;
+                          }
+                          return item.createdBy;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Requestor Email</label>
-                    {approveOrder.email && <span>{approveOrder.email}</span>}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.supplier.email}</span>;
+                          }
+                          return item.supplier.email;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Delivery Date</label>
-                    {approveOrder.deliveryDate && (
-                      <span>
-                        {commonFunctions.convertDateToString(
-                          new Date(approveOrder.deliveryDate)
-                        )}
-                      </span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.deliveryDate}</span>;
+                          }
+                          return item.deliveryDate;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Creation Date</label>
-                    {approveOrder.createdOn && (
-                      <span>
-                        {commonFunctions.convertDateToString(
-                          new Date(approveOrder.createdOn)
-                        )}
-                      </span>
-                    )}
+
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.createdOn}</span>;
+                          }
+                          return item.createdOn;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Department</label>
-                    {approveOrder.department && (
-                      <span>{approveOrder.department.name}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.supplier.company.name}</span>;
+                          }
+                          return item.supplier.company.name;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Location</label>
-                    {approveOrder.location && (
-                      <span>{approveOrder.location}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.supplier.city}</span>;
+                          }
+                          return item.supplier.city;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Request Type</label>
-                    {approveOrder.requisitionType && (
-                      <span>{approveOrder.requisitionType}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.shippingTerms}</span>;
+                          }
+                          return item.shippingTerms;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Approve By</label>
-                    {approveOrder.approvedVendor && (
-                      <span>{approveOrder.approvedVendor}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.supplier.name}</span>;
+                          }
+                          return item.supplier.name;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Total</label>
-                    {approveOrder.totalPrice && (
-                      <span>${approveOrder.totalPrice}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.totalAmount}</span>;
+                          }
+                          return item.totalAmount;
+                        })
+                      : null}
                   </div>
                 </div>
               </div>
@@ -525,50 +576,73 @@ class CreatePurchaseOrder extends Component {
                 <h4>Supplier Details</h4>
               </div>
               <div className="supplier-details-content">
-                {approveOrder && approveOrder.supplier && (
-                  <div className="row">
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
-                      <div className="requisitioner-text">
-                        <label>Supplier Name</label>
-                        {approveOrder.supplier.name && (
-                          <span>{approveOrder.supplier.name}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
-                      <div className="requisitioner-text">
-                        <label>Supplier Email</label>
-                        {approveOrder.supplier.email && (
-                          <span>{approveOrder.supplier.email}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
-                      <div className="requisitioner-text">
-                        <label>Supplier Contact</label>
-                        {approveOrder.supplier.contact && (
-                          <span>{approveOrder.supplier.contact}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
-                      <div className="requisitioner-text">
-                        <label>Teliphone No</label>
-                        {approveOrder.supplier.teliphone && (
-                          <span>{approveOrder.supplier.teliphone}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
-                      <div className="requisitioner-text">
-                        <label>Malling Address</label>
-                        {approveOrder.supplier.address && (
-                          <span>{approveOrder.supplier.address}</span>
-                        )}
-                      </div>
+                <div className="row">
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
+                    <div className="requisitioner-text">
+                      <label>Supplier Name</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.name}</span>;
+                            }
+                            return item.supplier.name;
+                          })
+                        : null}
                     </div>
                   </div>
-                )}
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
+                    <div className="requisitioner-text">
+                      <label>Supplier Email</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.email}</span>;
+                            }
+                            return item.supplier.email;
+                          })
+                        : null}
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
+                    <div className="requisitioner-text">
+                      <label>Supplier Contact</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.contact}</span>;
+                            }
+                            return item.supplier.contact;
+                          })
+                        : null}
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
+                    <div className="requisitioner-text">
+                      <label>Teliphone No</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.telephoneNo}</span>;
+                            }
+                            return item.supplier.telephoneNo;
+                          })
+                        : null}
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+                    <div className="requisitioner-text">
+                      <label>Malling Address</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.company.name}</span>;
+                            }
+                            return item.supplier.company.name;
+                          })
+                        : null}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -577,115 +651,72 @@ class CreatePurchaseOrder extends Component {
                 <h4>Payments and Shipping Terms</h4>
               </div>
               <div className="supplier-details-content">
-                {approveOrder && approveOrder.supplier && (
-                  <div className="row">
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
-                      <div className="requisitioner-text">
-                        <label>Payment Terms</label>
-                        <span>30 Net</span>
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
-                      <div className="requisitioner-text">
-                        <label>Shipping Methods</label>
-                        <span>Store Pickup</span>
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
-                      <div className="requisitioner-text">
-                        <label>Payment mode</label>
-                        <span>Credit Card</span>
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
-                      <div className="requisitioner-text">
-                        <label>Shipping Terms</label>
-                        <span>FOB</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-            {/* <div className="payment-and-shiping">
-              <div className="heading">
-                <h4>Payment and Shiping Terms</h4>
-              </div>
-              <div className="payment-and-shiping-content">
                 <div className="row">
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4 mb-md-5">
-                    <div className="payment-shiping-text">
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div className="requisitioner-text">
                       <label>Payment Terms</label>
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
-                        </NativeSelect>
-                      </FormControl>
+                      {this.state.purchaseOrderData?.length &&
+                        this.state.purchaseOrderData.map((item, index) => (
+                          <span>{item.paymentTerm}</span>
+                        ))}
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4 mb-md-5">
-                    <div className="payment-shiping-text">
-                      <label>Shipping Method</label>
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
-                        </NativeSelect>
-                      </FormControl>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div className="requisitioner-text">
+                      <label>Shipping Methods</label>
+                      {this.state.purchaseOrderData?.length &&
+                        this.state.purchaseOrderData.map((item, index) => (
+                          <span>{item.shippingMethod}</span>
+                        ))}
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4">
-                    <div className="payment-shiping-text">
-                      <label>Payment With</label>
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
-                        </NativeSelect>
-                      </FormControl>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div className="requisitioner-text">
+                      <label>Payment mode</label>
+                      {this.state.purchaseOrderData?.length &&
+                        this.state.purchaseOrderData.map((item, index) => (
+                          <span>{item.paymentWith}</span>
+                        ))}
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4">
-                    <div className="payment-shiping-text">
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div className="requisitioner-text">
                       <label>Shipping Terms</label>
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
-                        </NativeSelect>
-                      </FormControl>
+                      {this.state.purchaseOrderData?.length &&
+                        this.state.purchaseOrderData.map((item, index) => (
+                          <span>{item.shippingTerms}</span>
+                        ))}
                     </div>
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
             <div className="order-Line-items">
               <div className="heading">
                 <h4>Order Line Items 5</h4>
               </div>
-              {tableData && tableData.length > 0 && (
+              {this.state.loadingStatus ? (
                 <Table
-                  valueFromData={{ columns: columns, data: tableData }}
+                  valueFromData={{
+                    columns: columns,
+                    data: this.state.orderLineItems,
+                  }}
                   perPageLimit={6}
                   visiblecheckboxStatus={false}
-                  isLoading={
-                    this.props.recieved_rfp_status === status.IN_PROGRESS
-                  }
+                  isLoading={this.props.approvepo_status === status.IN_PROGRESS}
                   tableClasses={{
                     table: "ticket-tabel",
                     tableParent: "tickets-tabel",
                     parentClass: "all-support-ticket-tabel",
                   }}
                   showingLine="Showing %start% to %end% of %total% "
+                />
+              ) : (
+                <Loader
+                  type="spinner-default"
+                  bgColor={"#3244a8"}
+                  color={"#3244a8"}
+                  size={60}
                 />
               )}
             </div>
@@ -697,7 +728,10 @@ class CreatePurchaseOrder extends Component {
                 <div className="row">
                   <div className="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12 mb-5">
                     <div className="massage-type">
-                      <textarea name="note" defaultValue={"Need for Office Setup!"}></textarea>
+                      <textarea
+                        name="note"
+                        defaultValue={"Need for Office Setup!"}
+                      ></textarea>
                     </div>
                   </div>
                 </div>
@@ -732,10 +766,7 @@ class CreatePurchaseOrder extends Component {
             className="custom-dialog edit-dialog"
           >
             <div className="custom-dialog-head">
-              <DialogTitle
-                id="form-dialog-title"
-                className="dialog-heading"
-              >
+              <DialogTitle id="form-dialog-title" className="dialog-heading">
                 Edit
               </DialogTitle>
               <Button onClick={this.closeEditModal} className="modal-close-btn">
@@ -885,15 +916,18 @@ const mapStateToProps = (state) => {
     supplier_category_list_status,
     supplier_category_list_data,
     update_purchase_status,
-    delete_PO_list_item_status
+    delete_PO_list_item_status,
+    approvepo_data,
   } = state.procurement;
+
   return {
     purchase_order_status,
     purchase_order_data,
     supplier_category_list_status,
     supplier_category_list_data,
     update_purchase_status,
-    delete_PO_list_item_status
+    approvepo_data,
+    delete_PO_list_item_status,
   };
 };
 

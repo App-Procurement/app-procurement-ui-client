@@ -70,7 +70,9 @@
                 align-items: center;
                 justify-content: center;
                 background: $buttons-bg;
-
+                fieldset{
+                    border:none
+                }
                 .MuiPaper-root {
                     width: 150px;
                     top: 98px;

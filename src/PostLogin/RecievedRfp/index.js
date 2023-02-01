@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import { FormControl, NativeSelect, Button } from "@mui/material";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import { RangeDatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
@@ -10,17 +8,16 @@ import Table from "../../Table/Table";
 import { connect } from "react-redux";
 import { recievedrfpAction } from "../../_actions";
 import { status } from "../../_constants";
+import Loader from "react-js-loader";
 import { commonFunctions } from "../../_utilities";
 import { withTranslation } from "react-i18next";
-import  { t } from "i18next";
-
-
-// import { th } from "date-fns/locale";
+import { t } from "i18next";
 
 class RecievedRfp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
       activeindex: 0,
       requiData: {
         status: "",
@@ -42,7 +39,6 @@ class RecievedRfp extends Component {
           },
         },
         {
-
           label: "Requisition No",
           key: "id",
           renderCallback: (value) => {
@@ -54,7 +50,7 @@ class RecievedRfp extends Component {
           },
         },
         {
-          label: t('Request Dept'),
+          label: t("Request Dept"),
           key: "department",
           renderCallback: (value) => {
             return (
@@ -145,10 +141,14 @@ class RecievedRfp extends Component {
         this.props.recieved_rfp_list &&
         this.props.recieved_rfp_list.length > 0
       ) {
-        this.setState({ tableData: this.props.recieved_rfp_list });
+        this.setState({
+          loadingStatus: !this.state.loadingStatus,
+          tableData: this.props.recieved_rfp_list,
+        });
       }
     }
   }
+
   onClickShowViewDetails = (id) => {
     let url = this.props.match.params.url;
     this.props.history.push(`/postlogin/frp/${url}/${id}`);
@@ -164,7 +164,6 @@ class RecievedRfp extends Component {
   };
 
   handleClickMethod = (event) => {
-    // const { requiData } = this.state;
     event.preventDefault();
     this.setState({
       isSubmitted: true,
@@ -222,6 +221,7 @@ class RecievedRfp extends Component {
   render() {
     const { requiData, isSubmitted, columns, tableData } = this.state;
     const errorData = this.validate(isSubmitted);
+
     return (
       <div className="main-content">
         <div className="recieved">
@@ -263,7 +263,7 @@ class RecievedRfp extends Component {
                       startPlaceholder="2021-06-01"
                       endPlaceholder="2021-06-10"
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayOutlinedIcon className="calendar-icon" />
                   </div>
                 </div>
               </div>
@@ -282,19 +282,27 @@ class RecievedRfp extends Component {
               </div>
             </div>
           </div>
-
-          <Table
-            valueFromData={{ columns: columns, data: tableData }}
-            perPageLimit={6}
-            visiblecheckboxStatus={false}
-            isLoading={this.props.recieved_rfp_status === status.IN_PROGRESS}
-            tableClasses={{
-              table: "ticket-tabel",
-              tableParent: "tickets-tabel",
-              parentClass: "all-support-ticket-tabel",
-            }}
-            showingLine="Showing %start% to %end% of %total% "
-          />
+          {this.state.loadingStatus ? (
+            <Table
+              valueFromData={{ columns: columns, data: tableData }}
+              perPageLimit={6}
+              visiblecheckboxStatus={false}
+              isLoading={this.props.recieved_rfp_status === status.IN_PROGRESS}
+              tableClasses={{
+                table: "ticket-tabel",
+                tableParent: "tickets-tabel",
+                parentClass: "all-support-ticket-tabel",
+              }}
+              showingLine="Showing %start% to %end% of %total% "
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
+            />
+          )}
         </div>
       </div>
     );
@@ -309,5 +317,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const connectedRecievedRfp = withTranslation()(connect(mapStateToProps)(RecievedRfp));
+const connectedRecievedRfp = withTranslation()(
+  connect(mapStateToProps)(RecievedRfp)
+);
+
 export default connectedRecievedRfp;

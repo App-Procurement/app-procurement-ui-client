@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import SimpleBar from "simplebar-react";
 import { ReactSortable } from "react-sortablejs";
 import { Sortable, MultiDrag } from "sortablejs";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { settingAction } from "../../../_actions";
 import { status } from "../../../_constants";
 import { connect } from "react-redux";

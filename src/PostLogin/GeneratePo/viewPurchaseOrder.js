@@ -2,29 +2,25 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { purchaseOrderAction } from "../../_actions";
 import { status } from "../../_constants";
-import { commonFunctions } from "../../_utilities/commonFunctions";
-import Button from "@material-ui/core/Button";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { Link } from 'react-router-dom';
-import CloseIcon from "@material-ui/icons/Close";
-import { requestForPurposeAction } from "../../_actions";
+import { Button, FormControl, NativeSelect } from "@mui/material";
+import Loader from "react-js-loader";
 class ViewPurchaseOrder extends Component {
   oredrId;
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
       approveOrder: {},
       activeIndex: -1,
       updateValue: {},
       update: false,
       openEditDialog: false,
       openDialog: false,
+      orderLineItems: [],
+      purchaseOrderData: [],
       columns: [
         {
           label: "S.no",
@@ -39,22 +35,15 @@ class ViewPurchaseOrder extends Component {
         },
         {
           label: "Name",
-          key: "name",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requisitions-no"}>{value}</span>
-              </td>
-            );
-          },
+          key: "createdBy",
         },
         {
           label: "Category",
-          key: "category",
+          key: "purchaseOrderProducts",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+              <td key={`${Math.random()}_${value[0].item.category}`}>
+                <span className={"requestor"}>{value[0].item.category}</span>
               </td>
             );
           },
@@ -65,74 +54,55 @@ class ViewPurchaseOrder extends Component {
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+                <span className={"department-value"}>{value.city}</span>
               </td>
             );
           },
         },
         {
           label: "Quantity",
-          key: "orderQuantity",
+          key: "purchaseOrderProducts",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>{value}</span>
+              <td key={`${Math.random()}_${value[0].item.quantity}`}>
+                <span className={"requestor"}>{value[0].quantity}</span>
               </td>
             );
           },
         },
         {
           label: "Unit",
-          key: "unit",
+          key: "purchaseOrderProducts",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{value}</span>
+              <td key={`${Math.random()}_${value[0].item.unit}`}>
+                <span className={"requestor"}>{value[0].item.unit}</span>
               </td>
             );
           },
         },
         {
           label: "Price",
-          key: "ratePerItem",
+          key: "purchaseOrderProducts",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value"> ${value}</span>
+              <td key={`${Math.random()}_${value[0].item.price}`}>
+                <span className={"requestor"}>{value[0].item.price}</span>
               </td>
             );
           },
         },
         {
           label: "Total Cost",
-          key: "totalcost",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">${value}</span>
-              </td>
-            );
-          },
+          key: "totalAmount",
         },
         {
           label: "Status",
           key: "status",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <Button
-                  variant="outlined"
-                  className="department-value status-btn "
-                >
-                  {value}
-                </Button>
-              </td>
-            );
-          },
         },
         {
           label: "",
-          key: "sno",
+          key: "id",
           renderCallback: (value, index) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -140,7 +110,12 @@ class ViewPurchaseOrder extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex: this.state.activeIndex === index ? -1 : index })}
+                    onClick={() =>
+                      this.setState({
+                        activeIndex:
+                          this.state.activeIndex === index ? -1 : index,
+                      })
+                    }
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
@@ -165,55 +140,50 @@ class ViewPurchaseOrder extends Component {
         },
       ],
       tableData: [],
+      formData: {
+        notes: "",
+        paymentTerm: "",
+        shippingMethod: "",
+        paymentWith: "",
+        shippingTerms: "",
+        supplierName: "",
+        supplierEmail: "",
+        supplierContact: "",
+        teliphoneNo: "",
+        mailingAddress: "",
+        requestorName: "",
+        requestorEmail: "",
+        deliveryDate: "",
+        createnDate: "",
+        Department: "",
+        location: "",
+        requestType: "",
+        approveBy: "",
+        total: "",
+      },
     };
     this.oredrId = this.props.match.params.id;
   }
+
   componentDidMount() {
-    this.props.dispatch(
-      purchaseOrderAction.getPurchaseOrder({ id: this.oredrId })
-    );
-    this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
-  }
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.purchase_order_status !== this.props.purchase_order_status &&
-      this.props.purchase_order_status === status.SUCCESS
-    ) {
-      this.setState({
-        approveOrder: this.props.purchase_order_data,
-        tableData: this.props.purchase_order_data.requistionItem,
+    if (this.props.purchase_data && this.props.purchase_data.length > 0) {
+      let { orderLineItems } = this.state;
+      this.props.purchase_data.map((item) => {
+        if (item.id == this.props.match.params.id) {
+          orderLineItems.push({
+            ...item.details,
+            id: item.id,
+          });
+          this.setState({
+            loadingStatus: !this.state.loadingStatus,
+            orderLineItems,
+            purchaseOrderData: this.state.orderLineItems,
+          });
+        }
       });
     }
-    if (
-      this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
-      this.props.supplier_category_list_status === status.SUCCESS
-    ) {
-      if (this.props.supplier_category_list_data) {
-        this.setState({
-          supplierAndCategoryList: {
-            ...this.props.supplier_category_list_data,
-          },
-        });
-      }
-    }
-    if (
-      this.props.update_purchase_status !== prevProps.update_purchase_status &&
-      this.props.update_purchase_status === status.SUCCESS
-    ) {
-      this.props.dispatch(
-        purchaseOrderAction.getPurchaseOrder({ id: this.oredrId })
-      );
-    }
-    if (
-      this.props.delete_PO_list_item_status !== prevProps.delete_PO_list_item_status &&
-      this.props.delete_PO_list_item_status === status.SUCCESS
-    ) {
-      this.props.dispatch(
-        purchaseOrderAction.getPurchaseOrder({ id: this.oredrId })
-      );
-    }
   }
+
   openEditModal = () => {
     const { activeIndex, tableData } = this.state;
     if (activeIndex >= 0) {
@@ -224,155 +194,153 @@ class ViewPurchaseOrder extends Component {
       openEditDialog: !this.state.openEditDialog,
     });
   };
+
   closeEditModal = () => {
     this.setState({
       openEditDialog: !this.state.openEditDialog,
     });
   };
-  validateUpdate = (update) => {
+
+  validate = (isSubmitted) => {
     const validObj = {
       isValid: true,
       message: "",
     };
-    const { updateValue } = this.state;
     let isValid = true;
     const retData = {
-      name: validObj,
-      category: validObj,
-      supplier: validObj,
-      orderQuantity: validObj,
-      unit: validObj,
-      price: validObj,
+      notes: validObj,
+      paymentTerm: validObj,
+      shippingMethod: validObj,
+      paymentWith: validObj,
+      shippingTerms: validObj,
       isValid,
     };
-    if (update) {
-      if (!updateValue.name) {
-        retData.name = {
+    if (isSubmitted) {
+      const { formData } = this.state;
+
+      if (!formData.paymentTerm) {
+        retData.paymentTerm = {
           isValid: false,
-          message: "Name is required",
+          message: "Payment Term is required",
         };
         isValid = false;
       }
-      if (!updateValue.category) {
-        retData.category = {
+
+      if (!formData.shippingTerms) {
+        retData.shippingTerms = {
           isValid: false,
-          message: "category is required",
+          message: "Shipping Term is required",
         };
         isValid = false;
       }
-      if (!updateValue.supplier) {
-        retData.supplier = {
+
+      if (!formData.notes) {
+        retData.notes = {
           isValid: false,
-          message: "supplier is required",
+          message: "Notes is required",
         };
         isValid = false;
       }
-      if (!updateValue.orderQuantity) {
-        retData.orderQuantity = {
+
+      if (!formData.paymentWith) {
+        retData.paymentWith = {
           isValid: false,
-          message: "quantity is required",
-        };
-        isValid = false;
-      } else if (
-        updateValue.orderQuantity &&
-        !commonFunctions.validateNumeric(updateValue.orderQuantity)
-      ) {
-        retData.orderQuantity = {
-          isValid: false,
-          message: "quantity must be in digits",
-        };
-        isValid = false;
-      } else if (
-        updateValue.quantity &&
-        !commonFunctions.validateNumeric(updateValue.quantity)
-      ) {
-        retData.quantity = {
-          isValid: false,
-          message: "quantity must be in digits",
+          message: "Payment Term is required",
         };
         isValid = false;
       }
-      if (!updateValue.unit) {
-        retData.unit = {
+
+      if (!formData.shippingMethod) {
+        retData.shippingMethod = {
           isValid: false,
-          message: "unit is required",
-        };
-        isValid = false;
-      }
-      if (!updateValue.price) {
-        retData.price = {
-          isValid: false,
-          message: "price is required",
-        };
-        isValid = false;
-      } else if (
-        updateValue.price &&
-        !commonFunctions.validateNumeric(updateValue.price)
-      ) {
-        retData.price = {
-          isValid: false,
-          message: "price must be in digits",
+          message: "Shipping Method is required",
         };
         isValid = false;
       }
     }
+
     retData.isValid = isValid;
     return retData;
   };
-  handleUpdate = (e) => {
-    const { updateValue } = this.state;
-    const { name, value } = e.target;
-    updateValue[name] = value;
-    this.setState({ updateValue });
-  };
-  updateDataValues = () => {
-    const { updateValue } = this.state;
-    let updateForm = this.validateUpdate(true);
-    this.setState({ update: true });
-    if (updateForm.isValid) {
-      updateValue.totalCost = updateValue.price * updateValue.quantity;
-      // tableData.detailsList[activeIndex] = updateValue
-      this.setState({ openEditDialog: !this.state.openEditDialog });
-      this.props.dispatch(
-        purchaseOrderAction.updatePurcahseOrder({
-          id: this.oredrId,
-          value: updateValue,
-        })
-      );
+
+  onClickCreatePurchaseOrder = (id) => {
+    const { formData } = this.state;
+    const errorData = this.validate(true);
+
+    this.setState({
+      isSubmitted: true,
+    });
+    let purchaseOrderData = {};
+    this.props.purchase_data.map((item) => {
+      if (item.id == this.props.match.params.id) {
+        purchaseOrderData.supplier = item.details.supplier;
+        purchaseOrderData.requestsDetail = item.details.requestsDetail;
+        purchaseOrderData.purchaseOrderProducts =
+          item.details.purchaseOrderProducts;
+        purchaseOrderData.status = item.details.status;
+        purchaseOrderData.toDate = item.details.toDate;
+        purchaseOrderData.fromDate = item.details.fromDate;
+        purchaseOrderData.createdBy = item.details.createdBy;
+        purchaseOrderData.createdOn = item.details.createdOn;
+        purchaseOrderData.requesterId = item.details.requesterId;
+        purchaseOrderData.totalAmount = item.details.totalAmount;
+        purchaseOrderData.deliveryDate = item.details.deliveryDate;
+        purchaseOrderData.totalNumberOfProduct =
+          item.details.totalNumberOfProduct;
+      }
+      return item.details;
+    });
+
+    if (errorData.isValid) {
+      let details = {
+        status: purchaseOrderData.status,
+        toDate: purchaseOrderData.toDate,
+        fromDate: purchaseOrderData.fromDate,
+        createdBy: purchaseOrderData.createdBy,
+        createdOn: purchaseOrderData.createdOn,
+        requesterId: purchaseOrderData.requesterId,
+        totalAmount: purchaseOrderData.totalAmount,
+        deliveryDate: purchaseOrderData.deliveryDate,
+        totalNumberOfProduct: purchaseOrderData.totalNumberOfProduct,
+        notes: this.state.formData.notes,
+        paymentTerm: this.props.purchase_data[formData.paymentTerm].details
+          .paymentTerm,
+        shippingMethod: this.props.purchase_data[formData.shippingMethod]
+          .details.shippingMethod,
+        paymentWith: this.props.purchase_data[formData.paymentWith].details
+          .paymentWith,
+        shippingTerms: this.props.purchase_data[formData.shippingTerms].details
+          .shippingTerms,
+        supplier: purchaseOrderData.supplier,
+        requestsDetail: purchaseOrderData.requestsDetail,
+        purchaseOrderProducts: purchaseOrderData.purchaseOrderProducts,
+      };
+
+      this.props.dispatch(purchaseOrderAction.addPurchaseOrder(details));
     }
   };
 
-  handleDelete = (index, id) => {
-    const { tableData, activeIndex } = this.state
-    let value = tableData[activeIndex];
-    this.props.dispatch(purchaseOrderAction.deletePOListItem({ id: this.oredrId, value: { ...value } }));
-    this.setState({ activeIndex: -1 });
+  handleStateChange = (e) => {
+    const { name, value } = e.target;
+    const { formData } = this.state;
+    formData[name] = value;
+    this.setState({
+      formData,
+    });
   };
-  handleApprove = (status) => {
-    const { approveOrder } = this.state;
-    this.props.dispatch(
-      purchaseOrderAction.approvePurchaseOrder({
-        id: approveOrder.id,
-        status: status,
-      })
-    );
-    this.props.history.push(`/postlogin/generatepo`);
-  };
-  onClickCreatePurchaseOrder = (id) => {
-    this.props.history.push(`/postlogin/GeneratePo/createPurchaseOrder`);
-  }
+
   render() {
     const {
       approveOrder,
-      activeIndex,
-      supplierAndCategoryList,
-      openEditDialog,
-      update,
-      updateValue,
       columns,
-      tableData,
+      isSubmitted,
+      purchaseOrderData,
+      orderLineItems,
+      formData,
     } = this.state;
-    let updateForm = this.validateUpdate(update);
+
+    const errorData = this.validate(isSubmitted);
+
     return (
       <div>
         <div className="main-content">
@@ -451,79 +419,120 @@ class ViewPurchaseOrder extends Component {
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Requisitioner Name</label>
-                    {approveOrder.createdBy && (
-                      <span>{approveOrder.createdBy}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.createdBy}</span>;
+                          }
+                          return item.createdBy;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Requisitioner Email</label>
-                    {approveOrder.email && <span>{approveOrder.email}</span>}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.supplier.email}</span>;
+                          }
+                          return item.supplier.email;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Delivery Date</label>
-                    {approveOrder.deliveryDate && (
-                      <span>
-                        {commonFunctions.convertDateToString(
-                          new Date(approveOrder.deliveryDate)
-                        )}
-                      </span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.deliveryDate}</span>;
+                          }
+                          return item.deliveryDate;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Created Date</label>
-                    {approveOrder.createdOn && (
-                      <span>
-                        {commonFunctions.convertDateToString(
-                          new Date(approveOrder.createdOn)
-                        )}
-                      </span>
-                    )}
+
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.createdOn}</span>;
+                          }
+                          return item.createdOn;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Department</label>
-                    {approveOrder.department && (
-                      <span>{approveOrder.department.name}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.supplier.company.name}</span>;
+                          }
+                          return item.supplier.company.name;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Location</label>
-                    {approveOrder.location && (
-                      <span>{approveOrder.location}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.supplier.city}</span>;
+                          }
+                          return item.supplier.city;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Request Type</label>
-                    {approveOrder.requisitionType && (
-                      <span>{approveOrder.requisitionType}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.shippingTerms}</span>;
+                          }
+                          return item.shippingTerms;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
                   <div className="requisitioner-text">
                     <label>Approve By</label>
-                    {approveOrder.approvedVendor && (
-                      <span>{approveOrder.approvedVendor}</span>
-                    )}
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.supplier.name}</span>;
+                          }
+                          return item.supplier.name;
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
                   <div className="requisitioner-text">
                     <label>Total</label>
-                    {approveOrder.totalPrice && (
-                      <span>${approveOrder.totalPrice}</span>
-                    )}
+
+                    {purchaseOrderData && purchaseOrderData.length > 0
+                      ? purchaseOrderData.map((item) => {
+                          {
+                            <span>{item.totalAmount}</span>;
+                          }
+                          return item.totalAmount;
+                        })
+                      : null}
                   </div>
                 </div>
               </div>
@@ -533,50 +542,74 @@ class ViewPurchaseOrder extends Component {
                 <h4>Supplier Details</h4>
               </div>
               <div className="supplier-details-content">
-                {approveOrder && approveOrder.supplier && (
-                  <div className="row">
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
-                      <div className="requisitioner-text">
-                        <label>Supplier Name</label>
-                        {approveOrder.supplier.name && (
-                          <span>{approveOrder.supplier.name}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
-                      <div className="requisitioner-text">
-                        <label>Supplier Email</label>
-                        {approveOrder.supplier.email && (
-                          <span>{approveOrder.supplier.email}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
-                      <div className="requisitioner-text">
-                        <label>Supplier Contact</label>
-                        {approveOrder.supplier.contact && (
-                          <span>{approveOrder.supplier.contact}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
-                      <div className="requisitioner-text">
-                        <label>Teliphone No</label>
-                        {approveOrder.supplier.teliphone && (
-                          <span>{approveOrder.supplier.teliphone}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
-                      <div className="requisitioner-text">
-                        <label>Malling Address</label>
-                        {approveOrder.supplier.address && (
-                          <span>{approveOrder.supplier.address}</span>
-                        )}
-                      </div>
+                <div className="row">
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
+                    <div className="requisitioner-text">
+                      <label>Supplier Name</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.name}</span>;
+                            }
+                            return item.supplier.name;
+                          })
+                        : null}
                     </div>
                   </div>
-                )}
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
+                    <div className="requisitioner-text">
+                      <label>Supplier Email</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.email}</span>;
+                            }
+                            return item.supplier.email;
+                          })
+                        : null}
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
+                    <div className="requisitioner-text">
+                      <label>Supplier Contact</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.contact}</span>;
+                            }
+                            return item.supplier.contact;
+                          })
+                        : null}
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mb-md-5">
+                    <div className="requisitioner-text">
+                      <label>Teliphone No</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.telephoneNo}</span>;
+                            }
+                            return item.supplier.telephoneNo;
+                          })
+                        : null}
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+                    <div className="requisitioner-text">
+                      <label>Malling Address</label>
+                      {purchaseOrderData && purchaseOrderData.length > 0
+                        ? purchaseOrderData.map((item) => {
+                            {
+                              <span>{item.supplier.company.name}</span>;
+                            }
+                            return item.supplier.company.name;
+                          })
+                        : null}
+                    </div>
+                  </div>
+                </div>
+                {/* )} */}
               </div>
             </div>
             <div className="payment-and-shiping">
@@ -589,52 +622,119 @@ class ViewPurchaseOrder extends Component {
                     <div className="payment-shiping-text">
                       <label>Payment Terms</label>
                       <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
+                        <NativeSelect
+                          name="paymentTerm"
+                          value={
+                            formData.paymentTerm &&
+                            this.state.purchaseOrderData[formData.paymentTerm]
+                              ? this.state.purchaseOrderData[
+                                  formData.paymentTerm
+                                ].name
+                              : null
+                          }
+                          onChange={this.handleStateChange}
+                        >
+                          <option value="">Select</option>
+                          {this.state.purchaseOrderData?.length &&
+                            this.state.purchaseOrderData.map((item, index) => (
+                              <option value={index}>{item.paymentTerm}</option>
+                            ))}
                         </NativeSelect>
                       </FormControl>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.paymentTerm.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-8 col-md-6 col-sm-12 col-12 mb-4 mb-md-5">
                     <div className="payment-shiping-text">
                       <label>Shipping Method</label>
                       <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
+                        <NativeSelect
+                          name="shippingMethod"
+                          onChange={this.handleStateChange}
+                          value={
+                            formData.shippingMethod &&
+                            this.state.purchaseOrderData[
+                              formData.shippingMethod
+                            ]
+                              ? this.state.purchaseOrderData[
+                                  formData.shippingMethod
+                                ].name
+                              : null
+                          }
+                        >
                           <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
+
+                          {this.state.purchaseOrderData?.length &&
+                            this.state.purchaseOrderData.map((item, index) => (
+                              <option value={index}>
+                                {item.shippingMethod}
+                              </option>
+                            ))}
                         </NativeSelect>
                       </FormControl>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.shippingMethod.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-8 col-md-6 col-sm-12 col-12 mb-4">
                     <div className="payment-shiping-text">
                       <label>Payment With</label>
                       <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
+                        <NativeSelect
+                          name="paymentWith"
+                          onChange={this.handleStateChange}
+                          value={
+                            formData.paymentWith &&
+                            this.state.purchaseOrderData[formData.paymentWith]
+                              ? this.state.purchaseOrderData[
+                                  formData.paymentWith
+                                ].name
+                              : null
+                          }
+                        >
                           <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
+                          {this.state.purchaseOrderData?.length &&
+                            this.state.purchaseOrderData.map((item, index) => (
+                              <option value={index}>{item.paymentWith}</option>
+                            ))}
                         </NativeSelect>
                       </FormControl>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.paymentWith.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-8 col-md-6 col-sm-12 col-12 mb-4">
                     <div className="payment-shiping-text">
                       <label>Shipping Terms</label>
                       <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
+                        <NativeSelect
+                          name="shippingTerms"
+                          onChange={this.handleStateChange}
+                          value={
+                            formData.shippingTerms &&
+                            this.state.purchaseOrderData[formData.shippingTerms]
+                              ? this.state.purchaseOrderData[
+                                  formData.shippingTerms
+                                ].name
+                              : null
+                          }
+                        >
                           <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
+                          {this.state.purchaseOrderData?.length &&
+                            this.state.purchaseOrderData.map((item, index) => (
+                              <option value={index}>
+                                {item.shippingTerms}
+                              </option>
+                            ))}
                         </NativeSelect>
                       </FormControl>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.shippingTerms.message}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -644,20 +744,28 @@ class ViewPurchaseOrder extends Component {
               <div className="heading">
                 <h4>Order Line Items 5</h4>
               </div>
-              {tableData && tableData.length > 0 && (
+              {this.state.loadingStatus ? (
                 <Table
-                  valueFromData={{ columns: columns, data: tableData }}
+                  valueFromData={{
+                    columns: columns,
+                    data: orderLineItems,
+                  }}
                   perPageLimit={6}
                   visiblecheckboxStatus={false}
-                  isLoading={
-                    this.props.recieved_rfp_status === status.IN_PROGRESS
-                  }
+                  isLoading={this.props.approvepo_status === status.IN_PROGRESS}
                   tableClasses={{
                     table: "ticket-tabel",
                     tableParent: "tickets-tabel",
                     parentClass: "all-support-ticket-tabel",
                   }}
                   showingLine="Showing %start% to %end% of %total% "
+                />
+              ) : (
+                <Loader
+                  type="spinner-default"
+                  bgColor={"#3244a8"}
+                  color={"#3244a8"}
+                  size={60}
                 />
               )}
             </div>
@@ -669,17 +777,32 @@ class ViewPurchaseOrder extends Component {
                 <div className="row">
                   <div className="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12 mb-5">
                     <div className="massage-type">
-                      <textarea name="note" defaultValue={"Need for Office Setup!"}></textarea>
+                      <textarea
+                        name="notes"
+                        placeholder="Need for Office Setup!"
+                        onChange={this.handleStateChange}
+                        value={formData.notes}
+                      ></textarea>
                     </div>
                   </div>
+                  <span className="d-block w-100 text-danger">
+                    {errorData.notes.message}
+                  </span>
                 </div>
                 <div className="row">
                   <div className="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div className="approve-content-buttons">
                       <div className="purchase-order">
-
-                        <Button variant="contained" className="purchase-btn"
-                          onClick={this.onClickCreatePurchaseOrder}>
+                        <Button
+                          variant="contained"
+                          className="purchase-btn"
+                          onClick={this.onClickCreatePurchaseOrder}
+                          disabled={
+                            this.props.add_purchase_order_status === 0
+                              ? true
+                              : false
+                          }
+                        >
                           Create Purchase Order
                         </Button>
                       </div>
@@ -698,176 +821,16 @@ class ViewPurchaseOrder extends Component {
             </div>
           </div>
         </div>
-        {activeIndex >= 0 && (
-          <Dialog
-            open={openEditDialog}
-            onClose={this.closeEditModal}
-            aria-labelledby="form-dialog-title"
-            className="custom-dialog edit-dialog"
-          >
-            <div className="custom-dialog-head">
-              <DialogTitle
-                id="form-dialog-title"
-                className="dialog-heading"
-              >
-                Edit
-              </DialogTitle>
-              <Button onClick={this.closeEditModal} className="modal-close-btn">
-                <CloseIcon />
-              </Button>
-            </div>
-            <div className="custom-dialog-content">
-              <div className="form-group row form-group">
-                <label className="col-3 col-form-label">Name</label>
-                <div className="col-9 col-form-field">
-                  <input
-                    type="text"
-                    name="name"
-                    className="form-control"
-                    placeholder="Name"
-                    onChange={this.handleUpdate}
-                    value={updateValue.name}
-                  />
-                  <span className="d-block w-100 text-danger">
-                    {updateForm.name.message}
-                  </span>
-                </div>
-              </div>
-              <div className="form-group row form-group">
-                <label className="col-3 col-form-label">Category</label>
-                <div className="col-9 col-form-field">
-                  <FormControl className="select-menu">
-                    <NativeSelect
-                      name="category"
-                      onChange={this.handleUpdate}
-                      value={updateValue.category}
-                    >
-                      <option value={""}>Category</option>
-                      {supplierAndCategoryList &&
-                        supplierAndCategoryList.category &&
-                        supplierAndCategoryList.category.length > 0 &&
-                        supplierAndCategoryList.category.map((val, index) => (
-                          <option value={val.categoryName} name="category">
-                            {val.categoryName}
-                          </option>
-                        ))}
-                    </NativeSelect>
-                    <span className="d-block w-100 text-danger">
-                      {updateForm.category.message}
-                    </span>
-                  </FormControl>
-                </div>
-              </div>
-              <div className="form-group row form-group">
-                <label className="col-3 col-form-label">Supplier</label>
-                <div className="col-9 col-form-field">
-                  <FormControl className="select-menu">
-                    <NativeSelect
-                      name="supplier"
-                      onChange={this.handleUpdate}
-                      value={updateValue.supplier}
-                    >
-                      <option value={""}>Supplier</option>
-                      {supplierAndCategoryList &&
-                        supplierAndCategoryList.supplierDetails &&
-                        supplierAndCategoryList.supplierDetails.length > 0 &&
-                        supplierAndCategoryList.supplierDetails.map(
-                          (val, index) => (
-                            <option value={val.supplierName} name="supplier">
-                              {val.supplierName}
-                            </option>
-                          )
-                        )}
-                    </NativeSelect>
-                    <span className="d-block w-100 text-danger">
-                      {updateForm.supplier.message}
-                    </span>
-                  </FormControl>
-                </div>
-              </div>
-              <div className="form-group row form-group">
-                <label className="col-3 col-form-label">Quantity</label>
-                <div className="col-9 col-form-field">
-                  <input
-                    type="text"
-                    name="orderQuantity"
-                    className="form-control"
-                    placeholder="Quantity"
-                    onChange={this.handleUpdate}
-                    value={updateValue.orderQuantity}
-                  />
-                  <span className="d-block w-100 text-danger">
-                    {updateForm.orderQuantity.message}
-                  </span>
-                </div>
-              </div>
-              <div className="form-group row form-group">
-                <label className="col-3 col-form-label">Unit</label>
-                <div className="col-9 col-form-field">
-                  <input
-                    type="text"
-                    name="unit"
-                    className="form-control"
-                    placeholder="Unit"
-                    onChange={this.handleUpdate}
-                    value={updateValue.unit}
-                  />
-                  <span className="d-block w-100 text-danger">
-                    {updateForm.unit.message}
-                  </span>
-                </div>
-              </div>
-              <div className="form-group row form-group">
-                <label className="col-3 col-form-label">Price</label>
-                <div className="col-9 col-form-field">
-                  <input
-                    type="text"
-                    name="price"
-                    className="form-control"
-                    placeholder="Price"
-                    onChange={this.handleUpdate}
-                    value={updateValue.price}
-                  />
-                  <span className="d-block w-100 text-danger">
-                    {updateForm.price.message}
-                  </span>
-                </div>
-              </div>
-              <div className="form-group row form-group">
-                <label className="col-3 col-form-label"></label>
-                <div className="col-9 col-form-field">
-                  <Button
-                    variant="contained"
-                    className="submit"
-                    onClick={this.updateDataValues}
-                  >
-                    Submit
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Dialog>
-        )}
       </div>
     );
   }
 }
+
 const mapStateToProps = (state) => {
-  const {
-    purchase_order_status,
-    purchase_order_data,
-    supplier_category_list_status,
-    supplier_category_list_data,
-    update_purchase_status,
-    delete_PO_list_item_status
-  } = state.procurement;
+  const { purchase_data, purchase_status } = state.procurement;
   return {
-    purchase_order_status,
-    purchase_order_data,
-    supplier_category_list_status,
-    supplier_category_list_data,
-    update_purchase_status,
-    delete_PO_list_item_status
+    purchase_data,
+    purchase_status,
   };
 };
 

@@ -1,20 +1,24 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import 'rc-calendar/assets/index.css';
-import '@y0c/react-datepicker/assets/styles/calendar.scss';
-import 'simplebar/dist/simplebar.min.css';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import PrintIcon from '@material-ui/icons/Print';
-import Logo from '../../assets/images/logo.png';
-import HuntImg from '../../assets/images/hunt-img.png';
-import { connect } from 'react-redux';
-import { invoiceAction } from '../../_actions/invoice.actions';
-import { status } from '../../_constants';
-import { commonFunctions } from '../../_utilities';
+import React, { Component } from "react";
+import {
+  Button,
+  IconButton,
+} from "@mui/material";
+
+import "rc-calendar/assets/index.css";
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
+import "simplebar/dist/simplebar.min.css";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import PrintIcon from "@mui/icons-material/Print";
+import Logo from "../../assets/images/logo.png";
+import HuntImg from "../../assets/images/hunt-img.png";
+import { connect } from "react-redux";
+import { invoiceAction } from "../../_actions/invoice.actions";
+import { status } from "../../_constants";
+import { commonFunctions } from "../../_utilities";
 
 class ViewInvoice extends Component {
   constructor(props) {
@@ -23,9 +27,13 @@ class ViewInvoice extends Component {
       approvedData: {},
     };
   }
+
   componentDidMount() {
-    this.props.dispatch(invoiceAction.getInvoice({ id: this.props.match.params.id }));
+    this.props.dispatch(
+      invoiceAction.getInvoice({ id: this.props.match.params.id })
+    );
   }
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.get_invoice_status !== this.props.get_invoice_status &&
@@ -36,6 +44,7 @@ class ViewInvoice extends Component {
       });
     }
   }
+
   displayTableData = () => {
     const { approvedData } = this.state;
     let retData = [];
@@ -66,10 +75,16 @@ class ViewInvoice extends Component {
               <div className="col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
                 <div className="head-left-content">
                   <IconButton className="head-icon">
-                    <KeyboardBackspaceIcon onClick={() => this.props.history.push(`/postlogin/invoices`)} />
+                    <KeyboardBackspaceIcon
+                      onClick={() =>
+                        this.props.history.push(`/postlogin/invoices`)
+                      }
+                    />
                   </IconButton>
                   <h4>Invoice</h4>
-                  {approvedData && approvedData.invoiceNo && <p>#INV-{approvedData.invoiceNo}</p>}
+                  {approvedData && approvedData.invoiceNo && (
+                    <p>#INV-{approvedData.invoiceNo}</p>
+                  )}
                 </div>
               </div>
               <div className="col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
@@ -78,7 +93,10 @@ class ViewInvoice extends Component {
                     <DoneAllIcon className="mr-2" />
                     Invoice Sent
                   </Button>
-                  <Button variant="contained" className="primary-btn download-btn">
+                  <Button
+                    variant="contained"
+                    className="primary-btn download-btn"
+                  >
                     <SaveAltIcon className="mr-2" />
                     Download
                   </Button>
@@ -107,7 +125,9 @@ class ViewInvoice extends Component {
                     </p>
                     <ul>
                       <li>
-                        <a href="mailto: akbar.khan@synectiks.com">akbar.khan@synectiks.com</a>
+                        <a href="mailto: akbar.khan@synectiks.com">
+                          akbar.khan@synectiks.com
+                        </a>
                       </li>
                       <li>
                         <a href="tel:(+91)88859991552">tel:(+91)88859991552</a>
@@ -125,12 +145,15 @@ class ViewInvoice extends Component {
                   <div className="address-text">
                     <h5>Circle Hunt Inc.</h5>
                     <p>
-                      Franklin Avenue Street New York,ABC 5562 <b>United State</b>
+                      Franklin Avenue Street New York,ABC 5562{" "}
+                      <b>United State</b>
                     </p>
                     <ul>
                       {approvedData && approvedData.requestor && (
                         <li>
-                          <a href={approvedData.requestor}>{approvedData.requestor}</a>
+                          <a href={approvedData.requestor}>
+                            {approvedData.requestor}
+                          </a>
                         </li>
                       )}
                       <li>
@@ -150,7 +173,11 @@ class ViewInvoice extends Component {
                   <h5>Groceries for Department 1</h5>
                   <label>DUE DATE</label>
                   {approvedData && approvedData.dueDate && (
-                    <p>{commonFunctions.convertDateToString(new Date(approvedData.dueDate))}</p>
+                    <p>
+                      {commonFunctions.convertDateToString(
+                        new Date(approvedData.dueDate)
+                      )}
+                    </p>
                   )}
                 </div>
               </div>
@@ -163,17 +190,23 @@ class ViewInvoice extends Component {
                   <ul>
                     <li>
                       <label>SUBTOTAL</label>
-                      {approvedData && approvedData.amount && <span>${approvedData.amount}</span>}
+                      {approvedData && approvedData.amount && (
+                        <span>${approvedData.amount}</span>
+                      )}
                     </li>
                     <li>
                       <label>TAX</label>
-                      {approvedData && approvedData.tax && <span>{approvedData.tax} %</span>}
+                      {approvedData && approvedData.tax && (
+                        <span>{approvedData.tax} %</span>
+                      )}
                     </li>
                     <li>
                       <label>TOTAL</label>
                       {approvedData && approvedData.amount && approvedData.tax && (
                         <span>
-                          <b>${(approvedData.amount * approvedData.tax) / 100}</b>
+                          <b>
+                            ${(approvedData.amount * approvedData.tax) / 100}
+                          </b>
                         </span>
                       )}
                     </li>
@@ -195,4 +228,5 @@ const mapStateToProps = (state) => {
     get_invoice_data,
   };
 };
+
 export default connect(mapStateToProps)(ViewInvoice);

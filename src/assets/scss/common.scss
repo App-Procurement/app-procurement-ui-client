@@ -48,6 +48,45 @@ select:focus-visible {
     }
 }
 
+.email-pagination-select {
+    width: 100px;
+    color: #393939;
+    border-radius: 8px;
+    background-color: $requisition-button-bg;
+    margin-top: -7px !important;
+
+    .MuiNativeSelect-select {
+        padding: 11px 10px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #393939;
+
+        &:focus {
+            border-radius: 8px;
+        }
+    }
+
+    .MuiInputBase-root {
+        &::before {
+            display: none;
+        }
+
+        &::after {
+            display: none;
+        }
+    }
+
+    .MuiSvgIcon-root {
+        color: #ffffff;
+        border-radius: 50%;
+        margin-right: 10px;
+        background: $buttons-bg;
+        width: 0.7em;
+        height: 0.7em;
+        top: calc(50% - 8px);
+    }
+}
+
 .wrapper {
     width: 100%;
     background-color: #f9f9f9;
@@ -1172,6 +1211,10 @@ select:focus-visible {
     }
 }
 
+.green-btn {
+    color: #0F9D58;
+    background: #CDFFCC;
+}
 
 @media only screen and (max-width: 992px) {
     .captcha {

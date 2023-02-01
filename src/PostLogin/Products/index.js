@@ -1,25 +1,30 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-// import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import { status } from "../../_constants";
 import { manageSupplierAction } from "../../_actions";
 import Table from "../../Table/Table";
-// import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { requestForPurposeAction } from "../../_actions";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import CloseIcon from "@material-ui/icons/Close";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-
+import { requestForPurposeAction, productActions } from "../../_actions";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CloseIcon from "@mui/icons-material/Close";
+import Loader from "react-js-loader";
+import _ from "lodash";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Radio,
+  Button,
+  FormControl,
+  IconButton,
+  RadioGroup,
+  NativeSelect,
+} from "@mui/material";
 class Products extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
       productColumn: [
         {
           label: "S No",
@@ -34,47 +39,22 @@ class Products extends React.Component {
         },
         {
           label: "Picture",
-          key: "productImgUrl",
+          key: "imgUrl",
           renderCallback: (value) => {
-            return (
-              <td>
-                <img src={value} width="50px" height="50px" />
-              </td>
-            );
+            return <img src={value} />;
           },
         },
         {
           label: "Item Name",
-          key: "productName",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"requisitions-no"}>{value}</span>
-              </td>
-            );
-          },
+          key: "itemName",
         },
         {
           label: "Item Type",
           key: "itemType",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Unit",
           key: "unit",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"requestor"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Supplier",
@@ -82,7 +62,7 @@ class Products extends React.Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className={"requestor"}>{value}</span>
+                <span className={"requestor"}>{value.name}</span>
               </td>
             );
           },
@@ -90,21 +70,14 @@ class Products extends React.Component {
         {
           label: "Price",
           key: "price",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"requestor"}>${value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Stock",
           key: "stock",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td>
-                <span className="department-value">{value}</span>
+              <td key={`${Math.random()}_${value.stock}`}>
+                <span className={"department-value"}>{value.stock}</span>
               </td>
             );
           },
@@ -112,14 +85,22 @@ class Products extends React.Component {
         {
           label: "Status",
           key: "status",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td>
+              <td key={`${Math.random()}_${value.status}`}>
                 <Button
                   variant="outlined"
-                  className="department-value active-btn "
+                  className={
+                    value.status === "ready"
+                      ? "department-value green-btn"
+                      : value.status === "outstanding"
+                      ? "department-value status-btn"
+                      : value.status === "rejected"
+                      ? "department-value onahau-btn"
+                      : "department-value magnolia-btn"
+                  }
                 >
-                  {value}
+                  {value.status}
                 </Button>
               </td>
             );
@@ -163,17 +144,6 @@ class Products extends React.Component {
             );
           },
         },
-        // {
-        //   label: 'Edit',
-        //   key: 'id',
-        //   renderCallback: () => {
-        //     return (
-        //       <td>
-        //         <MoreHorizIcon />
-        //       </td>
-        //     );
-        //   },
-        // },
       ],
       productList: [],
       supplierAndCategoryList: [],
@@ -183,15 +153,16 @@ class Products extends React.Component {
       productActiveIndex: -1,
       openProductEditDialog: false,
       updateProductValue: {},
+      searchProductListData: [],
     };
   }
 
   componentDidMount() {
-    this.props.dispatch(manageSupplierAction.getProductList());
-    this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
+    this.props.dispatch(productActions.searchProductList());
+    // this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
   }
 
-  clearUpdateFields = () => {
+  clearFieldsAfterUpdate = () => {
     this.setState({
       openProductEditDialog: false,
       updateProductValue: {},
@@ -201,18 +172,30 @@ class Products extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (
-      this.props.suplier_product_status !== prevProps.suplier_product_status &&
-      this.props.suplier_product_status === status.SUCCESS
+      this.props.search_product_list_status !==
+        prevProps.search_product_list_status &&
+      this.props.search_product_list_status === status.SUCCESS
     ) {
+      let { searchProductListData } = this.state;
       if (
-        this.props.supplier_product_list &&
-        this.props.supplier_product_list.length > 0
+        this.props.search_product_list &&
+        this.props.search_product_list.length > 0
       ) {
-        this.setState({ productList: this.props.supplier_product_list });
+        this.props.search_product_list.map((item) => {
+          let itemData = item.details;
+
+          searchProductListData.push({
+            ...itemData,
+            id: item.id,
+          });
+          this.setState({
+            loadingStatus: !this.state.loadingStatus,
+            searchProductListData,
+          });
+        });
       }
     }
 
-    
     if (
       this.props.supplier_category_list_status !==
         prevProps.supplier_category_list_status &&
@@ -232,7 +215,7 @@ class Products extends React.Component {
       this.props.update_suplier_product_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getProductList());
-      this.clearUpdateFields();
+      this.clearFieldsAfterUpdate();
     } else if (
       this.props.delete_suplier_list_status !==
         prevProps.delete_suplier_list_status &&
@@ -248,15 +231,18 @@ class Products extends React.Component {
     });
   };
 
-  openUpdateProductPopup = () => {
+  openImportProductPopup = () => {
     this.setState({
       openUpdateDialog: !this.state.openUpdateDialog,
     });
   };
+
   toggleEditModal = () => {
-    const { productActiveIndex, productList } = this.state;
+    const { productActiveIndex, searchProductListData } = this.state;
     if (productActiveIndex >= 0) {
-      let values = JSON.parse(JSON.stringify(productList[productActiveIndex]));
+      let values = JSON.parse(
+        JSON.stringify(searchProductListData[productActiveIndex])
+      );
       this.setState({ updateProductValue: values });
     }
     this.setState({
@@ -272,7 +258,7 @@ class Products extends React.Component {
     const { updateProductValue } = this.state;
     let isValid = true;
     const retData = {
-      productName: validObj,
+      itemName: validObj,
       itemType: validObj,
       unit: validObj,
       price: validObj,
@@ -280,8 +266,8 @@ class Products extends React.Component {
       stock: validObj,
     };
     if (update) {
-      if (!updateProductValue.productName) {
-        retData.productName = {
+      if (!updateProductValue.itemName) {
+        retData.itemName = {
           isValid: false,
           message: "Item name is required",
         };
@@ -327,55 +313,59 @@ class Products extends React.Component {
     retData.isValid = isValid;
     return retData;
   };
-  updateDataValues = (type) => {
-    const { updateProductValue } = this.state;
 
+  updateSupplierValues = (type) => {
     let updateForm = this.validateProductUpdate(true);
     this.setState({ isSubmit: true });
     if (updateForm.isValid) {
-      // updateProductValue.totalCost = updateProductValue.price * updateProductValue.quantity;
-      // requestData.detailsList[productActiveIndex] = updateProductValue updateSupplierList
-      this.props.dispatch(
-        manageSupplierAction.updateProductList({
-          id: updateProductValue.id,
-          value: updateProductValue,
-        })
-      );
       this.setState({
         openSupplierEditDialog: !this.state.openSupplierEditDialog,
       });
     }
   };
-  handleUpdate = (e, type) => {
+
+  handleAddProductsButton = () => {
+    this.props.history.push(`/postlogin/products/addproducts`);
+  };
+
+  handleFormChanges = (e, type) => {
     const { updateProductValue } = this.state;
     const { name, value } = e.target;
     updateProductValue[name] = value;
     this.setState({ updateProductValue });
   };
+
   removeProduct = (index) => {
-    const { productList } = this.state;
-    let value = productList[index];
-    if (value.id) {
+    let ind = index.id;
+    const { searchProductListData } = this.state;
+    searchProductListData.splice(index, 1);
+    this.setState({
+      searchProductListData,
+    });
+    if (searchProductListData[index].id) {
       this.props.dispatch(
-        manageSupplierAction.deleteSupplier({ id: value.id, value })
+        productActions.deleteProduct({
+          id: searchProductListData[index].id,
+          searchProductListData,
+        })
       );
     }
+
     this.setState({ productActiveIndex: -1 });
   };
+
   render() {
     const {
       productColumn,
-      productList,
       productActiveIndex,
       openProductEditDialog,
       updateProductValue,
       supplierAndCategoryList,
       openDialog,
       openUpdateDialog,
+      searchProductListData,
       isSubmit,
     } = this.state;
-    console.log("product list",productList)
-
     const productValidation = this.validateProductUpdate(isSubmit);
     return (
       <div className="main-content">
@@ -392,9 +382,9 @@ class Products extends React.Component {
                   <div className="add-Supplier-button">
                     <Button
                       variant="contained"
-                      href="/postlogin/products/addproducts"
                       disableElevation
                       className="new-requisition-btn"
+                      onClick={this.handleAddProductsButton}
                     >
                       Add Product
                     </Button>
@@ -415,7 +405,7 @@ class Products extends React.Component {
                   <div className="search-fillter">
                     <Button
                       variant="contained"
-                      onClick={this.openUpdateProductPopup}
+                      onClick={this.openImportProductPopup}
                       className="fillter-btn"
                       disableElevation
                     >
@@ -426,18 +416,28 @@ class Products extends React.Component {
               </div>
             </div>
           </div>
-          {productList && productList.length > 0 && (
+          {this.state.loadingStatus ? (
             <Table
-              valueFromData={{ columns: productColumn, data: productList }}
+              valueFromData={{
+                columns: productColumn,
+                data: this.state.searchProductListData,
+              }}
               perPageLimit={6}
               visiblecheckboxStatus={false}
-              isLoading={this.props.suplier_list_status === status.IN_PROGRESS}
+              isLoading={this.props.product_status === status.IN_PROGRESS}
               tableClasses={{
                 table: "ticket-tabel",
                 tableParent: "tickets-tabel",
                 parentClass: "all-support-ticket-tabel",
               }}
               showingLine="Showing %start% to %end% of %total% "
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
             />
           )}
         </div>
@@ -510,7 +510,7 @@ class Products extends React.Component {
         </Dialog>
         <Dialog
           open={openUpdateDialog}
-          onClose={this.openUpdateProductPopup}
+          onClose={this.openImportProductPopup}
           aria-labelledby="form-dialog-title"
           className="update-supplier-dialog"
         >
@@ -522,7 +522,7 @@ class Products extends React.Component {
               Update Supplier
             </DialogTitle>
             <Button
-              onClick={this.openUpdateProductPopup}
+              onClick={this.openImportProductPopup}
               className="modal-close-btn"
             >
               <CloseIcon />
@@ -600,14 +600,14 @@ class Products extends React.Component {
                 <div className="col-9 col-form-field">
                   <input
                     type="text"
-                    name="productName"
+                    name="itemName"
                     className="form-control"
                     placeholder="Item Name"
-                    onChange={this.handleUpdate}
-                    value={updateProductValue.productName}
+                    onChange={this.handleFormChanges}
+                    value={updateProductValue.itemName}
                   />
                   <span className="d-block w-100 text-danger">
-                    {productValidation.productName.message}
+                    {productValidation.itemName.message}
                   </span>
                 </div>
               </div>
@@ -619,7 +619,7 @@ class Products extends React.Component {
                     name="itemType"
                     className="form-control"
                     placeholder="Item Type"
-                    onChange={(e) => this.handleUpdate(e, "supplier")}
+                    onChange={(e) => this.handleFormChanges(e, "supplier")}
                     value={updateProductValue.itemType}
                   />
                   <span className="d-block w-100 text-danger">
@@ -635,7 +635,7 @@ class Products extends React.Component {
                     name="unit"
                     className="form-control"
                     placeholder="Unit"
-                    onChange={(e) => this.handleUpdate(e, "supplier")}
+                    onChange={(e) => this.handleFormChanges(e, "supplier")}
                     value={updateProductValue.unit}
                   />
                   <span className="d-block w-100 text-danger">
@@ -649,7 +649,7 @@ class Products extends React.Component {
                   <FormControl className="select-menu">
                     <NativeSelect
                       name="supplier"
-                      onChange={(e) => this.handleUpdate(e, "supplier")}
+                      onChange={(e) => this.handleFormChanges(e, "supplier")}
                       value={updateProductValue.supplier}
                     >
                       <option value={""}>Supplier</option>
@@ -678,7 +678,7 @@ class Products extends React.Component {
                     name="price"
                     className="form-control"
                     placeholder="Price"
-                    onChange={(e) => this.handleUpdate(e, "supplier")}
+                    onChange={(e) => this.handleFormChanges(e, "supplier")}
                     value={updateProductValue.price}
                   />
                   <span className="d-block w-100 text-danger">
@@ -694,7 +694,7 @@ class Products extends React.Component {
                     name="stock"
                     className="form-control"
                     placeholder="Stock"
-                    onChange={(e) => this.handleUpdate(e, "supplier")}
+                    onChange={(e) => this.handleFormChanges(e, "supplier")}
                     value={updateProductValue.stock}
                   />
                   <span className="d-block w-100 text-danger">
@@ -708,7 +708,7 @@ class Products extends React.Component {
                   <Button
                     variant="contained"
                     className="submit"
-                    onClick={() => this.updateDataValues("supplier")}
+                    onClick={() => this.updateSupplierValues("supplier")}
                   >
                     Submit
                   </Button>
@@ -721,19 +721,25 @@ class Products extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const {
-    supplier_product_list,
-    suplier_product_status,
+    search_product_list,
+    search_product_list_status,
+    product_status,
+    product_list,
     supplier_category_list_status,
     supplier_category_list_data,
     update_suplier_product_status,
     update_supplier_product_list,
     delete_suplier_list_status,
   } = state.procurement;
+
   return {
-    supplier_product_list,
-    suplier_product_status,
+    search_product_list,
+    search_product_list_status,
+    product_status,
+    product_list,
     supplier_category_list_status,
     supplier_category_list_data,
     update_suplier_product_status,
@@ -741,4 +747,5 @@ const mapStateToProps = (state) => {
     delete_suplier_list_status,
   };
 };
+
 export default connect(mapStateToProps)(Products);

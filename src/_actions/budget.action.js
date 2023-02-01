@@ -19,7 +19,6 @@ function getBudgetData(data) {
     );
     BudgetServices.getBudgetData(data).then(
       (response) => {
-        console.log("api call");
         const code = response.status;
         if (code === 200) {
           response.json().then((data) => {

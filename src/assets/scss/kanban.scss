@@ -19,7 +19,13 @@
 //         }
 //     }
 
-
+.add-task-dialog
+{
+    #form-dialog-title{
+        display: flex;
+        justify-content: space-between;
+    }
+}
 .kanban-contant {
     .kanban-head {
         margin: 0 0 30px 0;

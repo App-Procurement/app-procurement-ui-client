@@ -2,6 +2,8 @@ import config from "../config";
 export const apiEndPoint = {
   LOGIN: `${config.apiUrl}/auth/login`,
 
+  //GetProductsList
+  PRODUCTSLIST: `${config.devAPI}/product`,
   // *Buyer Api Url
   BUYER: `${config.apiUrl}/buyer`,
 
@@ -24,7 +26,7 @@ export const apiEndPoint = {
   REQUISTIONS: `${config.apiUrl}/requisitions`,
   // APPROVEDREQUISITION: `${config.apiUrl}/approveRequisition`,
 
-  CURRENCY: `${config.apiUrl}/currency`,
+  CURRENCY: `${config.devAPI}/currency`,
 
   // *Role Api Url
   ROLE: `${config.apiUrl}/roles`,
@@ -50,7 +52,7 @@ export const apiEndPoint = {
 
   // email api url
   CHATS: `${config.apiUrl}/chat`,
-  EMAIL: `${config.apiUrl}/mailList`,
+  EMAIL: `${config.devAPI}/email`,
   // MAILLIST: `${config.apiUrl}/mailList`,
 
   //*kanban api url
@@ -72,22 +74,24 @@ export const apiEndPoint = {
   REPORTS: `${config.apiUrl}/reorts`,
 
   ACTIVITES: `${config.apiUrl}/activity`,
+
   // GET REQUEST FOR PURPOSE LIST
-  REQUESTFORPURPOSE: `${config.apiUrl}/requestforpurpose`,
+  REQUESTFORPURPOSE: `${config.devAPI}/request`,
+
   /// GET CHAT LIST
   GETCHATS: `${config.apiUrl}/contactlist`,
   GETMEMBERS: `${config.apiUrl}/membreslist`,
   ITEMLIST: `${config.apiUrl}/itemList`,
   CREATECHATROOM: `${config.apiUrl}/contactlist`,
-  SUPPLIER: `${config.apiUrl}/supplierlist`,
+  SUPPLIER: `${config.devAPI}/supplier`,
   ACTIVESUPPLIERS: `${config.apiUrl}/activesupplierlist`,
-  SUPPLIERPRODUCT: `${config.devAPI}/product`,
+  PRODUCT: `${config.devAPI}/product`,
   SELLER: `${config.apiUrl}/sellerslist`,
   SUPPLIERANDCATEGORY: `${config.apiUrl}/supplierandcategorylist`,
   // GET REQUEST FOR SETTING WORKFLOW
-  WORKFLOW: `${config.apiUrl}/workflow`,
+  WORKFLOW: `${config.devAPI}/approvers`,
   // CREATE COMAPNY PROFILE
-  COMPANYPROFILE: `${config.apiUrl}/companyprofile`,
+  COMPANYPROFILE: `${config.devAPI}/company_profile`,
   // GET ROLE SAND PERMISSIONS
   ROLESANDPERMISSIONS: `${config.apiUrl}/rolesandpermissions`,
   // GET GROUPS LIST FOR SETTING
@@ -100,5 +104,5 @@ export const apiEndPoint = {
   BUDGETDATA: `${config.apiUrl}/budget`,
   SETTINGGROUPDATA: `${config.apiUrl}/group`,
   INVOICES: `${config.devAPI}/invoice`,
-  REQUESTFORQUOTATION: `${config.apiUrl}/requestForQuotation`,
+  REQUESTFORQUOTATION: `${config.devAPI}/quotation`,
 };

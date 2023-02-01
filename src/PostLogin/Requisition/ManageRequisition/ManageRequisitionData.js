@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import { Button } from "@mui/material";
+
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import "simplebar/dist/simplebar.min.css";
@@ -8,8 +9,8 @@ import { connect } from "react-redux";
 import { status } from "../../../_constants";
 import { commonFunctions } from "../../../_utilities";
 import { Link } from "react-router-dom";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 class ManageRequisitionData extends Component {
   constructor(props) {
     super(props);
@@ -168,7 +169,7 @@ class ManageRequisitionData extends Component {
     }
     if (
       prevProps.get_edit_requisition_status !==
-      this.props.get_edit_requisition_status &&
+        this.props.get_edit_requisition_status &&
       this.props.get_edit_requisition_status === status.SUCCESS
     ) {
       const { editRequisitiondata } = this.props;
@@ -278,19 +279,25 @@ class ManageRequisitionData extends Component {
                   <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
                     <div className="requisitioner-text">
                       <label>budget Committee </label>
-                      {requisitionData.status && <span>{requisitionData.status}</span>}
+                      {requisitionData.status && (
+                        <span>{requisitionData.status}</span>
+                      )}
                     </div>
                   </div>
                   <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
                     <div className="requisitioner-text">
                       <label>Price</label>
-                      {requisitionData.totalPrice && <span>{requisitionData.totalPrice}</span>}
+                      {requisitionData.totalPrice && (
+                        <span>{requisitionData.totalPrice}</span>
+                      )}
                     </div>
                   </div>
                   <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
                     <div className="requisitioner-text">
                       <strong>Status</strong>
-                      {requisitionData.status && <span>{requisitionData.status}</span>}
+                      {requisitionData.status && (
+                        <span>{requisitionData.status}</span>
+                      )}
                     </div>
                   </div>
                 </div>

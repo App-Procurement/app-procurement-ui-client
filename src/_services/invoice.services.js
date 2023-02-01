@@ -26,21 +26,6 @@ function addRequest(data) {
   );
 }
 
-//   here i need do post req
-// function addRequest(data) {
-//   const extraHeaders = {
-//     "Content-Type": "application/json",
-//   };
-//   const requestOptions = commonFunctions.getRequestOptions(
-//     "POST",
-//     extraHeaders,
-//     data
-//   );
-//   return fetch(`${apiEndPoint.INVOICES}`, requestOptions).then(
-//     (response) => response
-//   );
-// }
-
 function invoicesData(data) {
   const extraHeaders = {
     "Content-Type": "application/json",
@@ -60,9 +45,10 @@ function deleteInvoice(id) {
     extraHeaders,
     null
   );
-  return fetch(`${apiEndPoint.INVOICE}/${id}`, requestOptions).then(
-    (response) => response.json()
-  );
+  return fetch(
+    `${apiEndPoint.INVOICE}/${id}`,
+    requestOptions
+  ).then((response) => response.json());
 }
 
 function getInvoice(data) {

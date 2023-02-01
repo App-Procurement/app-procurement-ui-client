@@ -1,46 +1,44 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import { connect } from 'react-redux';
-import Table from '../../Table/Table';
-import { budgetActions } from '../../_actions/budgetOverview.actions';
-import { status } from '../../_constants';
-import Avatar from '@material-ui/core/Avatar';
-import AvatarGroup from '@material-ui/lab/AvatarGroup';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-
+import React, { Component } from "react";
+import { NativeSelect, IconButton, Button, Avatar } from "@mui/material";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { connect } from "react-redux";
+import Table from "../../Table/Table";
+import { budgetActions } from "../../_actions/budgetOverview.actions";
+import { status } from "../../_constants";
+import AvatarGroup from "@mui/material/AvatarGroup";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import Loader from "react-js-loader";
 class BudgetAllocate extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
       allotedDudget: {},
       columns: [
         {
-          label: 'S No',
-          key: 'sno',
-          renderCallback: (value,index) => {
+          label: "S No",
+          key: "sno",
+          renderCallback: (value, index) => {
             return (
               <td>
-                <span className={'s-no'}>{index + 1}</span>
+                <span className={"s-no"}>{index + 1}</span>
               </td>
             );
           },
         },
         {
-          key: 'ItemDescription',
+          key: "ItemDescription",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'requisitions-no'}>{value}</span>
+                <span className={"requisitions-no"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Requistion Type',
-          key: 'requisitionType',
+          label: "Requistion Type",
+          key: "requisitionType",
           renderCallback: (value) => {
             return (
               <td>
@@ -50,21 +48,21 @@ class BudgetAllocate extends Component {
           },
         },
         {
-          label: 'Requisition Price',
-          key: 'Price',
+          label: "Requisition Price",
+          key: "Price",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'department-value'}>{value}</span>
-                <span className={'department-text'}></span>
+                <span className={"department-value"}>{value}</span>
+                <span className={"department-text"}></span>
               </td>
             );
           },
         },
 
         {
-          label: 'Requisitions Number',
-          key: 'RqNo',
+          label: "Requisitions Number",
+          key: "RqNo",
           renderCallback: (value) => {
             return (
               <td>
@@ -74,8 +72,8 @@ class BudgetAllocate extends Component {
           },
         },
         {
-          label: 'Details',
-          key: 'Images',
+          label: "Details",
+          key: "Images",
           renderCallback: (value) => {
             return (
               <td>
@@ -99,11 +97,16 @@ class BudgetAllocate extends Component {
 
   componentDidUpdate(prevProps) {
     if (
-      this.props.budget_allocated_status !== prevProps.budget_allocated_status &&
+      this.props.budget_allocated_status !==
+        prevProps.budget_allocated_status &&
       this.props.budget_allocated_status === status.SUCCESS
     ) {
-      if (this.props.budget_allocated_data && this.props.budget_allocated_data.budget) {
+      if (
+        this.props.budget_allocated_data &&
+        this.props.budget_allocated_data.budget
+      ) {
         this.setState({
+          loadingStatus: !this.state.loadingStatus,
           allotedDudget: this.props.budget_allocated_data.budget,
         });
       }
@@ -121,7 +124,7 @@ class BudgetAllocate extends Component {
 
   backToBudgetOverview = (e) => {
     e.preventDefault();
-    this.props.history.push('/postlogin/budgetoverview');
+    this.props.history.push("/postlogin/budgetoverview");
   };
 
   render() {
@@ -136,10 +139,15 @@ class BudgetAllocate extends Component {
                   <div className="col-md-8 col-12">
                     {allotedDudget && allotedDudget.Department && (
                       <div className="d-block w-100 heading">
-                        <IconButton className="head-icon" onClick={this.backToBudgetOverview}>
+                        <IconButton
+                          className="head-icon"
+                          onClick={this.backToBudgetOverview}
+                        >
                           <KeyboardBackspaceIcon />
                         </IconButton>
-                        <h4 className="d-inline-block">{allotedDudget.Department}</h4>
+                        <h4 className="d-inline-block">
+                          {allotedDudget.Department}
+                        </h4>
                       </div>
                     )}
                     {allotedDudget.CommitedBudget && (
@@ -151,7 +159,9 @@ class BudgetAllocate extends Component {
                   </div>
                   <div className="col-md-4 col-12">
                     <Button
-                      onClick={() => this.props.history.push(`/postlogin/budgetallocation`)}
+                      onClick={() =>
+                        this.props.history.push(`/postlogin/budgetallocation`)
+                      }
                       variant="contained"
                       className="primary-btn allocate-btn"
                     >
@@ -165,7 +175,9 @@ class BudgetAllocate extends Component {
                   <div className="row justify-content-between align-items-center">
                     <div className="col-12">
                       <div className="d-flex justify-content-start align-items-center">
-                        {allotedDudget.Department && <h4>{allotedDudget.Department}</h4>}
+                        {allotedDudget.Department && (
+                          <h4>{allotedDudget.Department}</h4>
+                        )}
                         <div className="d-flex justify-content-center align-items-center graph-circle">
                           {allotedDudget.UsedBudgetPercentage && (
                             <CircularProgressbar
@@ -173,10 +185,10 @@ class BudgetAllocate extends Component {
                               text={`${allotedDudget.UsedBudgetPercentage}%`}
                               strokeWidth={15}
                               styles={buildStyles({
-                                strokeLinecap: 'butt',
-                                trailColor: '#f0f0f0',
-                                pathColor: '#6418c3',
-                                textColor: '#202020',
+                                strokeLinecap: "butt",
+                                trailColor: "#f0f0f0",
+                                pathColor: "#6418c3",
+                                textColor: "#202020",
                               })}
                             />
                           )}
@@ -188,7 +200,8 @@ class BudgetAllocate extends Component {
                 <div className="d-block allocate-progress">
                   {allotedDudget.TotalBudget && allotedDudget.UsedBudget && (
                     <div className="d-block impacted">
-                      $ {allotedDudget.UsedBudget} Impacted on $ {allotedDudget.TotalBudget}
+                      $ {allotedDudget.UsedBudget} Impacted on ${" "}
+                      {allotedDudget.TotalBudget}
                     </div>
                   )}
                   <div className="progress">
@@ -221,15 +234,21 @@ class BudgetAllocate extends Component {
                 <div className="d-flex justify-content-center align-items-center allocate-progress-prices">
                   <div className="price used">
                     <h5>Used</h5>
-                    {allotedDudget.UsedBudget && <p>${allotedDudget.UsedBudget}</p>}
+                    {allotedDudget.UsedBudget && (
+                      <p>${allotedDudget.UsedBudget}</p>
+                    )}
                   </div>
                   <div className="price commited">
                     <h5>Commited</h5>
-                    {allotedDudget.CommitedBudget && <p>${allotedDudget.CommitedBudget}</p>}
+                    {allotedDudget.CommitedBudget && (
+                      <p>${allotedDudget.CommitedBudget}</p>
+                    )}
                   </div>
                   <div className="price avaliable">
                     <h5>Avaliable</h5>
-                    {allotedDudget.AvaliableBudget && <p>${allotedDudget.AvaliableBudget}</p>}
+                    {allotedDudget.AvaliableBudget && (
+                      <p>${allotedDudget.AvaliableBudget}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -239,7 +258,11 @@ class BudgetAllocate extends Component {
                     <strong>Used</strong> | Month:
                   </label>
                   <div className="col-xl-10 col-sm-9 col-8">
-                    <NativeSelect name="status" value={''} onChange={this.handleStateChange}>
+                    <NativeSelect
+                      name="status"
+                      value={""}
+                      onChange={this.handleStateChange}
+                    >
                       <option value="">Nov 21</option>
                       <option value={10}>dec</option>
                       <option value={20}>jan</option>
@@ -247,17 +270,26 @@ class BudgetAllocate extends Component {
                     </NativeSelect>
                   </div>
                 </div>
-                <Table
-                  valueFromData={{ columns: columns, data: tableData }}
-                  perPageLimit={6}
-                  visiblecheckboxStatus={false}
-                  tableClasses={{
-                    table: 'ticket-tabel',
-                    tableParent: 'tickets-tabel',
-                    parentClass: 'all-support-ticket-tabel',
-                  }}
-                  showingLine="Showing %start% to %end% of %total% "
-                />
+                {this.state.loadingStatus ? (
+                  <Table
+                    valueFromData={{ columns: columns, data: tableData }}
+                    perPageLimit={6}
+                    visiblecheckboxStatus={false}
+                    tableClasses={{
+                      table: "ticket-tabel",
+                      tableParent: "tickets-tabel",
+                      parentClass: "all-support-ticket-tabel",
+                    }}
+                    showingLine="Showing %start% to %end% of %total% "
+                  />
+                ) : (
+                  <Loader
+                    type="spinner-default"
+                    bgColor={"#3244a8"}
+                    color={"#3244a8"}
+                    size={60}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -266,6 +298,7 @@ class BudgetAllocate extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const { budget_allocated_status, budget_allocated_data } = state.procurement;
   return { budget_allocated_status, budget_allocated_data };

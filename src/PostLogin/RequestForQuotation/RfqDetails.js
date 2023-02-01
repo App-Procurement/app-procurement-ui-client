@@ -1,33 +1,26 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import { Button, FormControl, NativeSelect } from "@mui/material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { DatePicker } from "@y0c/react-datepicker";
+import { commonFunctions } from "../../_utilities";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
-import Table from "../../Table/Table";
 import { connect } from "react-redux";
 import { requestForPurposeAction } from "../../_actions";
-import { requestForQuotationAction } from "../../_actions";
+import {
+  requestForQuotationAction,
+  productActions,
+  manageSupplierAction,
+} from "../../_actions";
 import { status } from "../../_constants";
-import { commonFunctions, alert } from "../../_utilities";
+import { alert } from "../../_utilities";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
-import Chat from "../../_components/ChatBox";
 import AddlineItemList from "./AddlineItemList";
-import Dialog from "@material-ui/core/Dialog";
-import { Search } from "@material-ui/icons";
-
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-//import AddItemList from "./AddItemList";
 import { Link } from "react-router-dom";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import AddItemImg from "../../assets/images/request/add-item-img.png";
-import { TextField } from "@material-ui/core";
 import AddSupplierContent from "./AddSupplierContent";
 import InviteSupplierDialog from "./InviteSupplierDialog";
+import { CatchingPokemonSharp } from "@mui/icons-material";
 
 class RfqDetails extends Component {
   inputOpenFileRef;
@@ -85,7 +78,7 @@ class RfqDetails extends Component {
       openDialog: false,
       openEditDialog: false,
       openImportItemDialog: false,
-      itemList: [],
+      searchProductListData: [],
       supplierResult: [],
       columns: [
         {
@@ -225,7 +218,7 @@ class RfqDetails extends Component {
       "",
       "",
       {
-        onFormSubmitted: (formName) => { },
+        onFormSubmitted: (formName) => {},
         onFormCompleted: (formName, response) => {
           this.setUploadedDocID(response);
         },
@@ -266,40 +259,54 @@ class RfqDetails extends Component {
 
   handleDates = (date, name) => {
     let { formData } = this.state;
-    console.log("name", name, " ", date);
-    formData[name] = date;
+    formData[name] = `${date.$D}-${date.$M + 1}-${date.$y}`;
     this.setState({ formData });
   };
 
   componentDidMount() {
-    this.props.dispatch(requestForQuotationAction.getRequestQuotationData());
+    this.props.dispatch(productActions.searchProductList());
+    this.props.dispatch(requestForQuotationAction.searchRequestQuotationData());
+    this.props.dispatch(manageSupplierAction.searchSupplierList());
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { get_request_status, request_data, requiData } = this.props;
-
     if (
-      this.props.get_request_status &&
-      this.props.get_request_status !== prevProps.get_request_status &&
-      this.props.get_request_status === status.SUCCESS
+      this.props.search_suplier_list_status &&
+      this.props.search_suplier_list_status !==
+        prevProps.search_suplier_list_status &&
+      this.props.search_suplier_list_status === status.SUCCESS
     ) {
       if (
-        this.props.request_data &&
-        this.props.request_data.lineItems &&
-        this.props.request_data.lineItems.length > 0
+        this.props.search_supplier_list &&
+        this.props.search_supplier_list.length > 0
       ) {
         this.setState({
-          requestDetailsData: this.props.request_data,
-          lineItems: this.props.request_data.lineItems,
+          searchSupplierListData: this.props.search_supplier_list,
         });
       }
+    }
+
+    if (
+      this.props.search_product_list_status &&
+      this.props.search_product_list_status !==
+        prevProps.search_product_list_status &&
+      this.props.search_product_list_status === status.SUCCESS
+    ) {
+      let { searchProductListData } = this.state;
       if (
-        this.props.request_data &&
-        this.props.request_data.addLine &&
-        this.props.request_data.addLine.length > 0
+        this.props.search_product_list &&
+        this.props.search_product_list.length > 0
       ) {
-        this.setState({
-          itemList: this.props.request_data.addLine,
+        this.props.search_product_list.map((item) => {
+          let itemData = item.details;
+
+          searchProductListData.push({
+            ...itemData,
+            id: item.id,
+          });
+          this.setState({
+            searchProductListData,
+          });
         });
       }
     }
@@ -315,6 +322,7 @@ class RfqDetails extends Component {
       openModulRfqAddSupplier: !this.state.openModulRfqAddSupplier,
     });
   };
+
   handleOpenModulInviteSupplier = () => {
     this.setState({
       openModulInviteSupplier: !this.state.openModulInviteSupplier,
@@ -334,16 +342,9 @@ class RfqDetails extends Component {
         });
         let data = document.getElementById("upload_document");
         this.formkiqClient.webFormsHandler.submitFormkiqForm(data);
-        // this.props.dispatch(requestForPurposeAction.UploadFile(e.target.files[i].name));
       }
     }
   };
-
-  // getUploadedDocument = (docId) => {
-  //   this.formkiqClient.documentsApi.getDocumentUrl(docId).then((response) => {
-  //     window.open(response.url, "_blank", "570", "520");
-  //   });
-  // };
 
   openAddNewItemPopup = () => {
     this.setState({
@@ -377,33 +378,23 @@ class RfqDetails extends Component {
   setSelectedItemList = (data) => {
     let { selectedItemList } = this.state;
     let value = JSON.parse(JSON.stringify(data));
-
-    let index = -1;
-    if (selectedItemList && selectedItemList.length > 0) {
-      for (let i = 0; i < selectedItemList.length; i++) {
-        if (selectedItemList[i].id === value.id) {
-          index = i;
-        }
-      }
-      if (index >= 0) {
-        selectedItemList[index].quantity += value.quantity;
-        selectedItemList[index].totalCost =
-          selectedItemList[index].quantity * selectedItemList[index].price;
-      } else {
-        selectedItemList = [...selectedItemList, value];
-      }
-    } else {
-      selectedItemList = [value];
+    if (
+      selectedItemList.length === 0 ||
+      (selectedItemList.length &&
+        selectedItemList.findIndex((e) => e.id === data.id) === -1)
+    ) {
+      this.setState({ selectedItemList: [...selectedItemList, data] });
     }
-    this.setState({
-      selectedItemList,
-    });
   };
 
   createRequest = (event) => {
     event.preventDefault();
-    const { formData, selectedItemList, selectedFile, uploadedFileList } =
-      this.state;
+    const {
+      formData,
+      selectedItemList,
+      selectedFile,
+      uploadedFileList,
+    } = this.state;
 
     this.setState({
       isSubmitted: true,
@@ -447,12 +438,14 @@ class RfqDetails extends Component {
       selectedItemList,
     });
   };
+
   handleUpdate = (e) => {
     const { updateValue } = this.state;
     const { name, value } = e.target;
     updateValue[name] = value;
     this.setState({ updateValue });
   };
+
   updateDataValues = () => {
     const { selectedItemList, activeIndex, updateValue } = this.state;
     let updateForm = this.validateUpdate(true);
@@ -572,71 +565,51 @@ class RfqDetails extends Component {
     event.preventDefault();
     const { formData, result, lineItems, selectedFile } = this.state;
 
-    console.log("formdata", formData);
     this.setState({
       isSubmitted: true,
     });
     const errorData = this.validate(true);
     const { history } = this.props;
 
-    if (errorData.isValid) {
-      if (result && result.length > 0) {
+    if (errorData.isValid && this.state.result.length > 0) {
+      if (result && result.length > 0 && this.props.get_request_status === 1) {
         let sendData = {
-          formData,
-          selectedItemList: result,
-          lineItems: lineItems,
-          files: selectedFile,
-          // documentId: uploadedFileList,
+          openDate: formData.openDate,
+          closingDate: formData.closingDate,
+          requiredDeliveryDate: formData.requiredDeliveryDate,
+          rfqType: this.props.request_data[0].details.rfqType,
+          document: this.props.request_data[0].details.document,
+          location: this.props.request_data[0].details.location,
+          note: formData.note,
+          product: this.state.selectedItemList,
+          paymentTerms: this.props.request_data[0].details.paymentTerms,
+          paymentMode: this.props.request_data[0].details.paymentMode,
+          incoterms: this.props.request_data[0].details.incoterms,
+          modeOfDelivery: this.props.request_data[0].details.modeOfDelivery,
         };
-        this.props.dispatch(
-          requestForQuotationAction.rfqQuotationPost(sendData)
-        );
-      } else {
-        alert.error("Add Request Quotation item list");
+        this.props.dispatch(requestForQuotationAction.createRfq(sendData));
       }
     }
-    // this.setState({
-    //   formData: {
-    //     openDate: "",
-    //     closingDate: "",
-    //     requiredDeliveryDate: "",
-    //     rfqType: "",
-    //     location: "",
-    //     note: "",
-    //   },
-    // });
   };
 
   handleCallback = (childData) => {
+    console.log("child dat ", childData);
     this.setState({ selectedSupplierData: childData });
-
-    let { requestDetailsData } = this.state;
-    console.log("request detail data", requestDetailsData);
-    if (
-      requestDetailsData &&
-      requestDetailsData.Supplier &&
-      requestDetailsData.Supplier.length > 0
-    ) {
-      this.setState({
-        supplierResult: requestDetailsData.Supplier,
-      });
-    }
-    let duplicateData = this.state.supplierResult;
-
-    console.log("duplicate data", duplicateData);
-    if (duplicateData && duplicateData.length > 0) {
-      duplicateData.map((item) => {
-        if (item.Email === childData) {
-          this.setState({
-            result: [...this.state.result, item],
-          });
+    let { requestDetailsData, searchSupplierListData } = this.state;
+    if (searchSupplierListData && searchSupplierListData.length > 0) {
+      searchSupplierListData.map((item) => {
+        if (item.details.email === childData) {
+          if (
+            this.state.result.length === 0 ||
+            (this.state.result.length &&
+              this.state.result.findIndex((e) => e.id === item.id) === -1)
+          ) {
+            this.setState({
+              result: [...this.state.result, item],
+            });
+          }
         }
       });
-
-      // this.setState(
-      //   {
-      //     supplierResult:this.state.result
-      //   })
     }
   };
 
@@ -644,28 +617,16 @@ class RfqDetails extends Component {
     const {
       formData,
       isSubmitted,
-      dueDate,
-      deliverDate,
       openDialog,
       openModulRfqAddSupplier,
       openModulInviteSupplier,
-      openEditDialog,
-      columns,
-      activeIndex,
-      updateValue,
-      itemList,
-      selectedItemList,
-      uploadedFileList,
-      supplierAndCategoryList,
-      paymentFormData,
-      update,
-      selectedSupplierData,
+      searchProductListData,
       requestDetailsData,
-      openImportItemDialog,
+      selectedItemList,
     } = this.state;
-    console.log("result data", this.state.result);
+    console.log("result ", this.state.result);
+
     const errorData = this.validate(isSubmitted);
-    // const updateForm = this.validateUpdate(update);
     return (
       <div className="main-content">
         <div className="request-page-content">
@@ -698,7 +659,7 @@ class RfqDetails extends Component {
                       placeholder={"YYYY-MM-DD"}
                       onChange={(date) => this.handleDates(date, "openDate")}
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                   <span className="d-block w-100 text-danger">
                     {errorData.openDate.message}
@@ -712,7 +673,7 @@ class RfqDetails extends Component {
                       placeholder={"YYYY-MM-DD"}
                       onChange={(date) => this.handleDates(date, "closingDate")}
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                   <span className="d-block w-100 text-danger">
                     {errorData.closingDate.message}
@@ -730,7 +691,7 @@ class RfqDetails extends Component {
                         this.handleDates(date, "requiredDeliveryDate")
                       }
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                   <span className="d-block w-100 text-danger">
                     {errorData.requiredDeliveryDate.message}
@@ -743,12 +704,9 @@ class RfqDetails extends Component {
                       name="rfqType"
                       value={formData.rfqType}
                       onChange={this.handleStateChange}
-                    // isvalid={errorData.location.isValid}
                     >
-                      <option value={"Main Office Usa"}>Non-Bid</option>
-                      <option value={"abc"}>abc</option>
-                      <option value={"def"}>def</option>
-                      <option value={"abc"}>abc</option>
+                      <option value={"Main Office Usa"}>Select rfq type</option>
+                      <option value={"this"}>this</option>
                     </NativeSelect>
                   </FormControl>
                   <span className="d-block w-100 text-danger">
@@ -806,14 +764,14 @@ class RfqDetails extends Component {
               </div>
             </div>
 
-            {
+            {searchProductListData.length > 0 && (
               <AddlineItemList
                 openDialog={openDialog}
                 setSelectedItemList={this.setSelectedItemList}
                 openAddNewItemPopup={this.openAddNewItemPopup}
-                itemList={itemList}
+                searchProductListData={searchProductListData}
               />
-            }
+            )}
 
             <div className="form-table rfq-group-table">
               <table>
@@ -829,56 +787,39 @@ class RfqDetails extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {requestDetailsData?.lineItems ? (
-                    requestDetailsData?.lineItems.map((item, index) => (
-                      <tr>
-                        <td>{index + 1}</td>
-                        <td>
-                          <div className="description">
-                            <div className="iteam-name">{item.itemName}</div>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="description ">
-                            <div className="iteam-name category">
-                              {item.Category}
+                  {this.state.selectedItemList &&
+                  this.state.selectedItemList.length > 0
+                    ? this.state.selectedItemList.map((item, index) => (
+                        <tr>
+                          <td>{index + 1}</td>
+                          <td>
+                            <div className="description">
+                              <div className="iteam-name">{item.itemName}</div>
                             </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="table-dropdown-menu">
-                            <select name="" className="approved-dropdown">
-                              <option value="Month">Month</option>
-                              <option value="Month">January</option>
-                              <option value="Month">February</option>
-                              <option value="Month">March</option>
-                            </select>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="description">
-                            <div className="iteam-name category">
-                              {item.requesrQuantity}
+                          </td>
+                          <td>
+                            <div className="description">
+                              <div className="iteam-name">{item.category}</div>
                             </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="description">
-                            <div className="iteam-name">
-                              ${item.requestUnitQuantity}
+                          </td>
+                          <td>
+                            <div className="description">
+                              <div className="iteam-name">{item.unit}</div>
                             </div>
-                          </div>
-                        </td>
-                        <td>
-                          <Button className="list-btn">
-                            <i class="fas fa-ellipsis-v"></i>
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <></>
-                  )}
+                          </td>
+                          <td>
+                            <div className="description">
+                              <div className="iteam-name">{index + 1}</div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="description">
+                              <div className="iteam-name">{item.price}</div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    : null}
                 </tbody>
               </table>
             </div>
@@ -920,13 +861,13 @@ class RfqDetails extends Component {
                       <td>{index + 1}</td>
                       <td>
                         <div className="description">
-                          <div className="iteam-name">{item.supplier}</div>
+                          <div className="iteam-name">{item.details.name}</div>
                         </div>
                       </td>
                       <td>
                         <div className="description ">
                           <div className="iteam-name category">
-                            {item.Email}
+                            {item.details.email}
                           </div>
                         </div>
                       </td>
@@ -934,62 +875,24 @@ class RfqDetails extends Component {
                       <td>
                         <div className="description">
                           <div className="iteam-name category">
-                            {item.contact}
+                            {item.details.contact}
                           </div>
                         </div>
                       </td>
                       <td>
                         <div className="description">
-                          <div className="iteam-name">${item.status}</div>
+                          <div className="iteam-name">
+                            ${item.details.status}
+                          </div>
                         </div>
                       </td>
-                      <td>
+                      {/* <td>
                         <Button className="list-btn">
                           <i class="fas fa-ellipsis-v"></i>
                         </Button>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
-
-                  {/* {requestDetailsData?.Supplier ? (
-                    requestDetailsData?.Supplier.map((item, index) => (
-                      <tr>
-                        <td>{index + 1}</td>
-                        <td>
-                          <div className="description">
-                            <div className="iteam-name">{item.supplier}</div>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="description ">
-                            <div className="iteam-name category">
-                              {item.Email}
-                            </div>
-                          </div>
-                        </td>
-
-                        <td>
-                          <div className="description">
-                            <div className="iteam-name category">
-                              {item.contact}
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="description">
-                            <div className="iteam-name">${item.status}</div>
-                          </div>
-                        </td>
-                        <td>
-                          <Button className="list-btn">
-                            <i class="fas fa-ellipsis-v"></i>
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <></>
-                  )} */}
                 </tbody>
               </table>
             </div>
@@ -1007,8 +910,6 @@ class RfqDetails extends Component {
                       name="paymentTerm"
                       value={formData.paymentTerm}
                       onChange={this.handleStateChange}
-                    // value={paymentFormData.paymentTerm}
-                    // onChange={this.handleStateChangePaymentANdShippingTerm}
                     >
                       <option value={"Main Office Usa"}>Non-Bid</option>
                       <option value={"abc"}>abc</option>
@@ -1027,8 +928,6 @@ class RfqDetails extends Component {
                       name="paymentMode"
                       value={formData.paymentMode}
                       onChange={this.handleStateChange}
-                    // value={paymentFormData.paymentMode}
-                    // onChange={this.handleStateChangePaymentANdShippingTerm}
                     >
                       <option value={"Main Office Usa"}>Main Office USA</option>
                       <option value={"abc"}>abc</option>
@@ -1047,8 +946,6 @@ class RfqDetails extends Component {
                       name="incorterms"
                       value={formData.incorterms}
                       onChange={this.handleStateChange}
-                    // value={paymentFormData.incorterms}
-                    // onChange={this.handleStateChangePaymentANdShippingTerm}
                     >
                       <option value={"Main Office Usa"}>Main Office USA</option>
                       <option value={"abc"}>abc</option>
@@ -1072,8 +969,6 @@ class RfqDetails extends Component {
                     className="form-control"
                     value={formData.modeOfDelivery}
                     onChange={this.handleStateChange}
-                    // value={paymentFormData.modeOfDelivery}
-                    // onChange={this.handleStateChangePaymentANdShippingTerm}
                     placeholder="FOB"
                   />
                   <span className="d-block w-100 text-danger">
@@ -1110,6 +1005,7 @@ class RfqDetails extends Component {
             </div>
             {openModulRfqAddSupplier && (
               <AddSupplierContent
+                searchSupplierListData={this.state.searchSupplierListData}
                 requestDetailsData={requestDetailsData}
                 parentCallback={this.handleCallback}
                 openModulRfqAddSupplier={openModulRfqAddSupplier}
@@ -1125,96 +1021,33 @@ class RfqDetails extends Component {
                 openModulInviteSupplier={openModulInviteSupplier}
               />
             )}
-
-            {/* <Dialog
-              fullWidth
-              open={openModulInviteSupplier}
-              onClose={this.openModulInviteSupplier}
-              aria-labelledby="form-dialog-title"
-              className="invite-supplier-dialog"
-            >
-              <div className="custom-dialog-head">
-                <DialogTitle id="form-dialog-title" className="dialog-heading">
-                  Invite Supplier
-                </DialogTitle>
-                <Button
-                  onClick={this.openModulInviteSupplier}
-                  className="modal-close-btn"
-                >
-                  <CloseIcon />
-                </Button>
-              </div>
-              <div className="custom-dialog-content">
-                <div className="invite-dialog-form">
-                  {this.state.inviteUserFields.map((index) => {
-                    return (
-                      <div
-                        key={Math.random()}
-                        className="search-bar form-group"
-                      >
-                        <input
-                          type="email"
-                          name="userEmail"
-                          className="control-form"
-                          placeholder="example@example.com"
-                          onChange={(e) =>
-                            this.handleInviteFormChange(index, e)
-                          }
-                        />
-                        <Button
-                          variant="contained"
-                          className="delete-btn"
-                          onClick={() => this.handleInviteFormDelete(index)}
-                        >
-                          <i className="far fa-trash-alt"></i>
-                        </Button>
-                        <span className="d-block w-100 text-danger">
-                          {index.inviteError}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="invite-dialog-bottom-content">
-                  <div className="add-another-buttons">
-                    <Button
-                      variant="contained"
-                      className="add-btn"
-                      onClick={() => this.handleInviteFormAdd()}
-                    >
-                      <i className="fa fa-plus" aria-hidden="true"></i>
-                      Add Another
-                    </Button>
-                  </div>
-                  <Button
-                    variant="contained"
-                    className="primary-btn"
-                    onClick={() => this.handleSendInvites()}
-                  >
-                    Send Invites
-                  </Button>
-                </div>
-              </div>
-            </Dialog> */}
           </div>
         </div>
       </div>
     );
   }
 }
+
 const mapStateToProps = (state) => {
-  const { get_request_status, request_data } = state.procurement;
+  const {
+    request_data,
+    get_request_status,
+    search_product_list,
+    search_product_list_status,
+    search_suplier_list_status,
+    search_supplier_list,
+  } = state.procurement;
 
   return {
-    get_request_status,
     request_data,
+    get_request_status,
+    search_product_list,
+    search_product_list_status,
+    search_suplier_list_status,
+    search_supplier_list,
   };
 };
 
-// const CreateRfqComponet = withTranslation()(
-//   connect(mapStateToProps)(CreateRfq)
-// );
-// export default CreateRfqComponet;
-
 const DetailsComponet = withTranslation()(connect(mapStateToProps)(RfqDetails));
+
 export default DetailsComponet;

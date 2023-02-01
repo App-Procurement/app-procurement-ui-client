@@ -1,5 +1,19 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import {
+  NativeSelect,
+  FormControl,
+  DialogContent,
+  Dialog,
+  DialogTitle,
+  Button,
+  DialogActions,
+  TextareaAutosize,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  Tooltip,
+} from "@mui/material";
+import Loader from "react-js-loader";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
@@ -9,16 +23,12 @@ import { status } from "../../_constants";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
-import { commonFunctions } from "../../_utilities/commonFunctions";
-//import purchasedRequisitionIcon from '../../assets/images/dashbord/purchased-requisition-icon.png';
 import purchaseOrder from "../../assets/images/dashbord/purchase-order.png";
 import approvedRequisitionIcon from "../../assets/images/dashbord/approved-requisition-icon.png";
 import pendingRequisitionIcon from "../../assets/images/dashbord/pending-requisition-icon.png";
 import rejectedRequisitionIcon from "../../assets/images/dashbord/rejected-requisition-icon.png";
 import FilterIcon from "../../assets/images/filter-icon.png";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { DatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 
@@ -27,8 +37,8 @@ class Request extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
       status: false,
-      requestData: {},
       activeindex: 0,
       requiData: {
         status: "",
@@ -36,8 +46,6 @@ class Request extends Component {
         depart: "",
         ViewDetail: false,
         selectBuyer: false,
-
-
       },
       formData: {
         dueDate: "yyyy-mm-dd",
@@ -50,22 +58,17 @@ class Request extends Component {
       columns: [
         {
           label: "S.no",
-          key: "sno",
-          renderCallback: (value, index) => {
-            return (
-              <td key={`${Math.random()}_${index}`}>
-                <span className={"s-no"}>{index + 1}</span>
-              </td>
-            );
-          },
+          key: "id",
         },
         {
           label: "Requester",
           key: "name",
-          renderCallback: (value) => {
+          renderCallback: (value, row) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"requisitions-no"}>{value}</span>
+                <span className={"requisitions-no"}>
+                  {row?.details?.createdBy}
+                </span>
               </td>
             );
           },
@@ -73,10 +76,12 @@ class Request extends Component {
         {
           label: "Location",
           key: "location",
-          renderCallback: (value) => {
+          renderCallback: (value, row) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+                <span className={"department-value"}>
+                  {row?.details?.location}
+                </span>
               </td>
             );
           },
@@ -84,21 +89,29 @@ class Request extends Component {
         {
           label: "Supplier",
           key: "supplier",
-          renderCallback: (value) => {
+          renderCallback: (value, row) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+                <span className={"department-value"}>
+                  {row.details !== null
+                    ? row?.details?.products
+                      ? row.details.products[0]?.item.supplier.name
+                      : ""
+                    : ""}
+                </span>
               </td>
             );
           },
         },
         {
           label: "Total Amount",
-          key: "totalAmount",
-          renderCallback: (value) => {
+          key: "totalCost",
+          renderCallback: (value, row) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>${value}</span>
+                <span className={"department-value"}>
+                  {row?.details?.totalAmount}
+                </span>
               </td>
             );
           },
@@ -106,11 +119,11 @@ class Request extends Component {
         {
           label: "Creation Date",
           key: "creationDate",
-          renderCallback: (value) => {
+          renderCallback: (value, row) => {
             return (
               <td key={`${Math.random()}_${value}`}>
                 <span className="department-value">
-                  {commonFunctions.convertDateToString(new Date(value))}
+                  {row?.details?.createdOn}
                 </span>
               </td>
             );
@@ -119,14 +132,20 @@ class Request extends Component {
         {
           label: "Status",
           key: "status",
-          renderCallback: (value) => {
+          renderCallback: (value, row) => {
             return (
               <td key={`${Math.random()}_${value}`}>
                 <Button
                   variant="outlined"
-                  className="department-value status-btn"
+                  className={
+                    row?.details?.state === "approved"
+                      ? "department-value green-btn"
+                      : row?.details?.state === "pending"
+                      ? "department-value status-btn"
+                      : "department-value onahau-btn"
+                  }
                 >
-                  {value}
+                  {row?.details?.state}
                 </Button>
               </td>
             );
@@ -146,7 +165,10 @@ class Request extends Component {
           },
         },
       ],
-      tableData: [],
+      requestData: [],
+      approvedRequestCount: 0,
+      pendingRequestCount: 0,
+      rejectedRequestCount: 0,
       uploadedFileList: [],
       selectedFile: {},
     };
@@ -160,37 +182,51 @@ class Request extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let { uploadedFileList, selectedFile } = this.state;
-
-    if (
-      this.props.get_request_status &&
-      this.props.get_request_status !== prevProps.get_request_status &&
-      this.props.get_request_status === status.SUCCESS
-    ) {
-      if (
-        this.props.request_data &&
-        Object.keys(this.props.request_data).length > 0
-      ) {
-        // console.log("my requestData",this.props.request_data.myRequest)
-        this.setState({ requestData: { ...this.props.request_data } });
-      }
-    }
+    let {
+      uploadedFileList,
+      selectedFile,
+      approvedRequestCount,
+      pendingRequestCount,
+      rejectedRequestCount,
+    } = this.state;
 
     if (
       this.props.request_for_purpose_status !==
-      prevProps.request_for_purpose_status &&
+        prevProps.request_for_purpose_status &&
       this.props.request_for_purpose_status === status.SUCCESS
     ) {
       if (
         this.props.request_for_purpose_list &&
         this.props.request_for_purpose_list.length > 0
       ) {
+        this.setState({
+          loadingStatus: !this.state.loadingStatus,
+        });
         for (let i = 0; i < this.props.request_for_purpose_list.length; i++) {
           this.props.request_for_purpose_list[i].totalCost =
             this.props.request_for_purpose_list[i].price *
             this.props.request_for_purpose_list[i].quantity;
+          if (this.props.request_for_purpose_list[i].details !== null) {
+            if (
+              this.props.request_for_purpose_list[i].details?.state ===
+              "approved"
+            ) {
+              approvedRequestCount++;
+            } else if (
+              this.props.request_for_purpose_list[i].details.state === "pending"
+            ) {
+              pendingRequestCount++;
+            } else {
+              rejectedRequestCount++;
+            }
+          }
         }
-        this.setState({ tableData: this.props.request_for_purpose_list });
+        this.setState({
+          requestData: this.props.request_for_purpose_list,
+          approvedRequestCount,
+          pendingRequestCount,
+          rejectedRequestCount,
+        });
       }
     }
     if (
@@ -212,24 +248,26 @@ class Request extends Component {
     }
   }
 
-  onClickCreateNewRequester = (id) => {
+  onClickCreateNewRequester = () => {
     this.props.history.push(`/postlogin/request/viewrequest`);
   };
 
-  handleToggle = () => {
+  filtersToggle = () => {
     this.setState({
       status: !this.state.status,
     });
   };
 
-  handleDates = (date, name) => {
+  handleFilterDate = (date, name) => {
     let { formData } = this.state;
     formData[name] = date;
     this.setState({ formData });
   };
 
   render() {
-    const { columns, tableData, requestData, status } = this.state;
+    const { columns, requestData, status, loadingStatus } = this.state;
+    let { approvedRequestCount, pendingRequestCount, rejectedRequestCount } =
+      this.state;
     return (
       <div className="main-content">
         <div className="request-page-content">
@@ -261,13 +299,7 @@ class Request extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">All Request</div>
-                    {requestData?.myRequest ? (
-                      <>
-                        <h4>{requestData.myRequest.allRequest}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    <h4>{requestData.length}</h4>
                   </div>
                   <div className="purchased-image">
                     <img src={purchaseOrder} alt="" />
@@ -278,13 +310,7 @@ class Request extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Approved Request</div>
-                    {requestData?.myRequest ? (
-                      <>
-                        <h4>{requestData.myRequest.approvedRequest}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    <h4>{approvedRequestCount}</h4>
                   </div>
                   <div className="purchased-image approved">
                     <img src={approvedRequisitionIcon} alt="" />
@@ -295,13 +321,7 @@ class Request extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Pending Request</div>
-                    {requestData?.myRequest ? (
-                      <>
-                        <h4>{requestData.myRequest.pendingRequest}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    <h4>{pendingRequestCount}</h4>
                   </div>
                   <div className="purchased-image pending">
                     <img src={pendingRequisitionIcon} alt="" />
@@ -312,13 +332,7 @@ class Request extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Rejected Request</div>
-                    {requestData?.myRequest ? (
-                      <>
-                        <h4>{requestData.myRequest.rejectedRequest}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    <h4>{rejectedRequestCount}</h4>
                   </div>
                   <div className="purchased-image rejected">
                     <img src={rejectedRequisitionIcon} alt="" />
@@ -332,7 +346,7 @@ class Request extends Component {
               <Button
                 variant="outlined"
                 className="fillter-btn"
-                onClick={this.handleToggle}
+                onClick={this.filtersToggle}
               >
                 <span>
                   <img src={FilterIcon} alt=" " />
@@ -370,7 +384,6 @@ class Request extends Component {
                       <input
                         type="text"
                         name="rfqNo"
-                        // value={item.itemType}
                         className="form-control"
                         placeholder="Product"
                         onChange={this.handleStateChange}
@@ -399,11 +412,12 @@ class Request extends Component {
                     <label className="d-block">{t("Quotation Deadline")}</label>
                     <div className="d-flex align-items-center date-picker form-group">
                       <DatePicker
-                        // selected={formData.openDate}
                         placeholder={"YYYY-MM-DD"}
-                        onChange={(date) => this.handleDates(date, "quotationDeadLine")}
+                        onChange={(date) =>
+                          this.handleFilterDate(date, "quotationDeadLine")
+                        }
                       />
-                      <CalendarTodayTwoToneIcon className="calendar-icon" />
+                      <CalendarTodayIcon className="calendar-icon" />
                     </div>
                   </div>
                   <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -431,18 +445,29 @@ class Request extends Component {
               </div>
             )}
           </div>
-          <Table
-            valueFromData={{ columns: columns, data: tableData }}
-            perPageLimit={6}
-            visiblecheckboxStatus={false}
-            isLoading={this.props.request_for_purpose_status === status.IN_PROGRESS}
-            tableClasses={{
-              table: "ticket-tabel",
-              tableParent: "tickets-tabel",
-              parentClass: "all-support-ticket-tabel",
-            }}
-            showingLine="Showing %start% to %end% of %total% "
-          />
+          {loadingStatus ? (
+            <Table
+              valueFromData={{ columns: columns, data: requestData }}
+              perPageLimit={6}
+              visiblecheckboxStatus={false}
+              isLoading={
+                this.props.request_for_purpose_status === status.IN_PROGRESS
+              }
+              tableClasses={{
+                table: "ticket-tabel",
+                tableParent: "tickets-tabel",
+                parentClass: "all-support-ticket-tabel",
+              }}
+              showingLine="Showing %start% to %end% of %total% "
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
+            />
+          )}
         </div>
       </div>
     );
@@ -470,4 +495,5 @@ const mapStateToProps = (state) => {
 };
 
 const requestComponet = withTranslation()(connect(mapStateToProps)(Request));
+
 export default requestComponet;

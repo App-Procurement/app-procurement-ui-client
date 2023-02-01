@@ -1,24 +1,26 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
-import Logo from '../assets/images/logo.png';
-import { status, eventActions, eventCategories } from '../_constants';
-import { commonFunctions, GA } from '../_utilities';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import {
+  Button,
+  TextField,
+  Container,
+  Typography,
+  Link,
+  Box,
+} from "@mui/material";
+import Logo from "../assets/images/logo.png";
+import { status, eventActions, eventCategories } from "../_constants";
+import { commonFunctions, GA } from "../_utilities";
+import { connect } from "react-redux";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="#">
         incrisat
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -27,22 +29,22 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: '',
-      password: '',
-      isSubmitted: false
-    }
+      email: "",
+      password: "",
+      isSubmitted: false,
+    };
   }
 
   handleStateChange = (e) => {
     const { name, value } = e.target;
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.history.push('/postlogin/dashboard')
+    this.props.history.push("/postlogin/dashboard");
     // this.setState({
     //   isSubmitted: true
     // });
@@ -60,33 +62,33 @@ class Login extends Component {
   validate = (isSubmitted) => {
     const validObj = {
       isValid: true,
-      message: ""
+      message: "",
     };
     let isValid = true;
     const retData = {
       email: validObj,
       password: validObj,
-      isValid
+      isValid,
     };
     if (isSubmitted) {
       const { email, password } = this.state;
       if (!email) {
         retData.email = {
           isValid: false,
-          message: "Email is required"
+          message: "Email is required",
         };
         isValid = false;
       } else if (email && !commonFunctions.validateEmail(email)) {
         retData.email = {
           isValid: false,
-          message: "Enter valid email"
+          message: "Enter valid email",
         };
         isValid = false;
       }
       if (!password) {
         retData.password = {
           isValid: false,
-          message: "Password is required"
+          message: "Password is required",
         };
         isValid = false;
       }
@@ -96,15 +98,22 @@ class Login extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.user_login_status !== this.props.user_login_status && this.props.user_login_status === status.SUCCESS) {
+    if (
+      prevProps.user_login_status !== this.props.user_login_status &&
+      this.props.user_login_status === status.SUCCESS
+    ) {
       const { user } = this.props;
       if (user && user.userDetails && !user.userDetails.emailVerified) {
         this.props.history.push(`/prelogin/register/${user.token}`);
       } else {
         localStorage.setItem("userData", JSON.stringify(this.props.user));
-        this.props.history.push('/postlogin/dashboard');
+        this.props.history.push("/postlogin/dashboard");
         if (user && user.userDetails) {
-          GA.dispatchGAEvent(eventCategories.USER, eventActions.LOGIN, `organization=${user.userDetails.organizationId.name};id=${user.userDetails._id}`);
+          GA.dispatchGAEvent(
+            eventCategories.USER,
+            eventActions.LOGIN,
+            `organization=${user.userDetails.organizationId.name};id=${user.userDetails._id}`
+          );
         }
       }
     }
@@ -167,7 +176,7 @@ class Login extends Component {
           <Copyright />
         </Box>
       </div>
-    )
+    );
   }
 }
 
@@ -175,9 +184,9 @@ function mapStateToProps(state) {
   const { user_login_status, user } = state.procurement;
   return {
     user_login_status,
-    user
+    user,
   };
 }
 
 const connectedLogin = connect(mapStateToProps)(Login);
-export default (connectedLogin);
+export default connectedLogin;

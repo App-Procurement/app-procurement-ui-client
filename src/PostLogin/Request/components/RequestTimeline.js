@@ -1,7 +1,7 @@
 import { commonFunctions } from "../../../_utilities";
 import { useState } from "react";
 
-const RequestTimeline = ({ requestData }) => {
+const RequestTimeline = ({ fakerData }) => {
   const dataKeys = {
     requestInitiate: "Request Initiate",
     approved: "Approved",
@@ -9,6 +9,7 @@ const RequestTimeline = ({ requestData }) => {
     outOfDelivery: "Out for delivery",
     deliverd: "Delivered",
   };
+
   const [timelineIndex, setTimelineIndex] = useState(-1);
 
   const toggleVisibility = (index) => {
@@ -28,7 +29,7 @@ const RequestTimeline = ({ requestData }) => {
           </div>
           <div className="request-timeline-content">
             <ul>
-              {Object.keys(requestData).map((key, index) => {
+              {Object.keys(fakerData).map((key, index) => {
                 if (dataKeys[key]) {
                   return (
                     <li>
@@ -45,11 +46,10 @@ const RequestTimeline = ({ requestData }) => {
                       ) : (
                         <></>
                       )}
-                      {/* <p className="green">{dataKeys[key]}</p> */}
                       <span>
-                        {commonFunctions.timeStampFormat(requestData[key].date)}
+                        {commonFunctions.timeStampFormat(fakerData[key].date)}
                       </span>
-                      {requestData[key].hasOwnProperty("info") ? (
+                      {fakerData[key].hasOwnProperty("info") ? (
                         <label>
                           <a
                             style={{ cursor: "pointer" }}
@@ -65,7 +65,7 @@ const RequestTimeline = ({ requestData }) => {
                                 timelineIndex === index ? "visible" : "hidden",
                             }}
                           >
-                            {requestData[key].info}
+                            {fakerData[key].info}
                           </span>
                         </label>
                       ) : (

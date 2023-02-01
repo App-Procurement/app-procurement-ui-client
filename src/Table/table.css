@@ -40,14 +40,14 @@
   border-radius: 3px;
   cursor: pointer;
   height: 34px;
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   font-size: 0.8rem;
   font-weight: 400;
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .custom-table .toolbar .showby span {
@@ -97,14 +97,14 @@
   border-radius: 3px;
   cursor: pointer;
   height: 34px;
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   font-size: 0.8rem;
   font-weight: 400;
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .custom-table .toolbar .multiselect .options {
@@ -153,7 +153,7 @@
   padding-top: 0.399rem;
   display: flex;
   align-items: center;
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   margin-bottom: 0;
   font-size: 1rem;
   font-weight: 400;
@@ -222,7 +222,6 @@
   white-space: nowrap;
   width: 100%;
   border-collapse: collapse;
-  
 }
 
 .custom-table .sort-icon {
@@ -239,7 +238,7 @@
   vertical-align: middle;
 }
 
-.custom-table .MuiFormControlLabel-root{
+.custom-table .MuiFormControlLabel-root {
   margin: 0;
   padding: 0;
 }
@@ -386,10 +385,9 @@
 .custom-table .data-table-parent .data-table td {
   padding: 20px 15px;
   border-bottom: 1px solid #dddddd;
-  
 }
 
-.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale{
+.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale {
   position: absolute;
   width: 50px;
   right: 0;
@@ -403,104 +401,138 @@
   align-items: center;
 }
 
-.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale:after, 
-.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale:before {
-	bottom: 100%;
-	left: 65%;
-	border: solid transparent;
-	content: "";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
+.custom-table
+  .data-table-parent
+  .data-table
+  td
+  .edit-delete-modal
+  .toggale:after,
+.custom-table
+  .data-table-parent
+  .data-table
+  td
+  .edit-delete-modal
+  .toggale:before {
+  bottom: 100%;
+  left: 65%;
+  border: solid transparent;
+  content: "";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
 }
 
-.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale:after {
-	border-color: rgba(255, 255, 255, 0);
-	border-bottom-color: #ffffff;
-	border-width: 6px;
-	margin-right: -6px;
+.custom-table
+  .data-table-parent
+  .data-table
+  td
+  .edit-delete-modal
+  .toggale:after {
+  border-color: rgba(255, 255, 255, 0);
+  border-bottom-color: #ffffff;
+  border-width: 6px;
+  margin-right: -6px;
 }
-.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale:before {
-	border-color: rgba(0, 0, 0, 0);
-	border-bottom-color: rgba(0, 0, 0, 0.25);
-	border-width: 7px;
-	margin-right: -7px;
+.custom-table
+  .data-table-parent
+  .data-table
+  td
+  .edit-delete-modal
+  .toggale:before {
+  border-color: rgba(0, 0, 0, 0);
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+  border-width: 7px;
+  margin-right: -7px;
 }
 
-.custom-table .data-table-parent .data-table td .edit-delete-modal i{
+.custom-table .data-table-parent .data-table td .edit-delete-modal i {
   cursor: pointer;
 }
-.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale i{
+.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale i {
   padding-left: 5px;
   padding-right: 6px;
   font-size: 13px;
   line-height: 16px;
 }
 
-.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale i.edit{
-  border-right: 1px solid #BEBEBE;
-  color: #52CDF4;
+.custom-table
+  .data-table-parent
+  .data-table
+  td
+  .edit-delete-modal
+  .toggale
+  i.edit {
+  border-right: 1px solid #bebebe;
+  color: #52cdf4;
 }
-.custom-table .data-table-parent .data-table td .edit-delete-modal .toggale i.delete{
-  color: #FF3A3A;
+.custom-table
+  .data-table-parent
+  .data-table
+  td
+  .edit-delete-modal
+  .toggale
+  i.delete {
+  color: #ff3a3a;
 }
 
-
-.custom-table .data-table-parent .data-table th{
+.custom-table .data-table-parent .data-table th {
   font-size: 16px;
   font-weight: 600;
   border-bottom: 10px solid #fafafa;
-  
 }
 
 .custom-table .data-table-parent .data-table th:nth-child(2),
-.custom-table .data-table-parent .data-table th:nth-child(3){
+.custom-table .data-table-parent .data-table th:nth-child(3) {
   text-align: left;
 }
 
 .custom-table .data-table-parent .data-table td:nth-child(2),
-.custom-table .data-table-parent .data-table td:nth-child(3){
+.custom-table .data-table-parent .data-table td:nth-child(3) {
   text-align: left;
 }
 
 .custom-table .data-table-parent .data-table td span.s-no,
-.custom-table .data-table-parent .data-table td span.requisitions-no{
+.custom-table .data-table-parent .data-table td span.requisitions-no {
   font-weight: 500;
   font-size: 14px;
 }
-.custom-table .data-table-parent .data-table td span.date{
+.custom-table .data-table-parent .data-table td span.date {
   font-size: 14px;
   font-weight: 400;
 }
-.custom-table .data-table-parent .data-table td span.department-value{
+.custom-table .data-table-parent .data-table td span.department-value {
   font-size: 15px;
   font-weight: 600;
   display: block;
 }
-.custom-table .data-table-parent .data-table td span.department-text{
+.custom-table .data-table-parent .data-table td span.department-text {
   font-size: 12px;
   font-weight: 400;
   display: block;
 }
-.custom-table .data-table-parent .data-table td span.requestor{
+.custom-table .data-table-parent .data-table td span.requestor {
   font-size: 14px;
   font-weight: 600;
 }
-.custom-table .data-table-parent .data-table td span.price{
+.custom-table .data-table-parent .data-table td span.price {
   font-size: 16px;
   font-weight: 700;
   color: #6418c3;
 }
-.custom-table .data-table-parent .data-table td span.status{
+.custom-table .data-table-parent .data-table td span.status {
   display: inline-block;
   font-size: 15px;
   font-weight: 500;
 }
 
-.custom-table .data-table-parent .data-table td .MuiIconButton-root{
+.custom-table .data-table-parent .data-table td .MuiIconButton-root {
   padding: 0px;
-  margin-left: 0px;
+  margin-left: 0px; 
+}
+.custom-table .data-table-parent .data-table button{
+  background-color: #D8FFE0;
+  color: #0f9d58;
 }
 
 /* .custom-table .data-table-parent .data-table tbody tr:nth-child(odd) {
@@ -630,8 +662,6 @@
   }
 }
 
-
-
 @media only screen and (max-width: 767px) and (min-width: 320px) {
   .custom-table .toolbar {
     float: left;
@@ -713,73 +743,116 @@
   line-height: 22px;
   vertical-align: middle;
 }
-.generate-content .custom-table .data-table-parent .data-table .details-btn{
+.generate-content .custom-table .data-table-parent .data-table .details-btn {
   color: #ffffff !important;
-    background: #6418c3;
-    font-weight: 500;
-    padding: 5px 20px;
-    font-size: 14px;
-    line-height: 22px;
-    vertical-align: middle;
-    border-radius: 10px;
+  background: #6418c3;
+  font-weight: 500;
+  padding: 5px 20px;
+  font-size: 14px;
+  line-height: 22px;
+  vertical-align: middle;
+  border-radius: 10px;
 }
-.generate-content .custom-table .data-table-parent .data-table .details-btn:focus{
+.generate-content
+  .custom-table
+  .data-table-parent
+  .data-table
+  .details-btn:focus {
   box-shadow: none;
 }
-.approved-content .custom-table .data-table-parent .data-table .details-btn:focus{
+.approved-content
+  .custom-table
+  .data-table-parent
+  .data-table
+  .details-btn:focus {
   box-shadow: none;
 }
 .Sendrfq-content .custom-table .data-table-parent .data-table .rfq-btn {
   color: #ffffff;
-    border-radius: 8px;
-    padding: 5px 15px;
-    text-transform: none;
-    background: #6418c3;
-    margin-bottom: 0px;
-    font-size: 14px;
-    font-weight: 600;
+  border-radius: 8px;
+  padding: 5px 15px;
+  text-transform: none;
+  background: #6418c3;
+  margin-bottom: 0px;
+  font-size: 14px;
+  font-weight: 600;
 }
-.invoices-content .invoices-tabale .custom-table .data-table-parent .data-table .invoices-list-btn{
+.invoices-content
+  .invoices-tabale
+  .custom-table
+  .data-table-parent
+  .data-table
+  .invoices-list-btn {
   text-transform: capitalize;
   min-width: 156px;
 }
-.invoices-content .invoices-tabale .custom-table .data-table-parent .data-table .completed-btn{
+.invoices-content
+  .invoices-tabale
+  .custom-table
+  .data-table-parent
+  .data-table
+  .completed-btn {
   color: #48d968;
   background: #d8ffe0;
 }
-.invoices-content .invoices-tabale .custom-table .data-table-parent .data-table .invoices-btn{
+.invoices-content
+  .invoices-tabale
+  .custom-table
+  .data-table-parent
+  .data-table
+  .invoices-btn {
   color: #69b4d4;
   background: #e1ecf0;
 }
-.invoices-content .invoices-tabale .custom-table .data-table-parent .data-table .pendding-btn{
+.invoices-content
+  .invoices-tabale
+  .custom-table
+  .data-table-parent
+  .data-table
+  .pendding-btn {
   color: #ffab2f;
   background: #ffeacb;
 }
-.invoices-content .invoices-tabale .custom-table .data-table-parent .data-table .mailicon-btn{
-    min-width: 0;
-    padding: 5px;
-    margin-right: 10px;
-    border-radius: 8px;
-    color: #6418c3;
-    background: #f6edfe;
+.invoices-content
+  .invoices-tabale
+  .custom-table
+  .data-table-parent
+  .data-table
+  .mailicon-btn {
+  min-width: 0;
+  padding: 5px;
+  margin-right: 10px;
+  border-radius: 8px;
+  color: #6418c3;
+  background: #f6edfe;
 }
-.invoices-content .invoices-tabale .custom-table .data-table-parent .data-table .graphic{
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    display: inline-block;
-    border-radius: 5px;
-    margin-right: 10px;
-    background-image: linear-gradient(40deg, #efb8ef, #cae9fd);
+.invoices-content
+  .invoices-tabale
+  .custom-table
+  .data-table-parent
+  .data-table
+  .graphic {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  display: inline-block;
+  border-radius: 5px;
+  margin-right: 10px;
+  background-image: linear-gradient(40deg, #efb8ef, #cae9fd);
 }
-.recieved, .Sendrfq-content .custom-table .data-table-parent .data-table .details-btn:focus{
+.recieved,
+.Sendrfq-content
+  .custom-table
+  .data-table-parent
+  .data-table
+  .details-btn:focus {
   box-shadow: none;
 }
-.recieved .custom-table .data-table-parent .data-table .details-btn:focus{
+.recieved .custom-table .data-table-parent .data-table .details-btn:focus {
   box-shadow: none;
 }
 .recieved .custom-table .data-table-parent .data-table th,
-.recieved .custom-table .data-table-parent .data-table td{
+.recieved .custom-table .data-table-parent .data-table td {
   text-align: left;
 }
 
@@ -793,13 +866,13 @@
 }
 
 .request-purpose .custom-table .sort-icon.sort-none:before,
-.request-purpose .custom-table .sort-icon.sort-none:after{
+.request-purpose .custom-table .sort-icon.sort-none:after {
   display: none;
 }
 /* .request-purpose .custom-table .data-table-parent{
   background: #ffffff;
 } */
-.custom-table .data-table-parent .data-table td .status-btn{
+.custom-table .data-table-parent .data-table td .status-btn {
   font-size: 15px;
   font-weight: 600;
   display: block;
@@ -809,7 +882,38 @@
   border-radius: 8px;
   text-transform: capitalize;
 }
-.custom-table .data-table-parent .data-table td .active-btn{
+.custom-table .data-table-parent .data-table td .onahau-btn {
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+  background: #bef3fe;
+  color: #0976b2;
+  border: none;
+  border-radius: 8px;
+  text-transform: capitalize;
+}
+.custom-table .data-table-parent .data-table td .magnolia-btn {
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+  border: none;
+  border-radius: 8px;
+  text-transform: capitalize;
+  color: #6418c3;
+  background: #f6eeff;
+}
+
+.custom-table .data-table-parent .data-table td .green-btn {
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+  border: none;
+  border-radius: 8px;
+  text-transform: capitalize;
+  color: #0f9d58;
+  background: #cdffcc;
+}
+.custom-table .data-table-parent .data-table td .active-btn {
   font-size: 15px;
   font-weight: 600;
   display: block;
@@ -819,16 +923,15 @@
   border-radius: 8px;
   text-transform: capitalize;
 }
-.custom-table .data-table-parent .data-table td a{
+.custom-table .data-table-parent .data-table td a {
   font-size: 15px;
   font-weight: 600;
   text-decoration: underline;
   color: #6418c3;
 }
-.request-purpose .custom-table .data-table-parent .data-table td .warning-btn{
+.request-purpose .custom-table .data-table-parent .data-table td .warning-btn {
   box-shadow: none;
   color: #ffffff;
   border-radius: 6px;
   text-transform: capitalize;
 }
-

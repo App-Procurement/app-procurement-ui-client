@@ -51,29 +51,7 @@ function invoicesData(data) {
           alert.error(response.message);
         }
       },
-      //   if (response.code == 200) {
-      //     dispatch(
-      //       dispatchFunction({
-      //         type: status.SUCCESS,
-      //         data: {
-      //           get_request_status: status.SUCCESS,
-      //           request_data: response.object,
-      //         },
-      //       })
-      //     );
-      //   } else {
-      //     dispatch(
-      //       dispatchFunction({
-      //         type: status.FAILURE,
-      //         data: {
-      //           department_status: status.FAILURE,
-      //           request_data: response,
-      //         },
-      //       })
-      //     );
-      //     alert.error(response.message);
-      //   }
-      // },
+
       (error) => {
         dispatch(
           dispatchFunction({
@@ -103,26 +81,23 @@ function addRequest(data) {
     );
     invoiceServices.addRequest(data).then(
       (response) => {
-        const code = response.status;
+        const code = response.code;
         if (code === 200) {
-          response.json().then((data) => {
-            dispatch(
-              dispatchFunction({
-                type: status.SUCCESS,
-                data: {
-                  add_invoice_status: status.SUCCESS,
-                  addInvoice: data,
-                },
-              })
-            );
-          });
+          dispatch(
+            dispatchFunction({
+              type: status.SUCCESS,
+              data: {
+                add_invoice_status: status.SUCCESS,
+              },
+            })
+          );
+          alert.success("Added Invoice Successfully");
         } else {
           dispatch(
             dispatchFunction({
               type: status.FAILURE,
               data: {
                 add_invoice_status: status.FAILURE,
-                addInvoice: response,
               },
             })
           );
@@ -410,13 +385,6 @@ function updateInvoice(id) {
 }
 
 function dispatchFunction(data) {
-  // if (data.data && data.data.code === 401) {
-  //     commonFunctions.onLogout();
-  //     return {
-  //         type: authConstants.USER_LOGOUT,
-  //         data: null
-  //     };
-  // }
   return {
     type: data.type,
     data: data.data,

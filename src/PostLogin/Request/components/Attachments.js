@@ -1,8 +1,9 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import { Button } from "@mui/material";
+
 import PdfIcon from "../../../assets/images/request/pdf-icon.png";
 
-const Attachments = ({ requestData }) => {
+const Attachments = (props) => {
   return (
     <div className="overview-tabs-contant attechment-tabs-contant active">
       <div className="order-item-table">
@@ -20,7 +21,7 @@ const Attachments = ({ requestData }) => {
               </tr>
             </thead>
             <tbody>
-              {requestData.map((data) => {
+              {props.requestData?.details.document.map((data) => {
                 return (
                   <tr>
                     <td>
@@ -28,11 +29,11 @@ const Attachments = ({ requestData }) => {
                         <Button className="pdf-icon-btn">
                           <img src={PdfIcon} alt="" />
                         </Button>
-                        {data.fileName}
+                        {data.name}
                       </span>
                     </td>
                     <td>
-                      <span>{data.fileSize}</span>
+                      <span>{data.name}</span>
                     </td>
                     <td>
                       <span>
@@ -44,12 +45,12 @@ const Attachments = ({ requestData }) => {
                       <span>
                         <div className="d-inline-block user-image">
                           <img
-                            src={data.uploadedBy[0].profilePic}
+                            src={data.name}
                             alt=""
                             className="attachmentsPic"
                           />
                         </div>
-                        {data.uploadedBy[0].userName}
+                        {data.name}
                       </span>
                     </td>
                   </tr>

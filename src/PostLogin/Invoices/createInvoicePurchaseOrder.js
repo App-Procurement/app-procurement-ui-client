@@ -1,19 +1,22 @@
 import React, { Component } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
 import { connect } from "react-redux";
 import { purchaseOrderAction } from "../../_actions";
 import { status } from "../../_constants";
 import { commonFunctions } from "../../_utilities/commonFunctions";
-import Button from "@material-ui/core/Button";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import CloseIcon from "@mui/icons-material/Close";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { requestForPurposeAction } from "../../_actions";
+
 class createInvoicePurchaseOrder extends Component {
   oredrId;
   constructor(props) {
@@ -140,7 +143,12 @@ class createInvoicePurchaseOrder extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ activeIndex: this.state.activeIndex === index ? -1 : index })}
+                    onClick={() =>
+                      this.setState({
+                        activeIndex:
+                          this.state.activeIndex === index ? -1 : index,
+                      })
+                    }
                   ></i>
                   {this.state.activeIndex === index && (
                     <div className="toggale">
@@ -168,12 +176,14 @@ class createInvoicePurchaseOrder extends Component {
     };
     this.oredrId = this.props.match.params.id;
   }
+
   componentDidMount() {
     this.props.dispatch(
       purchaseOrderAction.getPurchaseOrder({ id: this.oredrId })
     );
     this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
   }
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.purchase_order_status !== this.props.purchase_order_status &&
@@ -186,7 +196,7 @@ class createInvoicePurchaseOrder extends Component {
     }
     if (
       this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
+        prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -206,7 +216,8 @@ class createInvoicePurchaseOrder extends Component {
       );
     }
     if (
-      this.props.delete_PO_list_item_status !== prevProps.delete_PO_list_item_status &&
+      this.props.delete_PO_list_item_status !==
+        prevProps.delete_PO_list_item_status &&
       this.props.delete_PO_list_item_status === status.SUCCESS
     ) {
       this.props.dispatch(
@@ -214,6 +225,7 @@ class createInvoicePurchaseOrder extends Component {
       );
     }
   }
+
   openEditModal = () => {
     const { activeIndex, tableData } = this.state;
     if (activeIndex >= 0) {
@@ -224,11 +236,13 @@ class createInvoicePurchaseOrder extends Component {
       openEditDialog: !this.state.openEditDialog,
     });
   };
+
   closeEditModal = () => {
     this.setState({
       openEditDialog: !this.state.openEditDialog,
     });
   };
+
   validateUpdate = (update) => {
     const validObj = {
       isValid: true,
@@ -319,19 +333,20 @@ class createInvoicePurchaseOrder extends Component {
     retData.isValid = isValid;
     return retData;
   };
+
   handleUpdate = (e) => {
     const { updateValue } = this.state;
     const { name, value } = e.target;
     updateValue[name] = value;
     this.setState({ updateValue });
   };
+
   updateDataValues = () => {
     const { updateValue } = this.state;
     let updateForm = this.validateUpdate(true);
     this.setState({ update: true });
     if (updateForm.isValid) {
       updateValue.totalCost = updateValue.price * updateValue.quantity;
-      // tableData.detailsList[activeIndex] = updateValue
       this.setState({ openEditDialog: !this.state.openEditDialog });
       this.props.dispatch(
         purchaseOrderAction.updatePurcahseOrder({
@@ -343,11 +358,17 @@ class createInvoicePurchaseOrder extends Component {
   };
 
   handleDelete = (index, id) => {
-    const { tableData, activeIndex } = this.state
+    const { tableData, activeIndex } = this.state;
     let value = tableData[activeIndex];
-    this.props.dispatch(purchaseOrderAction.deletePOListItem({ id: this.oredrId, value: { ...value } }));
+    this.props.dispatch(
+      purchaseOrderAction.deletePOListItem({
+        id: this.oredrId,
+        value: { ...value },
+      })
+    );
     this.setState({ activeIndex: -1 });
   };
+
   handleApprove = (status) => {
     const { approveOrder } = this.state;
     this.props.dispatch(
@@ -358,6 +379,7 @@ class createInvoicePurchaseOrder extends Component {
     );
     this.props.history.push(`/postlogin/generatepo`);
   };
+
   render() {
     const {
       approveOrder,
@@ -370,6 +392,7 @@ class createInvoicePurchaseOrder extends Component {
       tableData,
     } = this.state;
     let updateForm = this.validateUpdate(update);
+
     return (
       <div>
         <div className="main-content">
@@ -397,7 +420,10 @@ class createInvoicePurchaseOrder extends Component {
                           </Button>
                         </li>
                         <li>
-                          <Button variant="contained" className="new-requisition-btn">
+                          <Button
+                            variant="contained"
+                            className="new-requisition-btn"
+                          >
                             Send to vendor
                           </Button>
                         </li>
@@ -608,67 +634,6 @@ class createInvoicePurchaseOrder extends Component {
                   )}
                 </div>
               </div>
-              {/* <div className="payment-and-shiping">
-              <div className="heading">
-                <h4>Payment and Shiping Terms</h4>
-              </div>
-              <div className="payment-and-shiping-content">
-                <div className="row">
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4 mb-md-5">
-                    <div className="payment-shiping-text">
-                      <label>Payment Terms</label>
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
-                        </NativeSelect>
-                      </FormControl>
-                    </div>
-                  </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4 mb-md-5">
-                    <div className="payment-shiping-text">
-                      <label>Shipping Method</label>
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
-                        </NativeSelect>
-                      </FormControl>
-                    </div>
-                  </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4">
-                    <div className="payment-shiping-text">
-                      <label>Payment With</label>
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
-                        </NativeSelect>
-                      </FormControl>
-                    </div>
-                  </div>
-                  <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12 mb-4">
-                    <div className="payment-shiping-text">
-                      <label>Shipping Terms</label>
-                      <FormControl className="payment-select-menu">
-                        <NativeSelect name="status">
-                          <option value="">-Select-</option>
-                          <option value={10}>Saab</option>
-                          <option value={20}>Mercedes</option>
-                          <option value={30}>Audi</option>
-                        </NativeSelect>
-                      </FormControl>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
               <div className="order-Line-items">
                 <div className="heading">
                   <h4>Order Line Items 5</h4>
@@ -698,7 +663,10 @@ class createInvoicePurchaseOrder extends Component {
                   <div className="row">
                     <div className="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-12 mb-5">
                       <div className="massage-type">
-                        <textarea name="note" defaultValue={"Need for Office Setup!"}></textarea>
+                        <textarea
+                          name="note"
+                          defaultValue={"Need for Office Setup!"}
+                        ></textarea>
                       </div>
                     </div>
                   </div>
@@ -734,10 +702,7 @@ class createInvoicePurchaseOrder extends Component {
             className="custom-dialog edit-dialog"
           >
             <div className="custom-dialog-head">
-              <DialogTitle
-                id="form-dialog-title"
-                className="dialog-heading"
-              >
+              <DialogTitle id="form-dialog-title" className="dialog-heading">
                 Edit
               </DialogTitle>
               <Button onClick={this.closeEditModal} className="modal-close-btn">
@@ -880,6 +845,7 @@ class createInvoicePurchaseOrder extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const {
     purchase_order_status,
@@ -887,18 +853,16 @@ const mapStateToProps = (state) => {
     supplier_category_list_status,
     supplier_category_list_data,
     update_purchase_status,
-    delete_PO_list_item_status
+    delete_PO_list_item_status,
   } = state.procurement;
 
-
-  console.log("pruchase oreder",purchase_order_data)
   return {
     purchase_order_status,
     purchase_order_data,
     supplier_category_list_status,
     supplier_category_list_data,
     update_purchase_status,
-    delete_PO_list_item_status
+    delete_PO_list_item_status,
   };
 };
 

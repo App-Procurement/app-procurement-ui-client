@@ -2,26 +2,16 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { io } from "socket.io-client";
-import Card from "@material-ui/core/Card";
+import {Card ,Button}from "@mui/material";
 import { ChatRoomActions } from "../../_actions";
 import { status } from "../../_constants";
-import Button from "@material-ui/core/Button";
 import officeSuppliesImg from "../../assets/images/chatroom/office-supplies-img.png";
-import cardIimg1 from "../../assets/images/chatroom/card-img1.png";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import Avatar from "@material-ui/core/Avatar";
-import AvatarGroup from "@material-ui/lab/AvatarGroup";
-import IconButton from "@material-ui/core/IconButton";
-import { commonFunctions } from "../../_utilities";
 import SimpleBar from "simplebar-react";
-import UserInfoImg from "../../assets/images/message/user-info-img.png";
 import UserProfileImg from "../../assets/images/message/user-profile-img.png";
 import SettingIcon from "../../assets/images/message/setting-icon.png";
 import ClearInvoiceImg from "../../assets/images/message/clear-invoice-img.png";
 import SocialMediaImg1 from "../../assets/images/message/social-media-img1.png";
 import SocialMediaImg2 from "../../assets/images/message/social-media-img2.png";
-
-//import PaperclipiIcon from '../../assets/images/message/paperclipi-icon.png';
 
 class Message extends React.Component {
   socket;
@@ -56,6 +46,7 @@ class Message extends React.Component {
       }
     }, 2000);
   }
+
   componentDidUpdate(prevProps) {
     if (
       this.props.get_contacts_status !== prevProps.get_contacts_status &&
@@ -128,23 +119,7 @@ class Message extends React.Component {
 
   handleChange = (e) => {
     const { value, name } = e.target;
-    console.log(value, "name", name);
     this.setState({ [name]: value });
-    let contacts = JSON.parse(JSON.stringify(this.props.get_contacts_data));
-    console.log(contacts);
-    // let searchContacts = [];
-    // if (name === "searchChat" && value) {
-    //   for (let i = 0; i < contacts.length; i++) {
-    //     if (
-    //       contacts[i].name.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    //     ) {
-    //       searchContacts.push(contacts[i]);
-    //     }
-    //   }
-    // } else {
-    //   searchContacts = contacts;
-    // }
-    // this.setState({ rooms: searchContacts });
   };
 
   sendMessage = () => {
@@ -169,8 +144,9 @@ class Message extends React.Component {
         const { payload } = attachment[i];
         retData.push(
           <div
-            className={`doc-inner-box ${attachment.length === 1 ? "one-file" : ""
-              }`}
+            className={`doc-inner-box ${
+              attachment.length === 1 ? "one-file" : ""
+            }`}
             key={`${i}_docs`}
           >
             <div className="doc-attachment-files">
@@ -202,7 +178,6 @@ class Message extends React.Component {
               <div className="user-text">
                 <label>{name}</label>
                 <p>{category}</p>
-                {/* <p>office supply team</p> */}
               </div>
             </div>
             <div className="user-time">
@@ -215,6 +190,7 @@ class Message extends React.Component {
     } else retData.push(<div key="empty"> NO CONTACT FOUND...</div>);
     return retData;
   };
+
   openUserInfo = () => {
     this.setState({
       openUserInfo: !this.state.openUserInfo,
@@ -226,32 +202,19 @@ class Message extends React.Component {
   };
 
   render() {
-    const { t } = withTranslation;
     const {
       message,
-      searchChat,
       prevChats,
       userName,
       openUserInfo,
       activeKey,
-      rooms,
     } = this.state;
     return (
       <div className="main-content">
         <div className="message-section">
           <div className="chatroom-head">
             <h3>{this.props.t("Message")}</h3>
-            {/* <Button
-              variant="contained"
-              className="create-room-btn"
-              onClick={() => this.props.history.push('/postlogin/chatroom/createchatroom')}
-            >
-              Create Room
-            </Button> */}
           </div>
-          {/* <div className="chatroom-cards ">
-            <div className="chatroom-inner-section">{this.handleRooms()}</div>
-          </div> */}
           <div className="chatroom-inner-content">
             <div className="chatroom-content-left">
               <div className="chatroom-inner-head-left">
@@ -279,7 +242,6 @@ class Message extends React.Component {
                     type="text"
                     name="searchChat"
                     className="control-form"
-                    // value={searchChat}
                     onChange={this.handleChange}
                     placeholder="Search"
                   />
@@ -294,10 +256,11 @@ class Message extends React.Component {
               <SimpleBar className="user-list">{this.chatRooms()}</SimpleBar>
             </div>
             <div
-              className={`${openUserInfo
-                ? "chatroom-content-right"
-                : "chatroom-content-right full"
-                }`}
+              className={`${
+                openUserInfo
+                  ? "chatroom-content-right"
+                  : "chatroom-content-right full"
+              }`}
             >
               <div className="chatroom-inner-head-right">
                 <div className="user-profile">
@@ -462,15 +425,6 @@ class Message extends React.Component {
                   </span>
                   <p>User Info</p>
                 </div>
-                {/* <div className="user-profile">
-                  <div className="user-profile-details">
-                    <div className="user-profile-content">
-                      <img src={UserInfoImg} alt="" />
-                      <label>James Lycus</label>
-                      <span>Approver Level 1</span>
-                    </div>
-                  </div>
-                </div> */}
                 <div className="user-profile-details">
                   <div className="user-profile-content">
                     <div className="user-img">
@@ -524,7 +478,6 @@ class Message extends React.Component {
                     >
                       Links
                     </li>
-                    {/* <li onClick={() => this.handelKey(1)} className={activeKey === 1 ? 'active' : ''}>DOCS</li> */}
                   </ul>
                 </div>
                 {activeKey === 0 && (
@@ -646,16 +599,6 @@ class Message extends React.Component {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="user-info-media-buttons">
-                      <ul>
-                        <li>
-                          <Button variant="contained" size="large" className='group-btn clear-btn'><i className="clear-btn far fa-comment-alt-lines"></i>Clear Chat</Button>
-                        </li>
-                        <li>
-                          <Button variant="contained" size="large" className='group-btn delete-btn'><i className="delete-btn far fa-trash-alt"></i>Delete Chat</Button>
-                        </li>
-                      </ul>
-                    </div> */}
                   </div>
                 )}
                 {activeKey === 1 && (
@@ -759,56 +702,6 @@ class Message extends React.Component {
                     </div>
                   </div>
                 )}
-
-                {
-                  // activeKey === 2 &&
-                  // <div className="user-info-tab docs active">
-                  //   <div className="docs-tab-contant">
-                  //     <ul>
-                  //       <li>
-                  //         <div className="attach">
-                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                  //           <p>Approval Document</p>
-                  //         </div>
-                  //       </li>
-                  //       <li>
-                  //         <div className="attach">
-                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                  //           <p>RFQ</p>
-                  //         </div>
-                  //       </li>
-                  //       <li>
-                  //         <div className="attach">
-                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                  //           <p>Final Documents</p>
-                  //         </div>
-                  //       </li>
-                  //       <li>
-                  //         <div className="attach">
-                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                  //           <p>Approval Document</p>
-                  //         </div>
-                  //       </li>
-                  //       <li>
-                  //         <div className="attach">
-                  //           <div className="icon"><i class="fas fa-file-pdf"></i></div>
-                  //           <p>Approval Document</p>
-                  //         </div>
-                  //       </li>
-                  //     </ul>
-                  //   </div>
-                  //   <div className="user-info-media-buttons">
-                  //     <ul>
-                  //       <li>
-                  //         <Button variant="contained" size="large" className='group-btn clear-btn'><i className="clear-btn far fa-comment-alt-lines"></i>Clear Chat</Button>
-                  //       </li>
-                  //       <li>
-                  //         <Button variant="contained" size="large" className='group-btn delete-btn'><i className="delete-btn far fa-trash-alt"></i>Delete Chat</Button>
-                  //       </li>
-                  //     </ul>
-                  //   </div>
-                  // </div>
-                }
               </div>
             )}
           </div>
@@ -817,10 +710,12 @@ class Message extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const { get_contacts_status, get_contacts_data } = state.procurement;
   return { get_contacts_status, get_contacts_data };
 };
+
 const messageComponent = withTranslation()(connect(mapStateToProps)(Message));
 
 export default messageComponent;

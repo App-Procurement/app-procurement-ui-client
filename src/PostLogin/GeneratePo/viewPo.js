@@ -1,32 +1,38 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
-import { DatePicker } from '@y0c/react-datepicker';
-import 'rc-calendar/assets/index.css';
-import '@y0c/react-datepicker/assets/styles/calendar.scss';
-import 'simplebar/dist/simplebar.min.css';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
-import { connect } from 'react-redux';
-import { purchaseOrderAction } from '../../_actions/purchaseOrder.action';
-import { status } from '../../_constants';
-import { commonFunctions } from '../../_utilities';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import React, { Component } from "react";
+import {
+  Button,
+  IconButton,
+  TextareaAutosize,
+} from "@mui/material";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { DatePicker } from "@y0c/react-datepicker";
+import "rc-calendar/assets/index.css";
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
+import "simplebar/dist/simplebar.min.css";
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
+import { connect } from "react-redux";
+import { purchaseOrderAction } from "../../_actions/purchaseOrder.action";
+import { status } from "../../_constants";
+import { commonFunctions } from "../../_utilities";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+
 
 class ViewPurchaseOrder extends Component {
   constructor(props) {
     super(props);
     this.state = {
       requiData: {
-        otherTerms: '',
+        otherTerms: "",
       },
       purchaseOrder: {},
     };
   }
+
   componentDidMount() {
-    this.props.dispatch(purchaseOrderAction.getPurchaseOrder({ id: this.props.match.params.id }));
+    this.props.dispatch(
+      purchaseOrderAction.getPurchaseOrder({ id: this.props.match.params.id })
+    );
   }
 
   componentDidUpdate(prevProps) {
@@ -41,6 +47,7 @@ class ViewPurchaseOrder extends Component {
       }
     }
   }
+
   handleStateChange = (e) => {
     const { name, value } = e.target;
     const { requiData } = this.state;
@@ -70,7 +77,7 @@ class ViewPurchaseOrder extends Component {
   validate = (isSubmitted) => {
     const validObj = {
       isValid: true,
-      message: '',
+      message: "",
     };
     let isValid = true;
     const retData = {
@@ -82,7 +89,7 @@ class ViewPurchaseOrder extends Component {
       if (!requiData.conditionText) {
         retData.conditionText = {
           isValid: false,
-          message: ' Other terms and Condition is required',
+          message: " Other terms and Condition is required",
         };
         isValid = false;
       }
@@ -94,7 +101,11 @@ class ViewPurchaseOrder extends Component {
   displayTableData = () => {
     const { purchaseOrder } = this.state;
     let retData = [];
-    if (purchaseOrder && purchaseOrder.requistionItem && purchaseOrder.requistionItem.length > 0) {
+    if (
+      purchaseOrder &&
+      purchaseOrder.requistionItem &&
+      purchaseOrder.requistionItem.length > 0
+    ) {
       for (let i = 0; i < purchaseOrder.requistionItem.length; i++) {
         let data = purchaseOrder.requistionItem[i];
         retData.push(
@@ -114,15 +125,23 @@ class ViewPurchaseOrder extends Component {
   render() {
     const { requiData, isSubmitted, purchaseOrder } = this.state;
     const errorData = this.validate(isSubmitted);
-    let startDate = commonFunctions.convertDateToString(new Date(purchaseOrder.startDate));
-    let deliveryDate = commonFunctions.convertDateToString(new Date(purchaseOrder.deliveryDate));
+    let startDate = commonFunctions.convertDateToString(
+      new Date(purchaseOrder.startDate)
+    );
+    let deliveryDate = commonFunctions.convertDateToString(
+      new Date(purchaseOrder.deliveryDate)
+    );
     return (
       <div className="main-content">
         <div className="generate-content">
           <div className="generate-order">
             <div className="heading">
               <IconButton className="head-icon">
-                <KeyboardBackspaceIcon onClick={() => this.props.history.push(`/postlogin/generatepo`)} />
+                <KeyboardBackspaceIcon
+                  onClick={() =>
+                    this.props.history.push(`/postlogin/generatepo`)
+                  }
+                />
               </IconButton>
               <div className="d-inline-block">
                 <h4 className="d-block mb-0">Generate Purchase Order</h4>
@@ -139,15 +158,21 @@ class ViewPurchaseOrder extends Component {
                     </li>
                     <li>
                       <label>Requestor</label>
-                      {purchaseOrder.createdBy && <span>{purchaseOrder.createdBy}</span>}
+                      {purchaseOrder.createdBy && (
+                        <span>{purchaseOrder.createdBy}</span>
+                      )}
                     </li>
                     <li>
                       <label>Department</label>
-                      {purchaseOrder.department && <span>{purchaseOrder.department.name}</span>}
+                      {purchaseOrder.department && (
+                        <span>{purchaseOrder.department.name}</span>
+                      )}
                     </li>
                     <li>
                       <label>Requisition Type</label>
-                      {purchaseOrder.requisitionType && <span>{purchaseOrder.requisitionType}</span>}
+                      {purchaseOrder.requisitionType && (
+                        <span>{purchaseOrder.requisitionType}</span>
+                      )}
                     </li>
                     <li>
                       <label>Priority</label>
@@ -161,8 +186,9 @@ class ViewPurchaseOrder extends Component {
                       <label>Requisition Total</label>
                       {purchaseOrder.totalPrice && (
                         <span>
-                          {' '}
-                          {purchaseOrder.currency.code} {purchaseOrder.totalPrice}
+                          {" "}
+                          {purchaseOrder.currency.code}{" "}
+                          {purchaseOrder.totalPrice}
                         </span>
                       )}
                     </li>
@@ -183,7 +209,11 @@ class ViewPurchaseOrder extends Component {
                     <li>
                       <label>Date Created </label>
                       {purchaseOrder.createdOn && (
-                        <span>{commonFunctions.convertDateToString(new Date(purchaseOrder.createdOn))}</span>
+                        <span>
+                          {commonFunctions.convertDateToString(
+                            new Date(purchaseOrder.createdOn)
+                          )}
+                        </span>
                       )}
                     </li>
                     <li>
@@ -192,7 +222,9 @@ class ViewPurchaseOrder extends Component {
                     </li>
                     <li>
                       <label>Status</label>
-                      {purchaseOrder.status && <span>{purchaseOrder.status}</span>}
+                      {purchaseOrder.status && (
+                        <span>{purchaseOrder.status}</span>
+                      )}
                     </li>
                     <li>
                       <label>Extra Budgetory</label>
@@ -225,7 +257,9 @@ class ViewPurchaseOrder extends Component {
                         <th>Amount</th>
                       </tr>
                     </thead>
-                    <tbody className="item-content">{this.displayTableData()}</tbody>
+                    <tbody className="item-content">
+                      {this.displayTableData()}
+                    </tbody>
                   </table>
                 </div>
               </SimpleBar>
@@ -233,21 +267,35 @@ class ViewPurchaseOrder extends Component {
                 <h5>P.O Parameters</h5>
               </div>
               <div className="form-group row col-form-group">
-                <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">Start Date</label>
+                <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">
+                  Start Date
+                </label>
                 <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9 col-form-field">
-                  <DatePicker startText="Start" placeholder={deliveryDate} disabled="false" />
-                  <CalendarTodayTwoToneIcon className="calendar-icon" />
+                  <DatePicker
+                    startText="Start"
+                    placeholder={deliveryDate}
+                    disabled="false"
+                  />
+                  <CalendarTodayIcon className="calendar-icon" />
                 </div>
               </div>
               <div className="form-group row col-form-group">
-                <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">Delivery Date</label>
+                <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">
+                  Delivery Date
+                </label>
                 <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9 col-form-field">
-                  <DatePicker startText="End" disabled="false" placeholder={startDate} />
-                  <CalendarTodayTwoToneIcon className="calendar-icon" />
+                  <DatePicker
+                    startText="End"
+                    disabled="false"
+                    placeholder={startDate}
+                  />
+                  <CalendarTodayIcon className="calendar-icon" />
                 </div>
               </div>
               <div className="form-group row col-form-group">
-                <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">Payment Terms</label>
+                <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">
+                  Payment Terms
+                </label>
                 <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9 col-form-field">
                   <TextareaAutosize
                     name="payment"
@@ -259,7 +307,9 @@ class ViewPurchaseOrder extends Component {
                 </div>
               </div>
               <div className="form-group row col-form-group">
-                <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">Other terms and Condition</label>
+                <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">
+                  Other terms and Condition
+                </label>
                 <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9 col-form-field">
                   <TextareaAutosize
                     name="conditionText"
@@ -269,7 +319,9 @@ class ViewPurchaseOrder extends Component {
                     placeholder=""
                     onChange={this.handleStateChange}
                   />
-                  <span className="d-block w-100 text-danger">{errorData.conditionText.message}</span>
+                  <span className="d-block w-100 text-danger">
+                    {errorData.conditionText.message}
+                  </span>
                 </div>
               </div>
               <div className="form-group row col-form-group">

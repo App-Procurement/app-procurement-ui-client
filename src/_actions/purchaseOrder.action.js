@@ -28,23 +28,27 @@ function searchPurchaseOrder(data) {
       (response) => {
         const code = response.code;
         if (code === 200) {
-          response.json().then(data => {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                search_purchase_status: status.SUCCESS,
-                search_purchase_order: data.object
-              }
-            }));
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  search_purchase_status: status.SUCCESS,
+                  search_purchase_order: data.object,
+                },
+              })
+            );
           });
         } else {
-          dispatch(dispatchFunction({
-            type: status.FAILURE,
-            data: {
-              search_purchase_status: status.FAILURE,
-              search_purchase_order: response
-            }
-          }));
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                search_purchase_status: status.FAILURE,
+                search_purchase_order: response,
+              },
+            })
+          );
           alert.error(response.message);
         }
       },
@@ -70,8 +74,8 @@ function searchApprovePurchaseOrder(data) {
       dispatchFunction({
         type: status.IN_PROGRESS,
         data: {
-          approvepo_status: status.IN_PROGRESS,
-          approvepo_data: null,
+          purchase_status: status.IN_PROGRESS,
+          purchase_data: null,
         },
       })
     );
@@ -79,22 +83,24 @@ function searchApprovePurchaseOrder(data) {
       (response) => {
         const code = response.status;
         if (code === 200) {
-          response.json().then(data => {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                approvepo_status: status.SUCCESS,
-                approvepo_data: data.object
-              }
-            }));
-          })
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  purchase_status: status.SUCCESS,
+                  purchase_data: data.object,
+                },
+              })
+            );
+          });
         } else {
           dispatch(
             dispatchFunction({
               type: status.FAILURE,
               data: {
-                approvepo_status: status.FAILURE,
-                approvepo_data: response,
+                purchase_status: status.FAILURE,
+                purchase_data: response,
               },
             })
           );
@@ -106,8 +112,8 @@ function searchApprovePurchaseOrder(data) {
           dispatchFunction({
             type: status.FAILURE,
             data: {
-              approvepo_status: status.FAILURE,
-              approvepo_data: error.message,
+              purchase_status: status.FAILURE,
+              purchase_data: error.message,
             },
           })
         );
@@ -184,23 +190,27 @@ function getPurchaseOrder(data) {
       (response) => {
         const code = response.status;
         if (code === 200) {
-          response.json().then(data => {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                purchase_order_status: status.SUCCESS,
-                purchase_order_data: data.object
-              }
-            }));
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  purchase_order_status: status.SUCCESS,
+                  purchase_order_data: data.object,
+                },
+              })
+            );
           });
         } else {
-          dispatch(dispatchFunction({
-            type: status.FAILURE,
-            data: {
-              purchase_order_status: status.FAILURE,
-              purchase_order_data: response
-            }
-          }));
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                purchase_order_status: status.FAILURE,
+                purchase_order_data: response,
+              },
+            })
+          );
           alert.error(response.message);
         }
       },
@@ -234,23 +244,27 @@ function deletePOListItem(data) {
       (response) => {
         const code = response.status;
         if (code === 200) {
-          response.json().then(data => {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                delete_PO_list_item_status: status.SUCCESS,
-                delete_PO_list_item: data.object
-              }
-            }));
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  delete_PO_list_item_status: status.SUCCESS,
+                  delete_PO_list_item: data.object,
+                },
+              })
+            );
           });
         } else {
-          dispatch(dispatchFunction({
-            type: status.FAILURE,
-            data: {
-              delete_PO_list_item_status: status.FAILURE,
-              delete_PO_list_item: response
-            }
-          }));
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                delete_PO_list_item_status: status.FAILURE,
+                delete_PO_list_item: response,
+              },
+            })
+          );
           alert.error(response.message);
         }
       },
@@ -284,24 +298,28 @@ function addPurchaseOrder(data) {
       (response) => {
         const code = response.status;
         if (code === 200) {
-          response.json().then(data => {
-            dispatch(dispatchFunction({
-              type: status.SUCCESS,
-              data: {
-                add_purchase_order_status: status.SUCCESS,
-                addPurchaseOrder: data
-              }
-            }));
-            alert.success('Purchase order added successfully');
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
+                data: {
+                  add_purchase_order_status: status.SUCCESS,
+                  addPurchaseOrder: data,
+                },
+              })
+            );
+            alert.success("Purchase order added successfully");
           });
         } else {
-          dispatch(dispatchFunction({
-            type: status.FAILURE,
-            data: {
-              add_purchase_order_status: status.FAILURE,
-              addPurchaseOrder: response
-            }
-          }));
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                add_purchase_order_status: status.FAILURE,
+                addPurchaseOrder: response,
+              },
+            })
+          );
           alert.error(response.message);
         }
       },
@@ -328,8 +346,8 @@ function approvePurchaseOrder(data) {
         type: status.IN_PROGRESS,
         data: {
           update_approve_po_status: status.IN_PROGRESS,
-          update_approve_po_data: null
-        }
+          update_approve_po_data: null,
+        },
       })
     );
     purchaseOrderServices.approvePO(data).then(
@@ -340,8 +358,8 @@ function approvePurchaseOrder(data) {
               type: status.SUCCESS,
               data: {
                 update_approve_po_status: status.SUCCESS,
-                update_approve_po_data: response.object
-              }
+                update_approve_po_data: response.object,
+              },
             })
           );
           alert.success(response.message);
@@ -351,8 +369,8 @@ function approvePurchaseOrder(data) {
               type: status.FAILURE,
               data: {
                 update_approve_po_status: status.FAILURE,
-                update_approve_po_data: response
-              }
+                update_approve_po_data: response,
+              },
             })
           );
           alert.error(response.message);
@@ -364,8 +382,8 @@ function approvePurchaseOrder(data) {
             type: status.FAILURE,
             data: {
               update_approve_po_status: status.FAILURE,
-              update_approve_po_data: error.message
-            }
+              update_approve_po_data: error.message,
+            },
           })
         );
         alert.error(error.message);
@@ -381,8 +399,8 @@ function updatePurcahseOrder(data) {
         type: status.IN_PROGRESS,
         data: {
           update_purchase_status: status.IN_PROGRESS,
-          update_purchase_data: null
-        }
+          update_purchase_data: null,
+        },
       })
     );
     purchaseOrderServices.updatePurcahseOrder(data).then(
@@ -393,8 +411,8 @@ function updatePurcahseOrder(data) {
               type: status.SUCCESS,
               data: {
                 update_purchase_status: status.SUCCESS,
-                update_purchase_data: response.object
-              }
+                update_purchase_data: response.object,
+              },
             })
           );
           alert.success(response.message);
@@ -404,8 +422,8 @@ function updatePurcahseOrder(data) {
               type: status.FAILURE,
               data: {
                 update_purchase_status: status.FAILURE,
-                update_purchase_data: response
-              }
+                update_purchase_data: response,
+              },
             })
           );
           alert.error(response.message);
@@ -417,8 +435,8 @@ function updatePurcahseOrder(data) {
             type: status.FAILURE,
             data: {
               update_purchase_status: status.FAILURE,
-              update_purchase_data: error.message
-            }
+              update_purchase_data: error.message,
+            },
           })
         );
         alert.error(error.message);
@@ -428,13 +446,6 @@ function updatePurcahseOrder(data) {
 }
 
 function dispatchFunction(data) {
-  // if (data.data && data.data.code === 401) {
-  //     commonFunctions.onLogout();
-  //     return {
-  //         type: authConstants.USER_LOGOUT,
-  //         data: null
-  //     };
-  // }
   return {
     type: data.type,
     data: data.data,

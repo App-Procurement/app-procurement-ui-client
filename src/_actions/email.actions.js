@@ -77,7 +77,6 @@ function searchallemails(data) {
     );
     emailServices.searchallemails(data).then(
       (response) => {
-
         if (response.code === 200) {
           dispatch(
             dispatchFunction({
@@ -339,13 +338,6 @@ function searchallinboxemails(data) {
 }
 
 function dispatchFunction(data) {
-  // if (data.data && data.data.code === 401) {
-  //     commonFunctions.onLogout();
-  //     return {
-  //         type: authConstants.USER_LOGOUT,
-  //         data: null
-  //     };
-  // }
   return {
     type: data.type,
     data: data.data,

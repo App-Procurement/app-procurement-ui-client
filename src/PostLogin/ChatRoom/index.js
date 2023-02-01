@@ -1,16 +1,24 @@
 import React from "react";
+import {
+  Button,
+  Avatar,
+  FormControl,
+  NativeSelect,
+  IconButton,
+  Dialog,
+  DialogTitle,
+} from "@mui/material";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { io } from "socket.io-client";
 import { ChatRoomActions } from "../../_actions";
 import { status } from "../../_constants";
-import Button from "@material-ui/core/Button";
 import officeSuppliesImg from "../../assets/images/chatroom/office-supplies-img.png";
 import cardIimg1 from "../../assets/images/chatroom/card-img1.png";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import Avatar from "@material-ui/core/Avatar";
-import AvatarGroup from "@material-ui/lab/AvatarGroup";
-import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { AvatarGroup } from "@mui/material";
+// import AvatarGroup from "@material-ui/lab/AvatarGroup";
+
 import { commonFunctions } from "../../_utilities";
 import SimpleBar from "simplebar-react";
 
@@ -44,6 +52,7 @@ class ChatRoom extends React.Component {
       }
     }, 2000);
   }
+
   componentDidUpdate(prevProps) {
     if (
       this.props.get_contacts_status !== prevProps.get_contacts_status &&
@@ -122,26 +131,10 @@ class ChatRoom extends React.Component {
     }
     return retData;
   };
+
   handleChange = (e) => {
     const { value, name } = e.target;
-    console.log(value, "name", name);
     this.setState({ [name]: value });
-    let contacts = JSON.parse(JSON.stringify(this.props.get_contacts_data));
-    console.log(contacts);
-    // let searchContacts = [];
-    // if (name === "searchChat" && value) {
-    //   for (let i = 0; i < contacts.length; i++) {
-    //     if (
-    //       contacts[i].name.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    //     ) {
-    //       searchContacts.push(contacts[i]);
-    //     }
-    //   }
-    // } else {
-    //   searchContacts = contacts;
-    // }
-    // this.setState({ rooms: searchContacts });
-  
   };
 
   sendMessage = () => {
@@ -210,8 +203,7 @@ class ChatRoom extends React.Component {
   };
 
   render() {
-    const { t } = withTranslation;
-    const { message, searchChat, prevChats, userName, rooms } = this.state;
+    const { message, searchChat, prevChats, userName } = this.state;
     return (
       <div className="main-content">
         <div className="chatroom-section">
@@ -236,11 +228,9 @@ class ChatRoom extends React.Component {
                 <div className="chatroom-content-left">
                   <div className="chatroom-inner-head-left">
                     <Button variant="contained" className="supplies-team-btn">
-                      {" "}
                       Office Supply Team
                     </Button>
                     <Button variant="contained" className="chat-btn">
-                      {" "}
                       All Chats
                     </Button>
                   </div>
@@ -405,10 +395,12 @@ class ChatRoom extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const { get_contacts_status, get_contacts_data } = state.procurement;
   return { get_contacts_status, get_contacts_data };
 };
+
 const Chat = withTranslation()(connect(mapStateToProps)(ChatRoom));
 
 export default Chat;

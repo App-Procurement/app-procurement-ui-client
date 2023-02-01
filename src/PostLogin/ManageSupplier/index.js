@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import Loader from "react-js-loader";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import { Link } from "react-router-dom";
@@ -7,18 +7,23 @@ import { status } from "../../_constants";
 import { manageSupplierAction } from "../../_actions";
 import Table from "../../Table/Table";
 import { connect } from "react-redux";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import Dialog from "@material-ui/core/Dialog";
-import { requestForPurposeAction } from "../../_actions";
+import CloseIcon from "@mui/icons-material/Close";
+import { requestForPurposeAction, productActions } from "../../_actions";
 import { commonFunctions } from "../../_utilities";
+import {
+  Dialog,
+  DialogTitle,
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
 class ManageSupplier extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
+      productListData: [],
+      searchSupplierList: [],
       productActiveIndex: -1,
       supplierActiveIndex: -1,
       supplierColumn: [
@@ -35,22 +40,17 @@ class ManageSupplier extends Component {
         },
         {
           label: "Supplier",
-          key: "supplier",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requisitions-no"}>{value}</span>
-              </td>
-            );
-          },
+          key: "name",
         },
         {
           label: "Account Holder Name",
-          key: "accountHolderName",
+          key: "bankDetails",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+              <td key={`${Math.random()}_${value.accountHolderName}`}>
+                <span className={"department-value"}>
+                  {value.accountHolderName}
+                </span>
               </td>
             );
           },
@@ -58,21 +58,14 @@ class ManageSupplier extends Component {
         {
           label: "Email",
           key: "email",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Currencies",
-          key: "currency",
+          key: "bankDetails",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>{value}</span>
+              <td key={`${Math.random()}_${value.currency.code}`}>
+                <span className={"requestor"}>{value.currency.code}</span>
               </td>
             );
           },
@@ -80,25 +73,26 @@ class ManageSupplier extends Component {
         {
           label: "Payment Term",
           key: "paymentTerms",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Status",
           key: "status",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
+              <td key={`${Math.random()}_${value.status}`}>
                 <Button
                   variant="outlined"
-                  className="department-value active-btn "
+                  className={
+                    value.status === "ready"
+                      ? "department-value green-btn"
+                      : value.status === "outstanding"
+                      ? "department-value status-btn"
+                      : value.status === "rejected"
+                      ? "department-value onahau-btn"
+                      : "department-value magnolia-btn"
+                  }
                 >
-                  {value}
+                  {value.status}
                 </Button>
               </td>
             );
@@ -115,7 +109,10 @@ class ManageSupplier extends Component {
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
                     onClick={() =>
-                      this.setState({ supplierActiveIndex: this.state.supplierActiveIndex === index ? -1 : index })
+                      this.setState({
+                        supplierActiveIndex:
+                          this.state.supplierActiveIndex === index ? -1 : index,
+                      })
                     }
                   ></i>
                   {this.state.supplierActiveIndex === index && (
@@ -157,56 +154,30 @@ class ManageSupplier extends Component {
         },
         {
           label: "Picture",
-          key: "productImgUrl",
+          key: "imgUrl",
           renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                {/* <span className={'requisitions-no'}>{value}</span> */}
-                <img alt={value} src={value} height="40px" width="40px" />
-              </td>
-            );
+            return <img src={value} height="40px" width="40px" />;
           },
         },
         {
           label: "Item Name",
-          key: "productName",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
+          key: "itemName",
         },
         {
           label: "Item Type",
           key: "itemType",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Unit",
           key: "unit",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Supplier",
           key: "supplier",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>{value}</span>
+              <td key={`${Math.random()}_${value.supplier.name}`}>
+                <span className={"requestor"}>{value.supplier.name}</span>
               </td>
             );
           },
@@ -214,21 +185,14 @@ class ManageSupplier extends Component {
         {
           label: "Price",
           key: "price",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>${value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Stock",
-          key: "stock",
-          renderCallback: (value) => {
+          key: "supplier",
+          renderCallback: (index, value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{value}</span>
+              <td key={`${Math.random()}_${value.stock}`}>
+                <span className="department-value">{value.stock}</span>
               </td>
             );
           },
@@ -236,21 +200,29 @@ class ManageSupplier extends Component {
         {
           label: "Status",
           key: "status",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
+              <td key={`${Math.random()}_${"status"}`}>
                 <Button
                   variant="outlined"
-                  className="department-value active-btn "
+                  className={
+                    value.status === "ready"
+                      ? "department-value green-btn"
+                      : value.status === "outstanding"
+                      ? "department-value status-btn"
+                      : value.status === "rejected"
+                      ? "department-value onahau-btn"
+                      : "department-value magnolia-btn"
+                  }
                 >
-                  {value}
+                  {value.status}
                 </Button>
               </td>
             );
           },
         },
         {
-          label: "Edit",
+          label: "",
           key: "sno",
           renderCallback: (value, index) => {
             return (
@@ -259,7 +231,12 @@ class ManageSupplier extends Component {
                   <i
                     className="fa fa-ellipsis-h"
                     aria-hidden="true"
-                    onClick={() => this.setState({ productActiveIndex: this.state.productActiveIndex === index ? -1 : index })}
+                    onClick={() => {
+                      this.setState({
+                        productActiveIndex:
+                          this.state.productActiveIndex === index ? -1 : index,
+                      });
+                    }}
                   ></i>
                   {this.state.productActiveIndex === index && (
                     <div className="toggale">
@@ -282,17 +259,6 @@ class ManageSupplier extends Component {
             );
           },
         },
-        // {
-        //   label: 'Edit',
-        //   key: 'id',
-        //   renderCallback: (value) => {
-        //     return (
-        //       <td>
-        //         <MoreHorizIcon />
-        //       </td>
-        //     );
-        //   },
-        // },
       ],
       updateSupplier: false,
       productList: [],
@@ -303,12 +269,74 @@ class ManageSupplier extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(manageSupplierAction.getSupplierList());
-    this.props.dispatch(manageSupplierAction.getProductList());
+    this.props.dispatch(productActions.searchProductList());
+    this.props.dispatch(manageSupplierAction.searchSupplierList());
     this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
   }
 
   componentDidUpdate(prevProps) {
+    if (
+      this.props.search_suplier_list_status !==
+        prevProps.search_suplier_list_status &&
+      this.props.search_suplier_list_status === status.SUCCESS
+    ) {
+      let { searchSupplierList } = this.state;
+      if (
+        this.props.search_supplier_list &&
+        this.props.search_supplier_list.length > 0
+      ) {
+        this.props.search_supplier_list.map((item) => {
+          let itemData = item.details;
+
+          searchSupplierList.push({
+            ...itemData,
+            id: item.id,
+          });
+          this.setState({
+            searchSupplierList,
+          });
+        });
+      }
+      const reversed = [...searchSupplierList].reverse();
+      this.setState({
+        searchSupplierList: reversed,
+      });
+    }
+
+    if (
+      this.props.search_product_list_status !==
+        prevProps.search_product_list_status &&
+      this.props.search_product_list_status === status.SUCCESS
+    ) {
+      let { productListData } = this.state;
+      if (
+        this.props.search_product_list &&
+        this.props.search_product_list.length > 0
+      ) {
+        this.props.search_product_list.map((item) => {
+          let itemData = item.details;
+
+          productListData.push({
+            ...itemData,
+            id: item.id,
+          });
+          productListData.map((item) => {
+            if (!item.stock) {
+              item.stock = 1;
+            }
+          });
+          this.setState({
+            loadingStatus: !this.state.loadingStatus,
+            productListData,
+          });
+        });
+      }
+      const reversed = [...productListData].reverse();
+      this.setState({
+        productListData: reversed,
+      });
+    }
+
     if (
       this.props.suplier_list_status !== prevProps.suplier_list_status &&
       this.props.suplier_list_status === status.SUCCESS
@@ -330,7 +358,7 @@ class ManageSupplier extends Component {
     }
     if (
       this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
+        prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -343,28 +371,28 @@ class ManageSupplier extends Component {
     }
     if (
       this.props.update_suplier_product_status !==
-      prevProps.update_suplier_product_status &&
+        prevProps.update_suplier_product_status &&
       this.props.update_suplier_product_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getProductList());
     }
     if (
       this.props.update_suplier_list_status !==
-      prevProps.update_suplier_list_status &&
+        prevProps.update_suplier_list_status &&
       this.props.update_suplier_list_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getSupplierList());
     }
     if (
       this.props.delete_suplier_list_status !==
-      prevProps.delete_suplier_list_status &&
+        prevProps.delete_suplier_list_status &&
       this.props.delete_suplier_list_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getSupplierList());
     }
     if (
       this.props.delete_suplier_product_status !==
-      prevProps.delete_suplier_product_status &&
+        prevProps.delete_suplier_product_status &&
       this.props.delete_suplier_product_status === status.SUCCESS
     ) {
       this.props.dispatch(manageSupplierAction.getProductList());
@@ -373,15 +401,32 @@ class ManageSupplier extends Component {
 
   handleDelete = (index, type) => {
     if (type === "supplier") {
-      let value = this.state.supplierData[index];
-      this.props.dispatch(
-        manageSupplierAction.deleteSupplier({ id: value.id, value })
-      );
+      let value = this.state.searchSupplierList[index].id;
+      // this.props.dispatch(
+      //   manageSupplierAction.deleteSupplier({ id: value.id, value })
+      // );
     } else if (type === "product") {
-      let value = this.state.productList[index];
-      this.props.dispatch(manageSupplierAction.deleteProduct({ ...value }));
+      let { productListData } = this.state;
+
+      let ind;
+      if (productListData.length > 0) {
+        ind = productListData.find(function (element) {
+          return element.id === index.id;
+        });
+      }
+
+      if (ind !== -1) {
+        productListData.splice(ind, 1);
+        this.setState({
+          productListData,
+        });
+        this.props.dispatch(
+          productActions.deleteProduct({ id: ind.id, productListData })
+        );
+      }
     }
   };
+
   validateProductUpdate = (update) => {
     const validObj = {
       isValid: true,
@@ -390,8 +435,8 @@ class ManageSupplier extends Component {
     const { updateProductValue } = this.state;
     let isValid = true;
     const retData = {
-      productImgUrl: validObj,
-      productName: validObj,
+      imgUrl: validObj,
+      itemName: validObj,
       supplier: validObj,
       itemType: validObj,
       unit: validObj,
@@ -400,15 +445,15 @@ class ManageSupplier extends Component {
       isValid,
     };
     if (update) {
-      if (!updateProductValue.productImgUrl) {
-        retData.productImgUrl = {
+      if (!updateProductValue.imgUrl) {
+        retData.imgUrl = {
           isValid: false,
           message: "image is required",
         };
         isValid = false;
       }
-      if (!updateProductValue.productName) {
-        retData.productName = {
+      if (!updateProductValue.itemName) {
+        retData.itemName = {
           isValid: false,
           message: "item name is required",
         };
@@ -480,6 +525,7 @@ class ManageSupplier extends Component {
     retData.isValid = isValid;
     return retData;
   };
+
   validateSupplierUpdate = (update) => {
     const validObj = {
       isValid: true,
@@ -535,16 +581,21 @@ class ManageSupplier extends Component {
     retData.isValid = isValid;
     return retData;
   };
+
   openEditModal = () => {
-    const { productActiveIndex, productList } = this.state;
+    const { productActiveIndex, productListData } = this.state;
     if (productActiveIndex >= 0) {
-      let values = JSON.parse(JSON.stringify(productList[productActiveIndex]));
+      let values = JSON.parse(
+        JSON.stringify(productListData[productActiveIndex])
+      );
+      values.supplier = values.supplier.name;
       this.setState({ updateProductValue: values });
     }
     this.setState({
       openEditDialog: !this.state.openEditDialog,
     });
   };
+
   closeEditModal = () => {
     this.setState({
       openEditDialog: !this.state.openEditDialog,
@@ -552,10 +603,12 @@ class ManageSupplier extends Component {
   };
 
   openSupplierEditModal = () => {
-    const { supplierActiveIndex, supplierData } = this.state;
+    const { supplierActiveIndex, supplierData, searchSupplierList } =
+      this.state;
+    console.log("active index", supplierActiveIndex);
     if (supplierActiveIndex >= 0) {
       let values = JSON.parse(
-        JSON.stringify(supplierData[supplierActiveIndex])
+        JSON.stringify(searchSupplierList[supplierActiveIndex])
       );
       this.setState({ updateSupplierValue: values });
     }
@@ -563,50 +616,56 @@ class ManageSupplier extends Component {
       openSupplierEditDialog: !this.state.openSupplierEditDialog,
     });
   };
+
   closeSupplierEditModal = () => {
     this.setState({
       openSupplierEditDialog: !this.state.openSupplierEditDialog,
     });
   };
+
   updateDataValues = (type) => {
-    const { updateProductValue, updateSupplierValue } = this.state;
+    const {
+      updateProductValue,
+      updateSupplierValue,
+      productActiveIndex,
+      productListData,
+    } = this.state;
     if (type === "product") {
       let updateForm = this.validateProductUpdate(true);
       this.setState({ update: true });
       if (updateForm.isValid) {
-        updateProductValue.totalCost =
-          updateProductValue.price * updateProductValue.quantity;
-        // requestData.detailsList[productActiveIndex] = updateProductValue
+        productListData[productActiveIndex] = updateProductValue;
         this.setState({ openEditDialog: !this.state.openEditDialog });
-        this.props.dispatch(
-          manageSupplierAction.updateProductList({
-            id: updateProductValue.id,
-            value: updateProductValue,
-          })
-        );
+        // put request
+        // this.props.dispatch(
+        //   manageSupplierAction.updateProductList({
+        //     id: updateProductValue.id,
+        //     details: updateProductValue,
+        //   })
+        // );
       }
     } else if (type === "supplier") {
       let updateForm = this.validateSupplierUpdate(true);
       this.setState({ updateSupplier: true });
       if (updateForm.isValid) {
-        // updateProductValue.totalCost = updateProductValue.price * updateProductValue.quantity;
-        // requestData.detailsList[productActiveIndex] = updateProductValue updateSupplierList
-        this.props.dispatch(
-          manageSupplierAction.updateSupplierList({
-            id: updateSupplierValue.id,
-            value: updateSupplierValue,
-          })
-        );
+        // this.props.dispatch(
+        // manageSupplierAction.updateSupplierList({
+        //   id: updateSupplierValue.id,
+        //   value: updateSupplierValue,
+        // })
+        // );
         this.setState({
           openSupplierEditDialog: !this.state.openSupplierEditDialog,
         });
       }
     }
   };
+
   handleUpdate = (e, type) => {
     if (type === "product") {
       const { updateProductValue } = this.state;
       const { name, value } = e.target;
+
       updateProductValue[name] = value;
       this.setState({ updateProductValue });
     } else if (type === "supplier") {
@@ -619,6 +678,7 @@ class ManageSupplier extends Component {
 
   render() {
     const {
+      productListData,
       supplierColumn,
       update,
       openSupplierEditDialog,
@@ -628,13 +688,13 @@ class ManageSupplier extends Component {
       supplierActiveIndex,
       updateProductValue,
       productActiveIndex,
-      supplierData,
       productColumn,
-      productList,
+      searchSupplierList,
       openEditDialog,
     } = this.state;
     const updateProductForm = this.validateProductUpdate(update);
     const updateSupplierForm = this.validateSupplierUpdate(updateSupplier);
+
     return (
       <div className="main-content">
         <div className="manage-supplier-conntent">
@@ -653,10 +713,8 @@ class ManageSupplier extends Component {
                 <div className="progress-box">
                   <Link to="/postlogin/managesupplier/activesuppliers">
                     <div className="progress-content">
-                      <div className="title">
-                        Active Supplier
-                      </div>
-                      <h4>30</h4>
+                      <div className="title">Active Supplier</div>
+                      <h4>{searchSupplierList.length}</h4>
                     </div>
                   </Link>
                 </div>
@@ -665,10 +723,8 @@ class ManageSupplier extends Component {
                 <div className="progress-box">
                   <Link to="/postlogin/managesupplier/activeproductcatalogue">
                     <div className="progress-content">
-                      <div className="title">
-                        Active Product Catalogue
-                      </div>
-                      <h4>105</h4>
+                      <div className="title">Active Product Catalogue</div>
+                      <h4>{productListData.length}</h4>
                     </div>
                   </Link>
                 </div>
@@ -679,19 +735,20 @@ class ManageSupplier extends Component {
             <div className="heading">
               <h4>Recent Suppliers</h4>
             </div>
-            {supplierData && supplierData.length > 0 && (
+            {searchSupplierList && searchSupplierList.length > 0 && (
               <Table
-                valueFromData={{ columns: supplierColumn, data: supplierData }}
-                perPageLimit={6}
+                valueFromData={{
+                  columns: supplierColumn,
+                  data: searchSupplierList,
+                }}
+                perPageLimit={4}
                 visiblecheckboxStatus={false}
-                isLoading={
-                  this.props.suplier_list_status === status.IN_PROGRESS
-                }
                 tableClasses={{
                   table: "ticket-tabel",
                   tableParent: "tickets-tabel",
                   parentClass: "all-support-ticket-tabel",
                 }}
+                showPagination={false}
                 showingLine="Showing %start% to %end% of %total% "
               />
             )}
@@ -700,13 +757,16 @@ class ManageSupplier extends Component {
             <div className="heading">
               <h4>Recent Added Products</h4>
             </div>
-            {productList && productList.length > 0 && (
+            {this.state.loadingStatus ? (
               <Table
-                valueFromData={{ columns: productColumn, data: productList }}
-                perPageLimit={6}
+                valueFromData={{
+                  columns: productColumn,
+                  data: productListData,
+                }}
+                perPageLimit={3}
                 visiblecheckboxStatus={false}
                 isLoading={
-                  this.props.suplier_list_status === status.IN_PROGRESS
+                  this.props.fetchProductList_status === status.IN_PROGRESS
                 }
                 tableClasses={{
                   table: "ticket-tabel",
@@ -714,6 +774,14 @@ class ManageSupplier extends Component {
                   parentClass: "all-support-ticket-tabel",
                 }}
                 showingLine="Showing %start% to %end% of %total% "
+                showPagination={false}
+              />
+            ) : (
+              <Loader
+                type="spinner-default"
+                bgColor={"#3244a8"}
+                color={"#3244a8"}
+                size={60}
               />
             )}
           </div>
@@ -726,10 +794,7 @@ class ManageSupplier extends Component {
             className="custom-dialog edit-dialog"
           >
             <div className="custom-dialog-head">
-              <DialogTitle
-                id="form-dialog-title"
-                className="dialog-heading"
-              >
+              <DialogTitle id="form-dialog-title" className="dialog-heading">
                 Edit
               </DialogTitle>
               <Button onClick={this.closeEditModal} className="modal-close-btn">
@@ -742,14 +807,14 @@ class ManageSupplier extends Component {
                 <div className="col-9 col-form-field">
                   <input
                     type="text"
-                    name="productImgUrl"
+                    name="imgUrl"
                     className="form-control"
                     placeholder="image"
                     onChange={(e) => this.handleUpdate(e, "product")}
-                    value={updateProductValue.productImgUrl}
+                    value={updateProductValue.imgUrl}
                   />
                   <span className="d-block w-100 text-danger">
-                    {updateProductForm.productImgUrl.message}
+                    {updateProductForm.imgUrl.message}
                   </span>
                 </div>
               </div>
@@ -758,14 +823,14 @@ class ManageSupplier extends Component {
                 <div className="col-9 col-form-field">
                   <input
                     type="text"
-                    name="productName"
+                    name="itemName"
                     className="form-control"
                     placeholder="Item Name"
                     onChange={(e) => this.handleUpdate(e, "product")}
-                    value={updateProductValue.productName}
+                    value={updateProductValue.itemName}
                   />
                   <span className="d-block w-100 text-danger">
-                    {updateProductForm.productName.message}
+                    {updateProductForm.itemName.message}
                   </span>
                 </div>
               </div>
@@ -804,7 +869,15 @@ class ManageSupplier extends Component {
               <div className="form-group row form-group">
                 <label className="col-3 col-form-label">Supplier</label>
                 <div className="col-9 col-form-field">
-                  <FormControl className="select-menu">
+                  <input
+                    type="text"
+                    name="unit"
+                    className="form-control"
+                    placeholder="Unit"
+                    onChange={(e) => this.handleUpdate(e, "product")}
+                    value={updateProductValue.supplier}
+                  />
+                  {/* <FormControl className="select-menu">
                     <NativeSelect
                       name="supplier"
                       onChange={(e) => this.handleUpdate(e, "product")}
@@ -816,7 +889,11 @@ class ManageSupplier extends Component {
                         supplierAndCategoryList.supplierDetails.length > 0 &&
                         supplierAndCategoryList.supplierDetails.map(
                           (val, index) => (
-                            <option value={val.supplierName} name="supplier">
+                            <option
+                              key={val.supplierName}
+                              value={val.supplierName}
+                              name="supplier"
+                            >
                               {val.supplierName}
                             </option>
                           )
@@ -825,7 +902,7 @@ class ManageSupplier extends Component {
                     <span className="d-block w-100 text-danger">
                       {updateProductForm.supplier.message}
                     </span>
-                  </FormControl>
+                  </FormControl> */}
                 </div>
               </div>
               <div className="form-group row form-group">
@@ -883,10 +960,7 @@ class ManageSupplier extends Component {
             className="custom-dialog edit-dialog"
           >
             <div className="custom-dialog-head">
-              <DialogTitle
-                id="form-dialog-title"
-                className="dialog-heading"
-              >
+              <DialogTitle id="form-dialog-title" className="dialog-heading">
                 Edit
               </DialogTitle>
               <Button
@@ -900,7 +974,7 @@ class ManageSupplier extends Component {
               <div className="form-group row form-group">
                 <label className="col-3 col-form-label">Supplier</label>
                 <div className="col-9 col-form-field">
-                  <FormControl className="select-menu">
+                  {/* <FormControl className="select-menu">
                     <NativeSelect
                       name="supplier"
                       onChange={(e) => this.handleUpdate(e, "supplier")}
@@ -921,7 +995,15 @@ class ManageSupplier extends Component {
                     <span className="d-block w-100 text-danger">
                       {updateSupplierForm.supplier.message}
                     </span>
-                  </FormControl>
+                  </FormControl> */}
+                  <input
+                    type="text"
+                    name="email"
+                    className="form-control"
+                    placeholder="Email"
+                    onChange={(e) => this.handleUpdate(e, "supplier")}
+                    value={updateSupplierValue.supplier}
+                  />
                 </div>
               </div>
               <div className="form-group row form-group">
@@ -949,7 +1031,9 @@ class ManageSupplier extends Component {
                     className="form-control"
                     placeholder="Currencies"
                     onChange={(e) => this.handleUpdate(e, "supplier")}
-                    value={updateSupplierValue.currency}
+                    value={
+                      updateSupplierValue.details?.bankDetails.currency.code
+                    }
                   />
                   <span className="d-block w-100 text-danger">
                     {updateSupplierForm.currency.message}
@@ -994,8 +1078,10 @@ class ManageSupplier extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    suplier_list_status,
-    supplier_list,
+    search_product_list_status,
+    search_product_list,
+    search_suplier_list_status,
+    search_supplier_list,
     supplier_product_list,
     suplier_product_status,
     supplier_category_list_status,
@@ -1004,10 +1090,17 @@ const mapStateToProps = (state) => {
     update_suplier_list_status,
     delete_suplier_list_status,
     delete_suplier_product_status,
+    fetchProductList_status,
+    fetch_product_list,
+    product_status,
+    product_list,
   } = state.procurement;
+
   return {
-    suplier_list_status,
-    supplier_list,
+    search_product_list_status,
+    search_product_list,
+    search_suplier_list_status,
+    search_supplier_list,
     supplier_product_list,
     suplier_product_status,
     supplier_category_list_status,
@@ -1016,6 +1109,11 @@ const mapStateToProps = (state) => {
     update_suplier_list_status,
     delete_suplier_list_status,
     delete_suplier_product_status,
+    fetchProductList_status,
+    fetch_product_list,
+    product_status,
+    product_list,
   };
 };
+
 export default connect(mapStateToProps)(ManageSupplier);

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import { Button, NativeSelect, FormControl } from "@mui/material";
+import Loader from "react-js-loader";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { RangeDatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
@@ -85,22 +84,11 @@ class SendRfq extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className='department-value'>{value.code}</span>
+                <span className="department-value">{value.code}</span>
               </td>
             );
           },
         },
-        // {
-        //   label: "Status",
-        //   key: "Status",
-        //   renderCallback: (value) => {
-        //     return (
-        //       <td>
-        //         <span className='department-value'>{value}</span>
-        //       </td>
-        //     );
-        //   },
-        // },
         {
           label: "FRQ",
           key: "id",
@@ -108,8 +96,9 @@ class SendRfq extends Component {
             return (
               <td>
                 <Button
-                  className='btn primary-btn'
-                  style={{ color: "#6417c5", textTransform: "capitalize" }}>
+                  className="btn primary-btn"
+                  style={{ color: "#6417c5", textTransform: "capitalize" }}
+                >
                   Send RFQ
                 </Button>
               </td>
@@ -118,6 +107,7 @@ class SendRfq extends Component {
         },
       ],
       tableData: [],
+      loadingStatus: false,
     };
   }
 
@@ -127,15 +117,12 @@ class SendRfq extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      this.props.send_frq_status !==
-      prevProps.send_frq_status &&
+      this.props.send_frq_status !== prevProps.send_frq_status &&
       this.props.send_frq_status === status.SUCCESS
     ) {
-      if (
-        this.props.send_rfq_data &&
-        this.props.send_rfq_data.length > 0
-      ) {
+      if (this.props.send_rfq_data && this.props.send_rfq_data.length > 0) {
         this.setState({
+          loadingStatus: !this.state.loadingStatus,
           tableData: this.props.send_rfq_data,
         });
       }
@@ -161,72 +148,80 @@ class SendRfq extends Component {
   render() {
     const { requiData, tableData, columns, indx } = this.state;
     return (
-      <div className='main-content'>
-        <div className='receivedrfq-content'>
-          <div className='heading'>
+      <div className="main-content">
+        <div className="receivedrfq-content">
+          <div className="heading">
             <h4>{t("Send RFQ to Vendors")}</h4>
           </div>
-          <div className='requisitions-filter'>
-            <div className='form-group row col-form-group'>
-              <label className='col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label'>
+          <div className="requisitions-filter">
+            <div className="form-group row col-form-group">
+              <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
                 {t("Filter By Status")}
               </label>
-              <div className='col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field'>
-                <FormControl className='select-menu'>
+              <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
+                <FormControl className="select-menu">
                   <NativeSelect
-                    name='status'
+                    name="status"
                     value={requiData.status}
-                    onChange={this.handleStateChange}>
-                    <option value=''>-Select-</option>
+                    onChange={this.handleStateChange}
+                  >
+                    <option value="">-Select-</option>
                     <option value={10}>abc</option>
                     <option value={20}>def</option>
                     <option value={30}>abc</option>
                   </NativeSelect>
                 </FormControl>
-                {/* <span className="d-block w-100 text-danger">{errorData.status.message}</span> */}
               </div>
             </div>
-            <div className='form-group row col-form-group'>
-              <label className='col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label'>
+            <div className="form-group row col-form-group">
+              <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
                 {t("Date Range")}
               </label>
-              <div className='col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field'>
-                <div className='d-flex align-items-center'>
+              <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
+                <div className="d-flex align-items-center">
                   <RangeDatePicker
-                    startPlaceholder='2021/06/01'
-                    endPlaceholder='2021/06/10'
+                    startPlaceholder="2021/06/01"
+                    endPlaceholder="2021/06/10"
                   />
-                  <CalendarTodayTwoToneIcon className='calendar-icon' />
+                  <CalendarTodayIcon className="calendar-icon" />
                 </div>
               </div>
             </div>
-            <div className='form-group row col-form-group'>
-              <label className='col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label'></label>
-              <div className='col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-button'>
+            <div className="form-group row col-form-group">
+              <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label"></label>
+              <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-button">
                 <Button
-                  variant='contained'
-                  className='primary-btn'
+                  variant="contained"
+                  className="primary-btn"
                   disableElevation
-                  onClick={this.handleClickMethod}>
+                  onClick={this.handleClickMethod}
+                >
                   {t("Search")}
                 </Button>
               </div>
             </div>
           </div>
-          <Table
-            valueFromData={{ columns: columns, data: tableData, indx: indx }}
-            perPageLimit={6}
-            visiblecheckboxStatus={false}
-            isLoading={
-              this.props.send_frq_status === status.IN_PROGRESS
-            }
-            tableClasses={{
-              table: "ticket-tabel",
-              tableParent: "tickets-tabel",
-              parentClass: "all-support-ticket-tabel",
-            }}
-            showingLine='Showing %start% to %end% of %total% Tickets'
-          />
+          {this.state.loadingStatus ? (
+            <Table
+              valueFromData={{ columns: columns, data: tableData, indx: indx }}
+              perPageLimit={6}
+              visiblecheckboxStatus={false}
+              isLoading={this.props.send_frq_status === status.IN_PROGRESS}
+              tableClasses={{
+                table: "ticket-tabel",
+                tableParent: "tickets-tabel",
+                parentClass: "all-support-ticket-tabel",
+              }}
+              showingLine="Showing %start% to %end% of %total% Tickets"
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
+            />
+          )}
         </div>
       </div>
     );
@@ -240,5 +235,7 @@ const mapStateToProps = (state) => {
     send_rfq_data,
   };
 };
-const connectSendRfq = withTranslation()(connect(mapStateToProps)(SendRfq))
-export default connectSendRfq
+
+const connectSendRfq = withTranslation()(connect(mapStateToProps)(SendRfq));
+
+export default connectSendRfq;

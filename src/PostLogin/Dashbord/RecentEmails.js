@@ -1,28 +1,38 @@
-import React, { Component } from 'react';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
-import EmailIcon from '@material-ui/icons/Email';
-import StarIcon from '@material-ui/icons/Star';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
-import { emailActions } from '../../_actions/email.actions';
-import { connect } from 'react-redux';
-import { status } from '../../_constants';
-import DirectionsRailwayIcon from '@material-ui/icons/DirectionsRailway';
-import WatchLaterIcon from '@material-ui/icons/WatchLater';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import { t } from 'i18next';
-import { withTranslation } from 'react-i18next';
+import React, { Component } from "react";
+import {
+  LinearProgress,
+  Button,
+  Avatar,
+  FormControlLabel,
+  IconButton,
+  ButtonGroup,
+  DialogTitle,
+  Checkbox,
+  Box,
+} from "@mui/material";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccountIcon";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import EmailIcon from "@mui/icons-material/Email";
+import StarIcon from "@mui/icons-material/Star";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
+import { emailActions } from "../../_actions/email.actions";
+import { connect } from "react-redux";
+import { status } from "../../_constants";
+import DirectionsRailwayIcon from "@mui/icons-material/DirectionsRailway";
+import WatchLaterIcon from "@mui/icons-material/WatchLater";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { t } from "i18next";
+import { withTranslation } from "react-i18next";
+
 class RecentEmails extends Component {
   constructor() {
     super();
     this.state = {
       selectedMailData: [],
       recentEmailData: [],
-      selectedType: 'important',
+      selectedType: "important",
       buttonIndex: 0,
       important: true,
       socials: false,
@@ -31,15 +41,26 @@ class RecentEmails extends Component {
   }
 
   componentDidMount() {
-    this.setState({ selectedMailData: this.state.recentEmailData.filter((x) => x.type === this.state.selectedType) });
-    this.props.dispatch(emailActions.searchallemails({ search: this.state.selectedType }));
+    this.setState({
+      selectedMailData: this.state.recentEmailData.filter(
+        (x) => x.type === this.state.selectedType
+      ),
+    });
+    this.props.dispatch(
+      emailActions.searchallemails({ search: this.state.selectedType })
+    );
   }
+
   componentDidUpdate(prevProps) {
     if (
-      this.props.search_all_email_status !== prevProps.search_all_email_status &&
+      this.props.search_all_email_status !==
+        prevProps.search_all_email_status &&
       this.props.search_all_email_status === status.SUCCESS
     ) {
-      if (this.props.search_all_email && this.props.search_all_email.length > 0) {
+      if (
+        this.props.search_all_email &&
+        this.props.search_all_email.length > 0
+      ) {
         let data = this.props.search_all_email;
         if (data && data.length > 0) {
           this.props.dispatch(emailActions.searchallinboxemails(data));
@@ -78,19 +99,28 @@ class RecentEmails extends Component {
         let data = recentEmailData[i];
         let time;
         if (data.time) {
-          time = data.time.split('T');
-          time = time[1].split('.');
+          time = data.time.split("T");
+          time = time[1].split(".");
         }
         retData.push(
           <div className="recent-content" key={i}>
             <ul>
               <li>
                 <div className="user-id">
-                  <div className={`user-box ${data.isStar === 'true' ? 'active' : ''}`}>
+                  <div
+                    className={`user-box ${
+                      data.isStar === "true" ? "active" : ""
+                    }`}
+                  >
                     <StarIcon />
                   </div>
                   <div className="user-img">
-                    <img src={data.sender.profilePic} alt="" height="50px" width="50px" />
+                    <img
+                      src={data.sender.profilePic}
+                      alt=""
+                      height="50px"
+                      width="50px"
+                    />
                   </div>
                 </div>
                 <div className="user-content">
@@ -105,19 +135,25 @@ class RecentEmails extends Component {
                     <div className="col-3 pr-0">
                       {!data.showIcon && (
                         <div className="list-icon">
-                          <IconButton onClick={() => this.showIcon(i)} className="menu-icon">
+                          <IconButton
+                            onClick={() => this.showIcon(i)}
+                            className="menu-icon"
+                          >
                             <MoreVertIcon />
                           </IconButton>
                         </div>
                       )}
                       {data.showIcon && (
-                        <ButtonGroup variant="text" aria-label="text primary button group">
-                          {data.isRead === 'true' && (
+                        <ButtonGroup
+                          variant="text"
+                          aria-label="text primary button group"
+                        >
+                          {data.isRead === "true" && (
                             <IconButton>
                               <DirectionsRailwayIcon />
                             </IconButton>
                           )}
-                          {data.isSnooze === 'true' && (
+                          {data.isSnooze === "true" && (
                             <IconButton>
                               <WatchLaterIcon />
                             </IconButton>
@@ -127,7 +163,10 @@ class RecentEmails extends Component {
                               <AttachFileIcon />
                             </IconButton>
                           )}
-                          <IconButton onClick={() => this.showIcon(i)} className="menu-icon">
+                          <IconButton
+                            onClick={() => this.showIcon(i)}
+                            className="menu-icon"
+                          >
                             <MoreVertIcon />
                           </IconButton>
                         </ButtonGroup>
@@ -152,26 +191,42 @@ class RecentEmails extends Component {
           <div className="row">
             <div className="col-xl-5 col-lg-12 col-md-12 col-sm-12">
               <div className="recent-heading">
-                <h4>{t('Recent Emails')}</h4>
+                <h4>{t("Recent Emails")}</h4>
                 <span>Lorem ipsum dolor sit amet</span>
               </div>
             </div>
             <div className=" col-xl-7 col-lg-12 col-md-12 col-sm-12">
               <div className="social-button">
                 <ul>
-                  <li className={selectedType === 'important' ? 'active' : ''}>
-                    <button type="button" className="btn btn-link" onClick={() => this.filterMail('important')}>
-                      <EmailIcon /> {t('Important')}
+                  <li className={selectedType === "important" ? "active" : ""}>
+                    <button
+                      type="button"
+                      className="btn btn-link"
+                      onClick={() => this.filterMail("important")}
+                    >
+                      <EmailIcon /> {t("Important")}
                     </button>
                   </li>
-                  <li className={selectedType === 'social' ? 'active' : ''}>
-                    <button type="button" className="btn btn-link" onClick={() => this.filterMail('social')}>
-                      <SupervisorAccountIcon /> {t('Socials')}
+                  <li className={selectedType === "social" ? "active" : ""}>
+                    <button
+                      type="button"
+                      className="btn btn-link"
+                      onClick={() => this.filterMail("social")}
+                    >
+                      <SupervisorAccountIcon /> {t("Socials")}
                     </button>
                   </li>
-                  <li className={selectedType === 'promotion' ? 'active last' : 'last'}>
-                    <button type="button" className="btn btn-link" onClick={() => this.filterMail('promotion')}>
-                      <ConfirmationNumberIcon /> {t('Promotion')}
+                  <li
+                    className={
+                      selectedType === "promotion" ? "active last" : "last"
+                    }
+                  >
+                    <button
+                      type="button"
+                      className="btn btn-link"
+                      onClick={() => this.filterMail("promotion")}
+                    >
+                      <ConfirmationNumberIcon /> {t("Promotion")}
                     </button>
                   </li>
                 </ul>
@@ -179,7 +234,9 @@ class RecentEmails extends Component {
             </div>
           </div>
         </div>
-        <SimpleBar className="recent-list">{this.displyRecentEmails()}</SimpleBar>
+        <SimpleBar className="recent-list">
+          {this.displyRecentEmails()}
+        </SimpleBar>
       </div>
     );
   }
@@ -189,5 +246,9 @@ const mapStateToProps = (state) => {
   const { search_all_email_status, search_all_email } = state.procurement;
   return { search_all_email_status, search_all_email };
 };
-const connectRecentEmails = withTranslation()(connect(mapStateToProps)(RecentEmails));
+
+const connectRecentEmails = withTranslation()(
+  connect(mapStateToProps)(RecentEmails)
+);
+
 export default connectRecentEmails;

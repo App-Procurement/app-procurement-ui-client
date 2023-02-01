@@ -1,8 +1,13 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import {
+  NativeSelect,
+  FormControl,
+  DialogContent,
+  Dialog,
+  DialogTitle,
+  Button,
+} from "@mui/material";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { DatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
@@ -13,15 +18,9 @@ import { status } from "../../_constants";
 import { commonFunctions, alert } from "../../_utilities";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
-import Chat from "../../_components/ChatBox";
-import Dialog from "@material-ui/core/Dialog";
-// import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "@mui/icons-material/Close";
 import AddItemList from "./AddItemList";
 import { Link } from "react-router-dom";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import AddItemImg from "../../assets/images/request/add-item-img.png";
 
 class ViewRequest extends Component {
@@ -46,12 +45,23 @@ class ViewRequest extends Component {
         accountType: "admin",
       },
       formData: {
-        dueDate: "",
-        deliveryDate: "",
+        createdBy: "dummy",
+        createdOn: "01-01-2022",
+        updatedBy: "dummy",
+        updatedOn: "01-01-2022",
+        approvedBy: "dummyID",
+        approvedOn: "01-01-2022",
         location: "",
-        department: "",
-        request: "",
+        requestType: "",
         note: "",
+        state: "pending",
+        progressStage: "new",
+        totalAmount: 824,
+        department: "",
+        desiredDate: "",
+        deliveryDate: "",
+        document: [],
+        products: [],
       },
       formAllData: {},
       supplierAndCategoryList: {},
@@ -64,18 +74,17 @@ class ViewRequest extends Component {
       columns: [
         {
           label: "S.no",
-          key: "sno",
-          renderCallback: (value, index) => {
-            return <td key={`${Math.random()}_${value}`}>{index + 1}</td>;
-          },
+          key: "id",
         },
         {
           label: "Name",
           key: "name",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"requisitions-no"}>{value}</span>
+                <span className={"requisitions-no"}>
+                  {value.details.itemName}
+                </span>
               </td>
             );
           },
@@ -83,10 +92,12 @@ class ViewRequest extends Component {
         {
           label: "Category",
           key: "category",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+                <span className={"department-value"}>
+                  {value.details.category}
+                </span>
               </td>
             );
           },
@@ -94,10 +105,12 @@ class ViewRequest extends Component {
         {
           label: "Supplier",
           key: "supplier",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
+                <span className={"department-value"}>
+                  {value.details.supplier.name}
+                </span>
               </td>
             );
           },
@@ -105,10 +118,10 @@ class ViewRequest extends Component {
         {
           label: "Quantity",
           key: "quantity",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>{value}</span>
+              <td key={`${Math.random()}_${value.quantity}`}>
+                <span className={"requestor"}>{value.quantity}</span>
               </td>
             );
           },
@@ -116,10 +129,10 @@ class ViewRequest extends Component {
         {
           label: "Unit",
           key: "unit",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{value}</span>
+                <span className="department-value">{value.details.unit}</span>
               </td>
             );
           },
@@ -127,10 +140,10 @@ class ViewRequest extends Component {
         {
           label: "Price",
           key: "price",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">${value}</span>
+                <span className="department-value">${value.details.price}</span>
               </td>
             );
           },
@@ -138,10 +151,10 @@ class ViewRequest extends Component {
         {
           label: "Total Cost",
           key: "totalCost",
-          renderCallback: (value) => {
+          renderCallback: (index, value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">${value}</span>
+                <span className="department-value">${value.details.price}</span>
               </td>
             );
           },
@@ -192,6 +205,7 @@ class ViewRequest extends Component {
         },
       ],
       selectedItemList: [],
+      productsList: [],
     };
     this.inputOpenFileRef = React.createRef();
     this.formkiqClient = new window.exports.FormkiqClient(
@@ -199,7 +213,7 @@ class ViewRequest extends Component {
       "",
       "",
       {
-        onFormSubmitted: (formName) => { },
+        onFormSubmitted: (formName) => {},
         onFormCompleted: (formName, response) => {
           this.setUploadedDocID(response);
         },
@@ -207,6 +221,7 @@ class ViewRequest extends Component {
     );
     this.formkiqClient.login("papubhat@gmail.com", "microsoft");
   }
+
   setUploadedDocID = (res) => {
     const { uploadedFileList } = this.state;
     if (res && res.object && res.object.documents) {
@@ -223,7 +238,7 @@ class ViewRequest extends Component {
   handleStateChange = (e) => {
     const { name, value } = e.target;
     const { formData } = this.state;
-    formData[name] = value;
+    formData[name] = value.toString();
     this.setState({
       formData,
     });
@@ -231,7 +246,7 @@ class ViewRequest extends Component {
 
   handleDates = (date, name) => {
     let { formData } = this.state;
-    formData[name] = date;
+    formData[name] = `${date.$D}-${date.$M + 1}-${date.$y}`;
     this.setState({ formData });
   };
 
@@ -239,12 +254,21 @@ class ViewRequest extends Component {
     this.props.dispatch(requestForPurposeAction.getRequestList());
     this.props.dispatch(requestForPurposeAction.getItemList());
     this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
+    this.props.dispatch(requestForPurposeAction.getProductsList());
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
+      this.props.products_list_status !== prevProps.products_list_status &&
+      this.props.products_list_status === status.SUCCESS
+    ) {
+      if (this.props.products_list && this.props.products_list.length > 0) {
+        this.setState({ productsList: this.props.products_list });
+      }
+    }
+    if (
       this.props.request_for_purpose_status !==
-      prevProps.request_for_purpose_status &&
+        prevProps.request_for_purpose_status &&
       this.props.request_for_purpose_status === status.SUCCESS
     ) {
       if (
@@ -276,7 +300,6 @@ class ViewRequest extends Component {
           this.props.item_list[i].totalCost =
             this.props.item_list[i].price * this.props.item_list[i].quantity;
         }
-
         this.setState({
           itemList: this.props.item_list,
         });
@@ -284,7 +307,7 @@ class ViewRequest extends Component {
     }
     if (
       this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
+        prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -309,18 +332,18 @@ class ViewRequest extends Component {
     };
     let isValid = true;
     const retData = {
-      dueDate: validObj,
+      desiredDate: validObj,
       deliveryDate: validObj,
       location: validObj,
       department: validObj,
-      request: validObj,
+      requestType: validObj,
       note: validObj,
       isValid,
     };
     if (isSubmitted) {
       const { formData } = this.state;
-      if (!formData.dueDate) {
-        retData.dueDate = {
+      if (!formData.desiredDate) {
+        retData.desiredDate = {
           isValid: false,
           message: "Due date is required",
         };
@@ -347,10 +370,10 @@ class ViewRequest extends Component {
         };
         isValid = false;
       }
-      if (!formData.request) {
-        retData.request = {
+      if (!formData.requestType) {
+        retData.requestType = {
           isValid: false,
-          message: "Purchase product name is required",
+          message: "Purchase product type is required",
         };
         isValid = false;
       }
@@ -365,6 +388,7 @@ class ViewRequest extends Component {
     retData.isValid = isValid;
     return retData;
   };
+
   validateUpdate = (update) => {
     const validObj = {
       isValid: true,
@@ -382,21 +406,21 @@ class ViewRequest extends Component {
       isValid,
     };
     if (update) {
-      if (!updateValue.name) {
+      if (!updateValue.details.itemName) {
         retData.name = {
           isValid: false,
           message: "Name is required",
         };
         isValid = false;
       }
-      if (!updateValue.category) {
+      if (!updateValue.details.category) {
         retData.category = {
           isValid: false,
           message: "category is required",
         };
         isValid = false;
       }
-      if (!updateValue.supplier) {
+      if (!updateValue.details.supplier) {
         retData.supplier = {
           isValid: false,
           message: "supplier is required",
@@ -419,14 +443,14 @@ class ViewRequest extends Component {
         };
         isValid = false;
       }
-      if (!updateValue.unit) {
+      if (!updateValue.details.unit) {
         retData.unit = {
           isValid: false,
           message: "unit is required",
         };
         isValid = false;
       }
-      if (!updateValue.price) {
+      if (!updateValue.details.price) {
         retData.price = {
           isValid: false,
           message: "price is required",
@@ -460,7 +484,6 @@ class ViewRequest extends Component {
         });
         let data = document.getElementById("upload_document");
         this.formkiqClient.webFormsHandler.submitFormkiqForm(data);
-        // this.props.dispatch(requestForPurposeAction.UploadFile(e.target.files[i].name));
       }
     }
   };
@@ -521,20 +544,28 @@ class ViewRequest extends Component {
 
   createRequest = (event) => {
     event.preventDefault();
-    const { formData, selectedItemList, selectedFile, uploadedFileList } =
-      this.state;
+    const { selectedItemList } = this.state;
 
     this.setState({
       isSubmitted: true,
     });
+
     const errorData = this.validate(true);
     if (errorData.isValid) {
       if (selectedItemList && selectedItemList.length > 0) {
-        let sendData = {
-          formData,
-          itemList: selectedItemList,
-          files: selectedFile,
-          documentId: uploadedFileList,
+        const products = selectedItemList.map((item) => {
+          const retData = {
+            item: {
+              ...item.details,
+              id: String(item.id),
+            },
+            quantity: `1`,
+          };
+          return retData;
+        });
+        const sendData = {
+          ...this.state.formData,
+          products,
         };
         this.props.dispatch(requestForPurposeAction.addRequest(sendData));
       } else {
@@ -566,12 +597,26 @@ class ViewRequest extends Component {
       selectedItemList,
     });
   };
+
   handleUpdate = (e) => {
     const { updateValue } = this.state;
     const { name, value } = e.target;
-    updateValue[name] = value;
+    if (name === "name") {
+      updateValue.details.itemName = value;
+    } else if (name === "category") {
+      updateValue.details.category = value;
+    } else if (name === "supplier") {
+      updateValue.details.supplier = value;
+    } else if (name === "quantity") {
+      updateValue.quantity = value;
+    } else if (name === "unit") {
+      updateValue.details.unit = value;
+    } else if (name === "price") {
+      updateValue.details.price = value;
+    }
     this.setState({ updateValue });
   };
+
   updateDataValues = () => {
     const { selectedItemList, activeIndex, updateValue } = this.state;
     let updateForm = this.validateUpdate(true);
@@ -596,20 +641,21 @@ class ViewRequest extends Component {
     const {
       formData,
       isSubmitted,
-      dueDate,
+      desiredDate,
       deliverDate,
       openDialog,
       openEditDialog,
       columns,
       activeIndex,
       updateValue,
-      itemList,
       selectedItemList,
       uploadedFileList,
       supplierAndCategoryList,
       update,
       openImportItemDialog,
+      productsList,
     } = this.state;
+
     const errorData = this.validate(isSubmitted);
     const updateForm = this.validateUpdate(update);
     return (
@@ -618,7 +664,7 @@ class ViewRequest extends Component {
           <div className="view-request-contant">
             <div className="new-request-heading">
               <Link to={`/postlogin/request/`}>My Request</Link>
-              <i class="far fa-angle-right"></i>
+              <i className="far fa-angle-right"></i>
               View Request
             </div>
             <div className="requisitions-filter">
@@ -629,14 +675,14 @@ class ViewRequest extends Component {
                 <div className="col-12 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-form-field">
                   <div className="d-flex align-items-center date-picker">
                     <DatePicker
-                      selected={dueDate}
+                      selected={desiredDate}
                       placeholder={"YYYY-MM-DD"}
-                      onChange={(date) => this.handleDates(date, "dueDate")}
+                      onChange={(date) => this.handleDates(date, "desiredDate")}
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                   <span className="d-block w-100 text-danger">
-                    {errorData.dueDate.message}
+                    {errorData.desiredDate.message}
                   </span>
                 </div>
                 <label className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-form-label">
@@ -651,7 +697,7 @@ class ViewRequest extends Component {
                         this.handleDates(date, "deliveryDate")
                       }
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                   <span className="d-block w-100 text-danger">
                     {errorData.deliveryDate.message}
@@ -669,9 +715,10 @@ class ViewRequest extends Component {
                         name="location"
                         value={formData.location}
                         onChange={this.handleStateChange}
-                      // isvalid={errorData.location.isValid}
                       >
-                        <option value={"Main Office Usa"}>Main Office USA</option>
+                        <option value={"Main Office Usa"}>
+                          Main Office USA
+                        </option>
                         <option value={"abc"}>abc</option>
                         <option value={"def"}>def</option>
                         <option value={"abc"}>abc</option>
@@ -692,7 +739,6 @@ class ViewRequest extends Component {
                         name="department"
                         value={formData.department}
                         onChange={this.handleStateChange}
-                      // isvalid={errorData.department.isValid}
                       >
                         <option value={"HR Department"}>HR Department</option>
                         <option value={"abc"}>abc</option>
@@ -714,10 +760,9 @@ class ViewRequest extends Component {
                   <div className="new-requeust-massge">
                     <FormControl className="select-menu">
                       <NativeSelect
-                        name="request"
-                        value={formData.request}
+                        name="requestType"
+                        value={formData.requestType}
                         onChange={this.handleStateChange}
-                      // isvalid={errorData.request.isValid}
                       >
                         <option value="Purchase">Purchase</option>
                         <option value={"abc"}>abc</option>
@@ -726,7 +771,7 @@ class ViewRequest extends Component {
                       </NativeSelect>
                     </FormControl>
                     <span className="d-block w-100 text-danger">
-                      {errorData.request.message}
+                      {errorData.requestType.message}
                     </span>
                   </div>
                 </div>
@@ -769,7 +814,6 @@ class ViewRequest extends Component {
                       variant="contained"
                       className="add-custom-btn"
                       disableElevation
-                    // onClick={this.handleClickMethod}
                     >
                       Add Custom Item
                     </Button>
@@ -777,7 +821,6 @@ class ViewRequest extends Component {
                       variant="contained"
                       className="add-custom-btn"
                       disableElevation
-                      // onClick={this.handleClickMethod}
                       onClick={this.openImportItemPopup}
                     >
                       <i className="fa fa-plus-circle" aria-hidden="true" />
@@ -844,6 +887,11 @@ class ViewRequest extends Component {
                               variant="contained"
                               className="submit"
                               onClick={this.createRequest}
+                              disabled={
+                                this.props.add_request_status === 0
+                                  ? true
+                                  : false
+                              }
                             >
                               Submit
                             </Button>
@@ -856,9 +904,6 @@ class ViewRequest extends Component {
                         </div>
                       )}
                     </div>
-                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-form-button">
-                    <Chat user={this.state.user} />
-                  </div> */}
                   </div>
                 </div>
               </React.Fragment>
@@ -938,7 +983,7 @@ class ViewRequest extends Component {
             openDialog={openDialog}
             setSelectedItemList={this.setSelectedItemList}
             openAddNewItemPopup={this.openAddNewItemPopup}
-            itemList={itemList}
+            productsList={productsList}
           />
         }
 
@@ -967,7 +1012,9 @@ class ViewRequest extends Component {
                     className="form-control"
                     placeholder="Name"
                     onChange={this.handleUpdate}
-                    value={updateValue.name}
+                    value={
+                      updateValue.details ? updateValue.details.itemName : ""
+                    }
                   />
                   <span className="d-block w-100 text-danger">
                     {updateForm.name.message}
@@ -981,9 +1028,21 @@ class ViewRequest extends Component {
                     <NativeSelect
                       name="category"
                       onChange={this.handleUpdate}
-                      value={updateValue.category}
+                      value={
+                        updateValue.details ? updateValue.details.category : ""
+                      }
                     >
-                      <option value={""}>Category</option>
+                      <option
+                        value={
+                          updateValue.details
+                            ? updateValue.details.category
+                            : ""
+                        }
+                      >
+                        {updateValue.details
+                          ? updateValue.details.category
+                          : ""}
+                      </option>
                       {supplierAndCategoryList &&
                         supplierAndCategoryList.category &&
                         supplierAndCategoryList.category.length > 0 &&
@@ -1006,9 +1065,23 @@ class ViewRequest extends Component {
                     <NativeSelect
                       name="supplier"
                       onChange={this.handleUpdate}
-                      value={updateValue.supplier}
+                      value={
+                        updateValue.details
+                          ? updateValue.details.supplier.name
+                          : ""
+                      }
                     >
-                      <option value={""}>Supplier</option>
+                      <option
+                        value={
+                          updateValue.details
+                            ? updateValue.details.supplier.name
+                            : ""
+                        }
+                      >
+                        {updateValue.details
+                          ? updateValue.details.supplier.name
+                          : ""}
+                      </option>
                       {supplierAndCategoryList &&
                         supplierAndCategoryList.supplierDetails &&
                         supplierAndCategoryList.supplierDetails.length > 0 &&
@@ -1035,7 +1108,7 @@ class ViewRequest extends Component {
                     className="form-control"
                     placeholder="Quantity"
                     onChange={this.handleUpdate}
-                    value={updateValue.quantity}
+                    value={updateValue ? updateValue.quantity : ""}
                   />
                   <span className="d-block w-100 text-danger">
                     {updateForm.quantity.message}
@@ -1051,7 +1124,7 @@ class ViewRequest extends Component {
                     className="form-control"
                     placeholder="Unit"
                     onChange={this.handleUpdate}
-                    value={updateValue.unit}
+                    value={updateValue.details ? updateValue.details.unit : ""}
                   />
                   <span className="d-block w-100 text-danger">
                     {updateForm.unit.message}
@@ -1067,7 +1140,7 @@ class ViewRequest extends Component {
                     className="form-control"
                     placeholder="Price"
                     onChange={this.handleUpdate}
-                    value={updateValue.price}
+                    value={updateValue.details ? updateValue.details.price : ""}
                   />
                   <span className="d-block w-100 text-danger">
                     {updateForm.price.message}
@@ -1106,6 +1179,8 @@ const mapStateToProps = (state) => {
     add_request_response,
     supplier_category_list_status,
     supplier_category_list_data,
+    products_list_status,
+    products_list,
   } = state.procurement;
 
   return {
@@ -1119,10 +1194,13 @@ const mapStateToProps = (state) => {
     add_request_response,
     supplier_category_list_status,
     supplier_category_list_data,
+    products_list_status,
+    products_list,
   };
 };
 
 const viewRequestComponet = withTranslation()(
   connect(mapStateToProps)(ViewRequest)
 );
+
 export default viewRequestComponet;

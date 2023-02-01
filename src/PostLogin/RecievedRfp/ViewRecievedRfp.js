@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import { Button } from "@mui/material";
 import { connect } from "react-redux";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import BlockIcon from "@material-ui/icons/Block";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import BlockIcon from "@mui/icons-material/Block";
 import { recievedrfpAction } from "../../_actions";
 import { status } from "../../_constants";
 
@@ -14,6 +14,7 @@ class ViewRecievedRfp extends Component {
       comment: "",
     };
   }
+
   componentDidMount() {
     this.props.dispatch(
       recievedrfpAction.getRecieveRFP({ id: this.props.match.params.id })
@@ -37,6 +38,7 @@ class ViewRecievedRfp extends Component {
       this.props.history.push(`/postlogin/frp/recivedrfp`);
     }
   }
+
   handleStateChange = (e) => {
     const { name, value } = e.target;
     this.setState({
@@ -101,11 +103,6 @@ class ViewRecievedRfp extends Component {
                       {new Date(recievedData.createdOn).toDateString()}
                     </span>
                   </div>
-                  {/* <div className="creation-box">
-                                    <span>Creation Date</span>
-                                    {recievedData.createdOn && <span>{commonFunctions.convertDateToString(
-                                        new Date(recievedData.createdOn))}</span>}
-                                    </div> */}
                   <Button
                     variant="contained"
                     className="primary-btn track-btn float-right"
@@ -262,4 +259,5 @@ const mapStateToProps = (state) => {
     recieved_rfp_res,
   };
 };
+
 export default connect(mapStateToProps)(ViewRecievedRfp);

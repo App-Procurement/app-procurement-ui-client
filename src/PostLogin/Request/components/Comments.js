@@ -2,14 +2,14 @@ import React from "react";
 import UserImg4 from "../../../assets/images/request/user-img4.png";
 import { commonFunctions } from "../../../_utilities/commonFunctions";
 
-const Comments = ({ requestData }) => {
+const Comments = ({ fakerData }) => {
   return (
     <div className="overview-tabs-contant comments-tabs-contant active">
       <div className="order-item-head">
         <h4>Comments</h4>
       </div>
       <div className="user-comments-section">
-        {requestData.map((data) => {
+        {fakerData.map((data) => {
           return (
             <ul>
               <li>
@@ -20,7 +20,6 @@ const Comments = ({ requestData }) => {
                   <div className="user-name">
                     <label>{data.userName}</label>
                     <span>{commonFunctions.timeDifference(data.postTime)}</span>
-                    {/* <span>{data.postTime}</span> */}
                   </div>
                   <div className="user-designation">
                     <p>{data.comment}</p>

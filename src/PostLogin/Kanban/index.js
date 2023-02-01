@@ -2,47 +2,57 @@ import React, { Component } from "react";
 import Joannah from "../../assets/images/dashbord/joannah.png";
 import Machel from "../../assets/images/dashbord/machel.png";
 import Kevin from "../../assets/images/dashbord/kevin.png";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Avatar from "@material-ui/core/Avatar";
-import AvatarGroup from "@material-ui/lab/AvatarGroup";
-import Button from "@material-ui/core/Button";
+import {LinearProgress} from  "@mui/material"
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { ReactSortable } from "react-sortablejs";
-import IconButton from "@material-ui/core/IconButton";
 import {
+  Avatar,
+  AvatarGroup,
+  IconButton,
+  Button,
   Dialog,
   DialogContent,
   DialogTitle,
   DialogActions,
-} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+  FormControl,
+  NativeSelect,
+  Box,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { kanbanActions } from "../../_actions/kanban.actions";
 import { connect } from "react-redux";
 import { status } from "../../_constants";
 import { withTranslation } from "react-i18next";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
 import { DatePicker } from "@y0c/react-datepicker";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import "rc-calendar/assets/index.css";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { t } from "i18next";
 import UserProfileImg from "../../assets/images/message/user-profile-img.png";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-import Box from "@material-ui/core/Box";
 
 const TaskMenu = () => {
   return (
     <div className="task-menu">
       <ul>
-        <li><i class="fas fa-edit"></i>Edit Details</li>
-        <li><i class="fas fa-trash-alt"></i>Delete</li>
-        <li><i class="fas fa-external-link-square-alt"></i>Move</li>
-        <li><i class="fas fa-user"></i>View Users</li>
-        <li><i class="far fa-paperclip"></i>Attach Files</li>
+        <li>
+          <i class="fas fa-edit"></i>Edit Details
+        </li>
+        <li>
+          <i class="fas fa-trash-alt"></i>Delete
+        </li>
+        <li>
+          <i class="fas fa-external-link-square-alt"></i>Move
+        </li>
+        <li>
+          <i class="fas fa-user"></i>View Users
+        </li>
+        <li>
+          <i class="far fa-paperclip"></i>Attach Files
+        </li>
       </ul>
     </div>
   );
@@ -124,8 +134,8 @@ class Kanban extends Component {
               row.status === "a"
                 ? "col-12 task-todo"
                 : row.status === "b"
-                  ? "col-12 task-inprogress"
-                  : "col-12 task-complete"
+                ? "col-12 task-inprogress"
+                : "col-12 task-complete"
             }
             key={i + 1}
           >
@@ -167,16 +177,16 @@ class Kanban extends Component {
                         row.status === "a"
                           ? "status-btn"
                           : row.status === "b"
-                            ? "in-progress-btn"
-                            : "complete-btn"
+                          ? "in-progress-btn"
+                          : "complete-btn"
                       }
                     >
                       {t(
                         row.status === "a"
                           ? "Open"
                           : row.status === "b"
-                            ? "In Progress"
-                            : "Complete"
+                          ? "In Progress"
+                          : "Complete"
                       )}
                     </Button>
                   </div>
@@ -208,7 +218,7 @@ class Kanban extends Component {
                       </div>
                     )}
                     <span>
-                      <i className="far fa-paperclip"></i> {emailtime[0]}{" "}
+                      <i className="far fa-paperclip"></i> {emailtime[0]}
                       <i className="fas fa-comment-alt-lines"></i>
                     </span>
                   </div>
@@ -238,14 +248,6 @@ class Kanban extends Component {
     return retData;
   };
 
-  // invitePeoples = () => {
-  //   const { invitePeoples } = this.state;
-  //   let dialog = !invitePeoples;
-  //   this.setState({
-  //     invitePeoples: dialog,
-  //   });
-  // };
-
   addTaskModal = () => {
     const { addTask } = this.state;
     let dialog = !addTask;
@@ -262,7 +264,7 @@ class Kanban extends Component {
     });
   };
 
-  taskValid = () => {
+  validateTask = () => {
     let valid = false;
     const { taskName, taskUser, taskDueDate, taskDescription } = this.state;
     if (!taskName) {
@@ -301,9 +303,14 @@ class Kanban extends Component {
   };
 
   addTask = () => {
-    if (this.taskValid()) {
-      const { addTask, taskName, taskDescription, taskUser, taskDueDate } =
-        this.state;
+    if (this.validateTask()) {
+      const {
+        addTask,
+        taskName,
+        taskDescription,
+        taskUser,
+        taskDueDate,
+      } = this.state;
       let dialog = !addTask;
       this.setState({
         addTask: dialog,
@@ -339,7 +346,7 @@ class Kanban extends Component {
     });
   };
 
-  handleStateChange = (e) => {
+  handleFormFieldsInput = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
@@ -350,7 +357,7 @@ class Kanban extends Component {
     });
   };
 
-  newTaskList = () => {
+  handleTaskDragAndDrop = () => {
     this.state.revised = this.state.toDo.concat(
       this.state.onProgress,
       this.state.completed
@@ -431,9 +438,9 @@ class Kanban extends Component {
           <Dialog
             open={addTask}
             aria-labelledby="form-dialog-title"
-            className="add-task-dialog"
+            className="add-task-dialog "
           >
-            <DialogTitle id="form-dialog-title" className="top-header">
+            <DialogTitle id="form-dialog-title " className="top-header">
               {t("New Task")}
               <CloseIcon className="close-icon" onClick={this.addTaskModal} />
             </DialogTitle>
@@ -449,7 +456,7 @@ class Kanban extends Component {
                           name="taskName"
                           placeholder="Lease Warehoue"
                           className="form-control"
-                          onChange={this.handleStateChange}
+                          onChange={this.handleFormFieldsInput}
                         />
                         <span className="d-block w-100 text-danger">
                           {taskNameError}
@@ -464,7 +471,7 @@ class Kanban extends Component {
                         <textarea
                           name="taskDescription"
                           placeholder="Short description regarding the task"
-                          onChange={this.handleStateChange}
+                          onChange={this.handleFormFieldsInput}
                         />
                         <span className="d-block w-100 text-danger">
                           {taskDescriptionError}
@@ -478,7 +485,7 @@ class Kanban extends Component {
                       <FormControl className="payment-select-menu">
                         <NativeSelect
                           name="taskUser"
-                          onChange={this.handleStateChange}
+                          onChange={this.handleFormFieldsInput}
                         >
                           <option value="">Select User</option>
                           <option value={10}>User 1</option>
@@ -501,7 +508,7 @@ class Kanban extends Component {
                           placeholder={"YYYY-MM-DD"}
                           onChange={this.handleDateChange}
                         />
-                        <CalendarTodayTwoToneIcon className="calendar-icon" />
+                        <CalendarTodayIcon className="calendar-icon" />
                       </div>
                       <span className="d-block w-100 text-danger">
                         {taskDueDateError}
@@ -551,7 +558,7 @@ class Kanban extends Component {
                       item.status = "a";
                     });
                     this.setState({ toDo: newState });
-                    this.newTaskList();
+                    this.handleTaskDragAndDrop();
                   }}
                   className="row"
                   group="cards"
@@ -574,7 +581,7 @@ class Kanban extends Component {
                       item.status = "b";
                     });
                     this.setState({ onProgress: newState });
-                    this.newTaskList();
+                    this.handleTaskDragAndDrop();
                   }}
                   className="row"
                   group="cards"
@@ -599,7 +606,7 @@ class Kanban extends Component {
                       item.status = "c";
                     });
                     this.setState({ completed: newState });
-                    this.newTaskList();
+                    this.handleTaskDragAndDrop();
                   }}
                   className="row"
                   group="cards"
@@ -720,7 +727,9 @@ class Kanban extends Component {
                                   id="demo-simple-select"
                                   name="budgetType"
                                   value={requiData.budgetType}
-                                  onChange={(e) => this.handleStateChange(e)}
+                                  onChange={(e) =>
+                                    this.handleFormFieldsInput(e)
+                                  }
                                 >
                                   <MenuItem value={10}>New Budget</MenuItem>
                                   <MenuItem value={20}>Create New</MenuItem>
@@ -768,7 +777,6 @@ class Kanban extends Component {
                                   <div className="user-text">
                                     <label className="name">Tony Kopper</label>
                                     <span className="time">
-                                      {" "}
                                       <i className="fal fa-plus-circle"></i> 01
                                       Aug 2022
                                     </span>
@@ -801,7 +809,6 @@ class Kanban extends Component {
                                   <div className="user-text">
                                     <label className="name">Tony Kopper</label>
                                     <span className="time">
-                                      {" "}
                                       <i className="fal fa-plus-circle"></i> 01
                                       Aug 2022
                                     </span>
@@ -834,7 +841,6 @@ class Kanban extends Component {
                                   <div className="user-text">
                                     <label className="name">Tony Kopper</label>
                                     <span className="time">
-                                      {" "}
                                       <i className="fal fa-plus-circle"></i> 01
                                       Aug 2022
                                     </span>
@@ -867,7 +873,6 @@ class Kanban extends Component {
                                   <div className="user-text">
                                     <label className="name">Tony Kopper</label>
                                     <span className="time">
-                                      {" "}
                                       <i className="fal fa-plus-circle"></i> 01
                                       Aug 2022
                                     </span>
@@ -973,8 +978,6 @@ class Kanban extends Component {
                   </div>
                 </>
               </DialogContent>
-              {/* <DialogActions className="add-module-footer mb-4">
-              </DialogActions> */}
             </Dialog>
           </div>
         </div>
@@ -992,4 +995,6 @@ function mapStateToProps(state) {
 }
 
 const connectedKanban = withTranslation()(connect(mapStateToProps)(Kanban));
+
 export default connectedKanban;
+//  "@material-ui/core": "^4.11.4",

@@ -1,39 +1,33 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
+import Loader from "react-js-loader";
 import "simplebar/dist/simplebar.min.css";
-import MailIcon from "@material-ui/icons/Mail";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
-import "simplebar/dist/simplebar.min.css";
-import WatchLaterIcon from "@material-ui/icons/WatchLater";
-import CheckIcon from "@material-ui/icons/Check";
 import { connect } from "react-redux";
 import { invoiceAction } from "../../_actions/invoice.actions";
 import { status } from "../../_constants";
-import { commonFunctions } from "../../_utilities";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
 import purchaseOrder from "../../assets/images/dashbord/purchase-order.png";
 import approvedRequisitionIcon from "../../assets/images/dashbord/approved-requisition-icon.png";
 import pendingRequisitionIcon from "../../assets/images/dashbord/pending-requisition-icon.png";
 import rejectedRequisitionIcon from "../../assets/images/dashbord/rejected-requisition-icon.png";
-import { manageSupplierAction, purchaseOrderAction } from "../../_actions";
 import FilterIcon from "../../assets/images/filter-icon.png";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { DatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
-import { PageItem } from "react-bootstrap";
-
+import {
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
 class Invoices extends Component {
   constructor(props) {
     super(props);
     this.state = {
       status: false,
+      loadingStatus: false,
       requiData: {
         status: "",
         reqNo: "",
@@ -67,55 +61,61 @@ class Invoices extends Component {
           },
           {
             label: "Requester",
-            key: "requester",
+            key: "purchaseOrder",
             renderCallback: (value) => {
               return (
-                <td key={`${Math.random()}_${value}`}>
-                  <span className={"department-value"}>{value}</span>
+                <td key={`${Math.random()}_${value.createdBy}`}>
+                  <span className={"department-value"}>{value.createdBy}</span>
                 </td>
               );
             },
           },
           {
             label: "Location",
-            key: "city",
+            key: "purchaseOrder",
             renderCallback: (value) => {
               return (
-                <td key={`${Math.random()}_${value}`}>
-                  <span className={"department-value"}>{value}</span>
+                <td key={`${Math.random()}_${value.supplier.city}`}>
+                  <span className={"department-value"}>
+                    {value.supplier.city}
+                  </span>
                 </td>
               );
             },
           },
           {
             label: "Supplier",
-            key: "supplier",
+            key: "purchaseOrder",
             renderCallback: (value) => {
               return (
-                <td key={`${Math.random()}_${value}`}>
-                  <span className={"department-value"}>{value}</span>
+                <td key={`${Math.random()}_${value.supplier.name}`}>
+                  <span className={"department-value"}>
+                    {value.supplier.name}
+                  </span>
                 </td>
               );
             },
           },
           {
             label: "Total Amount",
-            key: "totalAmount",
+            key: "purchaseOrder",
             renderCallback: (value) => {
               return (
-                <td key={`${Math.random()}_${value}`}>
-                  <span className={"department-value"}>{value}</span>
+                <td key={`${Math.random()}_${value.totalAmount}`}>
+                  <span className={"department-value"}>
+                    {value.totalAmount}
+                  </span>
                 </td>
               );
             },
           },
           {
             label: "Creation Date",
-            key: "creationDate",
+            key: "purchaseOrder",
             renderCallback: (value) => {
               return (
-                <td key={`${Math.random()}_${value}`}>
-                  <span className={"department-value"}>{value}</span>
+                <td key={`${Math.random()}_${value.createdOn}`}>
+                  <span className={"department-value"}>{value.createdOn}</span>
                 </td>
               );
             },
@@ -123,15 +123,22 @@ class Invoices extends Component {
           {
             label: "Status",
             key: "status",
-            renderCallback: (value, row) => {
+            renderCallback: (index, value) => {
               return (
-                <td>
+                <td key={`${Math.random()}_${value.status}`}>
                   <Button
-                    variant="contained"
-                    className="invoices-list-btn completed-btn"
+                    variant="outlined"
+                    className={
+                      value.status === "ready"
+                        ? "department-value green-btn"
+                        : value.status === "outstanding"
+                        ? "department-value status-btn"
+                        : value.status === "rejected"
+                        ? "department-value onahau-btn"
+                        : "department-value magnolia-btn"
+                    }
                   >
-                    <CheckIcon className="mr-2 bold" />
-                    {value}
+                    {value.status}
                   </Button>
                 </td>
               );
@@ -154,45 +161,61 @@ class Invoices extends Component {
       tableData: [],
       itemList: [],
       invoiceData: [],
+      settledInvoiceCount: 0,
+      readyInvoiceCount: 0,
+      outstandingInvoiceCount: 0,
+      rejectedInvoiceCount: 0,
     };
   }
 
   componentDidMount() {
     this.props.dispatch(invoiceAction.searchInvoice());
     this.props.dispatch(invoiceAction.invoicesData());
-    // this.props.dispatch(purchaseOrderAction.searchApprovePurchaseOrder());
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { approvedVendoreTableData } = this.state;
-
+    let {
+      settledInvoiceCount,
+      readyInvoiceCount,
+      outstandingInvoiceCount,
+      rejectedInvoiceCount,
+    } = this.state;
     if (
       this.props.get_invoicedata_status !== prevProps.get_invoicedata_status &&
       this.props.get_invoicedata_status === status.SUCCESS
     ) {
       if (this.props.invoice_data) {
+        this.props.invoice_data.map((item) => {
+          console.log(item.details.purchaseOrder.status);
+          if (item.details.purchaseOrder.status === "settled") {
+            settledInvoiceCount++;
+          } else if (item.details.purchaseOrder.status === "ready") {
+            readyInvoiceCount++;
+          } else if (item.details.purchaseOrder.status === "outstanding") {
+            outstandingInvoiceCount++;
+          } else if (item.details.purchaseOrder.status === "rejected") {
+            rejectedInvoiceCount++;
+          }
+        });
         this.setState({
           invoiceData: this.props.invoice_data,
+          loadingStatus: !this.state.loadingStatus,
         });
-
-        let invoiceData = this.state.invoiceData;
-        let resultantData = {};
         const { itemList } = this.state;
-        console.log("invoice data", this.props.invoice_data);
+
         this.props.invoice_data.map((item) => {
           let itemData = item.details;
-          console.log("hello", itemData);
-           resultantData.totalAmount = itemData.purchaseOrder.totalAmount;
-          resultantData.requester = itemData.purchaseOrder.supplier.name;
-          resultantData.creationDate = itemData.invoiceDueDate;
-          // resultantData.supplier = itemData.purchaseOrder.supplier.name;
-          resultantData.supplier = itemData.purchaseOrder.supplier.name;
-          resultantData.status = itemData.purchaseOrder.status;
-          resultantData.city = itemData.purchaseOrder.supplier.city;
-
-          itemList.push(resultantData);
+          itemList.push({
+            ...itemData,
+            id: item.id,
+          });
           this.setState({
             itemList,
+            settledInvoiceCount,
+            readyInvoiceCount,
+            outstandingInvoiceCount,
+            rejectedInvoiceCount,
           });
         });
       }
@@ -215,33 +238,7 @@ class Invoices extends Component {
     }
   }
 
-  onSearchChange = (e) => {
-    let { value } = e.target;
-    const { duplicateApprovedData, approvedVendoreTableData } = this.state;
-    let queryResult = [];
-    if (duplicateApprovedData && duplicateApprovedData.length > 0) {
-      if (value.trim()) {
-        for (let i = 0; i < duplicateApprovedData.length; i++) {
-          let approvedData = duplicateApprovedData[i];
-          if (
-            approvedData["RequestDepartment"].toLowerCase().indexOf(value) !==
-              -1 ||
-            approvedData["RequestDepartment"].indexOf(value) !== -1
-          ) {
-            queryResult.push(approvedData);
-          }
-        }
-        approvedVendoreTableData.data = queryResult;
-      } else {
-        approvedVendoreTableData.data = duplicateApprovedData;
-      }
-    }
-    this.setState({
-      approvedVendoreTableData,
-    });
-  };
-
-  handleStateChange = (e) => {
+  handleSearchFormChanges = (e) => {
     const { name, value } = e.target;
     const { requiData } = this.state;
     requiData[name] = value;
@@ -250,28 +247,21 @@ class Invoices extends Component {
     });
   };
 
-  handleToggle = () => {
+  handleSearchToggle = () => {
     this.setState({
       status: !this.state.status,
     });
   };
 
-  handleDates = (date, name) => {
+  handleSearchInputDate = (date, name) => {
     let { formData } = this.state;
     formData[name] = date;
     this.setState({ formData });
   };
 
   render() {
-    const {
-      columns,
-      tableData,
-      approvedVendoreTableData,
-      invoiceData,
-      itemList,
-      status,
-    } = this.state;
-    console.log("itemlist", itemList);
+    const { approvedVendoreTableData, itemList, status } = this.state;
+
     return (
       <div className="main-content">
         <div className="invoices-content">
@@ -307,14 +297,7 @@ class Invoices extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Settled invoice</div>
-
-                    {invoiceData?.settledInvoice ? (
-                      <>
-                        <h4>{invoiceData.settledInvoice}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    {<h4>{this.state.settledInvoiceCount}</h4>}
                   </div>
                   <div className="purchased-image">
                     <img src={purchaseOrder} alt="" />
@@ -325,13 +308,7 @@ class Invoices extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Ready To Pay</div>
-                    {invoiceData?.readyToPay ? (
-                      <>
-                        <h4>{invoiceData.readyToPay}</h4>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    {<h4>{this.state.readyInvoiceCount}</h4>}
                   </div>
                   <div className="purchased-image approved">
                     <img src={approvedRequisitionIcon} alt="" />
@@ -342,14 +319,7 @@ class Invoices extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Outstanding Invoice</div>
-                    {invoiceData?.outStandingInvoice ? (
-                      <>
-                        <h4>{invoiceData.outStandingInvoice}</h4>
-                        {/* <h4>{requestData.myRequest.allRequest}</h4> */}
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    {<h4>{this.state.outstandingInvoiceCount}</h4>}
                   </div>
                   <div className="purchased-image pending">
                     <img src={pendingRequisitionIcon} alt="" />
@@ -360,15 +330,7 @@ class Invoices extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Reject Invoice</div>
-
-                    {invoiceData?.rejectedInvoice ? (
-                      <>
-                        <h4>{invoiceData.rejectedInvoice}</h4>
-                        {/* <h4>{requestData.myRequest.allRequest}</h4> */}
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    {<h4>{this.state.rejectedInvoiceCount}</h4>}
                   </div>
                   <div className="purchased-image rejected">
                     <img src={rejectedRequisitionIcon} alt="" />
@@ -381,7 +343,7 @@ class Invoices extends Component {
             {status === false ? (
               <Button
                 variant="outlined"
-                onClick={this.handleToggle}
+                onClick={this.handleSearchToggle}
                 className="fillter-btn"
               >
                 <span>
@@ -419,10 +381,9 @@ class Invoices extends Component {
                       <input
                         type="text"
                         name="rfqNo"
-                        // value={item.itemType}
                         className="form-control"
                         placeholder="Product"
-                        onChange={this.handleStateChange}
+                        onChange={this.handleSearchFormChanges}
                       />
                     </div>
                   </div>
@@ -433,7 +394,7 @@ class Invoices extends Component {
                         <FormControl className="payment-select-menu">
                           <NativeSelect
                             name="rfqType"
-                            onChange={this.handleStateChange}
+                            onChange={this.handleSearchFormChanges}
                           >
                             <option value="">Main Office USA</option>
                             <option value="amazon">Amazon</option>
@@ -448,13 +409,12 @@ class Invoices extends Component {
                     <label className="d-block">{t("Quotation Deadline")}</label>
                     <div className="d-flex align-items-center date-picker form-group">
                       <DatePicker
-                        // selected={formData.openDate}
                         placeholder={"YYYY-MM-DD"}
                         onChange={(date) =>
-                          this.handleDates(date, "quotationDeadLine")
+                          this.handleSearchInputDate(date, "quotationDeadLine")
                         }
                       />
-                      <CalendarTodayTwoToneIcon className="calendar-icon" />
+                      <CalendarTodayIcon className="calendar-icon" />
                     </div>
                   </div>
                   <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -464,7 +424,7 @@ class Invoices extends Component {
                         <FormControl className="payment-select-menu">
                           <NativeSelect
                             name="itemSupplier"
-                            onChange={this.handleStateChange}
+                            onChange={this.handleSearchFormChanges}
                           >
                             <option value="">Main Office USA</option>
                             <option value="amazon">Amazon</option>
@@ -483,30 +443,30 @@ class Invoices extends Component {
             )}
           </div>
           <div className="invoices-tabale">
-            <Table
-              valueFromData={{
-                columns: approvedVendoreTableData.columns,
-                data: itemList,
-              }}
-              // valueFromData={{
-
-              //   columns: approvedVendoreTableData.columns,
-              //   data: this.state.itemList,
-              // }}
-              // searchValue={this.state.searchValue}
-              perPageLimit={6}
-              visiblecheckboxStatus={false}
-              // isLoading={
-              //   this.props. get_invoicedata_status === status.IN_PROGRESS
-              // }
-              tableClasses={{
-                table: "ticket-tabel",
-                tableParent: "tickets-tabel",
-                parentClass: "all-support-ticket-tabel",
-              }}
-              searchKey="RequestDepartment"
-              showingLine="Showing %start% to %end% of %total% Tickets"
-            />
+            {this.state.loadingStatus ? (
+              <Table
+                valueFromData={{
+                  columns: approvedVendoreTableData.columns,
+                  data: itemList,
+                }}
+                perPageLimit={6}
+                visiblecheckboxStatus={false}
+                tableClasses={{
+                  table: "ticket-tabel",
+                  tableParent: "tickets-tabel",
+                  parentClass: "all-support-ticket-tabel",
+                }}
+                searchKey="RequestDepartment"
+                showingLine="Showing %start% to %end% of %total% Tickets"
+              />
+            ) : (
+              <Loader
+                type="spinner-default"
+                bgColor={"#3244a8"}
+                color={"#3244a8"}
+                size={60}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -545,4 +505,5 @@ function mapStateToProps(state) {
     approvepo_data,
   };
 }
+
 export default connect(mapStateToProps)(Invoices);

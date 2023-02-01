@@ -5,14 +5,17 @@
   "dependencies": {
     "@date-io/date-fns": "^2.10.8",
     "@date-io/moment": "^1.3.13",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@fullcalendar/daygrid": "^5.8.0",
     "@fullcalendar/interaction": "^5.8.0",
     "@fullcalendar/react": "^5.8.0",
     "@fullcalendar/timegrid": "^5.8.0",
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@material-ui/pickers": "^3.3.10",
+    "@mui/icons-material": "^5.10.14",
+    "@mui/material": "^5.10.14",
+    "@mui/styled-engine-sc": "^5.10.14",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -55,6 +58,7 @@
     "simplebar-react": "^2.3.2",
     "socket.io-client": "^4.5.1",
     "sortablejs": "^1.15.0",
+    "styled-components": "^5.3.6",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

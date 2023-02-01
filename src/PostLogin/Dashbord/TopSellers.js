@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import SimpleBar from 'simplebar-react';
-import { connect } from 'react-redux';
-import 'simplebar/dist/simplebar.min.css';
-import { sellersAction } from '../../_actions';
-import { status } from '../../_constants';
+import React, { Component } from "react";
+import SimpleBar from "simplebar-react";
+import { connect } from "react-redux";
+import "simplebar/dist/simplebar.min.css";
+import { sellersAction } from "../../_actions";
+import { status } from "../../_constants";
 
 class TopSellers extends Component {
   constructor(props) {
@@ -27,13 +27,14 @@ class TopSellers extends Component {
       }
     }
   }
+
   getPriority = (value) => {
     if (value === 0) {
-      return 'Revised';
+      return "Revised";
     } else if (value === 1) {
-      return 'Approve';
+      return "Approve";
     } else if (value === 2) {
-      return 'Reject';
+      return "Reject";
     }
   };
 
@@ -44,9 +45,9 @@ class TopSellers extends Component {
     result = Math.abs(activityDate.getHours() - recentTime.getHours());
     if (result <= 0) {
       result = Math.abs(activityDate.getMinutes() - recentTime.getMinutes());
-      return result + 'minutes';
+      return result + "minutes";
     } else {
-      return result + 'hours';
+      return result + "hours";
     }
   };
 
@@ -57,7 +58,9 @@ class TopSellers extends Component {
         <div className="recent-activity-head">
           <div className="row d-flex align-items-center justify-content-center">
             <div className="col-12">
-              <div className="head-left">{this.props.t('Top Seller this Week')}</div>
+              <div className="head-left">
+                {this.props.t("Top Seller this Week")}
+              </div>
             </div>
           </div>
         </div>
@@ -66,24 +69,40 @@ class TopSellers extends Component {
             sellerList.length > 0 &&
             sellerList.map((activity, index) => {
               if (activity && activity) {
-                const { price, id, productName, supplier, productImgUrl } = activity;
+                const {
+                  price,
+                  id,
+                  productName,
+                  supplier,
+                  productImgUrl,
+                } = activity;
                 return (
                   <div className="d-flex table-row" key={id}>
                     <div className="row d-flex align-items-center justify-content-space-beetween">
                       <div className="col-9">
                         <div className="d-flex align-items-center justify-content-center">
                           <div className="image">
-                            {productImgUrl && <img src={productImgUrl} width={50} height={50} alt="" />}
+                            {productImgUrl && (
+                              <img
+                                src={productImgUrl}
+                                width={50}
+                                height={50}
+                                alt=""
+                              />
+                            )}
                           </div>
                           <div className="d-flex flex-wrap name row">
                             <div className="col-12">
-                              <span>
-                                {supplier}
-                              </span>
+                              <span>{supplier}</span>
                             </div>
                             <div className="col-12">
-                              {' '}
-                              {productName && <strong> Request Approved by {productName}</strong>}
+                              {" "}
+                              {productName && (
+                                <strong>
+                                  {" "}
+                                  Request Approved by {productName}
+                                </strong>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -103,6 +122,7 @@ class TopSellers extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   const { seller_list_status, seller_list } = state.procurement;
   return {
@@ -110,4 +130,5 @@ function mapStateToProps(state) {
     seller_list,
   };
 }
+
 export default connect(mapStateToProps)(TopSellers);

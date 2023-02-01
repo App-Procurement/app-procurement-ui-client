@@ -1,23 +1,26 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import 'rc-calendar/assets/index.css';
-import '@y0c/react-datepicker/assets/styles/calendar.scss';
-import Table from '../../Table/Table';
-import { connect } from 'react-redux';
-import { purchaseOrderAction } from '../../_actions';
-import { status } from '../../_constants';
-import { withTranslation } from 'react-i18next';
-import { t } from 'i18next';
-import { Link } from 'react-router-dom';
-import { commonFunctions } from '../../_utilities/commonFunctions';
-import purchaseOrder from '../../assets/images/dashbord/purchase-order.png';
-import approvedRequisitionIcon from '../../assets/images/dashbord/approved-requisition-icon.png';
-import pendingRequisitionIcon from '../../assets/images/dashbord/pending-requisition-icon.png';
-import purchasedRequisitionIcon from '../../assets/images/dashbord/purchased-requisition-icon.png';
-import FilterIcon from '../../assets/images/filter-icon.png';
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import React, { Component } from "react";
+import {
+
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
+import "rc-calendar/assets/index.css";
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
+import Table from "../../Table/Table";
+import Loader from "react-js-loader";
+import { connect } from "react-redux";
+import { purchaseOrderAction } from "../../_actions";
+import { status } from "../../_constants";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
+import { Link } from "react-router-dom";
+import purchaseOrder from "../../assets/images/dashbord/purchase-order.png";
+import approvedRequisitionIcon from "../../assets/images/dashbord/approved-requisition-icon.png";
+import pendingRequisitionIcon from "../../assets/images/dashbord/pending-requisition-icon.png";
+import purchasedRequisitionIcon from "../../assets/images/dashbord/purchased-requisition-icon.png";
+import FilterIcon from "../../assets/images/filter-icon.png";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { DatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 
@@ -26,106 +29,99 @@ class Purchase extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      rfqNo: "",
+      rfqType: "",
+      quotationDeadLine: "",
+      formStatus: "",
       status: false,
+      loadingStatus: false,
       activeindex: 0,
       requiData: {
-        status: '',
-        reqno: '',
-        depart: '',
+        status: "",
+        reqno: "",
+        depart: "",
         ViewDetail: false,
         selectBuyer: false,
       },
       formData: {
-        dueDate: 'yyyy-mm-dd',
-        deliveryDate: 'yyyy-mm-dd',
-        location: '',
-        Department: '',
-        Request: '',
-        Note: '',
+        dueDate: "yyyy-mm-dd",
+        deliveryDate: "yyyy-mm-dd",
+        location: "",
+        Department: "",
+        Request: "",
+        Note: "",
       },
       columns: [
         {
-          label: 'S No',
-          key: 'sno',
+          label: "S No",
+          key: "sno",
           renderCallback: (value, index) => {
             return (
               <td key={index}>
-                <span className={'s-no'}>{index + 1}</span>
+                <span className={"s-no"}>{index + 1}</span>
               </td>
             );
           },
         },
         {
-          label: 'Requester',
-          key: 'createdBy',
+          label: "Requester",
+          key: "createdBy",
+        },
+        {
+          label: "Location",
+          key: "supplier",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={'requisitions-no'}>{value}</span>
+              <td key={`${Math.random()}_${value.city}`}>
+                <span className={"department-value"}>{value.city}</span>
               </td>
             );
           },
         },
         {
-          label: 'Location',
-          key: 'location',
+          label: "Supplier",
+          key: "supplier",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value.name}</span>
               </td>
             );
           },
         },
         {
-          label: 'Supplier',
-          key: 'supplier',
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={'department-value'}>{value.name}</span>
-              </td>
-            );
-          },
+          label: "Total Amount",
+          key: "totalAmount",
         },
         {
-          label: 'Total Amount',
-          key: 'totalPrice',
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={'requestor'}>${value}</span>
-              </td>
-            );
-          },
+          label: "Creation Date",
+          key: "createdOn",
         },
         {
-          label: 'Creation Date',
-          key: 'createdOn',
+          label: "Status",
+          key: "supplier",
           renderCallback: (value) => {
             return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{commonFunctions.convertDateToString(new Date(value))}</span>
-              </td>
-            );
-          },
-        },
-        {
-          label: 'Status',
-          key: 'status',
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <Button variant="outlined" className="department-value status-btn ">
-                  {value}
+              <td key={`${Math.random()}_${value.status}`}>
+                <Button
+                  variant="outlined"
+                  className={
+                    value.status === "approved"
+                      ? "department-value green-btn"
+                      : value.status === "pending"
+                      ? "department-value status-btn"
+                      : "department-value onahau-btn"
+                  }
+                >
+                  {value.status}
                 </Button>
               </td>
             );
           },
         },
         {
-          label: 'Edit',
-          key: 'id',
+          label: "Edit",
+          key: "id",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -139,29 +135,51 @@ class Purchase extends Component {
       entireData: {},
       uploadedFileList: [],
       selectedFile: {},
+      approvedPurchaseOrderCount: 0,
+      pendingPurchaseOrderCount: 0,
+      rejectedPurchaseOrderCount: 0,
     };
     this.inputOpenFileRef = React.createRef();
   }
 
   componentDidMount() {
-    if (this.props.approvepo_data) {
-      this.setState({
-        entireData: this.props.approvepo_data,
-        tableData: this.props.approvepo_data.requisitionList,
-      });
-    } else {
-      this.props.dispatch(purchaseOrderAction.searchApprovePurchaseOrder());
-    }
+    this.props.dispatch(purchaseOrderAction.searchApprovePurchaseOrder());
   }
 
   componentDidUpdate(prevProps) {
-
-    if (prevProps.approvepo_status !== this.props.approvepo_status && this.props.approvepo_status === status.SUCCESS) {
-      if (this.props.approvepo_data && this.props.approvepo_data.requisitionList) {
-
+    let {
+      approvedPurchaseOrderCount,
+      pendingPurchaseOrderCount,
+      rejectedPurchaseOrderCount,
+    } = this.state;
+    if (
+      prevProps.purchase_status !== this.props.purchase_status &&
+      this.props.purchase_status === status.SUCCESS
+    ) {
+      if (this.props.purchase_data && this.props.purchase_data.length > 0) {
         this.setState({
-          entireData: this.props.approvepo_data,
-          tableData: this.props.approvepo_data.requisitionList,
+          loadingStatus: !this.state.loadingStatus,
+        });
+        let { tableData } = this.state;
+        this.props.purchase_data.map((item) => {
+          if (item.details.supplier.status === "approved") {
+            approvedPurchaseOrderCount++;
+          } else if (item.details.supplier.status === "pending") {
+            pendingPurchaseOrderCount++;
+          } else if (item.details.supplier.status === "rejected") {
+            rejectedPurchaseOrderCount++;
+          }
+          let itemData = item.details;
+          tableData.push({
+            ...itemData,
+            id: item.id,
+          });
+          this.setState({
+            tableData,
+            approvedPurchaseOrderCount,
+            pendingPurchaseOrderCount,
+            rejectedPurchaseOrderCount,
+          });
         });
       }
     }
@@ -178,14 +196,28 @@ class Purchase extends Component {
   };
 
   handleDates = (date, name) => {
-    let { formData } = this.state;
-    formData[name] = date;
-    this.setState({ formData });
+    this.setState({
+      [name]: date,
+    });
+  };
+
+  handleStateChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   };
 
   render() {
-    const { columns, tableData, entireData, status } = this.state;
-    console.log("table data ", tableData);
+    const {
+      columns,
+      tableData,
+      status,
+      rfqNo,
+      rfqType,
+      quotationDeadLine,
+      formStatus,
+    } = this.state;
+
     return (
       <div className="main-content">
         <div className="purchse-order">
@@ -193,7 +225,7 @@ class Purchase extends Component {
             <div className="row d-flex align-items-center justify-content-center">
               <div className="col-sm-12 col-md-7 col-lg-8 col-xl-8 col-form-button">
                 <div className="request-purpose-head-left">
-                  <h3>{t('Purchase Order')}</h3>
+                  <h3>{t("Purchase Order")}</h3>
                 </div>
               </div>
               <div className="col-sm-12 col-md-5 col-lg-4 col-xl-4 col-form-button">
@@ -207,7 +239,7 @@ class Purchase extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">All purchase Order</div>
-                    <h4>{entireData.purcahseOrder}</h4>
+                    <h4>{tableData.length}</h4>
                   </div>
                   <div className="purchased-image">
                     <img src={purchaseOrder} alt="" />
@@ -218,7 +250,7 @@ class Purchase extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Approved Purchse Order</div>
-                    <h4>{entireData.approvePurcahseOrder}</h4>
+                    <h4>{this.state.approvedPurchaseOrderCount}</h4>
                   </div>
                   <div className="purchased-image approved">
                     <img src={approvedRequisitionIcon} alt="" />
@@ -229,7 +261,7 @@ class Purchase extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Pendding Purchse Order</div>
-                    <h4>{entireData.pendingPurcahseOrder}</h4>
+                    <h4>{this.state.pendingPurchaseOrderCount}</h4>
                   </div>
                   <div className="purchased-image pending">
                     <img src={pendingRequisitionIcon} alt="" />
@@ -240,7 +272,7 @@ class Purchase extends Component {
                 <div className="progress-box">
                   <div className="progress-content">
                     <div className="title">Rejected purchse Order</div>
-                    <h4>{entireData.rejectedPurcahseOrder}</h4>
+                    <h4>{this.state.rejectedPurchaseOrderCount}</h4>
                   </div>
                   <div className="purchased-image rejected">
                     <img src={purchasedRequisitionIcon} alt="" />
@@ -251,7 +283,11 @@ class Purchase extends Component {
           </div>
           <div className="search-fillter-button">
             {status === false ? (
-              <Button variant="outlined" onClick={this.handleToggle} className="fillter-btn">
+              <Button
+                variant="outlined"
+                onClick={this.handleToggle}
+                className="fillter-btn"
+              >
                 <span>
                   <img src={FilterIcon} alt=" " />
                 </span>
@@ -287,8 +323,8 @@ class Purchase extends Component {
                       <input
                         type="text"
                         name="rfqNo"
-                        // value={item.itemType}
                         className="form-control"
+                        value={rfqNo}
                         placeholder="Product"
                         onChange={this.handleStateChange}
                       />
@@ -301,6 +337,7 @@ class Purchase extends Component {
                         <FormControl className="payment-select-menu">
                           <NativeSelect
                             name="rfqType"
+                            value={rfqType}
                             onChange={this.handleStateChange}
                           >
                             <option value="">Main Office USA</option>
@@ -316,11 +353,13 @@ class Purchase extends Component {
                     <label className="d-block">{t("Quotation Deadline")}</label>
                     <div className="d-flex align-items-center date-picker form-group">
                       <DatePicker
-                        // selected={formData.openDate}
                         placeholder={"YYYY-MM-DD"}
-                        onChange={(date) => this.handleDates(date, "quotationDeadLine")}
+                        value={quotationDeadLine}
+                        onChange={(date) =>
+                          this.handleDates(date, "quotationDeadLine")
+                        }
                       />
-                      <CalendarTodayTwoToneIcon className="calendar-icon" />
+                      <CalendarTodayIcon className="calendar-icon" />
                     </div>
                   </div>
                   <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -329,7 +368,8 @@ class Purchase extends Component {
                       <div className="new-requeust-massge">
                         <FormControl className="payment-select-menu">
                           <NativeSelect
-                            name="itemSupplier"
+                            name="formStatus"
+                            value={formStatus}
                             onChange={this.handleStateChange}
                           >
                             <option value="">Main Office USA</option>
@@ -348,18 +388,31 @@ class Purchase extends Component {
               </div>
             )}
           </div>
-          {tableData && tableData.length > 0 && (
-            <Table
-              valueFromData={{ columns: columns, data: tableData }}
-              perPageLimit={6}
-              visiblecheckboxStatus={false}
-              isLoading={this.props.approvepo_status === status.IN_PROGRESS}
-              tableClasses={{
-                table: 'ticket-tabel',
-                tableParent: 'tickets-tabel',
-                parentClass: 'all-support-ticket-tabel',
-              }}
-              showingLine="Showing %start% to %end% of %total% "
+          {this.state.loadingStatus ? (
+            tableData &&
+            tableData.length > 0 && (
+              <Table
+                valueFromData={{
+                  columns: columns,
+                  data: tableData,
+                }}
+                perPageLimit={6}
+                visiblecheckboxStatus={false}
+                isLoading={this.props.purchase_status === status.IN_PROGRESS}
+                tableClasses={{
+                  table: "ticket-tabel",
+                  tableParent: "tickets-tabel",
+                  parentClass: "all-support-ticket-tabel",
+                }}
+                showingLine="Showing %start% to %end% of %total% "
+              />
+            )
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
             />
           )}
         </div>
@@ -369,8 +422,9 @@ class Purchase extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { approvepo_data, approvepo_status } = state.procurement;
-  return { approvepo_data, approvepo_status };
+  const { purchase_data, purchase_status } = state.procurement;
+
+  return { purchase_data, purchase_status };
 };
 
 const PurchaseOrder = withTranslation()(connect(mapStateToProps)(Purchase));

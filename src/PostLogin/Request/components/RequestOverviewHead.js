@@ -1,5 +1,5 @@
 import { Component } from "react";
-import Button from "@material-ui/core/Button";
+import { Button } from "@mui/material";
 
 class RequestOverviewHead extends Component {
   constructor(props) {
@@ -8,12 +8,12 @@ class RequestOverviewHead extends Component {
   }
 
   render() {
-    const { requestNav, activeKey, handelKey } = this.props;
+    const { requestNav, activeKey, handleTabKey, currentItemData } = this.props;
 
     return (
       <div className="request-overview">
         <div className="request-overview-head">
-          <h4>Request No. #49</h4>
+          <h4>Request No. #{currentItemData ? currentItemData.id : null}</h4>
           <Button
             variant="contained"
             className="group-btn green-btn"
@@ -41,7 +41,7 @@ class RequestOverviewHead extends Component {
             {requestNav?.length > 0 ? (
               requestNav.map((value, index) => (
                 <li
-                  onClick={() => handelKey(index)}
+                  onClick={() => handleTabKey(index)}
                   className={activeKey === index ? "active" : ""}
                 >
                   {value.name}

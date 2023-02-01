@@ -213,11 +213,16 @@
                 height: 70px;
                 padding: 15px 20px;
                 border-bottom: 3px solid #fafafa;
-
                 .user-chat-buttons {
+                    .group-team-btn{
+                        color: #6F767E;
+                    }
+                  
                     .supplies-team-btn {
                         min-width: 100px;
                         text-transform: capitalize;
+                        background-color: #F6EEFF;
+                        color: #6418C3;
                         box-shadow: none;
 
                         a {
@@ -239,6 +244,8 @@
                     box-shadow: none;
                     border: 1px solid #a5a5a5;
                     background: transparent;
+                    color: #9E9E9E;
+                    
                 }
             }
 
@@ -453,6 +460,7 @@
                         }
 
                     }
+              
                 }
 
                 .user-menu-icon {
@@ -462,6 +470,9 @@
                         box-shadow: none;
                         border: 1px solid $icon-color;
                         background: transparent;
+                    }
+                    i{
+                        color: #9E9E9E;
                     }
                 }
             }
@@ -1440,6 +1451,9 @@
             }
 
             .chatroom-content-right {
+                i{
+                    color: #9E9E9E;
+                }
                 .chatroom-inner-head-right {
                     padding: 10px 10px;
                 }

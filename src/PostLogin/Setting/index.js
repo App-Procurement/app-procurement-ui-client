@@ -40,9 +40,11 @@ class Setting extends Component {
   handleClickSettingMenu = () => {
     this.setState({ mobNav: !this.state.mobNav });
   };
+
   handleMobNav = (key) => {
     this.setState({ mobNav: !this.state.mobNav, navKey: key });
   };
+
   render() {
     const { navKey, mobNav } = this.state;
     return (
@@ -223,9 +225,7 @@ class Setting extends Component {
                         )
                     )}
                 </SimpleBar>
-                {/* <CompanyProfile/>
-                <RollAndPermissions/>
-                <ApprovalWorkFlow/> */}
+            
               </div>
             </div>
           </div>

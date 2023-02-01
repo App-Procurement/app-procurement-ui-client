@@ -45,30 +45,6 @@ function getRequestData(data) {
           alert.error(response.message);
         }
       },
-      // (response) => {
-      //   if (response.code == 200) {
-      //     dispatch(
-      //       dispatchFunction({
-      //         type: status.SUCCESS,
-      //         data: {
-      //           get_request_status: status.SUCCESS,
-      //           request_data: response.object,
-      //         },
-      //       })
-      //     );
-      //   } else {
-      //     dispatch(
-      //       dispatchFunction({
-      //         type: status.FAILURE,
-      //         data: {
-      //           department_status: status.FAILURE,
-      //           request_data: response,
-      //         },
-      //       })
-      //     );
-      //     alert.error(response.message);
-      //   }
-      // },
       (error) => {
         dispatch(
           dispatchFunction({

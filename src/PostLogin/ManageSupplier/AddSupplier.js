@@ -1,44 +1,46 @@
-import React, { Component } from 'react';
-import { manageSupplierAction } from '../../_actions';
-import { connect } from 'react-redux';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Button from '@material-ui/core/Button';
+import React, { Component } from "react";
+import { manageSupplierAction } from "../../_actions";
+import { connect } from "react-redux";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 
-class AddSupplier extends React.Component {
+import {
+  FormControlLabel,
+  Radio,
+  Button,
+  FormControl,
+  RadioGroup,
+  NativeSelect,
+} from "@mui/material";
+class AddSupplier extends Component {
   constructor(props) {
     super(props);
     this.state = {
       accountDetails: {
-        name: '',
-        email: '',
-        contactNo: '',
-        phoneNo: '',
-        designation: '',
+        name: "",
+        email: "",
+        contactNo: "",
+        phoneNo: "",
+        designation: "",
       },
       companyDetail: {
-        name: '',
-        registrationNo: '',
-        city: '',
-        state: '',
-        postalcode: '',
-        country: '',
-        address: '',
-        paymentTerm: '',
-        supplierCategory: '',
-        automatedPurchseOrder: '',
+        name: "",
+        registrationNo: "",
+        city: "",
+        state: "",
+        postalcode: "",
+        country: "",
+        address: "",
+        paymentTerm: "",
+        supplierCategory: "",
+        automatedPurchseOrder: "",
       },
       bankDetail: {
-        name: '',
-        acNo: '',
-        bankName: '',
-        taxId: '',
-        bankCode: '',
-        currency: '',
+        name: "",
+        acNo: "",
+        bankName: "",
+        taxId: "",
+        bankCode: "",
+        currency: "",
       },
       isSubmit: false,
       uploadFile: {},
@@ -48,11 +50,11 @@ class AddSupplier extends React.Component {
   handleStateChange = (e, type) => {
     const { accountDetails, companyDetail, bankDetail } = this.state;
     const { name, value } = e.target;
-    if (type == 'account') {
+    if (type == "account") {
       accountDetails[name] = value;
-    } else if (type == 'bank') {
+    } else if (type == "bank") {
       bankDetail[name] = value;
-    } else if (type == 'company') {
+    } else if (type == "company") {
       companyDetail[name] = value;
     }
     this.setState({
@@ -70,22 +72,28 @@ class AddSupplier extends React.Component {
   };
 
   addSupplier = () => {
-    const { accountDetails, companyDetail, bankDetail, uploadFile } = this.state;
+    const {
+      accountDetails,
+      companyDetail,
+      bankDetail,
+      uploadFile,
+    } = this.state;
     let formData = new FormData();
     let validate = this.validateForm(true);
     this.setState({ isSubmit: true });
     if (validate.isValid) {
-      formData.append('accountDetail', accountDetails);
-      formData.append('companyDetail', companyDetail);
-      formData.append('bankDetail', bankDetail);
-      formData.append('uploadFile', uploadFile);
+      formData.append("accountDetail", accountDetails);
+      formData.append("companyDetail", companyDetail);
+      formData.append("bankDetail", bankDetail);
+      formData.append("uploadFile", uploadFile);
       this.props.dispatch(manageSupplierAction.addSupplier(formData));
     }
   };
+
   validateForm = (isSubmitted) => {
     const validObj = {
       isValid: true,
-      message: '',
+      message: "",
     };
     let isValid = true;
     const retData = {
@@ -117,98 +125,98 @@ class AddSupplier extends React.Component {
       if (!accountDetails.name) {
         retData.name = {
           isValid: false,
-          message: 'Account holder name is required',
+          message: "Account holder name is required",
         };
         isValid = false;
       }
       if (!accountDetails.email) {
         retData.email = {
           isValid: false,
-          message: 'Account holder email is required',
+          message: "Account holder email is required",
         };
         isValid = false;
       }
       if (!accountDetails.contactNo) {
         retData.contactNo = {
           isValid: false,
-          message: 'Requester Contact Number is Required',
+          message: "Requester Contact Number is Required",
         };
         isValid = false;
       }
       if (!accountDetails.phoneNo) {
         retData.phoneNo = {
           isValid: false,
-          message: 'Phone number is Required',
+          message: "Phone number is Required",
         };
         isValid = false;
       }
       if (!accountDetails.designation) {
         retData.designation = {
           isValid: false,
-          message: 'designation is Required',
+          message: "designation is Required",
         };
         isValid = false;
       }
       if (!companyDetail.name) {
         retData.companyName = {
           isValid: false,
-          message: 'Company name is Required',
+          message: "Company name is Required",
         };
         isValid = false;
       }
       if (!companyDetail.registrationNo) {
         retData.registrationNo = {
           isValid: false,
-          message: 'Registration number is Required',
+          message: "Registration number is Required",
         };
         isValid = false;
       }
       if (!companyDetail.city) {
         retData.city = {
           isValid: false,
-          message: 'City is Required',
+          message: "City is Required",
         };
         isValid = false;
       }
       if (!companyDetail.state) {
         retData.state = {
           isValid: false,
-          message: 'State is Required',
+          message: "State is Required",
         };
         isValid = false;
       }
       if (!companyDetail.postalcode) {
         retData.postalcode = {
           isValid: false,
-          message: 'Postal code is Required',
+          message: "Postal code is Required",
         };
         isValid = false;
       }
       if (!companyDetail.country) {
         retData.country = {
           isValid: false,
-          message: 'Country is Required',
+          message: "Country is Required",
         };
         isValid = false;
       }
       if (!companyDetail.address) {
         retData.address = {
           isValid: false,
-          message: 'Address is Required',
+          message: "Address is Required",
         };
         isValid = false;
       }
       if (!companyDetail.paymentTerm) {
         retData.paymentTerm = {
           isValid: false,
-          message: 'PaymentTerm is Required',
+          message: "PaymentTerm is Required",
         };
         isValid = false;
       }
       if (!companyDetail.automatedPurchseOrder) {
         retData.automatedPurchseOrder = {
           isValid: false,
-          message: 'Automate sending Purchase Order is Required',
+          message: "Automate sending Purchase Order is Required",
         };
         isValid = false;
       }
@@ -216,49 +224,49 @@ class AddSupplier extends React.Component {
       if (!companyDetail.supplierCategory) {
         retData.supplierCategory = {
           isValid: false,
-          message: 'Supplier Category is Required',
+          message: "Supplier Category is Required",
         };
         isValid = false;
       }
       if (!bankDetail.name) {
         retData.bankHolderName = {
           isValid: false,
-          message: 'Bank holder name is Required',
+          message: "Bank holder name is Required",
         };
         isValid = false;
       }
       if (!bankDetail.acNo) {
         retData.acNo = {
           isValid: false,
-          message: 'Account number is Required',
+          message: "Account number is Required",
         };
         isValid = false;
       }
       if (!bankDetail.bankName) {
         retData.bankName = {
           isValid: false,
-          message: 'Bank name is Required',
+          message: "Bank name is Required",
         };
         isValid = false;
       }
       if (!bankDetail.taxId) {
         retData.taxId = {
           isValid: false,
-          message: 'Text id is Required',
+          message: "Text id is Required",
         };
         isValid = false;
       }
       if (!bankDetail.bankCode) {
         retData.bankCode = {
           isValid: false,
-          message: 'Bank code is Required',
+          message: "Bank code is Required",
         };
         isValid = false;
       }
       if (!bankDetail.currency) {
         retData.currency = {
           isValid: false,
-          message: 'Currency is Required',
+          message: "Currency is Required",
         };
         isValid = false;
       }
@@ -266,6 +274,7 @@ class AddSupplier extends React.Component {
     retData.isValid = isValid;
     return retData;
   };
+
   handleRadioButton = (e) => {
     let { companyDetail } = this.state;
     companyDetail.automatedPurchseOrder = e.target.value;
@@ -275,6 +284,7 @@ class AddSupplier extends React.Component {
   render() {
     const { accountDetails, bankDetail, companyDetail, isSubmit } = this.state;
     let errorData = this.validateForm(isSubmit);
+
     return (
       <div className="main-content">
         <div className="manage-supplier-conntent">
@@ -301,11 +311,13 @@ class AddSupplier extends React.Component {
                         type="text"
                         name="name"
                         className="form-control"
-                        onChange={(e) => this.handleStateChange(e, 'account')}
+                        onChange={(e) => this.handleStateChange(e, "account")}
                         value={accountDetails.name}
                         placeholder="enter supplier name"
                       />
-                      <span className="d-block w-100 text-danger">{errorData.name.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.name.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -316,10 +328,12 @@ class AddSupplier extends React.Component {
                         className="form-control"
                         placeholder="enter supplier email"
                         name="email"
-                        onChange={(e) => this.handleStateChange(e, 'account')}
+                        onChange={(e) => this.handleStateChange(e, "account")}
                         value={accountDetails.email}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.email.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.email.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -330,10 +344,12 @@ class AddSupplier extends React.Component {
                         name="contactNo"
                         className="form-control"
                         placeholder="enter contact number"
-                        onChange={(e) => this.handleStateChange(e, 'account')}
+                        onChange={(e) => this.handleStateChange(e, "account")}
                         value={accountDetails.contactNo}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.contactNo.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.contactNo.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -344,10 +360,12 @@ class AddSupplier extends React.Component {
                         name="phoneNo"
                         className="form-control"
                         placeholder="enter phone number"
-                        onChange={(e) => this.handleStateChange(e, 'account')}
+                        onChange={(e) => this.handleStateChange(e, "account")}
                         value={accountDetails.phoneNo}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.phoneNo.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.phoneNo.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -358,10 +376,12 @@ class AddSupplier extends React.Component {
                         name="designation"
                         className="form-control"
                         placeholder="enter designation number"
-                        onChange={(e) => this.handleStateChange(e, 'account')}
+                        onChange={(e) => this.handleStateChange(e, "account")}
                         value={accountDetails.designation}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.designation.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.designation.message}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -381,10 +401,12 @@ class AddSupplier extends React.Component {
                         name="name"
                         className="form-control"
                         placeholder="enter company name"
-                        onChange={(e) => this.handleStateChange(e, 'company')}
+                        onChange={(e) => this.handleStateChange(e, "company")}
                         value={companyDetail.name}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.companyName.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.companyName.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -396,14 +418,18 @@ class AddSupplier extends React.Component {
                         className="form-control"
                         placeholder="enter regstration number"
                         value={companyDetail.registrationNo}
-                        onChange={(e) => this.handleStateChange(e, 'company')}
+                        onChange={(e) => this.handleStateChange(e, "company")}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.registrationNo.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.registrationNo.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
-                      <label className="d-block">Automate sending Purchase Order</label>
+                      <label className="d-block">
+                        Automate sending Purchase Order
+                      </label>
                       <RadioGroup
                         aria-label="quiz"
                         name="bidder"
@@ -411,10 +437,20 @@ class AddSupplier extends React.Component {
                         onChange={this.handleRadioButton}
                         isvalid={errorData.automatedPurchseOrder.isValid}
                       >
-                        <FormControlLabel value="best" control={<Radio />} label="yes" />
-                        <FormControlLabel value="worst" control={<Radio />} label="No" />
+                        <FormControlLabel
+                          value="best"
+                          control={<Radio />}
+                          label="yes"
+                        />
+                        <FormControlLabel
+                          value="worst"
+                          control={<Radio />}
+                          label="No"
+                        />
                       </RadioGroup>
-                      <span className="d-block w-100 text-danger">{errorData.automatedPurchseOrder.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.automatedPurchseOrder.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -425,7 +461,9 @@ class AddSupplier extends React.Component {
                           <NativeSelect
                             name="city"
                             value={companyDetail.city}
-                            onChange={(e) => this.handleStateChange(e, 'company')}
+                            onChange={(e) =>
+                              this.handleStateChange(e, "company")
+                            }
                           >
                             <option value="">Main Office USA</option>
                             <option value={10}>abc</option>
@@ -433,7 +471,9 @@ class AddSupplier extends React.Component {
                             <option value={30}>abc</option>
                           </NativeSelect>
                         </FormControl>
-                        <span className="d-block w-100 text-danger">{errorData.city.message}</span>
+                        <span className="d-block w-100 text-danger">
+                          {errorData.city.message}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -445,7 +485,9 @@ class AddSupplier extends React.Component {
                           <NativeSelect
                             name="state"
                             value={companyDetail.state}
-                            onChange={(e) => this.handleStateChange(e, 'company')}
+                            onChange={(e) =>
+                              this.handleStateChange(e, "company")
+                            }
                           >
                             <option value="">Main Office USA</option>
                             <option value={10}>abc</option>
@@ -453,7 +495,9 @@ class AddSupplier extends React.Component {
                             <option value={30}>abc</option>
                           </NativeSelect>
                         </FormControl>
-                        <span className="d-block w-100 text-danger">{errorData.state.message}</span>
+                        <span className="d-block w-100 text-danger">
+                          {errorData.state.message}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -466,9 +510,11 @@ class AddSupplier extends React.Component {
                         className="form-control"
                         placeholder="enter postal code"
                         value={companyDetail.postalcode}
-                        onChange={(e) => this.handleStateChange(e, 'company')}
+                        onChange={(e) => this.handleStateChange(e, "company")}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.postalcode.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.postalcode.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12">
@@ -482,7 +528,9 @@ class AddSupplier extends React.Component {
                                 <NativeSelect
                                   name="country"
                                   value={companyDetail.country}
-                                  onChange={(e) => this.handleStateChange(e, 'company')}
+                                  onChange={(e) =>
+                                    this.handleStateChange(e, "company")
+                                  }
                                 >
                                   <option value="">Main Office USA</option>
                                   <option value={10}>abc</option>
@@ -490,7 +538,9 @@ class AddSupplier extends React.Component {
                                   <option value={30}>abc</option>
                                 </NativeSelect>
                               </FormControl>
-                              <span className="d-block w-100 text-danger">{errorData.country.message}</span>
+                              <span className="d-block w-100 text-danger">
+                                {errorData.country.message}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -502,7 +552,9 @@ class AddSupplier extends React.Component {
                                 <NativeSelect
                                   name="paymentTerm"
                                   value={companyDetail.paymentTerm}
-                                  onChange={(e) => this.handleStateChange(e, 'company')}
+                                  onChange={(e) =>
+                                    this.handleStateChange(e, "company")
+                                  }
                                 >
                                   <option value="">Main Office USA</option>
                                   <option value={10}>abc</option>
@@ -510,7 +562,9 @@ class AddSupplier extends React.Component {
                                   <option value={30}>abc</option>
                                 </NativeSelect>
                               </FormControl>
-                              <span className="d-block w-100 text-danger">{errorData.paymentTerm.message}</span>
+                              <span className="d-block w-100 text-danger">
+                                {errorData.paymentTerm.message}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -523,9 +577,13 @@ class AddSupplier extends React.Component {
                               className="form-control"
                               placeholder="enter supplier category"
                               value={companyDetail.supplierCategory}
-                              onChange={(e) => this.handleStateChange(e, 'company')}
+                              onChange={(e) =>
+                                this.handleStateChange(e, "company")
+                              }
                             />
-                            <span className="d-block w-100 text-danger">{errorData.supplierCategory.message}</span>
+                            <span className="d-block w-100 text-danger">
+                              {errorData.supplierCategory.message}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -537,9 +595,13 @@ class AddSupplier extends React.Component {
                               <textarea
                                 name="address"
                                 value={companyDetail.address}
-                                onChange={(e) => this.handleStateChange(e, 'company')}
+                                onChange={(e) =>
+                                  this.handleStateChange(e, "company")
+                                }
                               />
-                              <span className="d-block w-100 text-danger">{errorData.address.message}</span>
+                              <span className="d-block w-100 text-danger">
+                                {errorData.address.message}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -563,10 +625,12 @@ class AddSupplier extends React.Component {
                         name="name"
                         className="form-control"
                         placeholder="enter account holder name"
-                        onChange={(e) => this.handleStateChange(e, 'bank')}
+                        onChange={(e) => this.handleStateChange(e, "bank")}
                         value={bankDetail.name}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.bankHolderName.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.bankHolderName.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -577,10 +641,12 @@ class AddSupplier extends React.Component {
                         name="acNo"
                         className="form-control"
                         placeholder="enter account nummber"
-                        onChange={(e) => this.handleStateChange(e, 'bank')}
+                        onChange={(e) => this.handleStateChange(e, "bank")}
                         value={bankDetail.acNo}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.acNo.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.acNo.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -591,7 +657,7 @@ class AddSupplier extends React.Component {
                           <NativeSelect
                             name="bankName"
                             value={companyDetail.bankName}
-                            onChange={(e) => this.handleStateChange(e, 'bank')}
+                            onChange={(e) => this.handleStateChange(e, "bank")}
                           >
                             <option value="">Main Office USA</option>
                             <option value={10}>abc</option>
@@ -599,7 +665,9 @@ class AddSupplier extends React.Component {
                             <option value={30}>abc</option>
                           </NativeSelect>
                         </FormControl>
-                        <span className="d-block w-100 text-danger">{errorData.bankName.message}</span>
+                        <span className="d-block w-100 text-danger">
+                          {errorData.bankName.message}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -611,10 +679,12 @@ class AddSupplier extends React.Component {
                         name="taxId"
                         className="form-control"
                         placeholder="enter tax id"
-                        onChange={(e) => this.handleStateChange(e, 'bank')}
+                        onChange={(e) => this.handleStateChange(e, "bank")}
                         value={bankDetail.taxId}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.taxId.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.taxId.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -625,10 +695,12 @@ class AddSupplier extends React.Component {
                         name="bankCode"
                         className="form-control"
                         placeholder="enter bank code"
-                        onChange={(e) => this.handleStateChange(e, 'bank')}
+                        onChange={(e) => this.handleStateChange(e, "bank")}
                         value={bankDetail.bankCode}
                       />
-                      <span className="d-block w-100 text-danger">{errorData.bankCode.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.bankCode.message}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -639,7 +711,7 @@ class AddSupplier extends React.Component {
                           <NativeSelect
                             name="currency"
                             value={companyDetail.currency}
-                            onChange={(e) => this.handleStateChange(e, 'bank')}
+                            onChange={(e) => this.handleStateChange(e, "bank")}
                           >
                             <option value="">Main Office USA</option>
                             <option value={10}>abc</option>
@@ -647,7 +719,9 @@ class AddSupplier extends React.Component {
                             <option value={30}>abc</option>
                           </NativeSelect>
                         </FormControl>
-                        <span className="d-block w-100 text-danger">{errorData.currency.message}</span>
+                        <span className="d-block w-100 text-danger">
+                          {errorData.currency.message}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -673,7 +747,11 @@ class AddSupplier extends React.Component {
                 </div>
               </div>
               <div className="create-btn">
-                <Button variant="outlined" className="primary-btn" onClick={this.addSupplier}>
+                <Button
+                  variant="outlined"
+                  className="primary-btn"
+                  onClick={this.addSupplier}
+                >
                   <span className="MuiButton-label">Create</span>
                 </Button>
               </div>
@@ -692,4 +770,5 @@ const mapStateToProps = (state) => {
     add_supplier_res,
   };
 };
+
 export default connect(mapStateToProps)(AddSupplier);

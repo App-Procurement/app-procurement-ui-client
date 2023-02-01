@@ -1,9 +1,19 @@
 import React, { Component } from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
+import {
+  Card,
+  Button,
+  FormControl,
+  NativeSelect,
+  Dialog,
+  AvatarGroup,
+  DialogTitle,
+  IconButton,
+  Avatar,
+  DialogContent,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import Table from "../../Table/Table";
 import { t } from "i18next";
 
@@ -128,6 +138,7 @@ class AddItemList extends Component {
       });
     }
   }
+
   handleSearch = (event) => {
     const { value } = event.target;
     let { itemList, duplicateItemList } = this.state;

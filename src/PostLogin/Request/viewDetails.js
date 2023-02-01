@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "@mui/material";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import { t } from "i18next";
@@ -10,12 +11,14 @@ import RequestorDetails from "./components/RequestorDetails";
 import RequestTimeline from "./components/RequestTimeline";
 import RequestOverviewHead from "./components/RequestOverviewHead";
 import { commonFunctions } from "../../_utilities/commonFunctions";
-import Button from "@material-ui/core/Button";
-import { purchaseOrderAction, requestAction } from "../../_actions";
+import {
+  purchaseOrderAction,
+  requestAction,
+  requestForPurposeAction,
+} from "../../_actions";
 import { status } from "../../_constants";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import Table from "../../Table/Table";
 
 class ViewDetails extends Component {
   inputOpenFileRef;
@@ -43,11 +46,11 @@ class ViewDetails extends Component {
       uploadedFileList: [],
       selectedFile: {},
       activeKey: 0,
-      requestData: {},
+      fakerData: {},
       columns: [
         {
           label: "Name",
-          key: "sno",
+          key: "name",
           renderCallback: (value, index) => {
             return (
               <td key={index}>
@@ -58,7 +61,7 @@ class ViewDetails extends Component {
         },
         {
           label: "Category",
-          key: "createdBy",
+          key: "category",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -69,7 +72,7 @@ class ViewDetails extends Component {
         },
         {
           label: "Supplier",
-          key: "location",
+          key: "supplier",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -80,7 +83,7 @@ class ViewDetails extends Component {
         },
         {
           label: "Quantity",
-          key: "supplier",
+          key: "quantity",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -91,7 +94,7 @@ class ViewDetails extends Component {
         },
         {
           label: "Unit",
-          key: "totalPrice",
+          key: "unit",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -102,7 +105,7 @@ class ViewDetails extends Component {
         },
         {
           label: "Price",
-          key: "createdOn",
+          key: "price",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -115,7 +118,7 @@ class ViewDetails extends Component {
         },
         {
           label: "Total Cost",
-          key: "status",
+          key: "totalCost",
           renderCallback: (value) => {
             return (
               <td key={`${Math.random()}_${value}`}>
@@ -129,19 +132,9 @@ class ViewDetails extends Component {
             );
           },
         },
-        // {
-        //   label: 'Edit',
-        //   key: 'id',
-        //   renderCallback: (value) => {
-        //     return (
-        //       <td key={`${Math.random()}_${value}`}>
-        //         <Link to={`/postlogin/purchaseorder/${value}`}>View Details</Link>
-        //       </td>
-        //     );
-        //   },
-        // },
       ],
       tableData: [],
+      requestData: [],
     };
     this.inputOpenFileRef = React.createRef();
     this.requestNav = [
@@ -178,16 +171,24 @@ class ViewDetails extends Component {
     ];
   }
 
-  onClickCreateNewRequester = (id) => {
-    this.props.history.push(`/postlogin/requestforpurpose/newrequest`);
-  };
-
-  handelKey = (type) => {
+  handleTabKey = (type) => {
     this.setState({ activeKey: type });
   };
 
+  setCurrentRequestData = () => {
+    const { requestData } = this.state;
+
+    let filteredItem = requestData.filter((item) => {
+      return item.id === Number(this.props.match.params.id);
+    });
+    filteredItem = filteredItem[0];
+    if (filteredItem) {
+      return filteredItem;
+    }
+  };
+
   componentDidMount() {
-    let id = 1234;
+    let id = this.props.match.params.id;
     this.props.dispatch(requestAction.getRequestData(id));
     if (this.props.approvepo_data) {
       this.setState({
@@ -197,9 +198,30 @@ class ViewDetails extends Component {
     } else {
       this.props.dispatch(purchaseOrderAction.searchApprovePurchaseOrder());
     }
+    this.props.dispatch(requestForPurposeAction.getRequestList());
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props.request_for_purpose_status !==
+        prevProps.request_for_purpose_status &&
+      this.props.request_for_purpose_status === status.SUCCESS
+    ) {
+      if (
+        this.props.request_for_purpose_list &&
+        this.props.request_for_purpose_list.length > 0
+      ) {
+        for (let i = 0; i < this.props.request_for_purpose_list.length; i++) {
+          this.props.request_for_purpose_list[i].totalCost =
+            this.props.request_for_purpose_list[i].price *
+            this.props.request_for_purpose_list[i].quantity;
+        }
+        this.setState({
+          requestData: this.props.request_for_purpose_list,
+        });
+      }
+    }
+
     if (
       this.props.get_request_status &&
       this.props.get_request_status !== prevProps.get_request_status &&
@@ -209,7 +231,7 @@ class ViewDetails extends Component {
         this.props.request_data &&
         Object.keys(this.props.request_data).length > 0
       ) {
-        this.setState({ requestData: { ...this.props.request_data } });
+        this.setState({ fakerData: { ...this.props.request_data } });
       }
     }
 
@@ -230,7 +252,7 @@ class ViewDetails extends Component {
   }
 
   render() {
-    const { activeKey, tableData, columns, requestData } = this.state;
+    const { activeKey, fakerData } = this.state;
     return (
       <div className="main-content">
         <div className="request-page-content">
@@ -249,20 +271,20 @@ class ViewDetails extends Component {
                 <div className="request-content-left">
                   <RequestOverviewHead
                     activeKey={activeKey}
-                    handelKey={this.handelKey}
+                    handleTabKey={this.handleTabKey}
                     requestNav={this.requestNav}
-                    requestData={requestData}
+                    currentItemData={this.setCurrentRequestData()}
                   />
-
                   <div className="overview-tabs-contant active">
                     {this.requestNav ? (
                       this.requestNav.map((value, index) => (
                         <>
                           {index === activeKey &&
-                          requestData &&
-                          requestData[value.dataKey] ? (
+                          fakerData &&
+                          fakerData[value.dataKey] ? (
                             <value.component
-                              requestData={requestData[value.dataKey]}
+                              fakerData={fakerData[value.dataKey]}
+                              requestData={this.setCurrentRequestData()}
                             />
                           ) : (
                             ""
@@ -272,40 +294,11 @@ class ViewDetails extends Component {
                     ) : (
                       <></>
                     )}
-                    {activeKey === 0 && (
-                      <>
-                        <div className="order-item-table">
-                          <div className="order-item-head">
-                            <h4>Order Line Items</h4>
-                          </div>
-                          {tableData && tableData.length > 0 && (
-                            <Table
-                              valueFromData={{
-                                columns: columns,
-                                data: tableData,
-                              }}
-                              perPageLimit={6}
-                              visiblecheckboxStatus={false}
-                              isLoading={
-                                this.props.recieved_rfp_status ===
-                                status.IN_PROGRESS
-                              }
-                              tableClasses={{
-                                table: "ticket-tabel",
-                                tableParent: "tickets-tabel",
-                                parentClass: "all-support-ticket-tabel",
-                              }}
-                              showingLine="Showing %start% to %end% of %total% "
-                            />
-                          )}
-                        </div>
-                      </>
-                    )}
                   </div>
                 </div>
               </div>
-              {requestData?.requestTimeline ? (
-                <RequestTimeline requestData={requestData.requestTimeline} />
+              {fakerData?.requestTimeline ? (
+                <RequestTimeline fakerData={fakerData.requestTimeline} />
               ) : null}
             </div>
           </div>
@@ -316,9 +309,22 @@ class ViewDetails extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { approvepo_data, approvepo_status, get_request_status, request_data } =
-    state.procurement;
-  return { approvepo_data, approvepo_status, get_request_status, request_data };
+  const {
+    request_for_purpose_status,
+    request_for_purpose_list,
+    approvepo_data,
+    approvepo_status,
+    get_request_status,
+    request_data,
+  } = state.procurement;
+  return {
+    request_for_purpose_status,
+    request_for_purpose_list,
+    approvepo_data,
+    approvepo_status,
+    get_request_status,
+    request_data,
+  };
 };
 
 ViewDetails = withTranslation()(connect(mapStateToProps)(ViewDetails));

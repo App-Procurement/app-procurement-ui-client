@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import DateFormat from '../Dashbord/DateFormat';
-import Button from '@material-ui/core/Button';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import { connect } from 'react-redux';
-import { status } from '../../_constants';
-import { budgetActions } from '../../_actions';
-import Pagination from '../../_components/Pagination';
-import { withTranslation } from 'react-i18next';
-import { t } from 'i18next';
+import React, { Component } from "react";
+import { Button } from "@mui/material";
+import DateFormat from "../Dashbord/DateFormat";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { connect } from "react-redux";
+import { status } from "../../_constants";
+import { budgetActions } from "../../_actions";
+import Pagination from "../../_components/Pagination";
+import { withTranslation } from "react-i18next";
+import { t } from "i18next";
 
 class BudgetOverview extends Component {
   constructor(props) {
@@ -30,7 +30,10 @@ class BudgetOverview extends Component {
       this.props.budget_overview_status !== prevProps.budget_overview_status &&
       this.props.budget_overview_status === status.SUCCESS
     ) {
-      if (this.props.budget_overview_data && this.props.budget_overview_data.length > 0) {
+      if (
+        this.props.budget_overview_data &&
+        this.props.budget_overview_data.length > 0
+      ) {
         this.setState({ budget: this.props.budget_overview_data });
         let newData = this.props.budget_overview_data;
         let indexOfLastData = Math.ceil(newData.length / perPageLimit);
@@ -53,7 +56,10 @@ class BudgetOverview extends Component {
     const { budget, currentPage, perPageLimit } = this.state;
     let retData = [];
     for (let i = 0; i < budget.length; i++) {
-      if (i >= currentPage * perPageLimit && i <= currentPage * perPageLimit + (perPageLimit - 1)) {
+      if (
+        i >= currentPage * perPageLimit &&
+        i <= currentPage * perPageLimit + (perPageLimit - 1)
+      ) {
         let row = budget[i];
         retData.push(
           <div className="allocate-box" key={row[i]}>
@@ -68,10 +74,10 @@ class BudgetOverview extends Component {
                         text={`${row.UsedBudgetPercentage}%`}
                         strokeWidth={15}
                         styles={buildStyles({
-                          strokeLinecap: 'butt',
-                          trailColor: '#f0f0f0',
-                          pathColor: '#6418c3',
-                          textColor: '#202020',
+                          strokeLinecap: "butt",
+                          trailColor: "#f0f0f0",
+                          pathColor: "#6418c3",
+                          textColor: "#202020",
                         })}
                       />
                     </div>
@@ -83,10 +89,12 @@ class BudgetOverview extends Component {
                       href="#foo"
                       className="primary-link"
                       onClick={() => {
-                        this.props.history.push(`/postlogin/budgetoverview/${row.BudgetId}`);
+                        this.props.history.push(
+                          `/postlogin/budgetoverview/${row.BudgetId}`
+                        );
                       }}
                     >
-                      {t(' View Details')}
+                      {t(" View Details")}
                     </a>
                   </div>
                 </div>
@@ -135,6 +143,7 @@ class BudgetOverview extends Component {
     }
     return retData;
   };
+
   render() {
     return (
       <div className="main-content">
@@ -143,8 +152,8 @@ class BudgetOverview extends Component {
             <div className="row justify-content-center align-items-center">
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                 <div className="heading">
-                  <h3>{t('Budget Overview')}</h3>
-                  <span>{t('Synectiks Budget FY 2021')}</span>
+                  <h3>{t("Budget Overview")}</h3>
+                  <span>{t("Synectiks Budget FY 2021")}</span>
                 </div>
               </div>
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
@@ -159,22 +168,32 @@ class BudgetOverview extends Component {
               <Button
                 variant="contained"
                 className="primary-btn allocate-btn"
-                onClick={() => this.props.history.push(`/postlogin/budgetallocation`)}
+                onClick={() =>
+                  this.props.history.push(`/postlogin/budgetallocation`)
+                }
               >
-                {t('Budget Allocate')}
+                {t("Budget Allocate")}
               </Button>
             </div>
             {this.displayData()}
           </div>
         </div>
-        <Pagination ref={this.paginationRef} changeCurrentPage={this.onChangeCurrentPage} />
+        <Pagination
+          ref={this.paginationRef}
+          changeCurrentPage={this.onChangeCurrentPage}
+        />
       </div>
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const { budget_overview_status, budget_overview_data } = state.procurement;
   return { budget_overview_status, budget_overview_data };
 };
-const connectedBudgetOverview = withTranslation()(connect(mapStateToProps)(BudgetOverview));
+
+const connectedBudgetOverview = withTranslation()(
+  connect(mapStateToProps)(BudgetOverview)
+);
+
 export default connectedBudgetOverview;

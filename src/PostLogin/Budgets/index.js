@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import {
+  FormControl,
+  MenuItem,
+  Select,
+  Button,
+  LinearProgress
+} from "@mui/material";
+
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import { connect } from "react-redux";
@@ -13,13 +20,9 @@ import approvedRequisitionIcon from "../../assets/images/dashbord/approved-requi
 import pendingRequisitionIcon from "../../assets/images/dashbord/pending-requisition-icon.png";
 import rejectedRequisitionIcon from "../../assets/images/dashbord/rejected-requisition-icon.png";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import UserImg1 from "../../assets/images/request/user-img1.png";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { BudgetAction } from "../../_actions";
 import MulticolorProgress from "../../_components/MulticolorProgress";
 
@@ -70,6 +73,7 @@ class Budgets extends Component {
       requiData,
     });
   };
+
   componentDidMount() {
     this.props.dispatch(BudgetAction.getBudgetData());
   }
@@ -89,7 +93,6 @@ class Budgets extends Component {
     }
   }
 
-  //function for count percentage
   budgetPercentage = (totalBudget, spend) => {
     const total = Math.floor((spend / totalBudget) * 100);
     return total;
@@ -137,7 +140,6 @@ class Budgets extends Component {
                       <MenuItem value={30}>Import Budget </MenuItem>
                     </Select>
                   </FormControl>
-
                 </div>
               </div>
             </div>
@@ -223,18 +225,18 @@ class Budgets extends Component {
                     <div className="row d-flex justify-content-center align-items-center">
                       <div className="col-7">
                         {budgetData?.budgetAllocation?.totalBudget &&
-                          budgetData?.budgetAllocation?.spend ? (
+                        budgetData?.budgetAllocation?.spend ? (
                           <div className="budget-progress-bar">
                             <CircularProgressbar
                               value={this.budgetPercentage(
                                 budgetData.budgetAllocation.totalBudget,
                                 budgetData.budgetAllocation.totalBudget -
-                                budgetData.budgetAllocation.spend
+                                  budgetData.budgetAllocation.spend
                               )}
                               text={`${this.budgetPercentage(
                                 budgetData.budgetAllocation.totalBudget,
                                 budgetData.budgetAllocation.totalBudget -
-                                budgetData.budgetAllocation.spend
+                                  budgetData.budgetAllocation.spend
                               )} %`}
                               strokeWidth={15}
                               styles={buildStyles({
@@ -443,10 +445,11 @@ class Budgets extends Component {
                           </td>
                           <td>
                             <span>
-                              {<LinearProgress
-                                variant="determinate"
-                                value={data.progress}
-                              />
+                              {
+                                <LinearProgress
+                                  variant="determinate"
+                                  value={data.progress}
+                                />
                               }
                               {/* <MulticolorProgress
                                 readings={this.state.readings}

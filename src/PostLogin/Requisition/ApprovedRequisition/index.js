@@ -1,8 +1,19 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import {
+  NativeSelect,
+  FormControl,
+  DialogContent,
+  Dialog,
+  DialogTitle,
+  Button,
+  DialogActions,
+  TextareaAutosize,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  Tooltip,
+} from "@mui/material";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { RangeDatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
@@ -29,11 +40,15 @@ class ApprovedRequisition extends Component {
       },
       columns: [
         {
-          label: 'S.No',
-          key: 'sno',
+          label: "S.No",
+          key: "sno",
           renderCallback: (value, index) => {
-            return <td><span className={'s-no'}>{index + 1} </span></td>
-          }
+            return (
+              <td>
+                <span className={"s-no"}>{index + 1} </span>
+              </td>
+            );
+          },
         },
         {
           label: "Requisition No",
@@ -65,7 +80,9 @@ class ApprovedRequisition extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                {value && value.name && <span className={"department-value"}>{value.name}</span>}
+                {value && value.name && (
+                  <span className={"department-value"}>{value.name}</span>
+                )}
               </td>
             );
           },
@@ -87,9 +104,11 @@ class ApprovedRequisition extends Component {
           renderCallback: (value, row) => {
             return (
               <td>
-                {value && row && row.currency && row.currency.code && <span className="btn details-btn">
-                  {row.currency.code} {value}
-                </span>}
+                {value && row && row.currency && row.currency.code && (
+                  <span className="btn details-btn">
+                    {row.currency.code} {value}
+                  </span>
+                )}
               </td>
             );
           },
@@ -111,12 +130,14 @@ class ApprovedRequisition extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                {value && <Link
-                  to={`/postlogin/viewdetails/${value}`}
-                  className="btn details-btn"
-                >
-                  {"View Details"}
-                </Link>}
+                {value && (
+                  <Link
+                    to={`/postlogin/viewdetails/${value}`}
+                    className="btn details-btn"
+                  >
+                    {"View Details"}
+                  </Link>
+                )}
               </td>
             );
           },
@@ -134,7 +155,10 @@ class ApprovedRequisition extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.requisition_status !== this.props.requisition_status && this.props.requisition_status === status.SUCCESS) {
+    if (
+      prevProps.requisition_status !== this.props.requisition_status &&
+      this.props.requisition_status === status.SUCCESS
+    ) {
       this.setState({
         requistionList: this.props.requisition_list,
         isLoading: false,
@@ -226,7 +250,9 @@ class ApprovedRequisition extends Component {
     if (department_list) {
       for (let i = 0; i < department_list.length; i++) {
         retData.push(
-          <option key={department_list[i].id} value={department_list[i].id}>{department_list[i].name}</option>
+          <option key={department_list[i].id} value={department_list[i].id}>
+            {department_list[i].name}
+          </option>
         );
       }
     }
@@ -255,7 +281,6 @@ class ApprovedRequisition extends Component {
                   onChange={this.handleStateChange}
                   className="light-input"
                 />
-                {/* <span className="d-block w-100 text-danger">{errorData.requisitionNo.message}</span> */}
               </div>
             </div>
             <div className="form-group row col-form-group">
@@ -270,7 +295,7 @@ class ApprovedRequisition extends Component {
                       endText="End"
                       onChange={this.handleDatePicker}
                     />
-                    <CalendarTodayTwoToneIcon className="calendar-icon" />
+                    <CalendarTodayIcon className="calendar-icon" />
                   </div>
                 </div>
               </div>
@@ -290,7 +315,6 @@ class ApprovedRequisition extends Component {
                     {this.renderDepartments()}
                   </NativeSelect>
                 </FormControl>
-                {/* <span className="d-block w-100 text-danger">{errorData.department.message}</span> */}
               </div>
             </div>
             <div className="form-group row col-form-group">
@@ -354,5 +378,9 @@ function mapStateToProps(state) {
     department_list,
   };
 }
-const connectedApprovedRequisition = withTranslation()(connect(mapStateToProps)(ApprovedRequisition));
+
+const connectedApprovedRequisition = withTranslation()(
+  connect(mapStateToProps)(ApprovedRequisition)
+);
+
 export default connectedApprovedRequisition;

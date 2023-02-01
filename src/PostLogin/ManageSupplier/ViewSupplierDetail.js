@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
-import { manageSupplierAction } from '../../_actions';
-import { connect } from 'react-redux';
-import { status } from '../../_constants';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-
-class ViewSupplierDetail extends React.Component {
+import React, { Component } from "react";
+import { manageSupplierAction } from "../../_actions";
+import { connect } from "react-redux";
+import { status } from "../../_constants";
+import { Link } from "react-router-dom";
+import {
+  FormControlLabel,
+  Radio,
+  Button,
+  RadioGroup,
+  
+} from "@mui/material";
+class ViewSupplierDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,7 +67,11 @@ class ViewSupplierDetail extends React.Component {
                       </li>
                     </ul>
                     <Link to="/postlogin/activeproductcatalogue">
-                      <Button variant="contained" disableElevation className="new-requisition-btn">
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        className="new-requisition-btn"
+                      >
                         Add Product
                       </Button>
                     </Link>
@@ -84,31 +90,41 @@ class ViewSupplierDetail extends React.Component {
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Name</label>
-                      <span className="d-block w-100">{accountDetails.name}</span>
+                      <span className="d-block w-100">
+                        {accountDetails.name}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Email</label>
-                      <span className="d-block w-100">{accountDetails.email}</span>
+                      <span className="d-block w-100">
+                        {accountDetails.email}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Contact</label>
-                      <span className="d-block w-100">{accountDetails.contactNo}</span>
+                      <span className="d-block w-100">
+                        {accountDetails.contactNo}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Phone No.</label>
-                      <span className="d-block w-100">{accountDetails.phoneNo}</span>
+                      <span className="d-block w-100">
+                        {accountDetails.phoneNo}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Designation</label>
-                      <span className="d-block w-100">{accountDetails.designation}</span>
+                      <span className="d-block w-100">
+                        {accountDetails.designation}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -123,40 +139,65 @@ class ViewSupplierDetail extends React.Component {
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Company Name</label>
-                      <span className="d-block w-100">{companyDetail.name}</span>
+                      <span className="d-block w-100">
+                        {companyDetail.name}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Registration No.</label>
-                      <span className="d-block w-100">{companyDetail.registrationNo}</span>
+                      <span className="d-block w-100">
+                        {companyDetail.registrationNo}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
-                      <label className="d-block">Automate sending Purchase Order</label>
-                      <RadioGroup aria-label="quiz" name="bidder" className="bidder-box" readonly>
-                        <FormControlLabel value="best" control={<Radio />} label="yes" />
-                        <FormControlLabel value="worst" control={<Radio />} label="No" />
+                      <label className="d-block">
+                        Automate sending Purchase Order
+                      </label>
+                      <RadioGroup
+                        aria-label="quiz"
+                        name="bidder"
+                        className="bidder-box"
+                        readonly
+                      >
+                        <FormControlLabel
+                          value="best"
+                          control={<Radio />}
+                          label="yes"
+                        />
+                        <FormControlLabel
+                          value="worst"
+                          control={<Radio />}
+                          label="No"
+                        />
                       </RadioGroup>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">City</label>
-                      <span className="d-block w-100">{companyDetail.city}</span>
+                      <span className="d-block w-100">
+                        {companyDetail.city}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">State</label>
-                      <span className="d-block w-100">{companyDetail.state}</span>
+                      <span className="d-block w-100">
+                        {companyDetail.state}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Postal Code</label>
-                      <span className="d-block w-100">{companyDetail.postalcode}</span>
+                      <span className="d-block w-100">
+                        {companyDetail.postalcode}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12">
@@ -165,19 +206,25 @@ class ViewSupplierDetail extends React.Component {
                         <div className="col-12 px-0">
                           <div className="form-group form-group-common">
                             <label className="d-block">Country</label>
-                            <span className="d-block w-100">{companyDetail.country}</span>
+                            <span className="d-block w-100">
+                              {companyDetail.country}
+                            </span>
                           </div>
                         </div>
                         <div className="col-12 px-0">
                           <div className="form-group form-group-common">
                             <label className="d-block">Payment Terms.</label>
-                            <span className="d-block w-100">{companyDetail.paymentTerm}</span>
+                            <span className="d-block w-100">
+                              {companyDetail.paymentTerm}
+                            </span>
                           </div>
                         </div>
                         <div className="col-12 px-0">
                           <div className="form-group form-group-common">
                             <label className="d-block">Supplier Category</label>
-                            <span className="d-block w-100">{companyDetail.supplierCategory}</span>
+                            <span className="d-block w-100">
+                              {companyDetail.supplierCategory}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -185,7 +232,9 @@ class ViewSupplierDetail extends React.Component {
                         <div className="col-12 px-0">
                           <div className="form-group form-group-common">
                             <label className="d-block">Address</label>
-                            <span className="d-block w-100">{companyDetail.address}</span>
+                            <span className="d-block w-100">
+                              {companyDetail.address}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -215,7 +264,9 @@ class ViewSupplierDetail extends React.Component {
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Bank</label>
-                      <span className="d-block w-100">{bankDetail.bankName}</span>
+                      <span className="d-block w-100">
+                        {bankDetail.bankName}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
@@ -227,13 +278,17 @@ class ViewSupplierDetail extends React.Component {
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Bank Code</label>
-                      <span className="d-block w-100">{bankDetail.bankCode}</span>
+                      <span className="d-block w-100">
+                        {bankDetail.bankCode}
+                      </span>
                     </div>
                   </div>
                   <div className="col-12 col-sm-12 col-md-4">
                     <div className="form-group form-group-common">
                       <label className="d-block">Currancy</label>
-                      <span className="d-block w-100">{bankDetail.currency}</span>
+                      <span className="d-block w-100">
+                        {bankDetail.currency}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -263,4 +318,5 @@ const mapStateToProps = (state) => {
     supplier_detail_data,
   };
 };
+
 export default connect(mapStateToProps)(ViewSupplierDetail);

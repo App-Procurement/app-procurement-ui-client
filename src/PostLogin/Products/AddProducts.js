@@ -1,25 +1,33 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-// import { Link } from 'react-router-dom';
+
 import { connect } from "react-redux";
 import { status } from "../../_constants";
-import { manageSupplierAction } from "../../_actions";
 import Table from "../../Table/Table";
-// import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { requestForPurposeAction } from "../../_actions";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import CloseIcon from "@material-ui/icons/Close";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
+import Loader from "react-js-loader";
+import {
+  requestForPurposeAction,
+  manageSupplierAction,
+  productActions,
+} from "../../_actions";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CloseIcon from "@mui/icons-material/Close";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Button,
+  FormControl,
+  NativeSelect,
+} from "@mui/material";
+import { commonFunctions } from "../../_utilities";
 class Products extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
+      SupplierData: {},
+      productListData: [],
       productColumn: [
         {
           label: "S No",
@@ -34,47 +42,26 @@ class Products extends React.Component {
         },
         {
           label: "Picture",
-          key: "productImgUrl",
+          key: "imgUrl",
           renderCallback: (value) => {
             return (
               <td>
-                <img src={value} width="50px" height="50px" />
+                <img src={value} />
               </td>
             );
           },
         },
         {
           label: "Item Name",
-          key: "productName",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"requisitions-no"}>{value}</span>
-              </td>
-            );
-          },
+          key: "itemName",
         },
         {
           label: "Item Type",
           key: "itemType",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Unit",
           key: "unit",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"requestor"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Supplier",
@@ -82,7 +69,7 @@ class Products extends React.Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className={"requestor"}>{value}</span>
+                <span className={"requestor"}>{value.name}</span>
               </td>
             );
           },
@@ -90,37 +77,25 @@ class Products extends React.Component {
         {
           label: "Price",
           key: "price",
-          renderCallback: (value) => {
-            return (
-              <td>
-                <span className={"requestor"}>${value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Stock",
-          key: "stock",
+          key: "supplier",
           renderCallback: (value) => {
             return (
-              <td>
-                <span className="department-value">{value}</span>
+              <td key={`${Math.random()}_${value.id}`}>
+                <span className={"department-value"}>{value.id}</span>
               </td>
             );
           },
         },
         {
           label: "Status",
-          key: "status",
+          key: "supplier",
           renderCallback: (value) => {
             return (
-              <td>
-                <Button
-                  variant="outlined"
-                  className="department-value active-btn "
-                >
-                  {value}
-                </Button>
+              <td key={`${Math.random()}_${value.status}`}>
+                <span className={"department-value"}>{value.status}</span>
               </td>
             );
           },
@@ -163,17 +138,6 @@ class Products extends React.Component {
             );
           },
         },
-        // {
-        //   label: 'Edit',
-        //   key: 'id',
-        //   renderCallback: () => {
-        //     return (
-        //       <td>
-        //         <MoreHorizIcon />
-        //       </td>
-        //     );
-        //   },
-        // },
       ],
       productList: [],
       supplierAndCategoryList: [],
@@ -195,11 +159,13 @@ class Products extends React.Component {
       itemFile: [],
       itemFileError: "",
       updateProductValue: {},
+      supplierData: [],
     };
   }
 
   componentDidMount() {
-    this.props.dispatch(manageSupplierAction.getProductList());
+    this.props.dispatch(productActions.searchProductList());
+    this.props.dispatch(manageSupplierAction.searchSupplierList());
     this.props.dispatch(requestForPurposeAction.SupplierAndCategoryList());
   }
 
@@ -213,16 +179,43 @@ class Products extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (
-      this.props.suplier_product_status !== prevProps.suplier_product_status &&
-      this.props.suplier_product_status === status.SUCCESS
+      this.props.search_suplier_list_status !==
+        prevProps.search_suplier_list_status &&
+      this.props.search_suplier_list_status === status.SUCCESS
     ) {
       if (
-        this.props.supplier_product_list &&
-        this.props.supplier_product_list.length > 0
+        this.props.search_supplier_list &&
+        this.props.search_supplier_list.length > 0
       ) {
-        this.setState({ productList: this.props.supplier_product_list });
+        this.setState({ supplierData: this.props.search_supplier_list });
       }
     }
+
+    if (
+      this.props.search_product_list_status !==
+        prevProps.search_product_list_status &&
+      this.props.search_product_list_status === status.SUCCESS
+    ) {
+      let { productListData } = this.state;
+      if (
+        this.props.search_product_list &&
+        this.props.search_product_list.length > 0
+      ) {
+        this.props.search_product_list.map((item) => {
+          let itemData = item.details;
+
+          productListData.push({
+            ...itemData,
+            id: item.id,
+          });
+          this.setState({
+            loadingStatus: !this.state.loadingStatus,
+            productListData,
+          });
+        });
+      }
+    }
+
     if (
       this.props.supplier_category_list_status !==
         prevProps.supplier_category_list_status &&
@@ -361,6 +354,9 @@ class Products extends React.Component {
     if (!itemPrice) {
       this.setState({ itemPriceError: "Item  Price Is Required" });
       valid = false;
+    } else if (!commonFunctions.validateNumeric(itemPrice)) {
+      this.setState({ itemPriceError: "Please enter valid price" });
+      valid = false;
     } else {
       this.setState({ itemPriceError: "" });
     }
@@ -408,6 +404,7 @@ class Products extends React.Component {
   handleUploadFile = (e) => {
     let { itemFile } = this.state;
     const { name, files } = e.target;
+
     if (files[0]) {
       itemFile.push(files[0]);
     }
@@ -450,29 +447,26 @@ class Products extends React.Component {
   };
 
   handleSubmit = (e) => {
+    e.preventDefault();
     if (this.taskValid()) {
-      const { itemName, itemPrice, itemUnit, itemType, itemSupplier } =
-        this.state;
-
-      this.setState({
-        itemName: "",
-        itemNameError: "",
-        itemPrice: "",
-        itemPriceError: "",
-        itemUnit: "",
-        itemUnitError: "",
-        itemType: "",
-        itemTypeError: "",
-        itemSupplier: "",
-        itemSupplierError: "",
-      });
+      let details = {
+        itemName: this.state.itemName,
+        price: this.state.itemPrice.toString(),
+        imgUrl: this.props.search_product_list[0].details.imgUrl,
+        unit: this.state.itemUnit,
+        category: this.props.search_product_list[0].details.category,
+        itemType: this.state.itemType,
+        supplier: this.props.search_product_list[0].details.supplier,
+      };
+      details.supplier.name = this.props.search_supplier_list[0].details.name;
+      this.props.dispatch(productActions.addProduct(details));
+      this.props.history.push(`/postlogin/products`);
     }
   };
 
   render() {
     const {
       productColumn,
-      productList,
       productActiveIndex,
       openProductEditDialog,
       updateProductValue,
@@ -481,14 +475,16 @@ class Products extends React.Component {
       openUpdateDialog,
       isSubmit,
       handleSubmit,
-      itemFile,
       itemNameError,
       itemPriceError,
       itemSupplierError,
       itemTypeError,
       itemUnitError,
       itemFileError,
+      productListData,
+      itemSupplier,
     } = this.state;
+
     const productValidation = this.validateProductUpdate(isSubmit);
     return (
       <div className="main-content">
@@ -575,11 +571,22 @@ class Products extends React.Component {
                           <NativeSelect
                             name="itemSupplier"
                             onChange={this.handleStateChange}
+                            value={
+                              itemSupplier &&
+                              this.props.search_supplier_list[itemSupplier]
+                                ? this.props.search_supplier_list[itemSupplier]
+                                    .name
+                                : null
+                            }
                           >
-                            <option value="">Main Office USA</option>
-                            <option value="amazon">Amazon</option>
-                            <option value="flipkart">Flipkart</option>
-                            <option value="ebay">Ebay</option>
+                            {this.props?.search_supplier_list?.length &&
+                              this.props.search_supplier_list.map(
+                                (item, index) => (
+                                  <option value={index}>
+                                    {item.details.name}
+                                  </option>
+                                )
+                              )}
                           </NativeSelect>
                         </FormControl>
                         <span className="d-block w-100 text-danger">
@@ -620,8 +627,11 @@ class Products extends React.Component {
                       <div className="submit-btn">
                         <Button
                           variant="contained"
-                          className="submit"
+                          className="submit disabled"
                           onClick={this.handleSubmit}
+                          disabled={
+                            this.props.add_product_status === 0 ? true : false
+                          }
                         >
                           Save
                         </Button>
@@ -642,20 +652,28 @@ class Products extends React.Component {
             <div className="heading">
               <h5>Recent Added Product</h5>
             </div>
-            {productList && productList.length > 0 && (
+            {this.state.loadingStatus ? (
               <Table
-                valueFromData={{ columns: productColumn, data: productList }}
+                valueFromData={{
+                  columns: productColumn,
+                  data: this.state.productListData,
+                }}
                 perPageLimit={6}
                 visiblecheckboxStatus={false}
-                isLoading={
-                  this.props.suplier_list_status === status.IN_PROGRESS
-                }
+                isLoading={this.props.product_status === status.IN_PROGRESS}
                 tableClasses={{
                   table: "ticket-tabel",
                   tableParent: "tickets-tabel",
                   parentClass: "all-support-ticket-tabel",
                 }}
                 showingLine="Showing %start% to %end% of %total% "
+              />
+            ) : (
+              <Loader
+                type="spinner-default"
+                bgColor={"#3244a8"}
+                color={"#3244a8"}
+                size={60}
               />
             )}
           </div>
@@ -916,9 +934,7 @@ class Products extends React.Component {
                     onChange={(e) => this.handleUpdate(e, "supplier")}
                     value={updateProductValue.stock}
                   />
-                  <span className="d-block w-100 text-danger">
-                    {/* {productValidation.stock.message} */}
-                  </span>
+                  <span className="d-block w-100 text-dansubmitger"></span>
                 </div>
               </div>
               <div className="form-group row form-group">
@@ -940,10 +956,19 @@ class Products extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const {
-    supplier_product_list,
-    suplier_product_status,
+    search_suplier_list_status,
+    search_supplier_list,
+    search_product_list,
+    search_product_list_status,
+    add_product_status,
+    fetch_product_list,
+    fetchProductList_status,
+    supplier_list,
+    product_status,
+    product_list,
     supplier_category_list_status,
     supplier_category_list_data,
     update_suplier_product_status,
@@ -951,8 +976,17 @@ const mapStateToProps = (state) => {
     delete_suplier_list_status,
   } = state.procurement;
   return {
-    supplier_product_list,
-    suplier_product_status,
+    search_suplier_list_status,
+    search_supplier_list,
+    search_product_list,
+    search_product_list_status,
+    add_product_status,
+    fetch_product_list,
+    fetchProductList_status,
+
+    supplier_list,
+    product_status,
+    product_list,
     supplier_category_list_status,
     supplier_category_list_data,
     update_suplier_product_status,
@@ -960,4 +994,5 @@ const mapStateToProps = (state) => {
     delete_suplier_list_status,
   };
 };
+
 export default connect(mapStateToProps)(Products);

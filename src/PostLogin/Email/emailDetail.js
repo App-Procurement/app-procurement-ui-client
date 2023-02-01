@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import StarIcon from '@material-ui/icons/Star';
-import { emailActions } from '../../_actions/email.actions';
-import { connect } from 'react-redux';
-import { status } from '../../_constants';
+import React, { Component } from "react";
+import { Button } from "@mui/material";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import StarIcon from "@mui/icons-material/Star";
+import { emailActions } from "../../_actions/email.actions";
 
 class EmailDetail extends Component {
   constructor(props) {
@@ -15,26 +13,9 @@ class EmailDetail extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(emailActions.getEmailDetail({ id: this.props.emailid }));
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props.get_email_detail_status !== prevProps.get_email_detail_status &&
-      this.props.get_email_detail_status === status.SUCCESS
-    ) {
-      if (this.props.emaildetail_res) {
-        this.setState({
-          email: this.props.emaildetail_res,
-        });
-      }
-    }
-    if (
-      prevProps.delete_email_status !== this.props.delete_email_status &&
-      this.props.delete_email_status === status.SUCCESS
-    ) {
-      this.props.closeDetailPage();
-    }
+    const { allEmails, emailIndex } = this.props;
+    let currentEmail = allEmails[emailIndex];
+    this.setState({ email: currentEmail });
   }
 
   onClickShowMailDetail = () => {
@@ -46,12 +27,12 @@ class EmailDetail extends Component {
   };
 
   fileDownloadHandler = (fileurl, fileName) => {
-    let a = document.createElement('a');
+    let a = document.createElement("a");
     document.body.appendChild(a);
-    a.style = 'display: none';
+    a.style = "display: none";
     a.href = fileurl;
     a.download = fileName;
-    a.target = '_blank';
+    a.target = "_blank";
     a.click();
     a.remove();
     window.URL.revokeObjectURL(fileurl);
@@ -65,7 +46,10 @@ class EmailDetail extends Component {
           <div className="row justify-content-center align-items-center">
             <div className="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="d-flex align-items-center justify-content-start left">
-                <Button className="back-btn" onClick={this.onClickShowMailDetail}>
+                <Button
+                  className="back-btn"
+                  onClick={this.onClickShowMailDetail}
+                >
                   <KeyboardBackspaceIcon />
                 </Button>
                 <Button className="user-btn">
@@ -79,8 +63,12 @@ class EmailDetail extends Component {
                       </div>
                     )}
                     <div className="d-block user-name-mail">
-                      {email.sender.name && <strong className="d-block">{email.sender.name}</strong>}
-                      {email.sender.email && <span className="d-block">{email.sender.email}</span>}
+                      {email.sender.name && (
+                        <strong className="d-block">{email.sender.name}</strong>
+                      )}
+                      {email.sender.content && (
+                        <span className="d-block">{email.sender.content}</span>
+                      )}
                     </div>
                   </>
                 )}
@@ -108,8 +96,12 @@ class EmailDetail extends Component {
           </div>
         </div>
         <div className="d-block mail-reply-content">
-          {email.time && <div className="d-block date-time">{email.time.split('T')}</div>}
-          {email && email.subject && <div className="d-block name">{email.subject}</div>}
+          {/* {email.time && (
+            <div className="d-block date-time">{email.time.split("T")}</div>
+          )} */}
+          {email && email.subject && (
+            <div className="d-block name">{email.subject}</div>
+          )}
           {email && email.tags && (
             <div className="d-block btns">
               {email.tags.map((val) => {
@@ -118,9 +110,9 @@ class EmailDetail extends Component {
             </div>
           )}
 
-          {email && email.body && (
+          {email && email.content && (
             <div className="d-block text-content">
-              <p>{email.body}</p>
+              <p>{email.content}</p>
             </div>
           )}
           {email && email.attechment && (
@@ -145,20 +137,25 @@ class EmailDetail extends Component {
                 {email.attechment.map((val) => {
                   return (
                     <div className="col-xl-4 col-lg-6 col-md-6 col-12">
-                      <div className="attach-box" onClick={() => this.fileDownloadHandler(val.url, val.name)}>
+                      <div
+                        className="attach-box"
+                        onClick={() =>
+                          this.fileDownloadHandler(val.url, val.name)
+                        }
+                      >
                         <div className="row justify-content-start align-items-center">
                           <div className="col-lg-4 col-md-4 col-sm-6 col-4">
-                            {val.type === 'ppt' && (
+                            {val.type === "ppt" && (
                               <div className="icon file">
                                 <i className="fas fa-file"></i>
                               </div>
                             )}
-                            {val.type === 'audio' && (
+                            {val.type === "audio" && (
                               <div className="icon music">
                                 <i className="fas fa-music"></i>
                               </div>
                             )}
-                            {val.type === 'mp4' && (
+                            {val.type === "mp4" && (
                               <div className="icon film">
                                 <i className="fas fa-film-alt"></i>
                               </div>
@@ -194,9 +191,4 @@ class EmailDetail extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { get_email_detail_status, emaildetail_res, delete_email_status } = state.procurement;
-  return { get_email_detail_status, emaildetail_res, delete_email_status };
-};
-
-export default connect(mapStateToProps)(EmailDetail);
+export default EmailDetail;

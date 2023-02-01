@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
+import { Dialog, DialogContent, DialogTitle, Button } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import Table from "../../Table/Table";
 import { t } from "i18next";
-import { commonFunctions } from "../../_utilities";
+
 class AddNewPurchaseOrderList extends Component {
   constructor(props) {
     super(props);
@@ -26,47 +23,19 @@ class AddNewPurchaseOrderList extends Component {
         },
         {
           label: "Purchase Order No.",
-          key: "purchaseOrderNo",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
+          key: "id",
         },
         {
           label: "PO Date",
-          key: "poDate",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
+          key: "toDate",
         },
         {
           label: "Department",
           key: "department",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Total Amount",
           key: "totalAmount",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Status",
@@ -92,7 +61,7 @@ class AddNewPurchaseOrderList extends Component {
               <td key={`${Math.random()}_${value}`}>
                 <Button
                   className="primary-btn"
-                  onClick={() => this.props.setSelectedItemList(row)}
+                  onClick={() => this.props.addSelectedPurchaseOrderToList(row)}
                 >
                   Add
                 </Button>
@@ -104,6 +73,7 @@ class AddNewPurchaseOrderList extends Component {
       duplicateItemList: [],
     };
   }
+
   componentDidMount() {
     if (this.props.itemList && this.props.itemList.length > 0) {
       this.setState({
@@ -122,16 +92,13 @@ class AddNewPurchaseOrderList extends Component {
     }
   }
 
-  filterItemsData = (event) => {
+  handleSearch = (event) => {
     const { value } = event.target;
     let { itemList, duplicateItemList } = this.state;
     let cloneItemList = JSON.parse(JSON.stringify(duplicateItemList));
     if (value) {
-      itemList = cloneItemList.filter(({ purchaseOrderNo }) =>
-        purchaseOrderNo
-          .toString()
-          .toLowerCase()
-          .includes(value.toString().toLowerCase())
+      itemList = cloneItemList.filter(({ id }) =>
+        id.toString().toLowerCase().includes(value.toString().toLowerCase())
       );
     } else {
       itemList = duplicateItemList;
@@ -141,16 +108,14 @@ class AddNewPurchaseOrderList extends Component {
   };
 
   render() {
-    const { openDialog, openAddNewItemPopup } = this.props;
+    const { openDialog, handlePurchaseOrdersPopup } = this.props;
     const { columns, itemList } = this.state;
- 
-
     return (
       <>
         <div className="additem-list">
           <Dialog
             open={openDialog}
-            onClose={openAddNewItemPopup}
+            onClose={handlePurchaseOrdersPopup}
             aria-labelledby="form-dialog-title"
             className="custom-dialog"
           >
@@ -158,7 +123,10 @@ class AddNewPurchaseOrderList extends Component {
               <DialogTitle id="form-dialog-title" className="dialog-heading">
                 {t("Items")}
               </DialogTitle>
-              <Button onClick={openAddNewItemPopup} className="modal-close-btn">
+              <Button
+                onClick={handlePurchaseOrdersPopup}
+                className="modal-close-btn"
+              >
                 <CloseIcon />
               </Button>
             </div>
@@ -172,7 +140,7 @@ class AddNewPurchaseOrderList extends Component {
                     <div className="search-bar">
                       <input
                         type="text"
-                        onChange={this.filterItemsData}
+                        onChange={this.handleSearch}
                         className="control-form"
                         placeholder="Search"
                       />

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import SimpleBar from 'simplebar-react';
-import { connect } from 'react-redux';
-import 'simplebar/dist/simplebar.min.css';
-import { requistionAction } from '../../_actions';
-import { status } from '../../_constants';
-import { Link } from 'react-router-dom';
-import { commonFunctions } from '../../_utilities/commonFunctions';
-import Button from '@material-ui/core/Button';
+import React, { Component } from "react";
+import { Button } from "@mui/material";
+import SimpleBar from "simplebar-react";
+import { connect } from "react-redux";
+import "simplebar/dist/simplebar.min.css";
+import { requistionAction } from "../../_actions";
+import { status } from "../../_constants";
+import { Link } from "react-router-dom";
+import { commonFunctions } from "../../_utilities/commonFunctions";
 class ActiveRequisition extends Component {
   constructor(props) {
     super(props);
@@ -14,15 +14,20 @@ class ActiveRequisition extends Component {
       recentActivity: [],
     };
   }
+
   componentDidMount() {
     this.props.dispatch(requistionAction.getRequisitions());
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.requisition_status !== this.props.requisition_status &&
       this.props.requisition_status === status.SUCCESS
     ) {
-      if (this.props.requisition_list && this.props.requisition_list.length > 0) {
+      if (
+        this.props.requisition_list &&
+        this.props.requisition_list.length > 0
+      ) {
         this.setState({ recentActivity: this.props.requisition_list });
       }
     }
@@ -35,11 +40,12 @@ class ActiveRequisition extends Component {
     result = Math.abs(activityDate.getHours() - recentTime.getHours());
     if (result <= 0) {
       result = Math.abs(activityDate.getMinutes() - recentTime.getMinutes());
-      return `${result + ' minutes'}`;
+      return `${result + " minutes"}`;
     } else {
-      return `${result + ' hours'}`;
+      return `${result + " hours"}`;
     }
   };
+
   render() {
     const { recentActivity } = this.state;
     return (
@@ -47,7 +53,9 @@ class ActiveRequisition extends Component {
         <div className="active-requisition-head">
           <div className="row">
             <div className="col-6">
-              <div className="head-left">{this.props.t('Active Requsitions')}</div>
+              <div className="head-left">
+                {this.props.t("Active Requsitions")}
+              </div>
             </div>
             <div className="col-6">
               <div className="head-right">
@@ -67,22 +75,38 @@ class ActiveRequisition extends Component {
             recentActivity.length > 0 &&
             recentActivity.map((requisition, index) => {
               if (requisition) {
-                const { itemName, requisitionStatus, id, createdBy, createdOn } = requisition;
+                const {
+                  itemName,
+                  requisitionStatus,
+                  id,
+                  createdBy,
+                  createdOn,
+                } = requisition;
                 if (requisitionStatus === 1) {
                   return (
                     <div className="d-flex table-row" key={id}>
                       <div className="row d-flex align-items-center justify-content-between">
                         <div className="col-10">
                           <div className=" d-flex align-items-center">
-                            <div className="item-name">{itemName && <div className="item-text"> {itemName}</div>}</div>
+                            <div className="item-name">
+                              {itemName && (
+                                <div className="item-text"> {itemName}</div>
+                              )}
+                            </div>
                             <div className="col-7">
                               <div className="request-approved-text">
-                                {createdBy && <span> Request Approved by {createdBy}</span>}
+                                {createdBy && (
+                                  <span> Request Approved by {createdBy}</span>
+                                )}
                               </div>
                             </div>
                             <div className="col-5">
                               <div className="time">
-                                <span>{commonFunctions.convertDateToString(new Date(createdOn))} </span>
+                                <span>
+                                  {commonFunctions.convertDateToString(
+                                    new Date(createdOn)
+                                  )}{" "}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -105,6 +129,7 @@ class ActiveRequisition extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   const { requisition_status, requisition_list } = state.procurement;
   return {
@@ -112,4 +137,5 @@ function mapStateToProps(state) {
     requisition_list,
   };
 }
+
 export default connect(mapStateToProps)(ActiveRequisition);

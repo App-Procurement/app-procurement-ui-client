@@ -13,7 +13,39 @@ export const settingServices = {
   getPreferences,
   getAllSettingGroupData,
   updateSuperAdminUsers,
+  searchCompanyProfile,
+  updateCompanyProfile
 };
+
+function updateCompanyProfile(data) {
+  const extraHeaders = {
+    "Content-Type": "application/json",
+  };
+  const requestOptions = commonFunctions.getRequestOptions(
+    "PUT",
+    extraHeaders,
+    JSON.stringify(data)
+  );
+  return fetch(`${apiEndPoint.COMPANYPROFILE}`, requestOptions).then(
+    (response) => response
+  );
+}
+
+
+function searchCompanyProfile(data) {
+  const extraHeaders = {
+    "Content-Type": "application/json",
+  };
+  const requestOptions = commonFunctions.getRequestOptions(
+    "GET",
+    extraHeaders,
+    null
+  );
+  return fetch(`${apiEndPoint.COMPANYPROFILE}`, requestOptions).then(
+    (response) => response
+  );
+}
+
 function getWorkflow() {
   const extraHeaders = {
     "Content-Type": "application/json",
@@ -58,7 +90,7 @@ function updateWorkFlow(data) {
     "Content-Type": "application/json",
   };
   const requestOptions = commonFunctions.getRequestOptions(
-    "POST",
+    "PUT",
     extraHeaders,
     JSON.stringify(data)
   );

@@ -59,6 +59,8 @@
                     list-style: none;
                     margin-bottom: 10px;
 
+                    
+                
                     button {
                         font-size: 16px;
                         line-height: 22px;
@@ -340,6 +342,10 @@
                     padding: 20px 0px;
                     border-bottom: 2px solid #f7f7f7;
                     cursor: pointer;
+
+                    .single-email-list-item {
+                        width: 100%;
+                    }
 
                     .user-id {
                         display: flex;

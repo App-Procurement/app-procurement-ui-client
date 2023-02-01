@@ -1,83 +1,44 @@
 import React, { Component } from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
+import CloseIcon from "@mui/icons-material/Close";
 import Table from "../../Table/Table";
 import { t } from "i18next";
-
+import { DialogContent, Dialog, DialogTitle, Button } from "@mui/material";
 class AddlineItemList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemList: [],
+      searchProductListData: [],
       columns: [
-        {
-          label: "",
-          key: "itemImage",
-          renderCallback: (value, index) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <img src={value} height="50px" width="50px" />
-              </td>
-            );
-          },
-        },
+        // {
+        //   label: "",
+        //   key: "imgUrl",
+        //   renderCallback: (value) => {
+        //     return (
+        //       <td>
+        //         <img src={value} />
+        //       </td>
+        //     );
+        //   },
+        // },
         {
           label: "Item",
           key: "itemName",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requisitions-no"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Unit",
           key: "unit",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Category",
           key: "category",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"department-value"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Item Type",
           key: "itemType",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className={"requestor"}>{value}</span>
-              </td>
-            );
-          },
         },
         {
           label: "Quantity",
-          key: "quantity",
-          renderCallback: (value) => {
-            return (
-              <td key={`${Math.random()}_${value}`}>
-                <span className="department-value">{value}</span>
-              </td>
-            );
-          },
+          key: "unit",
         },
 
         {
@@ -88,7 +49,7 @@ class AddlineItemList extends Component {
               <td key={`${Math.random()}_${value}`}>
                 <Button
                   className="primary-btn"
-                 onClick={() => this.props.setSelectedItemList(row)}
+                  onClick={() => this.props.setSelectedItemList(row)}
                 >
                   Add
                 </Button>
@@ -100,42 +61,42 @@ class AddlineItemList extends Component {
       duplicateItemList: [],
     };
   }
+
   componentDidMount() {
-    if (this.props.itemList && this.props.itemList.length > 0) {
+    if (
+      this.props.searchProductListData &&
+      this.props.searchProductListData.length > 0
+    ) {
       this.setState({
-        itemList: this.props.itemList,
-        duplicateItemList: this.props.itemList,
+        searchProductListData: this.props.searchProductListData,
+        duplicateItemList: this.props.searchProductListData,
       });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.itemList && this.props.itemList !== prevProps.itemList) {
-      this.setState({
-        itemList: this.props.itemList,
-        duplicateItemList: this.props.itemList,
-      });
-    }
+   
   }
 
   filterItemsData = (event) => {
     const { value } = event.target;
-    let { itemList, duplicateItemList } = this.state;
+    let { searchProductListData, duplicateItemList } = this.state;
     let cloneItemList = JSON.parse(JSON.stringify(duplicateItemList));
     if (value) {
-      itemList = cloneItemList.filter(({ itemName }) =>
+      searchProductListData = cloneItemList.filter(({ itemName }) =>
         itemName.toLowerCase().includes(value.toLowerCase())
       );
     } else {
-      itemList = JSON.parse(JSON.stringify(duplicateItemList));
+      searchProductListData = JSON.parse(JSON.stringify(duplicateItemList));
     }
 
-    this.setState({ itemList });
+    this.setState({ searchProductListData });
   };
 
   render() {
     const { openDialog, openAddNewItemPopup } = this.props;
-    const { columns, itemList } = this.state;
+    const { columns, searchProductListData } = this.state;
+
     return (
       <>
         <div className="additem-list">
@@ -187,7 +148,10 @@ class AddlineItemList extends Component {
             </div>
             <DialogContent className="dialogSmWidth addNewItemDialogContent">
               <Table
-                valueFromData={{ columns: columns, data: itemList }}
+                valueFromData={{
+                  columns: columns,
+                  data: searchProductListData,
+                }}
                 perPageLimit={6}
                 visiblecheckboxStatus={false}
                 tableClasses={{

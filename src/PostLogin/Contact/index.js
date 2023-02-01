@@ -1,31 +1,30 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import { Button, Card, IconButton, Checkbox , Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,} from "@mui/material";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import { Link } from "react-router-dom";
-import Card from "@material-ui/core/Card";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import CallIcon from "@material-ui/icons/Call";
-import MailIcon from "@material-ui/icons/Mail";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import SearchIcon from "@material-ui/icons/Search";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CallIcon from "@mui/icons-material/Call";
+import MailIcon from "@mui/icons-material/Mail";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import SearchIcon from "@mui/icons-material/Search";
 import "simplebar/dist/simplebar.min.css";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import { connect } from "react-redux";
 import { contactAction } from "../../_actions";
 import { status } from "../../_constants";
-import Checkbox from "@material-ui/core/Checkbox";
-import Loader from '../../_components/commonLoader';
-import { Dialog, DialogContent, DialogTitle, DialogActions } from '@material-ui/core';
-import CloseIcon from "@material-ui/icons/Close";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Loader from "../../_components/commonLoader";
+
+import CloseIcon from "@mui/icons-material/Close";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { alert } from "../../_utilities";
-import Pagination from "../../_components/Pagination"
+import Pagination from "../../_components/Pagination";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
-// import "../../assets/scss/contact.scss"
 
 class Contact extends Component {
   constructor(props) {
@@ -35,11 +34,11 @@ class Contact extends Component {
         status: "",
         reqno: "",
         depart: "",
-        isSected: '',
+        isSected: "",
       },
       perPageLimit: 4,
       currentPage: 0,
-      deleteIndex: '',
+      deleteIndex: "",
       openDialog: false,
       openInviteDialog: false,
       newContact: false,
@@ -49,31 +48,40 @@ class Contact extends Component {
       duplicateContactUserList: [],
       displayOption: false,
       searchContact: [],
-      inviteList: [
-        { email: '', name: '' }
-      ],
+      inviteList: [{ email: "", name: "" }],
       deletePopup: null,
     };
     this.paginationRef = React.createRef();
   }
+
   componentDidMount() {
     this.props.dispatch(contactAction.fetchContactList());
   }
+
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.search_contact_status !== this.props.search_contact_status && this.props.search_contact_status === status.SUCCESS) {
+    if (
+      prevProps.search_contact_status !== this.props.search_contact_status &&
+      this.props.search_contact_status === status.SUCCESS
+    ) {
       this.setState({
         searchContact: this.props.searchContact,
       });
     }
-    if (prevProps.delete_contact_status !== this.props.delete_contact_status && this.props.delete_contact_status === status.SUCCESS) {
+    if (
+      prevProps.delete_contact_status !== this.props.delete_contact_status &&
+      this.props.delete_contact_status === status.SUCCESS
+    ) {
       this.setState({
         openDialog: false,
         displayOption: false,
-      })
+      });
       this.props.dispatch(contactAction.fetchContactList());
     }
-    if (prevProps.get_contact_status !== this.props.get_contact_status && this.props.get_contact_status === status.SUCCESS) {
-      const { perPageLimit } = this.state
+    if (
+      prevProps.get_contact_status !== this.props.get_contact_status &&
+      this.props.get_contact_status === status.SUCCESS
+    ) {
+      const { perPageLimit } = this.state;
       if (this.props.getContact && this.props.getContact.length > 0) {
         let data = this.props.getContact;
         if (data && data.length > 0) {
@@ -84,90 +92,121 @@ class Contact extends Component {
           }
           let indexOfLastData = Math.ceil(data.length / perPageLimit);
           this.setState({
-            contactUserList: data
+            contactUserList: data,
           });
           this.paginationRef.current.setOptions({
             totalPages: indexOfLastData,
             perPageLimit,
-            totalRecords: data.length
+            totalRecords: data.length,
           });
         }
       }
       this.setState({
         contactUserList: this.props.getContact,
-        duplicateContactUserList: this.props.getContact
+        duplicateContactUserList: this.props.getContact,
       });
     }
-    if (prevProps.send_invitation_status !== this.props.send_invitation_status && this.props.send_invitation_status === status.SUCCESS) {
+    if (
+      prevProps.send_invitation_status !== this.props.send_invitation_status &&
+      this.props.send_invitation_status === status.SUCCESS
+    ) {
       this.setState({
         openInviteDialog: false,
-      })
+      });
     }
   }
+
   onClickDelete = (id) => {
     const { openDialog } = this.state;
     let deleteItem = !openDialog;
     this.setState({
       openDialog: deleteItem,
       deleteIndex: id,
-    })
-  };
-  onChangeCurrentPage = (currentPage) => {
-    this.setState({
-      currentPage
     });
   };
-  removeContact = () => {
-    this.props.dispatch(contactAction.deleteContact({ id: this.state.deleteIndex }));
-    this.setState({ openDialog: false })
+
+  onChangeCurrentPage = (currentPage) => {
+    this.setState({
+      currentPage,
+    });
   };
+
+  removeContact = () => {
+    this.props.dispatch(
+      contactAction.deleteContact({ id: this.state.deleteIndex })
+    );
+    this.setState({ openDialog: false });
+  };
+
   toggleDisplayOptions = () => {
     this.setState({ displayOption: !this.state.displayOption });
-  }
+  };
+
   editContact = (id) => {
     this.props.history.push(`/postlogin/newcontact/${id}`);
-  }
+  };
+
   handleStateChange = (index, e) => {
     let { contactUserList } = this.state;
     const { checked } = e.target;
-    contactUserList[index]["isSelected"] = checked
-    this.setState({ contactUserList })
-  }
+    contactUserList[index]["isSelected"] = checked;
+    this.setState({ contactUserList });
+  };
+
   onSearchChange = (e) => {
     const { value } = e.target;
     let { duplicateContactUserList, contactUserList } = this.state;
     let queryResult = [];
     if (duplicateContactUserList && duplicateContactUserList.length > 0) {
       for (let i = 0; i < duplicateContactUserList.length; i++) {
-        let approvedData = duplicateContactUserList[i]
-        if (approvedData["name"].toLowerCase().indexOf(value.trim()) !== -1 || approvedData["name"].indexOf(value.trim()) !== -1) {
+        let approvedData = duplicateContactUserList[i];
+        if (
+          approvedData["name"].toLowerCase().indexOf(value.trim()) !== -1 ||
+          approvedData["name"].indexOf(value.trim()) !== -1
+        ) {
           queryResult.push(approvedData);
-        } else if (approvedData["email"].toLowerCase().indexOf(value.trim()) !== -1 || approvedData["email"].indexOf(value.trim()) !== -1) {
+        } else if (
+          approvedData["email"].toLowerCase().indexOf(value.trim()) !== -1 ||
+          approvedData["email"].indexOf(value.trim()) !== -1
+        ) {
           queryResult.push(approvedData);
         }
       }
-      contactUserList = queryResult
+      contactUserList = queryResult;
+    } else {
+      contactUserList = duplicateContactUserList;
     }
-    else {
-      contactUserList = duplicateContactUserList
-    }
-    this.setState({ contactUserList })
-  }
-  //  display contact list -----------------------------------------
+    this.setState({ contactUserList });
+  };
+
   displayContactUserList = () => {
-    const { contactUserList, activeIndex, displayOption, currentPage, perPageLimit } = this.state;
+    const {
+      contactUserList,
+      activeIndex,
+      displayOption,
+      currentPage,
+      perPageLimit,
+    } = this.state;
     let retData = [];
     let isloading = this.props.get_contact_status === status.IN_PROGRESS;
     if (!isloading) {
       for (let i = 0; i < contactUserList.length; i++) {
-        if (i >= currentPage * perPageLimit && i <= (currentPage * perPageLimit + (perPageLimit - 1))) {
+        if (
+          i >= currentPage * perPageLimit &&
+          i <= currentPage * perPageLimit + (perPageLimit - 1)
+        ) {
           let row = contactUserList[i];
           retData.push(
-            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12" key={row.id} >
+            <div
+              className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
+              key={row.id}
+            >
               <div className="member-boxs">
                 <Card
                   key={i}
-                  className={activeIndex === i ? "members-box active" : "members-box"}
+                  className={
+                    activeIndex === i ? "members-box active" : "members-box"
+                  }
                   onClick={() => this.setState({ activeIndex: i })}
                 >
                   <div className="d-flex justify-content-center align-items-center user-img">
@@ -176,8 +215,16 @@ class Contact extends Component {
                       {/* <div className="member-position" style={{ backgroundColor: `${row.shortNameColor}` }} >{row.name.match(/\b(\w)/g)} </div> */}
                     </div>
                   </div>
-                  <div className="d-inline-block menu-icon" style={{ display: "flex" }} >
-                    <IconButton aria-label="settings" onClick={i === activeIndex ? this.toggleDisplayOptions : null} >
+                  <div
+                    className="d-inline-block menu-icon"
+                    style={{ display: "flex" }}
+                  >
+                    <IconButton
+                      aria-label="settings"
+                      onClick={
+                        i === activeIndex ? this.toggleDisplayOptions : null
+                      }
+                    >
                       <MoreVertIcon />
                     </IconButton>
                     <div className="settings-toggle">
@@ -203,9 +250,18 @@ class Contact extends Component {
                   </div>
                   <div className="member-details">
                     <ul>
-                      <li> <b>{row.firstName}</b></li>
-                      <li> <span>{row.designation}</span> </li>
-                      <li> <p>{row.company}</p></li>
+                      <li>
+                        {" "}
+                        <b>{row.firstName}</b>
+                      </li>
+                      <li>
+                        {" "}
+                        <span>{row.designation}</span>{" "}
+                      </li>
+                      <li>
+                        {" "}
+                        <p>{row.company}</p>
+                      </li>
                     </ul>
                   </div>
                   <div className="member-contact">
@@ -230,71 +286,72 @@ class Contact extends Component {
           );
         }
       }
-    }
-    else {
+    } else {
       retData.push(<Loader key={""} />);
     }
     return retData;
-  }
+  };
 
   openInviteDialog = () => {
     const { openInviteDialog } = this.state;
     let dialog = !openInviteDialog;
     this.setState({
       openInviteDialog: dialog,
-    })
-  }
+    });
+  };
 
   handleStateInviteChange = (event, index) => {
     let { inviteList } = this.state;
     const { name, value } = event.target;
     inviteList[index][name] = value;
     this.setState({
-      inviteList
+      inviteList,
     });
-  }
+  };
 
   addMoreContcat = () => {
     let { inviteList } = this.state;
     if (inviteList && inviteList.length < 5) {
-      inviteList.push({ email: '', name: '' });
+      inviteList.push({ email: "", name: "" });
       this.setState({
         inviteList,
-      })
+      });
     }
-  }
+  };
 
   removeinviter = (index) => {
     let { inviteList } = this.state;
     if (inviteList && inviteList.length > 1) {
       inviteList.splice(index, 1);
       this.setState({
-        inviteList
-      })
+        inviteList,
+      });
     }
-  }
+  };
 
   sendInvitation = () => {
     const { inviteList } = this.state;
     let count = 0;
     if (inviteList && inviteList.length > 0) {
       for (let i = 0; i < inviteList.length; i++) {
-        if (inviteList[i].email !== '') {
+        if (inviteList[i].email !== "") {
           count++;
         } else {
           count--;
         }
       }
       if (count === inviteList.length) {
-        this.props.dispatch(contactAction.sendInvitation({ 'userId': 2, 'inviteusers': inviteList }));
+        this.props.dispatch(
+          contactAction.sendInvitation({ userId: 2, inviteusers: inviteList })
+        );
       } else {
-        alert.error('invite user email is required');
+        alert.error("invite user email is required");
       }
     }
-  }
+  };
 
   render() {
-    let { openDialog, openInviteDialog, inviteList } = this.state
+    let { openDialog, openInviteDialog, inviteList } = this.state;
     return (
       <div className="main-content">
         <div className="contact-content">
@@ -374,30 +431,50 @@ class Contact extends Component {
           </div>
         </div>
 
-        <Dialog open={openDialog} onClose={() => this.setState({ openDialog: false })} aria-labelledby="form-dialog-title" className="addNewItemDialog">
-          <DialogTitle id="form-dialog-title" className="dialogSmWidth addNewItemDialogTitle">
+        <Dialog
+          open={openDialog}
+          onClose={() => this.setState({ openDialog: false })}
+          aria-labelledby="form-dialog-title"
+          className="addNewItemDialog"
+        >
+          <DialogTitle
+            id="form-dialog-title"
+            className="dialogSmWidth addNewItemDialogTitle"
+          >
             Delete Confirmation
           </DialogTitle>
           <DialogContent className="dialogSmWidth addNewItemDialogContent">
             <p>Are you sure to delete record?</p>
           </DialogContent>
           <DialogActions className="dialogSmWidth addNewItemDialogActions">
-            <Button variant="contained" onClick={this.removeContact} className="primary-btn">
+            <Button
+              variant="contained"
+              onClick={this.removeContact}
+              className="primary-btn"
+            >
               Yes
             </Button>
-            <Button variant="contained" onClick={() => this.setState({ openDialog: false })} className="default-btn">
+            <Button
+              variant="contained"
+              onClick={() => this.setState({ openDialog: false })}
+              className="default-btn"
+            >
               No
             </Button>
           </DialogActions>
         </Dialog>
 
-        <Dialog open={openInviteDialog} aria-labelledby="form-dialog-title" className="invite-module">
+        <Dialog
+          open={openInviteDialog}
+          aria-labelledby="form-dialog-title"
+          className="invite-module"
+        >
           <DialogTitle id="form-dialog-title" className="invite-module-header">
             Invite members to your contact list
             <CloseIcon className="close-icon" onClick={this.openInviteDialog} />
           </DialogTitle>
           <DialogContent className="invite-module-content">
-            {inviteList && inviteList.length > 0 &&
+            {inviteList && inviteList.length > 0 && (
               <>
                 <div className="row">
                   <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
@@ -412,7 +489,16 @@ class Contact extends Component {
                     <div className="row" key={index}>
                       <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                         <div className="form-group form-group-common">
-                          <input type="text" value={invite.email} name="email" placeholder="Eg.James@example.com" className="form-control" onChange={(e) => this.handleStateInviteChange(e, index)} />
+                          <input
+                            type="text"
+                            value={invite.email}
+                            name="email"
+                            placeholder="Eg.James@example.com"
+                            className="form-control"
+                            onChange={(e) =>
+                              this.handleStateInviteChange(e, index)
+                            }
+                          />
                           {/* <span className="text-danger">
                             {errrorMessage.firstName.message}
                           </span> */}
@@ -420,35 +506,53 @@ class Contact extends Component {
                       </div>
                       <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                         <div className="form-group form-group-common">
-                          <input type="text" value={invite.name} name="name" placeholder="Eg.james" className="form-control" onChange={(e) => this.handleStateInviteChange(e, index)} />
+                          <input
+                            type="text"
+                            value={invite.name}
+                            name="name"
+                            placeholder="Eg.james"
+                            className="form-control"
+                            onChange={(e) =>
+                              this.handleStateInviteChange(e, index)
+                            }
+                          />
                         </div>
                       </div>
-                      {inviteList && inviteList.length > 1 &&
-                        <div className="col-xl-2 col-lg-2 col-md-2 col-2" onClick={() => this.removeinviter(index)}>
+                      {inviteList && inviteList.length > 1 && (
+                        <div
+                          className="col-xl-2 col-lg-2 col-md-2 col-2"
+                          onClick={() => this.removeinviter(index)}
+                        >
                           <CloseIcon className="close-icon" />
                         </div>
-                      }
+                      )}
                     </div>
-                  )
-                })
-                }
+                  );
+                })}
               </>
-            }
-            {inviteList && inviteList.length < 5 &&
+            )}
+            {inviteList && inviteList.length < 5 && (
               <div className="add-multiples" onClick={this.addMoreContcat}>
                 <AddCircleIcon className="plus-icon" />
                 <span>Add New </span>
               </div>
-            }
+            )}
           </DialogContent>
           <DialogActions className="invite-module-footer">
-            <Button variant="contained" className="invitation-btn" onClick={this.sendInvitation}>
+            <Button
+              variant="contained"
+              className="invitation-btn"
+              onClick={this.sendInvitation}
+            >
               <PersonAddIcon className="user-icon" />
               Send Invitation
             </Button>
           </DialogActions>
         </Dialog>
-        <Pagination ref={this.paginationRef} changeCurrentPage={this.onChangeCurrentPage} />
+        <Pagination
+          ref={this.paginationRef}
+          changeCurrentPage={this.onChangeCurrentPage}
+        />
       </div>
     );
   }
@@ -466,7 +570,7 @@ function mapStateToProps(state) {
     searchContact,
     update_contact_status,
     updateContact,
-    send_invitation_status
+    send_invitation_status,
   } = state.procurement;
   return {
     add_contact_status,
@@ -479,8 +583,10 @@ function mapStateToProps(state) {
     searchContact,
     update_contact_status,
     updateContact,
-    send_invitation_status
+    send_invitation_status,
   };
 }
+
 const connectedContact = withTranslation()(connect(mapStateToProps)(Contact));
+
 export default connectedContact;

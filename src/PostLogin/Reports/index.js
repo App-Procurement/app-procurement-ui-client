@@ -1,22 +1,20 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
+import { FormControl, NativeSelect, Button, Avatar, Box } from "@mui/material";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import Table from "../../Table/Table";
 import { connect } from "react-redux";
 import { status } from "../../_constants";
 import { commonFunctions } from "../../_utilities";
-import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
-import AvatarGroup from "@material-ui/lab/AvatarGroup";
+import { AvatarGroup } from "@mui/material";
 import { reportAction } from "../../_actions";
+import Loader from "react-js-loader";
 
 class Reports extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingStatus: false,
       activeindex: 0,
       requiData: {
         status: "",
@@ -56,7 +54,7 @@ class Reports extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <span className='={requisitions-no}'>{value}</span>
+                <span className="={requisitions-no}">{value}</span>
               </td>
             );
           },
@@ -93,14 +91,15 @@ class Reports extends Component {
           renderCallback: (value) => {
             return (
               <td>
-                <Box className='reports-notification'>
+                <Box className="reports-notification">
                   <FormControl>
                     <NativeSelect
                       defaultValue={0}
                       inputProps={{
                         name: "age",
                         id: "uncontrolled-native",
-                      }}>
+                      }}
+                    >
                       {value.map((val, index) => (
                         <option value={index}>{val.notification}</option>
                       ))}
@@ -119,7 +118,7 @@ class Reports extends Component {
               <td>
                 <AvatarGroup max={5}>
                   {value.map((val) => (
-                    <Avatar alt='Remy Sharp' src={val.userProfile} />
+                    <Avatar alt="Remy Sharp" src={val.userProfile} />
                   ))}
                 </AvatarGroup>
               </td>
@@ -140,11 +139,11 @@ class Reports extends Component {
       this.props.reports_status !== prevProps.reports_status &&
       this.props.reports_status === status.SUCCESS
     ) {
-      if (
-        this.props.reports_data &&
-        this.props.reports_data.length > 0
-      ) {
-        this.setState({ tableData: this.props.reports_data });
+      if (this.props.reports_data && this.props.reports_data.length > 0) {
+        this.setState({
+          loadingStatus: !this.state.loadingStatus,
+          tableData: this.props.reports_data,
+        });
       }
     }
   }
@@ -218,63 +217,74 @@ class Reports extends Component {
   };
 
   render() {
-    const { requiData, isSubmitted, columns, tableData } =
-      this.state;
+    const { requiData, isSubmitted, columns, tableData } = this.state;
     const errorData = this.validate(isSubmitted);
+
     return (
-      <div className='main-content'>
-        <div className='reports-content'>
-          <div className='heading'>
+      <div className="main-content">
+        <div className="reports-content">
+          <div className="heading">
             <h4>Reports</h4>
           </div>
-          <div className='requisitions-filter'>
-            <div className='form-group row col-form-group'>
-              <label className='col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label'>
+          <div className="requisitions-filter">
+            <div className="form-group row col-form-group">
+              <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
                 Reports Types
               </label>
-              <div className='col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field'>
-                <FormControl className='select-menu'>
+              <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
+                <FormControl className="select-menu">
                   <NativeSelect
-                    name='status'
+                    name="status"
                     value={requiData.status}
                     onChange={this.handleStateChange}
-                    isvalid={errorData.status.isValid}>
-                    <option value=''>-Select-</option>
+                    isvalid={errorData.status.isValid}
+                  >
+                    <option value="">-Select-</option>
                     <option value={10}>abc</option>
                     <option value={20}>def</option>
                     <option value={30}>abc</option>
                   </NativeSelect>
                 </FormControl>
-                <span className='d-block w-100 text-danger'>
+                <span className="d-block w-100 text-danger">
                   {errorData.status.message}
                 </span>
               </div>
             </div>
-            <div className='form-group row col-form-group'>
-              <label className='col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label'></label>
-              <div className='col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-button'>
+            <div className="form-group row col-form-group">
+              <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label"></label>
+              <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-button">
                 <Button
-                  variant='contained'
-                  className='primary-btn'
+                  variant="contained"
+                  className="primary-btn"
                   disableElevation
-                  onClick={this.handleClickMethod}>
+                  onClick={this.handleClickMethod}
+                >
                   Search
                 </Button>
               </div>
             </div>
           </div>
-          <Table
-            valueFromData={{ columns: columns, data: tableData }}
-            perPageLimit={6}
-            visiblecheckboxStatus={false}
-            isLoading={this.props.reports_status === status.IN_PROGRESS}
-            tableClasses={{
-              table: "ticket-tabel",
-              tableParent: "tickets-tabel",
-              parentClass: "all-support-ticket-tabel",
-            }}
-            showingLine='Showing %start% to %end% of %total% '
-          />
+          {this.state.loadingStatus ? (
+            <Table
+              valueFromData={{ columns: columns, data: tableData }}
+              perPageLimit={6}
+              visiblecheckboxStatus={false}
+              isLoading={this.props.reports_status === status.IN_PROGRESS}
+              tableClasses={{
+                table: "ticket-tabel",
+                tableParent: "tickets-tabel",
+                parentClass: "all-support-ticket-tabel",
+              }}
+              showingLine="Showing %start% to %end% of %total% "
+            />
+          ) : (
+            <Loader
+              type="spinner-default"
+              bgColor={"#3244a8"}
+              color={"#3244a8"}
+              size={60}
+            />
+          )}
         </div>
       </div>
     );
@@ -288,4 +298,5 @@ const mapStateToProps = (state) => {
     reports_data,
   };
 };
+
 export default connect(mapStateToProps)(Reports);

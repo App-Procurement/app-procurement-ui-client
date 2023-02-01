@@ -18,53 +18,34 @@ function getDepartment(data) {
       })
     );
     departmentServices.getDepartment(data).then(
-      response => {
+      (response) => {
         const code = response.status;
         if (code === 200) {
-            response.json().then(data => {
-                dispatch(dispatchFunction({
-                    type: status.SUCCESS,
-                    data: {
-                        get_department_status: status.SUCCESS,
-                        department_list: data
-                    }
-                }));
-            });
-        } else {
-            dispatch(dispatchFunction({
-                type: status.FAILURE,
+          response.json().then((data) => {
+            dispatch(
+              dispatchFunction({
+                type: status.SUCCESS,
                 data: {
-                    get_department_status: status.FAILURE,
-                    department_list: response
-                }
-            }));
-            alert.error(response.message);
+                  get_department_status: status.SUCCESS,
+                  department_list: data,
+                },
+              })
+            );
+          });
+        } else {
+          dispatch(
+            dispatchFunction({
+              type: status.FAILURE,
+              data: {
+                get_department_status: status.FAILURE,
+                department_list: response,
+              },
+            })
+          );
+          alert.error(response.message);
         }
-    },
-      // (response) => {
-      //   if (response.code == 200) {
-      //     dispatch(
-      //       dispatchFunction({
-      //         type: status.SUCCESS,
-      //         data: {
-      //           get_department_status: status.SUCCESS,
-      //           department_list: response.object,
-      //         },
-      //       })
-      //     );
-      //   } else {
-      //     dispatch(
-      //       dispatchFunction({
-      //         type: status.FAILURE,
-      //         data: {
-      //           department_status: status.FAILURE,
-      //           department_list: response,
-      //         },
-      //       })
-      //     );
-      //     alert.error(response.message);
-      //   }
-      // },
+      },
+
       (error) => {
         dispatch(
           dispatchFunction({
@@ -82,13 +63,6 @@ function getDepartment(data) {
 }
 
 function dispatchFunction(data) {
-  // if (data.data && data.data.code === 401) {
-  //     commonFunctions.onLogout();
-  //     return {
-  //         type: authConstants.USER_LOGOUT,
-  //         data: null
-  //     };
-  // }
   return {
     type: data.type,
     data: data.data,

@@ -1,28 +1,41 @@
 import { commonFunctions } from "../_utilities";
 import { apiEndPoint } from "./apiEndPoint";
 
-export const requestForQuotataionServices = {
-  searchRequestQuotationData,
-  createRfq,
-  rfqQuotationPost,
+export const ProductServices = {
+  searchProductList,
+  addProduct,
+  deleteProduct,
 };
 
-function searchRequestQuotationData(data) {
+function searchProductList(data) {
   const extraHeaders = {
     "Content-Type": "application/json",
   };
   const requestOptions = commonFunctions.getRequestOptions(
     "GET",
     extraHeaders,
-    "",
-    ""
+    null
   );
-  return fetch(`${apiEndPoint.REQUESTFORQUOTATION}`, requestOptions).then(
+  return fetch(`${apiEndPoint.PRODUCT}`, requestOptions).then((response) =>
+    response.json()
+  );
+}
+
+function deleteProduct(data) {
+  const extraHeaders = {
+    "Content-Type": "application/json",
+  };
+  const requestOptions = commonFunctions.getRequestOptions(
+    "DELETE",
+    extraHeaders,
+    JSON.stringify(data)
+  );
+  return fetch(`${apiEndPoint.PRODUCT}`, requestOptions).then(
     (response) => response
   );
 }
 
-function createRfq(data) {
+function addProduct(data) {
   const extraHeaders = {
     "Content-Type": "application/json",
   };
@@ -31,23 +44,7 @@ function createRfq(data) {
     extraHeaders,
     JSON.stringify(data)
   );
-  return fetch(
-    `${apiEndPoint.REQUESTFORQUOTATION}`,
-    requestOptions
-  ).then((response) => response.json());
-}
-
-function rfqQuotationPost(data) {
-  const extraHeaders = {
-    "Content-Type": "application/json",
-  };
-  const requestOptions = commonFunctions.getRequestOptions(
-    "POST",
-    extraHeaders,
-    JSON.stringify(data)
+  return fetch(`${apiEndPoint.PRODUCT}`, requestOptions).then(
+    (response) => response
   );
-  return fetch(
-    `${apiEndPoint.REQUESTFORQUOTATION}`,
-    requestOptions
-  ).then((response) => response.json());
 }

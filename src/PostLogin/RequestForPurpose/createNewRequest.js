@@ -1,8 +1,18 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import {
+  Card,
+  Button,
+  FormControl,
+  NativeSelect,
+  Dialog,
+  AvatarGroup,
+  DialogTitle,
+  IconButton,
+  Avatar,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { DatePicker } from "@y0c/react-datepicker";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
@@ -14,11 +24,7 @@ import { commonFunctions, alert } from "../../_utilities";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
 import Chat from "../../_components/ChatBox";
-import Dialog from "@material-ui/core/Dialog";
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "@mui/icons-material/Close";
 import AddItemList from "./AddItemList";
 
 class CreateNewRequest extends Component {
@@ -185,19 +191,6 @@ class CreateNewRequest extends Component {
             );
           },
         },
-        // {
-        // 	label: 'Action',
-        // 	key: 'id',
-        // 	renderCallback: (value, row) => {
-        // 		return (
-        // 			<td>
-        // 				<Button className="primary-btn" onClick={() => this.setSelectedItemList(row)}>
-        // 					Add
-        // 				</Button>
-        // 			</td>
-        // 		);
-        // 	}
-        // }
       ],
       selectedItemList: [],
     };
@@ -207,7 +200,7 @@ class CreateNewRequest extends Component {
       "",
       "",
       {
-        onFormSubmitted: (formName) => { },
+        onFormSubmitted: (formName) => {},
         onFormCompleted: (formName, response) => {
           this.setUploadedDocID(response);
         },
@@ -215,6 +208,7 @@ class CreateNewRequest extends Component {
     );
     this.formkiqClient.login("papubhat@gmail.com", "microsoft");
   }
+
   setUploadedDocID = (res) => {
     const { uploadedFileList } = this.state;
     if (res && res.object && res.object.documents) {
@@ -252,7 +246,7 @@ class CreateNewRequest extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.props.request_for_purpose_status !==
-      prevProps.request_for_purpose_status &&
+        prevProps.request_for_purpose_status &&
       this.props.request_for_purpose_status === status.SUCCESS
     ) {
       if (
@@ -291,7 +285,7 @@ class CreateNewRequest extends Component {
     }
     if (
       this.props.supplier_category_list_status !==
-      prevProps.supplier_category_list_status &&
+        prevProps.supplier_category_list_status &&
       this.props.supplier_category_list_status === status.SUCCESS
     ) {
       if (this.props.supplier_category_list_data) {
@@ -372,6 +366,7 @@ class CreateNewRequest extends Component {
     retData.isValid = isValid;
     return retData;
   };
+
   validateUpdate = (update) => {
     const validObj = {
       isValid: true,
@@ -467,7 +462,6 @@ class CreateNewRequest extends Component {
         });
         let data = document.getElementById("upload_document");
         this.formkiqClient.webFormsHandler.submitFormkiqForm(data);
-        // this.props.dispatch(requestForPurposeAction.UploadFile(e.target.files[i].name));
       }
     }
   };
@@ -528,8 +522,12 @@ class CreateNewRequest extends Component {
 
   createRequest = (event) => {
     event.preventDefault();
-    const { formData, selectedItemList, selectedFile, uploadedFileList } =
-      this.state;
+    const {
+      formData,
+      selectedItemList,
+      selectedFile,
+      uploadedFileList,
+    } = this.state;
     this.setState({
       isSubmitted: true,
     });
@@ -572,12 +570,14 @@ class CreateNewRequest extends Component {
       selectedItemList,
     });
   };
+
   handleUpdate = (e) => {
     const { updateValue } = this.state;
     const { name, value } = e.target;
     updateValue[name] = value;
     this.setState({ updateValue });
   };
+
   updateDataValues = () => {
     const { selectedItemList, activeIndex, updateValue } = this.state;
     let updateForm = this.validateUpdate(true);
@@ -591,6 +591,7 @@ class CreateNewRequest extends Component {
       });
     }
   };
+
   render() {
     const {
       formData,
@@ -628,7 +629,7 @@ class CreateNewRequest extends Component {
                     placeholder={"YYYY-MM-DD"}
                     onChange={(date) => this.handleDates(date, "dueDate")}
                   />
-                  <CalendarTodayTwoToneIcon className="calendar-icon" />
+                  <CalendarTodayIcon className="calendar-icon" />
                 </div>
                 <span className="d-block w-100 text-danger">
                   {errorData.deliveryDate.message}
@@ -644,7 +645,7 @@ class CreateNewRequest extends Component {
                     placeholder={"YYYY-MM-DD"}
                     onChange={(date) => this.handleDates(date, "deliveryDate")}
                   />
-                  <CalendarTodayTwoToneIcon className="calendar-icon" />
+                  <CalendarTodayIcon className="calendar-icon" />
                 </div>
                 <span className="d-block w-100 text-danger">
                   {errorData.deliveryDate.message}
@@ -662,7 +663,6 @@ class CreateNewRequest extends Component {
                       name="location"
                       value={formData.location}
                       onChange={this.handleStateChange}
-                    // isvalid={errorData.location.isValid}
                     >
                       <option value="">Main Office USA</option>
                       <option value={10}>abc</option>
@@ -685,7 +685,6 @@ class CreateNewRequest extends Component {
                       name="department"
                       value={formData.department}
                       onChange={this.handleStateChange}
-                    // isvalid={errorData.department.isValid}
                     >
                       <option value="">HR Department</option>
                       <option value={10}>abc</option>
@@ -710,7 +709,6 @@ class CreateNewRequest extends Component {
                       name="request"
                       value={formData.request}
                       onChange={this.handleStateChange}
-                    // isvalid={errorData.request.isValid}
                     >
                       <option value="">Purchase</option>
                       <option value={10}>abc</option>
@@ -762,7 +760,6 @@ class CreateNewRequest extends Component {
                     variant="contained"
                     className="add-custom-btn"
                     disableElevation
-                  // onClick={this.handleClickMethod}
                   >
                     Add Custom Item
                   </Button>
@@ -770,7 +767,6 @@ class CreateNewRequest extends Component {
                     variant="contained"
                     className="add-custom-btn"
                     disableElevation
-                  // onClick={this.handleClickMethod}
                   >
                     <i className="fa fa-plus-circle" aria-hidden="true" />
                     Import Item
@@ -1029,7 +1025,6 @@ const mapStateToProps = (state) => {
     supplier_category_list_data,
   } = state.procurement;
 
-  console.log("request for", request_for_purpose_list);
   return {
     request_for_purpose_status,
     request_for_purpose_list,
@@ -1047,4 +1042,5 @@ const mapStateToProps = (state) => {
 const connectedCreateNewRequest = withTranslation()(
   connect(mapStateToProps)(CreateNewRequest)
 );
+
 export default connectedCreateNewRequest;

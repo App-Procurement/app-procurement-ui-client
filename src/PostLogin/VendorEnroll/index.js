@@ -1,77 +1,81 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
 import "rc-calendar/assets/index.css";
 import "@y0c/react-datepicker/assets/styles/calendar.scss";
 import "simplebar/dist/simplebar.min.css";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
 import { DatePicker } from "@y0c/react-datepicker";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import LoopIcon from "@material-ui/icons/Loop";
-import IconButton from "@material-ui/core/IconButton";
+import LoopIcon from "@mui/icons-material/Loop";
 import { vendorAction } from "../../_actions";
 import { connect } from "react-redux";
 import { status } from "../../_constants";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
-
+import {
+  FormControlLabel,
+  Radio,
+  Button,
+  FormControl,
+  IconButton,
+  RadioGroup,
+  NativeSelect,
+} from "@mui/material";
 class VendorEnroll extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isSubmitted: false,
       requiData: {
-        firstName: '',
-        lastName: '',
-        gender: '',
-        fatherName: '',
-        brithDate: '',
-        phoneNo: '',
-        designation: '',
-        companyName: '',
-        RegistrationNo: '',
-        directorName: '',
-        address: '',
-        bidder: '',
-        city: '',
-        establishment: '',
-        state: '',
-        business: '',
-        postalCode: '',
-        legalStatus: '',
-        panNo: '',
-        companyCategory: '',
-        captcha: '',
+        firstName: "",
+        lastName: "",
+        gender: "",
+        fatherName: "",
+        brithDate: "",
+        phoneNo: "",
+        designation: "",
+        companyName: "",
+        RegistrationNo: "",
+        directorName: "",
+        address: "",
+        bidder: "",
+        city: "",
+        establishment: "",
+        state: "",
+        business: "",
+        postalCode: "",
+        legalStatus: "",
+        panNo: "",
+        companyCategory: "",
+        captcha: "",
       },
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { requiData } = this.state;
-    if (prevProps.add_vendor_status !== this.props.add_vendor_status && this.props.add_vendor_status === status.SUCCESS) {
-      requiData.firstName = '';
-      requiData.lastName = '';
-      requiData.gender = '';
-      requiData.fatherName = '';
-      requiData.brithDate = '';
-      requiData.phoneNo = '';
-      requiData.designation = '';
-      requiData.companyName = '';
-      requiData.RegistrationNo = '';
-      requiData.directorName = '';
-      requiData.address = '';
-      requiData.bidder = '';
-      requiData.city = '';
-      requiData.establishment = '';
-      requiData.state = '';
-      requiData.business = '';
-      requiData.postalCode = '';
-      requiData.legalStatus = '';
-      requiData.panNo = '';
-      requiData.companyCategory = '';
-      requiData.captcha = '';
+    if (
+      prevProps.add_vendor_status !== this.props.add_vendor_status &&
+      this.props.add_vendor_status === status.SUCCESS
+    ) {
+      requiData.firstName = "";
+      requiData.lastName = "";
+      requiData.gender = "";
+      requiData.fatherName = "";
+      requiData.brithDate = "";
+      requiData.phoneNo = "";
+      requiData.designation = "";
+      requiData.companyName = "";
+      requiData.RegistrationNo = "";
+      requiData.directorName = "";
+      requiData.address = "";
+      requiData.bidder = "";
+      requiData.city = "";
+      requiData.establishment = "";
+      requiData.state = "";
+      requiData.business = "";
+      requiData.postalCode = "";
+      requiData.legalStatus = "";
+      requiData.panNo = "";
+      requiData.companyCategory = "";
+      requiData.captcha = "";
       this.setState({
         requiData,
         isSubmitted: false,
@@ -90,12 +94,11 @@ class VendorEnroll extends Component {
 
   handleDateChange = (value) => {
     const { requiData } = this.state;
-    requiData['brithDate'] = value;
+    requiData["brithDate"] = value;
     this.setState({
-      requiData
+      requiData,
     });
-
-  }
+  };
 
   handleClickMethod = (event) => {
     const { requiData } = this.state;
@@ -127,7 +130,7 @@ class VendorEnroll extends Component {
         panNo: requiData.panNo,
         companyCategory: requiData.companyCategory,
         captcha: requiData.captcha,
-      }
+      };
       this.props.dispatch(vendorAction.addVendor(sendReqData));
     }
   };
@@ -193,7 +196,6 @@ class VendorEnroll extends Component {
         isValid = false;
       }
       if (!requiData.brithDate) {
-
         retData.brithDate = {
           isValid: false,
           message: t("D. O. B is Required"),
@@ -210,9 +212,9 @@ class VendorEnroll extends Component {
       if (requiData.phoneNo.length > 13 || requiData.phoneNo.length < 10) {
         retData.phoneNo = {
           isValid: false,
-          message: t("Phone Number is Invalid")
-        }
-        isValid = false
+          message: t("Phone Number is Invalid"),
+        };
+        isValid = false;
       }
       if (!requiData.designation) {
         retData.designation = {
@@ -338,7 +340,9 @@ class VendorEnroll extends Component {
             </span>
           </div>
           <div className="d-inline-block vendor-enrollment">
-            <div className="d-block add-contcat-heading">{t("Parsonal Details")}</div>
+            <div className="d-block add-contcat-heading">
+              {t("Parsonal Details")}
+            </div>
             <div className="row">
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
@@ -348,7 +352,6 @@ class VendorEnroll extends Component {
                     name="firstName"
                     value={requiData.firstName || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.firstName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -365,7 +368,6 @@ class VendorEnroll extends Component {
                     name="lastName"
                     value={requiData.lastName || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.lastName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -382,7 +384,6 @@ class VendorEnroll extends Component {
                       name="gender"
                       value={requiData.gender}
                       onChange={this.handleStateChange}
-                    // isvalid={errorData.gender.isValid}
                     >
                       <option value="">-Select-</option>
                       <option value={10}>Male</option>
@@ -403,7 +404,6 @@ class VendorEnroll extends Component {
                     name="fatherName"
                     value={requiData.fatherName || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.fatherName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -419,7 +419,6 @@ class VendorEnroll extends Component {
                     name="brithDate"
                     value={requiData.brithDate}
                     onChange={this.handleDateChange}
-                    // isvalid={errorData.brithDate.isValid}
                     placeholder="DD/MM/YYYY"
                   />
                   <span className="text-danger">
@@ -435,7 +434,6 @@ class VendorEnroll extends Component {
                     name="phoneNo"
                     value={requiData.phoneNo || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.phoneNo.isValid}
                     placeholder="+91"
                     className="form-control"
                   />
@@ -452,7 +450,6 @@ class VendorEnroll extends Component {
                     name="designation"
                     value={requiData.designation || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.designation.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -464,7 +461,9 @@ class VendorEnroll extends Component {
             </div>
           </div>
           <div className="d-inline-block vendor-enrollment">
-            <div className="d-block add-contcat-heading">{t("Company Details")}</div>
+            <div className="d-block add-contcat-heading">
+              {t("Company Details")}
+            </div>
             <div className="row">
               <div className="col-12 col-sm-12 col-md-6">
                 <div className="form-group form-group-common">
@@ -474,7 +473,6 @@ class VendorEnroll extends Component {
                     name="companyName"
                     value={requiData.companyName || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.companyName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -491,7 +489,6 @@ class VendorEnroll extends Component {
                     name="RegistrationNo"
                     value={requiData.RegistrationNo || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.RegistrationNo.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -510,7 +507,6 @@ class VendorEnroll extends Component {
                     name="directorName"
                     value={requiData.directorName || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.directorName.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -527,7 +523,6 @@ class VendorEnroll extends Component {
                     name="address"
                     value={requiData.address || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.address.isValid}
                     placeholder="Street No: 436/13"
                     className="form-control"
                   />
@@ -545,7 +540,6 @@ class VendorEnroll extends Component {
                     className="bidder-box"
                     value={requiData.bidder}
                     onChange={this.handleStateChange}
-                  // isvalid={errorData.bidder.isValid}
                   >
                     <FormControlLabel
                       value="best"
@@ -571,7 +565,6 @@ class VendorEnroll extends Component {
                     name="city"
                     value={requiData.city || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.city.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -586,7 +579,6 @@ class VendorEnroll extends Component {
                     name="establishment"
                     value={requiData.establishment || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.establishment.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -603,7 +595,6 @@ class VendorEnroll extends Component {
                     name="state"
                     value={requiData.state || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.state.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -618,7 +609,6 @@ class VendorEnroll extends Component {
                     name="business"
                     value={requiData.business || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.business.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -635,7 +625,6 @@ class VendorEnroll extends Component {
                     name="postalCode"
                     value={requiData.postalCode || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.postalCode.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -652,7 +641,6 @@ class VendorEnroll extends Component {
                     name="legalStatus"
                     value={requiData.legalStatus || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.legalStatus.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -669,7 +657,6 @@ class VendorEnroll extends Component {
                     name="panNo"
                     value={requiData.panNo || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.panNo.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -684,7 +671,6 @@ class VendorEnroll extends Component {
                     name="companyCategory"
                     value={requiData.companyCategory || ""}
                     onChange={this.handleStateChange}
-                    // isvalid={errorData.companyCategory.isValid}
                     placeholder=""
                     className="form-control"
                   />
@@ -702,7 +688,6 @@ class VendorEnroll extends Component {
                       name="captcha"
                       value={requiData.captcha || ""}
                       onChange={this.handleStateChange}
-                      // isvalid={errorData.captcha.isValid}
                       placeholder=""
                       className="form-control"
                     />
@@ -744,8 +729,12 @@ const mapStateToProps = (state) => {
   const { add_vendor_status, addVendor } = state.procurement;
   return {
     add_vendor_status,
-    addVendor
-  }
-}
-const connectedVendorEnroll = withTranslation()(connect(mapStateToProps)(VendorEnroll));
+    addVendor,
+  };
+};
+
+const connectedVendorEnroll = withTranslation()(
+  connect(mapStateToProps)(VendorEnroll)
+);
+
 export default connectedVendorEnroll;

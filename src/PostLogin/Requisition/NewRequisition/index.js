@@ -1,26 +1,28 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
-import SaveIcon from "@material-ui/icons/Save";
-import CreateIcon from "@material-ui/icons/Create";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import DeleteIcon from "@material-ui/icons/Delete";
+import {
+  NativeSelect,
+  FormControl,
+  DialogContent,
+  Dialog,
+  DialogTitle,
+  Button,
+  DialogActions,
+  TextareaAutosize,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  Tooltip,
+} from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import CreateIcon from "@mui/icons-material/Create";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 import { connect } from "react-redux";
 import { requistionAction } from "../../../_actions";
 import { status } from "../../../_constants";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Tooltip from "@material-ui/core/Tooltip";
-import CloseIcon from "@material-ui/icons/Close";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import CloseIcon from "@mui/icons-material/Close";
 import { alert, requisitionStatus } from "../../../_utilities";
 import pdfIcon from "../../../assets/images/icons/pdficon.png";
 import docIcon from "../../../assets/images/icons/docIcon.png";
@@ -29,8 +31,8 @@ import jpgIcon from "../../../assets/images/icons/jpgIcon.png";
 import pngIcon from "../../../assets/images/icons/pngIcon.png";
 import pptIcon from "../../../assets/images/icons/pptIcon.png";
 import csvIcon from "../../../assets/images/icons/csvIcon.png";
-import { IconButton } from "@material-ui/core";
-import CancelIcon from "@material-ui/icons/Cancel";
+import { IconButton } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
 import Loader from "../../../_components/commonLoader";
 import { withTranslation } from "react-i18next";
 import { t } from "i18next";
@@ -95,7 +97,7 @@ class NewRequisition extends Component {
 
     if (
       prevProps.create_requisition_status !==
-      this.props.create_requisition_status &&
+        this.props.create_requisition_status &&
       this.props.create_requisition_status === status.SUCCESS
     ) {
       alert.success("Add requisition successful");
@@ -107,14 +109,14 @@ class NewRequisition extends Component {
 
     if (
       prevProps.get_edit_requisition_status !==
-      this.props.get_edit_requisition_status &&
+        this.props.get_edit_requisition_status &&
       this.props.get_edit_requisition_status === status.SUCCESS
     ) {
       const { editRequisitiondata } = this.props;
       if (editRequisitiondata) {
         addRequiData.departmentId = editRequisitiondata.id;
         addRequiData.currencyId = editRequisitiondata.currency;
-        addRequiData.financialYear = editRequisitiondata.financialYear
+        addRequiData.financialYear = editRequisitiondata.financialYear;
 
         addRequiData.status = editRequisitiondata.status;
         addRequiData.roleName = editRequisitiondata.roleName;
@@ -133,7 +135,7 @@ class NewRequisition extends Component {
 
     if (
       prevProps.update_requisition_status !==
-      this.props.update_requisition_status &&
+        this.props.update_requisition_status &&
       this.props.update_requisition_status === status.SUCCESS
     ) {
       if (this.props.updateRequisition) {
@@ -357,6 +359,7 @@ class NewRequisition extends Component {
     retData.isValid = isValid;
     return retData;
   };
+
   displayDepartment = () => {
     const { department_list } = this.props;
     let departmentoption = [];
@@ -376,10 +379,10 @@ class NewRequisition extends Component {
     const { currency_list_data } = this.props;
     let currencyoption = [];
     if (currency_list_data) {
-      for (let i = 0; i < currency_list_data.length; i++) {
+      for (let i = 0; i < currency_list_data.object.length; i++) {
         currencyoption.push(
-          <option key={i} value={currency_list_data[i]}>
-            {currency_list_data[i].code}
+          <option key={i} value={currency_list_data.object[i]}>
+            {currency_list_data.object[i].code}
           </option>
         );
       }
@@ -570,6 +573,7 @@ class NewRequisition extends Component {
     let iconValue = this.state.imageURL[extension];
     return iconValue;
   };
+
   saveToDraft = () => {
     let { addRequiData } = this.state;
     addRequiData.status = requisitionStatus.DRAFT;
@@ -598,11 +602,14 @@ class NewRequisition extends Component {
     const errorReqData = this.validateReq(validateSubmit);
     return (
       <>
-        {!isLoading &&
+        {!isLoading && (
           <div className="main-content">
             <div className="new-req-section">
               <div className="d-block heading">
-                <h4 className="d-inline-block">{editReq === false ? `${t("Add New")}` : "Edit"} {t("Requisition")}</h4>
+                <h4 className="d-inline-block">
+                  {editReq === false ? `${t("Add New")}` : "Edit"}{" "}
+                  {t("Requisition")}
+                </h4>
                 <div className="heading-buttons">
                   <Button
                     variant="outlined"
@@ -627,7 +634,6 @@ class NewRequisition extends Component {
                             value={addRequiData.roleName || ""}
                             onChange={this.handleStateChange}
                             placeholder="PSDS Admin"
-                          // isvalid={errorData.roleName.isValid}
                           />
                           <span className="text-danger">
                             {errorData.roleName.message}
@@ -640,7 +646,6 @@ class NewRequisition extends Component {
                           <input
                             type="text"
                             name="financialYear"
-                            // isvalid={errorData.financialYear.isValid}
                             value={addRequiData.financialYear || ""}
                             onChange={this.handleStateChange}
                           />
@@ -656,7 +661,6 @@ class NewRequisition extends Component {
                             <NativeSelect
                               name="departmentId"
                               value={addRequiData.departmentId}
-                              // isvalid={errorData.departmentId.isValid}
                               onChange={this.handleStateChange}
                             >
                               <option value="">-Select-</option>
@@ -675,7 +679,6 @@ class NewRequisition extends Component {
                             <NativeSelect
                               name="currencyId"
                               onChange={this.handleStateChange}
-                              // isvalid={errorData.currencyId.isValid}
                               value={addRequiData.currencyId}
                             >
                               <option value="">-Select-</option>
@@ -699,7 +702,6 @@ class NewRequisition extends Component {
                             defaultValue=""
                             name="notes"
                             value={addRequiData.notes || ""}
-                            // isvalid={errorData.notes.isValid}
                             onChange={this.handleStateChange}
                           />
                           <span className="text-danger">
@@ -812,7 +814,8 @@ class NewRequisition extends Component {
                               <FormControlLabel
                                 value={requisitionStatus.DRAFT}
                                 checked={
-                                  addRequiData.status === requisitionStatus.DRAFT
+                                  addRequiData.status ===
+                                  requisitionStatus.DRAFT
                                 }
                                 name="status"
                                 control={<Radio color="primary" />}
@@ -860,7 +863,9 @@ class NewRequisition extends Component {
                       >
                         {t("Add New Item")}
                       </Button>
-                      <div className="item-heading">{t("Requisition Items")}</div>
+                      <div className="item-heading">
+                        {t("Requisition Items")}
+                      </div>
                       <SimpleBar>
                         <div className="item-detail">
                           <table width="100%">
@@ -874,7 +879,6 @@ class NewRequisition extends Component {
                                 <th>Action</th>
                               </tr>
                             </thead>
-                            {/* changes here */}
                             <tbody>{this.displayTableData()}</tbody>
                           </table>
                         </div>
@@ -1043,17 +1047,12 @@ class NewRequisition extends Component {
                         </DialogActions>
                       </Dialog>
                     </div>
-
-                    {/* <div>
-                                            <div> <p>Total Estimate Coste</p> </div>
-                                            <div> {totalAmount ? <p>{totalAmount}</p> : "00.00 USD"} </div>
-                                        </div> */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        }
+        )}
         {isLoading && <Loader />}
       </>
     );
@@ -1070,7 +1069,9 @@ function mapStateToProps(state) {
     currency_list_data,
     update_requisition_status,
   } = state.procurement;
+
   const { department_status, department_list } = state.procurement;
+
   return {
     department_list,
     department_status,
@@ -1083,5 +1084,9 @@ function mapStateToProps(state) {
     update_requisition_status,
   };
 }
-const connectedNewRequisition = withTranslation()(connect(mapStateToProps)(NewRequisition));
+
+const connectedNewRequisition = withTranslation()(
+  connect(mapStateToProps)(NewRequisition)
+);
+
 export default connectedNewRequisition;

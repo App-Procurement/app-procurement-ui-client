@@ -55,4 +55,5 @@ class RollAndPermissions extends Component {
     );
   }
 }
+
 export default RollAndPermissions;

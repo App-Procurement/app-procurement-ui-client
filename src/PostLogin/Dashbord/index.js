@@ -1,18 +1,20 @@
 import React, { Component } from "react";
+import {
+  LinearProgress,
+  IconButton,
+  Box,
+} from "@mui/material";
 import moment from "moment";
 import DateFormat from "./DateFormat";
 import { Line, Bar, Pie } from "react-chartjs-2";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import ColorizeIcon from "@material-ui/icons/Colorize";
-import IconButton from "@material-ui/core/IconButton";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Box from "@material-ui/core/Box";
+import ColorizeIcon from "@mui/icons-material/Colorize";
 import AmountIcon from "../../assets/images/amount-icon.png";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 import "react-circular-progressbar/dist/styles.css";
 import { connect } from "react-redux";
-import { contactAction, homeAction, invoiceAction } from "../../_actions";
+import { homeAction, invoiceAction } from "../../_actions";
 import { status } from "../../_constants";
 import ActivityFeeds from "./ActivityFeeds";
 import TopSellers from "./TopSellers";
@@ -296,7 +298,6 @@ class Dashbord extends Component {
   }
 
   componentDidMount() {
-    // this.props.dispatch(contactAction.fetchContactList());
     this.props.dispatch(homeAction.Dashboarddata());
     this.props.dispatch(invoiceAction.searchInvoice());
   }
@@ -304,7 +305,7 @@ class Dashbord extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.props.get_dashboard_data_status !==
-      prevProps.get_dashboard_data_status &&
+        prevProps.get_dashboard_data_status &&
       this.props.get_dashboard_data_status === status.SUCCESS
     ) {
       if (this.props.dashboarddata) {
@@ -384,6 +385,7 @@ class Dashbord extends Component {
       this.props.history.push(`${url}`);
     }
   };
+
   displayPinedEmail = () => {
     const { pinnedEmailsData } = this.state;
     let pinData = [];
@@ -418,6 +420,7 @@ class Dashbord extends Component {
   onClickCreateNewRequester = (id) => {
     this.props.history.push(`/postlogin/requestforpurpose/newrequest`);
   };
+
   render() {
     const {
       dashboardData,
@@ -434,6 +437,7 @@ class Dashbord extends Component {
     } = this.state;
     const { Requisitions } = dashboardData;
     const { t } = this.props;
+
     return (
       <div className="main-content">
         <div className="dashbord-content">
@@ -792,25 +796,24 @@ class Dashbord extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   const {
-    // get_contact_status,
-    // getContact,
     get_dashboard_data_status,
     dashboarddata,
     search_invoice_status,
     search_invoice_data,
   } = state.procurement;
   return {
-    // get_contact_status,
-    // getContact,
     get_dashboard_data_status,
     dashboarddata,
     search_invoice_status,
     search_invoice_data,
   };
 };
+
 const connectedDeshboard = withTranslation()(
   connect(mapStateToProps)(Dashbord)
 );
+
 export default connectedDeshboard;

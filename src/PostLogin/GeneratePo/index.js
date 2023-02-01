@@ -1,82 +1,84 @@
-import React, { Component } from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import Button from '@material-ui/core/Button';
-import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
-import { RangeDatePicker, DatePicker } from '@y0c/react-datepicker';
-import 'rc-calendar/assets/index.css';
-import '@y0c/react-datepicker/assets/styles/calendar.scss';
-import Table from '../../Table/Table';
-import 'simplebar/dist/simplebar.min.css';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
-import { connect } from 'react-redux';
-import { purchaseOrderAction } from '../../_actions/purchaseOrder.action';
-import { status } from '../../_constants';
-
+import React, { Component } from "react";
+import {
+  Button,
+  FormControl,
+  NativeSelect,
+  TextareaAutosize,
+} from "@mui/material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { RangeDatePicker, DatePicker } from "@y0c/react-datepicker";
+import "rc-calendar/assets/index.css";
+import "@y0c/react-datepicker/assets/styles/calendar.scss";
+import Table from "../../Table/Table";
+import "simplebar/dist/simplebar.min.css";
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
+import { connect } from "react-redux";
+import { purchaseOrderAction } from "../../_actions/purchaseOrder.action";
+import { status } from "../../_constants";
+import Loader from "react-js-loader";
 class GeneratePo extends Component {
   constructor(props) {
     super(props);
     this.state = {
       requiData: {
-        status: '',
-        reqNo: '',
-        depart: '',
+        status: "",
+        reqNo: "",
+        depart: "",
         GenerateButton: false,
       },
       tableData: [],
       columns: [
         {
-          label: 'S.No',
-          key: 'sno',
-          renderCallback: (value,index) => {
+          label: "S.No",
+          key: "sno",
+          renderCallback: (value, index) => {
             return (
               <td>
-                <span className={'s-no'}>{index + 1} </span>
+                <span className={"s-no"}>{index + 1} </span>
               </td>
             );
           },
         },
         {
-          label: 'Requisition No',
-          key: 'poNo',
+          label: "Requisition No",
+          key: "poNo",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'requisitions-no'}>{value}</span>
+                <span className={"requisitions-no"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Requestor',
-          key: 'createdBy',
+          label: "Requestor",
+          key: "createdBy",
           renderCallback: (value) => {
             return (
               <td>
-                <span className={'department-value'}>{value}</span>
+                <span className={"department-value"}>{value}</span>
               </td>
             );
           },
         },
         {
-          label: 'Request Department',
-          key: 'department',
+          label: "Request Department",
+          key: "department",
           renderCallback: () => {
             return <td></td>;
           },
         },
         {
-          label: 'Request type',
-          key: 'requisitionType',
+          label: "Request type",
+          key: "requisitionType",
           renderCallback: () => {
             return <td></td>;
           },
         },
         {
-          label: 'Requisition Total',
-          key: 'totalPrice',
+          label: "Requisition Total",
+          key: "totalPrice",
           renderCallback: (value) => {
             return (
               <td>
@@ -86,15 +88,15 @@ class GeneratePo extends Component {
           },
         },
         {
-          label: 'Currency',
-          key: 'currency',
+          label: "Currency",
+          key: "currency",
           renderCallback: () => {
             return <td></td>;
           },
         },
         {
-          label: 'Status',
-          key: 'status',
+          label: "Status",
+          key: "status",
           renderCallback: (value) => {
             return (
               <td>
@@ -104,12 +106,15 @@ class GeneratePo extends Component {
           },
         },
         {
-          label: 'Purchase Order',
-          key: 'id',
+          label: "Purchase Order",
+          key: "id",
           renderCallback: (value) => {
             return (
               <td>
-                <button className="btn details-btn" onClick={() => this.onClickShowGenerateButton(value)}>
+                <button
+                  className="btn details-btn"
+                  onClick={() => this.onClickShowGenerateButton(value)}
+                >
                   Generate
                 </button>
               </td>
@@ -132,7 +137,10 @@ class GeneratePo extends Component {
     ) {
       if (this.props.search_purchase_order) {
         tableData = this.props.search_purchase_order;
-        this.setState({ tableData });
+        this.setState({
+          loadingStatus: !this.state.loadingStatus,
+          tableData,
+        });
       }
     }
   }
@@ -140,6 +148,7 @@ class GeneratePo extends Component {
   onClickShowGenerateButton = (id) => {
     this.props.history.push(`/postlogin/generatepo/${id}`);
   };
+
   handleStateChange = (e) => {
     const { name, value } = e.target;
     const { requiData } = this.state;
@@ -159,7 +168,7 @@ class GeneratePo extends Component {
   validate = (isSubmitted) => {
     const validObj = {
       isValid: true,
-      message: '',
+      message: "",
     };
     let isValid = true;
     const retData = {
@@ -173,21 +182,21 @@ class GeneratePo extends Component {
       if (!requiData.status) {
         retData.status = {
           isValid: false,
-          message: 'Filter By Status  is required',
+          message: "Filter By Status  is required",
         };
         isValid = false;
       }
       if (!requiData.payment) {
         retData.payment = {
           isValid: false,
-          message: 'Payment terms  is required',
+          message: "Payment terms  is required",
         };
         isValid = false;
       }
       if (!requiData.conditionText) {
         retData.conditionText = {
           isValid: false,
-          message: ' Other terms and Condition is required',
+          message: " Other terms and Condition is required",
         };
         isValid = false;
       }
@@ -197,7 +206,13 @@ class GeneratePo extends Component {
   };
 
   render() {
-    const { requiData, isSubmitted, GenerateButton, columns, tableData } = this.state;
+    const {
+      requiData,
+      isSubmitted,
+      GenerateButton,
+      columns,
+      tableData,
+    } = this.state;
     const errorData = this.validate(isSubmitted);
     return (
       <div className="main-content">
@@ -206,7 +221,6 @@ class GeneratePo extends Component {
             <>
               <div className="generate-order">
                 <div className="heading">
-                  {/* <h4>Generate Purchase Order</h4> */}
                   <span>Lorem ipsum dolor sit amet</span>
                 </div>
                 <div className="row">
@@ -314,21 +328,27 @@ class GeneratePo extends Component {
                     <h5>P.O Parameters</h5>
                   </div>
                   <div className="form-group row col-form-group">
-                    <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">Start Date</label>
+                    <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">
+                      Start Date
+                    </label>
                     <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9 col-form-field">
                       <DatePicker placeholder="10/28/2021" />
-                      <CalendarTodayTwoToneIcon className="calendar-icon" />
+                      <CalendarTodayIcon className="calendar-icon" />
                     </div>
                   </div>
                   <div className="form-group row col-form-group">
-                    <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">Dellvery Date</label>
+                    <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">
+                      Dellvery Date
+                    </label>
                     <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9 col-form-field">
                       <DatePicker placeholder="10/28/2021" />
-                      <CalendarTodayTwoToneIcon className="calendar-icon" />
+                      <CalendarTodayIcon className="calendar-icon" />
                     </div>
                   </div>
                   <div className="form-group row col-form-group">
-                    <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">Payment Terms</label>
+                    <label className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-form-label">
+                      Payment Terms
+                    </label>
                     <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9 col-form-field">
                       <TextareaAutosize
                         name="payment"
@@ -338,7 +358,9 @@ class GeneratePo extends Component {
                         isvalid={errorData.payment.isValid}
                         placeholder="Payment of total contract sum will be made to you after delivery"
                       />
-                      <span className="d-block w-100 text-danger">{errorData.payment.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.payment.message}
+                      </span>
                     </div>
                   </div>
                   <div className="form-group row col-form-group">
@@ -354,7 +376,9 @@ class GeneratePo extends Component {
                         isvalid={errorData.conditionText.isValid}
                         placeholder=""
                       />
-                      <span className="d-block w-100 text-danger">{errorData.conditionText.message}</span>
+                      <span className="d-block w-100 text-danger">
+                        {errorData.conditionText.message}
+                      </span>
                     </div>
                   </div>
                   <div className="form-group row col-form-group">
@@ -383,7 +407,9 @@ class GeneratePo extends Component {
                       variant="contained"
                       className="primary-btn"
                       disableElevation
-                      onClick={() => this.props.history.push('/postlogin/approvepo')}
+                      onClick={() =>
+                        this.props.history.push("/postlogin/approvepo")
+                      }
                     >
                       Approve
                     </Button>
@@ -392,7 +418,9 @@ class GeneratePo extends Component {
                 <div className="requisitions-filter">
                   <div className="form">
                     <div className="form-group row col-form-group">
-                      <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Filter By Status</label>
+                      <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
+                        Filter By Status
+                      </label>
                       <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                         <FormControl className="select-menu">
                           <NativeSelect
@@ -407,17 +435,24 @@ class GeneratePo extends Component {
                             <option value={30}>abc</option>
                           </NativeSelect>
                         </FormControl>
-                        <span className="d-block w-100 text-danger">{errorData.status.message}</span>
+                        <span className="d-block w-100 text-danger">
+                          {errorData.status.message}
+                        </span>
                       </div>
                     </div>
                   </div>
                   <div className="form-group row col-form-group">
-                    <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">Date Range</label>
+                    <label className="col-sm-12 col-md-4 col-lg-3 col-xl-2 col-form-label">
+                      Date Range
+                    </label>
                     <div className="col-sm-12 col-md-8 col-lg-9 col-xl-10 col-form-field">
                       <div className="d-flex align-items-center">
                         <div className="d-flex align-items-center date-picker">
-                          <RangeDatePicker startPlaceholder="2021-06-01" endPlaceholder="2021-06-10" />
-                          <CalendarTodayTwoToneIcon className="calendar-icon" />
+                          <RangeDatePicker
+                            startPlaceholder="2021-06-01"
+                            endPlaceholder="2021-06-10"
+                          />
+                          <CalendarTodayIcon className="calendar-icon" />
                         </div>
                       </div>
                     </div>
@@ -440,19 +475,30 @@ class GeneratePo extends Component {
                   </div>
                 </div>
               </div>
-              <Table
-                valueFromData={{ columns: columns, data: tableData }}
-                perPageLimit={6}
-                visiblecheckboxStatus={true}
-                isLoading={this.props.search_purchase_status === status.IN_PROGRESS}
-                tableClasses={{
-                  table: 'ticket-tabel',
-                  tableParent: 'tickets-tabel',
-                  parentClass: 'all-support-ticket-tabel',
-                }}
-                searchKey="subject"
-                showingLine="Showing %start% to %end% of %total% Tickets"
-              />
+              {this.state.loadingStatus ? (
+                <Table
+                  valueFromData={{ columns: columns, data: tableData }}
+                  perPageLimit={6}
+                  visiblecheckboxStatus={true}
+                  isLoading={
+                    this.props.search_purchase_status === status.IN_PROGRESS
+                  }
+                  tableClasses={{
+                    table: "ticket-tabel",
+                    tableParent: "tickets-tabel",
+                    parentClass: "all-support-ticket-tabel",
+                  }}
+                  searchKey="subject"
+                  showingLine="Showing %start% to %end% of %total% Tickets"
+                />
+              ) : (
+                <Loader
+                  type="spinner-default"
+                  bgColor={"#3244a8"}
+                  color={"#3244a8"}
+                  size={60}
+                />
+              )}
             </>
           )}
         </div>

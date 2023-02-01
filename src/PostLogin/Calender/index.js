@@ -1,20 +1,21 @@
 import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import FullCalendar, { EventApi } from "@fullcalendar/react";
+import {
+  Button,
+  FormControl,
+  NativeSelect,
+  IconButton,
+  Dialog,
+  DialogTitle,
+} from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import Dialog from "@material-ui/core/Dialog";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-import CloseIcon from "@material-ui/icons/Close";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import CloseIcon from "@mui/icons-material/Close";
 import TimeRange from "react-time-range";
-import { red } from "@material-ui/core/colors";
 
 class Calender extends Component {
   constructor(props) {
@@ -131,6 +132,7 @@ class Calender extends Component {
       ],
     };
   }
+
   displayInvoiceDetails = () => {
     const { invoiceDetails, activeIndex } = this.state;
     let retData = [];
@@ -177,12 +179,15 @@ class Calender extends Component {
     }
     return retData;
   };
+
   calendarRef = React.createRef();
-  handleStateChange = (e) => {
+
+  handleFormInputsChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
-  handleDateStateChange = (e) => {
+
+  handleDateSelect = (e) => {
     const { name, value } = e.target;
     let { date } = this.state;
     date[name] = value;
@@ -191,18 +196,22 @@ class Calender extends Component {
     let calendarApi = this.calendarRef.current.getApi();
     calendarApi.gotoDate(currentdate);
   };
-  openEditModal = () => {
+
+  openTaskEditModal = () => {
     this.setState({
       openDialog: !this.state.openDialog,
     });
   };
-  setStartTime = (e) => {
+
+  setTaskStartTime = (e) => {
     this.setState({ startTime: e.startTime });
   };
-  setEndTime = (e) => {
+
+  setTaskEndTime = (e) => {
     this.setState({ endTime: e.endTime });
   };
-  closeModal = () => {
+
+  closeTaskEditModal = () => {
     this.setState({
       currentEditEventId: "",
       eventTitle: "",
@@ -222,7 +231,7 @@ class Calender extends Component {
     return hour;
   };
 
-  submitModal = () => {
+  submitTaskEdtiModal = () => {
     const {
       currentEditEventId,
       eventTitle,
@@ -400,7 +409,6 @@ class Calender extends Component {
       eventDate,
       eventPlace,
       eventDescription,
-      eventColor,
     } = this.state;
     return (
       <div className="main-content">
@@ -419,7 +427,7 @@ class Calender extends Component {
                         <NativeSelect
                           name="month"
                           value={date.month}
-                          onChange={this.handleDateStateChange}
+                          onChange={this.handleDateSelect}
                         >
                           <option value="01">January</option>
                           <option value="02">February</option>
@@ -439,7 +447,7 @@ class Calender extends Component {
                         <NativeSelect
                           name="year"
                           value={date.year}
-                          onChange={this.handleDateStateChange}
+                          onChange={this.handleDateSelect}
                         >
                           <option value="2011">2011</option>
                           <option value="2012">2012</option>
@@ -458,7 +466,7 @@ class Calender extends Component {
                       <Button
                         variant="contained"
                         className="primary-btn"
-                        onClick={this.openEditModal}
+                        onClick={this.openTaskEditModal}
                       >
                         &#43; New Schedule
                       </Button>
@@ -498,8 +506,8 @@ class Calender extends Component {
         </div>
         <Dialog
           open={openDialog}
-          onClose={this.closeModal}
-          onSubmit={this.submitModal}
+          onClose={this.closeTaskEditModal}
+          onSubmit={this.submitTaskEdtiModal}
           aria-labelledby="form-dialog-title"
           className="calender-dialog"
         >
@@ -507,7 +515,10 @@ class Calender extends Component {
             <DialogTitle id="form-dialog-title" className="dialog-heading">
               Edit
             </DialogTitle>
-            <Button onClick={this.closeModal} className="modal-close-btn">
+            <Button
+              onClick={this.closeTaskEditModal}
+              className="modal-close-btn"
+            >
               <CloseIcon />
             </Button>
           </div>
@@ -520,7 +531,7 @@ class Calender extends Component {
                   name="eventTitle"
                   className="form-control"
                   placeholder="Title"
-                  onChange={this.handleStateChange}
+                  onChange={this.handleFormInputsChange}
                   value={updateValue.name}
                   defaultValue={eventTitle}
                 />
@@ -537,7 +548,7 @@ class Calender extends Component {
                     type="radio"
                     name="eventType"
                     className="redio-btn meet-radio"
-                    onChange={this.handleStateChange}
+                    onChange={this.handleFormInputsChange}
                     defaultValue="meet"
                     label="Meet"
                     checked={eventType === "meet"}
@@ -548,7 +559,7 @@ class Calender extends Component {
                     type="radio"
                     name="eventType"
                     className="redio-btn reminder-radio"
-                    onChange={this.handleStateChange}
+                    onChange={this.handleFormInputsChange}
                     defaultValue="reminder"
                     label="Reminder"
                     checked={eventType === "reminder"}
@@ -559,7 +570,7 @@ class Calender extends Component {
                     type="radio"
                     name="eventType"
                     className="redio-btn task-radio"
-                    onChange={this.handleStateChange}
+                    onChange={this.handleFormInputsChange}
                     defaultValue="task"
                     label="Task"
                     checked={eventType === "task"}
@@ -578,8 +589,8 @@ class Calender extends Component {
                   endLabel={"To"}
                   startMoment={startTime}
                   endMoment={endTime}
-                  onStartTimeChange={this.setStartTime}
-                  onEndTimeChange={this.setEndTime}
+                  onStartTimeChange={this.setTaskStartTime}
+                  onEndTimeChange={this.setTaskEndTime}
                   minuteIncrement={60}
                   sameIsValid={false}
                 />
@@ -594,7 +605,7 @@ class Calender extends Component {
                   name="eventDate"
                   className="form-control"
                   placeholder="Date"
-                  onChange={this.handleStateChange}
+                  onChange={this.handleFormInputsChange}
                   value={eventDate}
                   defaultValue={eventDate}
                 />
@@ -611,7 +622,7 @@ class Calender extends Component {
                   name="eventPlace"
                   className="form-control"
                   placeholder="Add Place"
-                  onChange={this.handleStateChange}
+                  onChange={this.handleFormInputsChange}
                   value={updateValue.place}
                   defaultValue={eventPlace}
                 />
@@ -626,7 +637,7 @@ class Calender extends Component {
                 <textarea
                   name="eventDescription"
                   placeholder="Description"
-                  onChange={this.handleStateChange}
+                  onChange={this.handleFormInputsChange}
                   value={updateValue.description}
                   defaultValue={eventDescription}
                 />
@@ -642,7 +653,7 @@ class Calender extends Component {
                   <Button
                     variant="contained"
                     className="primary-btn save-btn"
-                    onClick={this.submitModal}
+                    onClick={this.submitTaskEdtiModal}
                   >
                     Save
                   </Button>
@@ -666,4 +677,5 @@ class Calender extends Component {
     );
   }
 }
+
 export default Calender;
